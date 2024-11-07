@@ -1,0 +1,40 @@
+@charset "UTF-8";
+
+h1{
+	 margin: 15px 0;         /* 위아래 여백 줄이기 */
+     line-height: 0;  
+
+}
+body {
+    background-color: #fff;
+    margin: 0;
+    padding: 0;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+div {
+	text-align: center;
+	 
+}
+
+#controls button[type="button"] {
+    border: none;
+    font-size: 120%;
+}
+
+
+input[type="button"] {
+	
+	margin-bottom:20px;
+	padding: 16px 65px;
+	background-color: #4b76ed;
+	border-radius: 15px;
+	color: white;
+	font-size: 15px;
+	border: solid 1px #eee;
+	
+}
+
+input[type="button"]:hover {
+	background-color: #103ebc;
+}

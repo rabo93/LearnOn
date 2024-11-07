@@ -1,0 +1,223 @@
+@charset "UTF-8";
+h3 {
+	text-align: center;
+	color: black;
+	font-size: 150%;
+	font-weight: bolder;
+	margin: 25px auto;
+}
+
+#form-container {
+	height: auto;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #fff;
+	margin: 0;
+	padding: 0;
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+#form-inner-container {
+	background-color: white;
+	max-width: 70%;
+	border-radius: 8px;
+	box-shadow: 0 0 20px gainsboro;
+}
+
+#sign-up-container, #sign-in-container {
+    padding: 50px 100px;
+    width: 600px;
+    display: inline-block;
+}
+
+input[type="email"] {
+	display: flex;
+	margin-bottom: 20px;
+	border: 1px solid #E5E9F5;
+	background-color: #F6F7FA;
+	padding: 20px;
+	margin-top: 10px;
+	border-radius: 30px;
+	width: 50%;
+}
+
+form input:not([type="checkbox"]):not([type="file"]):not([type="radio"]) {
+	display: block;
+	margin-bottom: 20px;
+	border: 1px solid #E5E9F5;
+	background-color: #F6F7FA;
+	padding: 20px;
+	margin-top: 10px;
+	border-radius: 30px;
+	width: 100%;
+}
+
+#gender-container {
+	display: flex;
+	gap: 10px;
+	margin-top: 10px;
+}
+
+.gender-option {
+	display: flex;
+	align-items: center;
+	background-color: #F6F7FA;
+	padding: 5px;
+	border-radius: 30px;
+}
+
+.gender-option input[type="radio"] {
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	cursor: pointer;
+	background-color: white;
+	margin-right: 5px;
+}
+
+.gender-option input[type="radio"]:checked {
+	background-color: #eee;
+}
+
+.mem_addr_form {
+	display: flex;
+	margin-bottom: 20px;
+	margin-top: 10px;
+	border-radius: 30px;
+}
+
+label {
+	color: #000000;
+}
+
+::placeholder {
+	color: #C0C7DB;
+	font-size: larger;
+	letter-spacing: 1.2px;
+}
+
+#form-controls button {
+	border: none;
+	font-size: 120%;
+}
+
+#form-controls button:hover {
+	cursor: pointer;
+}
+
+button[type="submit"] {
+	padding: 16px 120px;
+	background-color: #4b76ed;
+	border-radius: 10px;
+	color: white;
+	margin-bottom: 20px; /* 버튼 아래쪽 여백 추가 */
+}
+
+button[type="submit"]:hover {
+	background-color: #3364e9;
+}
+
+.terms {
+	width: 20px;
+	height: 20px;
+	appearance: none;
+	border: 2px solid #7369AB;
+	border-radius: 50px;
+	position: relative;
+}
+
+.terms:checked:after {
+	content: '\2713';
+	color: #7369AB;
+	font-size: medium;
+	position: absolute;
+	top: 0;
+	left: 3px;
+	position: absolute;
+}
+
+label[for="terms"] {
+	display: inline-block;
+	width: 80%;
+	margin-left: 10px;
+}
+
+.termsLink {
+	color: #EF7886;
+	text-decoration: none;
+}
+
+.hide {
+	display: none !important;
+}
+
+#animation-container {
+	display: inline-block;
+}
+
+/* responsive display */
+@media ( max-width :1438px) {
+	lottie-player {
+		width: 300px !important;
+	}
+}
+
+@media ( max-width :1124px) {
+	#animation-container {
+		display: none;
+	}
+	#form-inner-container {
+		display: flex;
+		justify-content: center;
+	}
+}
+
+@media ( max-width : 684px) {
+	#form-controls {
+		text-align: center;
+		margin: 0;
+		padding: 0;
+	}
+	button {
+		width: 100%;
+	}
+	form input:not(:last-of-type) {
+		width: 85%;
+	}
+	#toggleSignIn, #toggleSignUp {
+		padding: 16px 75px;
+	}
+	label[for="terms"] {
+		display: inline-block;
+		font-size: smaller;
+	}
+	
+}
+
+.accordion {
+  background-color: #eee;
+  border-radius: 30px;
+  width: 400px;
+}
+
+.accordion ul > li {
+  overflow: hidden;
+  max-height: 60px;
+  transition: 0.3s;
+}
+.accordion ul > li.on {
+  max-height: 800px;
+}
+.accordion ul > li .title {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  padding-left: 0.5rem;
+}
+.accordion ul > li .desc {
+  padding: 0.5rem;
+}

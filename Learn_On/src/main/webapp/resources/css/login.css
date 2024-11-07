@@ -1,0 +1,104 @@
+@charset "UTF-8";
+
+h1 {
+    text-align: center;
+    font-size: xx-large;
+    margin-top: 25;
+}
+
+#form-container {
+    height: 60vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    margin: 0;
+    padding: 0;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+#form-inner-container {
+    background-color: white;
+    max-width: 500px;
+    border-radius: 8px;
+    box-shadow: 0 0 20px gainsboro;
+    padding:50px 100px;
+}
+
+#mem {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: large;
+    display: flex;
+    justify-content: space-around;
+}
+
+#sign-up-container {
+    width: 100%;
+}
+
+form label {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+form input[type="text"], form input[type="password"] {
+    display: block;
+    width: 100%;
+    margin-bottom: 20px;
+    border: 1px solid #E5E9F5;
+    background-color: #F6F7FA;
+    padding: 15px;
+    border-radius: 30px;
+    box-sizing: border-box;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    align-items: baseline
+}
+
+.checkbox-container input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+#form-controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+#form-controls button {
+    border: none;
+    font-size: 16px;
+    padding: 12px 80px;
+    background-color: #4b76ed;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#form-controls button:hover {
+    background-color: #3b5eb1;
+}
+
+.signup-link {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 20px;
+}
+
+.signup-link a {
+    color: #4b76ed;
+    text-decoration: none;
+}
+.signup-link a:hover {
+    text-decoration: underline;
+}
+
+.passwd_find{
+text-align: right;
+}

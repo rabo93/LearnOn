@@ -21,7 +21,7 @@
 					<span class="cart-count">3</span>
 					<i class="fa-solid fa-cart-shopping"></i>
 				</a>
-				<a href="#" class="login-btn">로그인</a>
+				<a href="MemberLogin" class="login-btn">로그인</a>
 			</div>
 			<div class="login-area">
 				<a href="#">나의 강의실</a>

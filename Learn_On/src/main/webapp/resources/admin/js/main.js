@@ -254,3 +254,9 @@ function deleteRow() {
 	}
 }
 
+function sidebarSelect() {
+	var dropdownbtn = document.getElementById('dropdownbtn');
+	console.log(dropdownbtn);
+	
+}
+

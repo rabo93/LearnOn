@@ -1,0 +1,209 @@
+@charset "UTF-8";
+
+.page-ttl {max-width: 1320px;margin: 2rem auto 1rem;color:var(--dark);padding: 0 1rem;font-size: 1.4rem;text-indent: 0.875rem;}
+
+/* myPage layout */
+.my-wrap {max-width: 1320px;margin: 0 auto 2rem;display: flex;padding: 0 1rem;align-items: flex-start;}
+.my-menu {width: 240px;background: var(--gray);padding: 1rem;border-radius: 8px;flex: 0 0 240px;}
+.my-menu a {display: block;padding: 0.4rem 1rem;margin: 0.5rem 0;color: var(--white);font-weight: 500;font-size: 0.875rem;transition: all 0.3s;}
+.my-menu a:hover ,
+.my-menu a.active {background: var(--dark); padding: 0.8rem 1rem; border-radius: 4px;font-weight: 700;}
+.my-container{margin-left: 1rem;padding: 2rem;background: var(--milk);flex: 1 1 auto;min-height: 400px;border-radius: 8px;}
+.my-container .contents-ttl {font-size:1.2rem;font-weight:700;margin-bottom:1rem;color:var(--dark);}
+.my-container .contents-ttl small {font-size:0.875rem;margin-left: 6px;font-weight:500;color:var(--gray);}
+
+/* 계정설정 */
+.my-frm {}
+.my-frm .set {margin: 0.4rem 0;padding: 1rem;border-bottom: 1px solid var(--light-gray);}
+.my-frm .set label {font-weight: 700;font-size: 0.875rem;color: var(--gray);margin-bottom: 0.6rem;display: block;}
+.my-frm .set label span {color:var(--danger);}
+.my-frm .set input[type="text"],
+.my-frm .set input[type="password"] {padding: 0px 10px;background:var(--white);border:1px solid #ddd;border-radius:4px;height: 36px;}
+.my-frm .set .profile-thumb {width: 80px;height: 80px;border-radius: 6px;border: 1px solid var(--light-gray);}
+.my-frm .set .btn-frm {background: var(--white);color: var(--gray);padding: 0 2rem;border-radius:4px;font-size: 0.875rem;border: 1px solid #ddd;font-weight: 600;height: 36px;cursor: pointer;}
+.my-frm .set > div {display:flex;flex-wrap:wrap;gap: 0.2rem;margin: 0.2rem 0;align-items: center;}
+.my-frm .set > div > input[type="text"], .my-frm .set > div > input[type="password"] {flex:1 1 auto;}
+.my-frm .set .ip-tips {text-align:left;display:block;font-size: 11px;padding:0.4rem;color:var(--danger);font-weight: 600;}
+.my-frm .btns {text-align:center;padding:1rem 0;}
+.my-frm .set .sel-frm {background: var(--white);border:0;color: var(--gray);padding: 0 1rem;border-radius:4px;font-size: 0.875rem;border: 1px solid #ddd;font-weight: 600;height: 36px;}
+.my-frm .btns .btn-submit  {background: var(--primary);border:0;color: var(--white);padding: 0 2rem;border-radius:4px;font-size: 1rem;border: 1px solid var(--milk);font-weight: 700;height: 40px;min-width: 150px;}
+.withdraw-link {font-size: 0.875rem;color: var(--gray);text-align:right;display: block;margin-top: 2rem;margin-left: auto;width: 60px;}
+
+/* 찜 목록 */
+.course-sel {text-align:right;margin:0 0 1rem;}
+.course-sel select {background: var(--white);border:0;color: var(--gray);padding: 0 1rem;border-radius:4px;font-size: 0.875rem;border: 1px solid #ddd;font-weight: 600;height: 36px;}
+.course-card {display: grid;-webkit-column-gap: 1rem;column-gap: 1rem;row-gap: 1rem;grid-template-columns: repeat(4, minmax(0, 1fr));} 
+.course-card li {cursor:pointer;}
+.course-card.row-3 {grid-template-columns: repeat(3, minmax(0, 1fr))}
+.course-card .card-thumb { display: block; object-fit: fill; border: 1px solid var(--light-gray); border-radius:1rem;} 
+.course-card .thumb-area {position:relative;}
+.course-card .thumb-area .fav-on {position:absolute;top: -1px;left: 26px;color: var(--secondary);font-size: 1.6rem;text-shadow: 1px 2px 3px rgba(0,0,0,0.2);background: transparent;}
+
+
+.course-card .card-info {padding: 0.8rem 0.4rem;}
+.course-card .card-info .category span {border-radius:50px;background:var(--light-gray);color:var(--dark);display:inline-block;padding: 0.1rem 0.8rem;border:1px solid var(--gray);font-size: 0.75rem;font-weight: 700;}
+.course-card .card-info .ttl {font-size: 1.2rem;font-weight:600;margin:0.6rem 0;line-height: 1.2;text-overflow: ellipsis;overflow: hidden;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;}
+.course-card .card-info .price {margin-bottom:0.6rem;}
+.course-card .card-info .rating {margin-bottom:0.5rem;font-size:0.875rem;}
+.course-card .card-info .rating i {color:var(--yellow);}
+.course-card .card-info .rating span {font-weight:700;color:var(--dark);}
+.course-card .card-info .name {font-size: 0.8rem;color:var(--gray);}
+.btn-more {padding:0.8rem 3rem;font-size:1rem;border-radius:50px;margin:1rem auto;display:block;border:1px solid var(--light-gray);}
+
+@media screen and (max-width:1023px){
+    .course-card {grid-template-columns: repeat(3, minmax(0, 1fr));}
+}
+
+@media screen and (max-width:960px){
+
+}
+
+@media screen and (max-width:560px){
+    .course-card {grid-template-columns: repeat(2, minmax(0, 1fr));}
+}
+
+/* 나의 강의실 */
+.card-info2 {width:100%;}
+.card-info2 .course-status {width:100%;display:block;position:relative;}
+.card-info2 .course-status p {font-size:0.875rem;padding: 0.4rem 1rem;font-weight:500;}
+.card-info2 .course-status p span {font-weight:700; color:var(--primary);}
+#progress {appearance: none;width: 100%;}
+#progress::-webkit-progress-bar {background: var(--white);border-radius: 50px;border: 1px solid #bac3d2;height: 14px;width: 100%;overflow: hidden;}
+#progress::-webkit-progress-value {background: var(--primary);border-radius: 0px;height: 14px;width: 100%;}
+.card-info2 .btn-review {background: var(--white);color: var(--dark);padding: 0 1rem;border-radius: 4px;font-size: 0.875rem;border: 1px solid #ddd;font-weight: 600;height: 36px;margin: 4px auto;width: 100%;}
+.card-info2 .btn-review i {color:var(--yellow);}
+.card-info2 .btn-write {background: var(--white);color: var(--primary);padding: 0 1rem;border-radius: 4px;font-size: 0.875rem;border: 1px solid #ddd;font-weight: 600;height: 36px;margin: 4px auto;width: 100%;}
+.my-tabs button {border-radius:50px;padding: 8px 12px;font-size: 14px;border: 1px solid #ddd;background: var(--white);font-weight: 500;}
+.my-tabs button.checked {border-color: var(--primary); color: var(--primary); font-weight: 700;}
+
+/* 별점 기능 */
+.course-rating {display:flex;align-items: center;justify-content: center;}
+.rating-input {display: none;}
+.rating-lab {width: 18px;overflow: hidden;cursor: pointer;margin-left: -2px;}
+.rating-lab-full {margin-right:5px}
+.rating-lab .star-icon {width: 18px; height: 32px;display: block;position: relative;left: 0;background-image: url("/resources/images/ic-star-gray.svg");background-repeat: no-repeat;}
+.rating-lab-full .star-icon {background-position: right;}
+.rating-lab-half .star-icon {background-position: left;}
+.rating-lab .star-icon.filled {background-image: url("/resources/images/ic-star.svg");}
+
+/* 수강평 작성 */
+.review-write {}
+.review-write .noti {padding: 1rem;background: var(--light-blue);margin: 1rem 0;line-height: 1.6;text-align: left;}
+.review-write .noti li {font-size: 0.875rem;padding-left: 1rem;font-weight: 500;color: var(--dark);position: relative;}
+.review-write .noti li:before {display:block;content:'';position:absolute;width: 3px;height: 3px;border-radius:50%;left: 5px;top: 9px;background: var(--dark);}
+.review-write textarea {width:100%;border:1px solid var(--light-gray);padding:1rem;font-size: 0.875rem;font-weight: 500;color: var(--dark);background: var(--milk);}
+
+/* 작성한 수강평 목록 */
+.my-rev-li {display: grid;gap: 0.4rem;}
+.my-rev-li .rev-box {padding: 1rem;background:var(--white);border:1px solid #ddd;border-radius:10px;box-shadow: 0 0 5px rgba(0,0,0,0.1);}
+.my-rev-li .rev-box .info {display: flex;align-items: center;gap: 0 1rem;margin-bottom: 1rem;}
+.my-rev-li .rev-box .info img {width:120px;height:80px;object-fit:cover;border-radius:10px;border:1px solid #eee;grid-row: 1 / 3;}
+.my-rev-li .rev-box .info .ttl {font-size: 1rem;font-weight:700;margin-bottom: 4px;}
+.my-rev-li .rev-box .info .name {font-size: 0.875rem;color:var(--gray);font-weight:600;}
+
+.my-rev-li .rev-box .detail { border-top: 1px solid #ddd; padding: 1rem 1rem 0; font-size: 0.875rem;}
+.my-rev-li .rev-box .detail .date {font-size: 12px; font-weight: 700; color: var(--gray); margin-bottom: 6px;}
+.my-rev-li .rev-box .detail .date span {}
+.my-rev-li .rev-box .detail .rating {font-size: 0.875rem; margin-bottom: 6px; font-weight: 700; color: var(--dak);}
+.my-rev-li .rev-box .detail .rating i { color: var(--yellow);}
+.my-rev-li .rev-box .detail .rating span {}
+.my-rev-li .rev-box .detail .content {color: var(--dark);font-weight: 500;line-height: 1.4;}
+
+.my-rev-li .rev-box .btns {margin: 5px 0 0;display: flex;align-items: center;justify-content: right;gap: 1rem;}
+.my-rev-li .rev-box .btns .btn-rev {padding: 8px 1rem;border: 1px solid #ddd;border-radius: 4px;font-weight: 700;color: var(--dark);background: var(--light-blue);}
+
+/* 결제내역 */
+.my-ord-li {display: flex;flex-direction: column;gap: 1rem;}
+.my-ord-li .ord-box {padding: 1rem;background:var(--white);border:1px solid #ddd;border-radius:10px;box-shadow: 0 0 5px rgba(0,0,0,0.1);display: flex;gap: 1rem;}
+.my-ord-li .ord-box .infos {flex: 1 1 0;}
+.my-ord-li .ord-box .infos .info{display: flex; align-items: center; font-size: 0.875rem; gap: 6px; color: var(--dark);}
+.my-ord-li .ord-box .infos .info .status{font-size: 12px;font-weight: 700;background: var(--primary);padding: 4px 10px;border-radius: 50px;color: var(--white);}
+.my-ord-li .ord-box .infos .info .num{font-weight: 700;}
+.my-ord-li .ord-box .infos .products {padding: 1rem 10px;font-size: 0.875rem;gap: 6px 0;display: flex;flex-direction: column;}
+.my-ord-li .ord-box .infos .products .ttl {display: block;border-bottom: 1px solid #eee;padding-bottom: 6px;font-weight: 600;color: var(--dark);}
+
+.my-ord-li .ord-box .price {flex: 0 0 110px;font-size: 13px;font-weight: 500;color: var(--gray);}
+.my-ord-li .ord-box .price dl {display: flex;align-items: center;justify-content: space-between;line-height:1.6}
+.my-ord-li .ord-box .price dl dt {}
+.my-ord-li .ord-box .price dl dd {font-weight: 700;}
+.my-ord-li .ord-box .price dl.dis dt {opacity:0}
+.my-ord-li .ord-box .price dl.total {margin: 0.4rem 0;border-top:1px solid #ddd;padding: 0.4rem 0;}
+.my-ord-li .ord-box .btns {flex: 0 0 100px;}
+.my-ord-li .ord-box .btns button {font-size: 0.875rem;font-weight: 700;padding: 8px 4px;width: 100%;background: var(--white);border: 1px solid #ddd;border-radius: 4px;margin-bottom: 10px;font-size: 13px;color: var(--primary);}
+
+@media screen and (max-width:968px){
+    .my-ord-li .ord-box {display:block;gap:0;}
+    .my-ord-li .ord-box .infos .products {padding:1rem 0;}
+}
+
+/* 출석체크 */
+.attendance-wrap {text-align: center;}
+.attendance-wrap .btn-att {margin: 1rem auto;text-align: center;padding: 10px 2rem;border-radius: 6px;border:0;background:#ddd;color: var(--gray);font-weight: 600;}
+.attendance-wrap .btn-att.checked {background: var(--primary);color: var(--white);}
+.attendance-wrap .att-box {border: 1px solid #eee;background: var(--white);padding: 2rem;}
+.attendance-wrap .att-box i {font-size: 2rem;color: var(--secondary);margin-bottom: 1rem;}
+.attendance-wrap p {font-weight: 600;color: var(--dark);}
+.attendance-wrap p span {color: var(--secondary);font-size: 1.4rem;padding-right: 4px;font-weight: 700;}
+
+/* 쿠폰 */
+.coupon-wrap{display: flex;align-items: stretch;justify-content: center;gap: 1rem;width: 100%;}
+.coupon-total {background: var(--white);border: 1px solid #ddd;border-radius: 8px;padding: 20px 0;flex: 0 0 150px;display: flex;align-items: center;justify-content: center;flex-direction: column;}
+.coupon-total .coupon-title {font-size: 0.875rem;color: var(--dark);font-weight: 700;margin-bottom: 6px;}
+.coupon-total .coupon-count {font-size: 1.4rem;font-weight: 700;color: var(--primary);display: inline-block;}
+.coupon-total .coupon-unit {font-size: 0.875rem;font-weight: 700;color: var(--gray);display: inline-block;}
+.coupon-list {background: var(--white);border: 1px solid #ddd;border-radius: 8px;padding: 1rem;flex: 1 0 0;}
+.coupon-list ul {display:flex;gap:1rem;flex-direction:column;}
+.coupon-list ul li {border-radius: 8px;background: #ffe8ef;padding: 10px 1rem;}
+.coupon-list .c-name {font-weight: 700;color: var(--dark);}
+.coupon-list .c-exp-date {font-size: 0.875rem;font-weight: 500;color: var(--gray);padding: 6px 0;}
+.coupon-list .c-dis {text-align: right;font-weight: 700;color: var(--primary);}
+.coupon-list ul li.end {text-decoration: line-through;text-decoration-color: var(--dark);background: #eee;}
+
+/* 1:1 문의내역 */
+.inq-wrap {}
+.inq-wrap .inq-tops {text-align: right;}
+.inq-wrap .inq-tops .btn-inq {padding: 10px 1rem;background: var(--primary);font-size: 0.875rem;font-weight: 600;color: var(--white);border: 0;border-radius: 6px;margin-bottom: 10px;}
+.tb-wrap .no-data {padding: 5rem 0;text-align:center;font-size: 0.875rem;font-weight: 500;border-bottom: 1px solid #E8E9EE;background: var(--white);margin-bottom: 1rem;}
+.tb-01 {width: 100%;border-spacing: 0;border-collapse: collapse;position:relative;}
+.tb-01 thead {border: 1px solid #ddd;border-left: 0;border-right: 0;}
+.tb-01 th {background: var(--light-blue);padding: 12px  10px;color:var(--dark);font-weight: 700;font-size: 1rem;text-align: center;}
+.tb-01 td {text-align: center;color:var(--dark);font-weight: 400;padding: 10px;border-bottom: 1px solid #E8E9EE;font-size: 0.875rem;background: var(--white);}
+.tb-01 td.subject {text-align:left;font-weight:500;}
+.tb-01 a {display:block; transition:all 0.2s;}
+.tb-01 tbody tr {cursor:pointer;}
+.tb-01 tbody tr:hover td {background: #f9f9f9; color:var(--primary)}
+.tb-01 tfoot tr td {background: #F9F7F4;font-weight: var(--weight-bold);}
+.tb-01 tr.reply th, .tb-01 tr.reply td {background: #e3ebf9;}
+.inq-wrap .tb-inq tbody td:nth-child(2) {font-weight:700;}
+.inq-frm {color: var(--dark);font-weight: 500;}
+.inq-frm .row {margin-bottom: 6px;}
+.inq-frm .row select {text-align: left;font-weight: 500;padding: 6px 10px;font-size: 15px;border: 1px solid #ddd;border-radius: 4px;}
+.inq-frm .row input[type="text"] {width: 100%;padding: 8px 10px;font-size: 15px;border: 1px solid #ddd;border-radius: 4px;}
+.inq-frm .row textarea {width: 100%;padding: 8px 10px;font-size: 15px;border: 1px solid #ddd;border-radius: 4px;}
+.inq-frm .row input[type="file"] {padding: 8px 10px;font-size: 15px;border: 1px solid #ddd;border-radius: 4px;background: var(--white);width: 100%;}
+.inq-wrap .com {display: flex;align-items: flex-start;margin-bottom: 0.4rem;}
+.inq-wrap .com label {flex:0 0 100px;font-weight:700;color:var(--dark);background: #cbddf9;display:block;padding: 0.7rem 1rem;text-align: center;border-radius: 4px 0 0 4px;}
+.inq-wrap .com span {display: block;flex: 1 1 auto;background: var(--white);padding: 0.7rem 1rem;}
+.inq-wrap .com span.contents {min-height:400px;padding: 1rem;}
+.inq-wrap .com a:hover {text-decoration:underline;}
+.inq-wrap .com a input[type="button"] {cursor:pointer;background: var(--primary);color: var(--white);border: 0;padding: 6px 10px;border-radius: 4px;font-size: 14px;font-weight: 700;margin-left: 10px;}
+.inq-wrap .com.attach {justify-content: center;margin-top: 14px;margin-bottom: 0;}
+.inq-wrap .btns {display:flex;align-items: center;gap: 4px;justify-content: center;margin-top: 20px;}
+.inq-wrap .btns button {padding: 10px 1rem;background: var(--dark);font-size: 0.875rem;font-weight: 600;color: var(--white);border: 0;border-radius: 6px;margin-bottom: 10px;}
+
+/* 페이징 */
+#pageList {display: flex;justify-content: center;align-items: center;gap: 6px;margin: 1rem auto;}
+#pageList button {font-size: 13px;font-weight: 700;background: var(--white);border: 1px solid var(--dark);border-radius: 4px;cursor:pointer;width: 30px;height: 30px;}
+#pageList button:hover {background:var(--primary);color:var(--white);border-color:var(--primary);}
+#pageList strong {width: 20px;display: inline-block;text-align: center;text-decoration: underline;cursor:pointer;}
+#pageList a {display: inline-block;width: 20px;text-align: center;}
+#pageList a:hover {color:var(--primary);font-weight:600;}
+
+
+/* 페이징 */
+#pageList {display: flex;justify-content: center;align-items: center;gap: 6px;margin: 1rem auto;}
+#pageList button {font-size: 13px;font-weight: 700;background: var(--white);border: 1px solid var(--dark);border-radius: 4px;cursor:pointer;width: 30px;height: 30px;}
+#pageList button:hover {background:var(--primary);color:var(--white);border-color:var(--primary);}
+#pageList strong {width: 20px;display: inline-block;text-align: center;text-decoration: underline;cursor:pointer;}
+#pageList a {display: inline-block;width: 20px;text-align: center;}
+#pageList a:hover {color:var(--primary);font-weight:600;}

@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,41 +20,41 @@
         <!-- Sidebar Start -->
         <div class="sidebar pe-4 pb-3">
             <nav class="navbar bg-light navbar-light">
-                <a href="admin" class="navbar-brand" style="display: flex;align-items: center;width: 100%;margin: 0;">
+                <a href="admin_index" class="navbar-brand" style="display: flex;align-items: center;width: 100%;margin: 0;">
                 	<img class="projectLogo" src="resources/admin/img/learn_on_logo2.png" alt="learnLogo" style="width: 150px; margin: 10px auto; border-radius: 20px;">
 <!--                     <h3 class="text-primary">LearnOn</h3> -->
                 </a>
                 <div class="navbar-nav w-100">
-                    <a href="admin" onclick="sidebarSelect();" id="dropdownbtn" class="nav-item nav-link ddb"><i class="fas fa-columns" style="margin-right: 10px;"></i>메인</a>
+                    <a href="admin_index" id="adminIndex" class="nav-item nav-link"><i class="fas fa-columns" style="margin-right: 10px;"></i>메인</a>
                     <div class="nav-item dropdown">
-                        <a href="#" onclick="sidebarSelect();" id="dropdownbtn" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown"><i class="fas fa-chalkboard" style="margin-right: 10px;"></i>클래스 관리</a>
+                        <a href="#" id="classManage" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fas fa-chalkboard" style="margin-right: 10px;"></i>클래스 관리</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                            <a href="admin_class_add" onclick="sidebarSelect();" class="dropdown-item" >클래스 등록</a>
-                            <a href="admin_class_list" onclick="sidebarSelect();" class="dropdown-item">클래스 목록</a>
-                            <a href="admin_class_delete" onclick="sidebarSelect();" class="dropdown-item">삭제된 클래스 목록</a>
+                            <a href="admin_class_add" id="classAdd" class="dropdown-item" >클래스 등록</a>
+                            <a href="admin_class_list" id="classList" class="dropdown-item">클래스 목록</a>
+                            <a href="admin_class_delete" id="classDelete" class="dropdown-item">삭제된 클래스 목록</a>
                         </div>
                     </div>
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" onclick="sidebarSelect();" id="dropdownbtn" data-bs-toggle="dropdown"><i class="fas fa-users" style="margin-right: 10px;"></i>회원 관리</a>
+                        <a href="#" class="nav-link dropdown-toggle" id="member" data-bs-toggle="dropdown"><i class="fas fa-users" style="margin-right: 10px;"></i>회원 관리</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                            <a href="admin_member_list" class="dropdown-item">회원 목록</a>
-                            <a href="admin_member_list_instructor" class="dropdown-item">강사 회원 목록</a>
-                            <a href="admin_member_list_delete" class="dropdown-item">탈퇴한 회원 목록</a>
+                            <a href="admin_member_list" id="memberList" class="dropdown-item">회원 목록</a>
+                            <a href="admin_member_list_instructor" id="memberIns" class="dropdown-item">강사 회원 목록</a>
+                            <a href="admin_member_list_delete" id="memberDelete" class="dropdown-item">탈퇴한 회원 목록</a>
                         </div>
                     </div>
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fas fa-credit-card" style="margin-right: 10px;"></i>결제 관리</a>
+                        <a href="#" class="nav-link dropdown-toggle" id="payment" data-bs-toggle="dropdown"><i class="fas fa-credit-card" style="margin-right: 10px;"></i>결제 관리</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                            <a href="admin_payment_list" class="dropdown-item">결제 내역 관리</a>
-                            <a href="admin_payment_list_coupon" class="dropdown-item">쿠폰 관리</a>
+                            <a href="admin_payment_list" id="paymentList" class="dropdown-item">결제 내역 관리</a>
+                            <a href="admin_payment_list_coupon" id="paymentCoupon" class="dropdown-item">쿠폰 관리</a>
                         </div>
                     </div>
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2" style="margin-right: 10px;"></i>고객 지원 관리</a>
+                        <a href="#" class="nav-link dropdown-toggle" id="board" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2" style="margin-right: 10px;"></i>고객 지원 관리</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                            <a href="admin_board_management" class="dropdown-item">게시판 관리</a>
-                            <a href="admin_board_faq" class="dropdown-item">FAQ 관리</a>
-                            <a href="admin_board_review" class="dropdown-item">수강 후기 관리</a>
+                            <a href="admin_board_management" id="boardManage" class="dropdown-item">게시판 관리</a>
+                            <a href="admin_board_faq" id="boardFaq" class="dropdown-item">FAQ 관리</a>
+                            <a href="admin_board_review" id="boardReview" class="dropdown-item">수강 후기 관리</a>
                         </div>
                     </div>
                     <div class="nav-item dropdown">

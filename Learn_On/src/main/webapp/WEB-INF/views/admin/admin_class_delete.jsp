@@ -118,5 +118,12 @@
 
     <!-- Template Javascript -->
     <script src="resources/admin/js/main.js"></script>
+    <script type="text/javascript">
+    		var link = document.location.href;
+	    	if (link.includes("class")) {
+	    		document.getElementById("classDelete").classList.toggle("active");
+	    		document.getElementById("classManage").classList.toggle("active");
+	    	};
+    </script>
 </body>
 </html>

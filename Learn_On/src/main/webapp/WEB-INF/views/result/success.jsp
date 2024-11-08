@@ -10,25 +10,25 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/reset.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
-<script src="js/common.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/index.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/success.css">
-<!-- page 개별 CSS -->
-<!-- <link rel="stylesheet" href="css/css이름.css"> -->
-<!-- page 개별 JS -->
-<!-- <script src="js/js이름.js"></script> -->
+
 </head>
 <body>
-
-<div>
-	<h1>안녕하세요 ${mem_name}님</h1><br>
-	<h1>지금 바로 강의를 시작 해보세요!</h1><br>
+	<header id="hd">
+		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>
+	</header>
 	
-	<div id="controls">
-		<input type="button" id="btn_ai" value="AI 추천 바로가기"><br>
-		<input type="button" id="myclass" value="나의 강의실">
+	<div class="success-container">
+		<h1>안녕하세요 ${sessionScope.sId}님</h1><br>
+		<h1>지금 바로 강의를 시작 해보세요!</h1><br>
+		
+		<div id="controls">
+			<input type="button" id="btn_ai" value="AI 추천 바로가기"><br>
+			<input type="button" id="myclass" value="나의 강의실">
+		</div>
+	
 	</div>
-
-</div>
 	<footer id="ft">
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
 	</footer>

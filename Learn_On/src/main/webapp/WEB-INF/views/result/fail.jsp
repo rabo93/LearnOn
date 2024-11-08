@@ -9,12 +9,9 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/reset.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/fail.css">
-    
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/slick.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/index.js"></script>
-
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/fail.css">
 </head>
 <body>
 

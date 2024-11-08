@@ -12,12 +12,9 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/reset.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
-<script src="js/common.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/index.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/login.css">
-<!-- page 개별 CSS -->
-<!-- <link rel="stylesheet" href="css/css이름.css"> -->
-<!-- page 개별 JS -->
-<!-- <script src="js/js이름.js"></script> -->
+
 </head>
 <body>
 	<header id="hd">
@@ -39,12 +36,12 @@
                     </label>
                 </div>
 
-                <form action="MemberLogin">
+                <form action="MemberLogin" method="post">
                     <label for="mem_id">아이디</label>
-                    <input type="text" name="mem_id" id="mem_id" placeholder="아이디">
+                    <input type="text" name="MEM_ID" id="mem_id" placeholder="아이디">
 
                     <label for="mem_passwd">비밀번호</label>
-                    <input type="password" name="mem_passwd" id="mem_passwd" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;">
+                    <input type="password" name="MEM_PASSWD" id="mem_passwd" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;">
 
                     <div class="checkbox-container">
                         <input type="checkbox" name="terms" id="terms">

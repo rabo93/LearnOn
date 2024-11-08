@@ -10,13 +10,11 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/reset.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
-<script src="js/common.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/index.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/join.css">
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<!-- page 개별 CSS -->
-<!-- <link rel="stylesheet" href="css/css이름.css"> -->
-<!-- page 개별 JS -->
-<!-- <script src="js/js이름.js"></script> -->
+<script src="${pageContext.request.contextPath}/resources/js/join.js"></script>
+
 </head>
 <body>
 	<header id="hd">
@@ -30,23 +28,29 @@
 			<div id="sign-up-container">
 				<form action="MemberJoin" name="joinForm" method="post" enctype="multipart/form-data">
 					<label for="mem_name">이름</label> 
-					<input type="text" name="mem_name"id="mem_name" placeholder="이름">
 					<div id="checkName"></div>
+					<input type="text" name="MEM_NAME"id="MEM_NAME" placeholder="이름" onblur="checkNameLength()">
 
 					<label for="mem_id">아이디</label> 
-					<input type="text" name="mem_id" id="mem_id" placeholder="아이디">
 					<div id="checkId"></div>
+					<input type="text" name="MEM_ID" id="MEM_ID" placeholder="아이디" onblur="checkIdLength()">
 
 					<label for="mem_passwd1">비밀번호</label> 
-					<input type="password" name="mem_passwd1" id="mem_passwd1"
-						placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;">
+					<div id="checkPasswd1"></div>
+					<input type="password" name="MEM_PASSWD" id="MEM_PASSWD1"
+						placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"
+						onblur="checkPasswdLength1()">
 
 					<label for="mem_passwd2">비밀번호 확인</label> 
-					<input type="text" name="mem_passwd2" id="mem_passwd2" placeholder="비밀번호 확인">
-					<div id="checkPasswd"></div>
+					<div id="checkPasswd2"></div>
+					<input type="password" name="MEM_PASSWD2" id="MEM_PASSWD2" placeholder="비밀번호 확인"
+					onblur="checkPasswdResult()">
 
 					<label for="mem_nic">닉네임</label> 
-					<input type="text" name="name" id="mem_nic" placeholder="닉네임"> <label>성별</label>
+					<div id="checkNic"></div>
+					<input type="text" name="name" id="mem_nic" placeholder="닉네임"> 
+					
+					<label>성별</label>
 					<div id="gender-container">
 						<div class="gender-option">
 							<input type="radio" name="mem_gender" id="male" value="남"> 
@@ -58,48 +62,46 @@
 						</div>
 					</div>
 
-					<label for="mem_birthday">생년월일</label><br> <select id="year">
+					<label for="mem_birthday">생년월일</label><br> 
+					<select id="year">
 						<option value="">출생년도</option>
-						<option value="2024">2024</option>
-					</select> <select id="month">
+					</select> 
+					<select id="month">
 						<option value="">월</option>
-						<option value="1">1</option>
-						<option value="2">2</option>
-						<option value="3">3</option>
-						<option value="4">4</option>
-						<option value="5">5</option>
-						<option value="6">6</option>
-						<option value="7">7</option>
-						<option value="8">8</option>
-						<option value="9">9</option>
-					</select> <select id="day">
+					</select> 
+					<select id="day">
 						<option value="">일</option>
-						<option value="22">22</option>
-					</select> <br> <label for="mem_number">연락처</label> 
+					</select> 
+					
+					<br> <label for="mem_number">연락처</label> 
 					<input type="text" name="mem_number" id="mem_number" placeholder="'-'없이 입력해주세요">
 
 					<label for="address">주소</label>
+					<div id="checkAddr"></div>
 					<div class=mem_addr_form>
-						<input type="text" name="mem_ddress1" placeholder="주소찾기"
+						<input type="text" name="mem_address1" placeholder="주소찾기"
 							onclick="search_address()" id="mem_ddress1"
 							size="25" readonly> 
 						<input type="text" placeholder="우편번호" id="mem_post_code" name="mem_post_code" size="6" readonly>
 					</div>
+
 					<input type="text" name="mem_address2" placeholder="상세주소" id="mem_address2"
 						name="address2" size="25"> <label for="email">이메일</label>
 					<div class="email_form">
-						<input type="email" name="mem_email1" id="email1" placeholder="Email">
-						<input type="email" name="mem_mail2" id="email2" placeholder="@직접입력">
+						<input type="text" name="MEM_EMAIL1" id="email1" placeholder="Email">
+						@<input type="text" size="10" id="email2" name="MEM_EMAIL2">
 					</div>
-					<select id="email3" onchange="emailDomain">
-						<option value="이메일 선택">이메일 선택</option>
+					<select id="emailDmain" onchange="emailDomain">
+						<option value="">직접입력</option>
 						<option value="@naver.com">@naver.com</option>
 						<option value="@gmail.com">@gmail.com</option>
 						<option value="@daum.net">@daum.net</option>
 					</select> 
+					<div id="checkMail"></div>
 					
 					<input type="text" placeholder="인증코드를 입력해주세요" name="mail_auth"><br> 
 					<input type="button" value="인증코드 확인" name="mail_auth_status" id="mail_auth_status"><br> 
+					<div id="checkCode"></div>
 					
 					<label for="mem_for_teacher">
 						<input type="checkbox" id="mem_for_teacher">강사 회원 신청
@@ -149,8 +151,7 @@
 				</form>
 			</div>
 		</div>
-		<script
-			src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+		<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 		<script type="text/javascript">
 			function search_address() {
 				new daum.Postcode({

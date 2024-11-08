@@ -1,20 +1,19 @@
 @charset "UTF-8";
 
 h1{
-	 margin: 15px 0;         /* 위아래 여백 줄이기 */
-     line-height: 0;  
-
+	 margin: 15px 0;
+	 margin-top:30px;
+	 padding:20px;
+     line-height: 0;
+     font-size: 30px;  
 }
-body {
+
+.success-container {
     background-color: #fff;
     margin: 0;
     padding: 0;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-}
-
-div {
 	text-align: center;
-	 
 }
 
 #controls button[type="button"] {

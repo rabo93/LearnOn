@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+ <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script src="${pageContext.request.contextPath}/resources/js/top.js"></script>
 <%-- header --%>
 <header id="hd">
@@ -15,7 +16,13 @@
 				</button>
 			</form>
 		</div>
-		<div id="hd_right"> <!-- 로그인하면 class에 on 추가 -->
+		
+		
+		<div id="hd_right"
+			<c:if test="${not empty sessionScope.sId}">
+			class="on"
+			</c:if>
+		> <!-- 로그인하면 class에 on 추가 -->
 			<div class="normal-area">
 				<a href="#" class="cart-btn">
 					<span class="cart-count">3</span>
@@ -25,7 +32,7 @@
 			</div>
 			<div class="login-area">
 				<a href="#">나의 강의실</a>
-				<a href="#"><span>홍길동</span> 님</a>
+				<a href="#"><span>${sessionScope.sId}</span> 님</a>
 				<div class="login-menu">
 					<a href="#">마이페이지</a>
 					<a href="#">관리자 홈</a>
@@ -45,10 +52,17 @@
         	
         	</div>
         	<nav id="m_nav">
-        		<div class="m-info"> <!-- 로그인 하면 class에 on 추가 -->
-        			<a href="#" class="login-link">로그인을 해주세요. <i class="fa-solid fa-arrow-right-to-bracket"></i></a>
-        			<a href="#" class="my-info"><i class="fa-solid fa-gear"></i> <span>홍길동</span> 님</a>
-        			<a href="#" class="my-course"> <i class="fa-solid fa-circle-play"></i> 나의 강의실</a>
+        		<div class="m-info"> 
+				<!-- 로그인 하면 class에 on 추가 -->
+					<c:choose>
+						<c:when test="${empty sessionScope.sId}">
+	        				<a href="MemberLogin" class="login-link">로그인을 해주세요. <i class="fa-solid fa-arrow-right-to-bracket"></i></a>
+						</c:when>
+						<c:otherwise>
+		        			<a href="#" class="my-info"><i class="fa-solid fa-gear"></i> <span>${sessionScope.sId}</span> 님</a>
+		        			<a href="#" class="my-course"> <i class="fa-solid fa-circle-play"></i> 나의 강의실</a>
+						</c:otherwise>				
+					</c:choose>
         		</div>
 				<ul class="mgnb">
 					<li class="mgnb-menu">

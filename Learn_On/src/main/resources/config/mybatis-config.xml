@@ -13,7 +13,7 @@
 	기본 문법 : <typeAlias type="실제클래스타입(패키지명포함)" alias="별칭(약자)" />
 	-->
 	<typeAliases>
-<!-- 		<typeAlias type="com.itwillbs.learnon.vo.MemberVO" alias="member" /> -->
+		<typeAlias type="com.itwillbs.learnon.vo.MemberVO" alias="member" />
 <!-- 		<typeAlias type="com.itwillbs.learnon.vo.BoardVO" alias="board" /> -->
 		<typeAlias type="com.itwillbs.learnon.vo.WishlistVO" alias="wish" />
 		<typeAlias type="com.itwillbs.learnon.vo.MyCourseVO" alias="course" />

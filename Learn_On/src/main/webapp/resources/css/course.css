@@ -1,0 +1,457 @@
+@charset "UTF-8";
+
+/*    course_list.jsp     */
+
+.cls-wrap {
+	max-width:1320px;
+	margin:0 auto;
+	padding: 0 10px;
+}
+
+.cls-cate {
+    background-color: #fff;
+    padding: 20px 0;
+    border-radius: 8px;
+    margin: 20px auto;
+}
+.cls-cate .cls-ttl {
+	font-size: 1.6rem;
+	color: var(--dark);
+	padding-bottom: 12px;
+}
+
+.cls-cate .cate-li {
+	display:flex;
+	gap:0 10px;
+	
+}
+.cls-cate .cate-li button.on {background:var(--primary); color:var(--white);}
+.cls-cate button {
+	padding: 8px 14px;
+	font-size: 1rem;
+	border-radius: 6px;
+	background: var(--light-gray);
+	font-weight: 500;
+}
+.cls-cate select {
+	margin-left:auto;
+	padding: 8px 14px;
+	font-size: 0.875rem;
+	border-radius: 6px;
+	background: var(--white);
+	font-weight: 500;
+}	
+
+.card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 220px;
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+}
+.card-container {
+    display: flex;
+    gap: 16px;
+    max-width: 100%;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.card img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    background-color: #f0f0f0;
+}
+
+.card-content {
+    padding: 10px 15px;
+}
+
+.cls-cate-det {
+    font-size: 12px;
+    color: #555;
+    background-color: #f0f0f0;
+    padding: 4px 8px;
+    border-radius: 12px;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.cls-title {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+
+.cls-desc {
+    font-size: 12px;
+    color: #555;
+}
+
+.cls-rating span {
+	justify-content: flex-start;
+}
+.rating-score {
+	font-size: xx-large;
+}
+.rating .star {
+    color: #f0a500;
+    margin-right: 4px;
+}
+
+.cls-paging {
+	text-align: center;
+	margin-top: 30px;
+}
+
+
+.cls-wrap .course-wrap {margin-bottom:20px;}
+
+
+/*    course_detail.jsp     */
+
+.search-bar {
+    flex: 1;
+    padding: 8px;
+    margin-right: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.nav a {
+    margin-right: 15px;
+    color: #333;
+    text-decoration: none;
+}
+
+.header-icons span {
+    margin-left: 15px;
+    cursor: pointer;
+}
+
+.breadcrumb {
+    margin: 20px;
+    font-size: 14px;
+    color: #666;
+}
+
+.class-details {
+    background-color: #fff;
+    padding: 20px;
+    margin: 0 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.class-details h1 {
+/*     font-size: 22px; */
+	font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.class-details p {
+    color: #555;
+}
+
+.cls_det_rating {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.intro_title {
+/* 	font-size: 0.8em; */
+}
+.intro_title img{
+	margin: auto;
+}
+/*--- tab menu ---*/
+/* https://carina16.tistory.com/173 */
+/*tab css*/
+.tabnav ul,li {list-style:none; margin:0; }
+.tabnav li{display: inline-block;  height:46px; text-align:center; border-top-left-radius: 8px; border-top-right-radius: 8px; /*border:1px solid #D4D8DD;*/}
+.tabnav li a:before{content:""; position:absolute; left:0; top:0px; width:100%; height:3px; }
+.tabnav li a.active:before{background-color: #515865; }
+.tabnav li a.active{border-bottom:1px solid #fff;}
+.tabnav li a{ position:relative; display:block; background: #F2F4F8; color: #656B77; padding:0 30px; line-height:46px; text-decoration:none; font-size:16px; border-top-left-radius: 8px; border-top-right-radius: 8px; border:1px solid #D4D8DD;}
+.tabnav li a:hover,
+.tabnav li a.active{background:#656B77; color:#FFF; border-top-left-radius: 8px; border-top-right-radius: 8px;}
+/*--- tab menu ---*/
+
+.introduce, .curriculum, .reviews, .recommended-classes {
+    margin: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+.tabcontent {
+    margin: 0 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    border-top-left-radius: 0px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+.tabmenu {
+	border-bottom: 1px gray solid;
+	margin: 20px 0;
+	padding: 20px 0;
+}
+.tabmenu h2 {
+	font-size: 1.5em;
+}	
+.tabmenu:nth-last-child(1) {
+	border: none;	
+}
+
+.tabmenu h2, h4{
+	align-content: center;
+	padding-right: 5px;
+	padding-bottom: 20px;
+}
+
+
+.review_title select, .question_title button {
+	margin-left: auto;
+	margin-bottom: 10px; 
+	border-radius: 8px;
+}
+
+.tabnav {
+	margin: 3px 0 3px 0;
+	padding:0;
+	padding-left: 20px;
+    padding-top: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+}
+.intro {
+  	padding: 15px;
+    border: node;
+    background-color: #f7f7f7;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+.lesson {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+.lesson span {
+	float: right;
+    font-weight: bold;
+}
+
+
+.review_title, .question_title, .cls_det_rating {
+	display: flex;
+	justify-content: flex-end;
+}
+.review-rating {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.rating span {
+	justify-content: flex-start;
+}
+.rating-score {
+	font-size: xx-large;
+}
+.review-rating span{
+	justify-content: center;
+}	
+.review {
+    margin-top: 10px;
+    padding-bottom: 10px;
+}
+
+.r_header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.profile-icon {
+    width: 40px;
+    height: 40px;
+    background-color: #ddd;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.user-info {
+    font-size: 14px;
+}
+
+.user-info .name {
+    font-weight: bold;
+    color: #333;
+}
+
+.user-info .date {
+    color: #888;
+    font-size: 12px;
+}
+
+.stars {
+    color: #f0a500;
+    margin-top: 5px;
+    display: flex;
+}
+
+.stars::before {
+    content: '★★★★★';
+    font-size: 16px;
+    letter-spacing: 3px;
+}
+
+.stars span {
+    color: #888;
+    margin-top: 5px;
+    overflow: hidden;
+    width: 80%;
+	position: absolute;
+}
+.stars h4 {
+	position: relative;
+	color: black;
+}
+.review-text {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.5;
+    margin-top: 10px;
+}
+
+
+.question_title button {
+	padding: 10px 15px;
+	border: #ddd 1px solid;
+	background-color: #fff;
+}
+
+.question_qna {
+	margin-bottom: 10px;
+}
+.question_q {
+	border: 1px solid #ddd;
+	padding: 10px;
+}
+
+.question_a {
+	border-top: none;
+	border-left: 1px solid #ddd;
+	border-right: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	padding: 10px;
+	background-color: #F2F4F8;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.recommended-classes h2 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.card-container {
+    display: flex;
+    gap: 16px;
+    max-width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 200px;
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+}
+
+.card img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    background-color: #f0f0f0;
+}
+
+.card-content {
+    padding: 10px 15px;
+}
+
+.category {
+    font-size: 12px;
+    color: #555;
+    background-color: #f0f0f0;
+    padding: 4px 8px;
+    border-radius: 12px;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.title {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.cls_det_rating {
+    display: flex;
+    justify-content: flex-start;
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: #ddd 1px solid;
+}
+
+.cls_det_rating h4{
+	padding: 5px 5px 0 5px;
+}	
+.rating .star {
+    color: #f0a500;
+    margin-right: 4px;
+}
+.cls-det-text {
+	display: inline-flex;
+}
+
+.description {
+    font-size: 12px;
+    color: #555;
+}
+

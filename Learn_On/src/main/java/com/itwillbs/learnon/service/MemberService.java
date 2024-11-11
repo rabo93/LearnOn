@@ -19,6 +19,7 @@ public class MemberService {
 	public MemberVO getMember(MemberVO member) {
 		// TODO Auto-generated method stub
 		return mapper.selectMember(member);
+		//ㄹㄹㄹ
 	}
 
 

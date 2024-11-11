@@ -49,6 +49,7 @@ public class MypageController {
 		return "my_page/mypage_fav";
 	}
 	
+	// 관심목록 삭제
 	@PostMapping("MyFavDel")
 	public String myFavDel(String class_id, HttpSession session, Model model) {
 		System.out.println("class_id: " + class_id);
@@ -92,6 +93,12 @@ public class MypageController {
 		model.addAttribute("mycourse", mycourse);
 		
 		return "my_page/mypage_dashboard";
+	}
+	
+	@PostMapping("MyReviewWrite")
+	public String myReviewForm(String rating) {
+		System.out.println("rating : " + rating);
+		return "";
 	}
 	
 	// 작성한 수강평

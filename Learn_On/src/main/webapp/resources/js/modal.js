@@ -1,10 +1,12 @@
 // Modal
-function showModal(id) {
-  console.log("click");
-  const modal = document.querySelector('#' + id);
+function showModal(course_id) {
+  document.querySelector("#course_id").value = course_id;
+  const modal = document.querySelector(".modal");
   modal.classList.add('show-modal');
+  
 }
-function hideModal(id) {
-  const modal = document.querySelector('#' + id);
+
+function hideModal() {
+  const modal = document.querySelector(".modal");
   modal.classList.remove('show-modal'); 
 }

@@ -65,7 +65,7 @@
 /* 나의 강의실 */
 .card-info2 {width:100%;}
 .card-info2 .course-status {width:100%;display:block;position:relative;}
-.card-info2 .course-status p {font-size:0.875rem;padding: 0.4rem 1rem;font-weight:500;}
+.card-info2 .course-status p {font-size:0.875rem;padding:0.4rem 1rem 0.4rem 0.2rem;font-weight:500;}
 .card-info2 .course-status p span {font-weight:700; color:var(--primary);}
 #progress {appearance: none;width: 100%;}
 #progress::-webkit-progress-bar {background: var(--white);border-radius: 50px;border: 1px solid #bac3d2;height: 14px;width: 100%;overflow: hidden;}

@@ -1,19 +1,32 @@
 package com.itwillbs.learnon.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.UUID;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.learnon.service.adminService;
 import com.itwillbs.learnon.vo.AdminVO;
 
 @Controller
 public class AdminController {
+	private static final AdminVO VO = null;
+
 	@Autowired
 	private adminService adminService;
 	
@@ -51,15 +64,20 @@ public class AdminController {
 	
 	// 어드민 클래스 등록 페이지 매핑
 	@GetMapping("admin_class_add")
-	public String admin_class_add() {
+	public String admin_class_add(Model model) {
+		model.addAttribute("getSubCategory", adminService.getSubCategory());
+		model.addAttribute("getCategory", adminService.getCategory());
+		
+		
 		return "admin/admin_class_add";
 	}
 	
 	@PostMapping("admin_class_add")
 	public String admin_class_add(AdminVO VO, HttpServletRequest request, HttpSession session, Model model) {
 		System.out.println(VO);
-		
+//		
 		int insertCount = adminService.registClass(VO);
+		
 		if (insertCount < 0) {
 			model.addAttribute("msg", "글쓰기 실패!");
 			return "admin/fail";
@@ -70,6 +88,10 @@ public class AdminController {
 	// 어드민 클래스 목록 페이지 매핑
 	@GetMapping("admin_class_list")
 	public String admin_class_list() {
+		
+		
+		
+		
 		return "admin/admin_class_list";
 	}
 	

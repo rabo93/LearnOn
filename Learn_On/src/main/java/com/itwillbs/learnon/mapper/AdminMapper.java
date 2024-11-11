@@ -10,16 +10,9 @@ import com.itwillbs.learnon.vo.AdminVO;
 @Mapper
 public interface AdminMapper {
 
-	List<AdminVO> selectClassList(
-			@Param("searchType") String searchType, 
-			@Param("searchKeyword") String searchKeyword, 
-			@Param("startRow") int startRow, 
-			@Param("listLimit") int listLimit);
-
-	int selectClassListCount(
-			@Param("searchType") String searchType, 
-			@Param("searchKeyword") String searchKeyword);
-
 	int insertClass(AdminVO VO);
 
+	List<AdminVO> getCategory();
+
+	List<AdminVO> getSubCategory();
 }

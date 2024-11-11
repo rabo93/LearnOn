@@ -1,5 +1,6 @@
 package com.itwillbs.learnon.service;
 
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +13,12 @@ import com.itwillbs.learnon.vo.AdminVO;
 public class adminService {
 	@Autowired
 	private AdminMapper mapper;
-
-	public List<AdminVO> getClassList(String searchType, String searchKeyword, int startRow, int listLimit) {
-		return mapper.selectClassList(searchType, searchKeyword, startRow, listLimit);
+	
+	public List<AdminVO> getCategory() {
+		return mapper.getCategory();
 	}
-
-	public int getClassListCount(String searchType, String searchKeyword) {
-		return mapper.selectClassListCount(searchType, searchKeyword);
+	public List<AdminVO> getSubCategory() {
+		return mapper.getSubCategory();
 	}
 
 	public int registClass(AdminVO vO) {

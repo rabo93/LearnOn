@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -50,7 +51,7 @@
 							</div>
 							<div class="p-2 bd-highlight">
 		                		<button type="submit" class="btn btn-lg btn-primary">클래스 등록</button>
-		                		<button type="button" class="btn btn-lg btn-primary ms-3">클래스 삭제</button>
+		                		<button type="button" class="btn btn-lg btn-primary ms-3" onclick="moveBack()">클래스 삭제</button>
 							</div>
 						</div>
 						<div class="d-flex justify-content-between">
@@ -69,18 +70,18 @@
 								</div>
 								<div class="d-flex">
 									<div class="form-floating flex-fill me-3">
-										<select class="form-select" id="floatingSelect" aria-label="Floating label select example" name="CLASS_CATEGORY">
-											<option value="IT/개발">IT/개발</option>
-											<option value="외국어">외국어</option>
-											<option value="운동/건강">운동/건강</option>
-										</select>
+											<select class="form-select" id="floatingSelect" aria-label="Floating label select example" name="CLASS_CATEGORY">
+												<c:forEach items="${getCategory}" var="cate">
+													<option><c:out value="${cate.codename}"></c:out></option>
+												</c:forEach>
+											</select>
 										<label for="floatingSelect">대분류</label>
 									</div>
 									<div class="form-floating flex-fill me-3">
 										<select class="form-select" id="floatingSelect" aria-label="Floating label select example">
-											<option value="1">One</option>
-											<option value="2">Two</option>
-											<option value="3">Three</option>
+											<c:forEach items="${getSubCategory}" var="subcate">
+												<option><c:out value="${subcate.name}"></c:out></option>
+											</c:forEach>
 										</select>
 										<label for="floatingSelect">소분류</label>
 									</div>
@@ -93,7 +94,8 @@
 							<figure class="figure">
 								<img src="resources/admin/img/learn_on_logo2.png" id="preview" class="figure-img img-fluid rounded" alt="thumpnail" style="height: 280px;">
 								<figcaption class="figure-caption text-center mb-3">썸네일 이미지 미리보기</figcaption>
-									<input type="file" class="file form-control" id="inputGroupFile02" 
+<!-- 									<input type="file" class="file form-control" id="inputGroupFile02" name="CLASS_PIC1"  -->
+									<input type="file" class="file form-control" id="inputGroupFile02"
 									accept="image/*" onchange="readURL(this);">
 							</figure>
 						</div>
@@ -105,6 +107,7 @@
 						<div class="col-12">
 	                        <div class="bg-light rounded h-100 p-4">
 	                            <div class="table-responsive" style="overflow: scroll; height: 200px;">
+<!-- 	                                <table class="table" id="dynamic_table" cellpadding="0" cellspacing="0" name="CLASS_CURRICULUM"> -->
 	                                <table class="table" id="dynamic_table" cellpadding="0" cellspacing="0">
 	                                </table>
 	                            </div>
@@ -129,9 +132,9 @@
 								<h6>공개상태</h6>
 								<div class="form-floating">
 									<select class="form-select mb-3" aria-label="Default select example" name="CLASS_STATUS">
-										<option value="1">One</option>
-										<option value="2">Two</option>
-										<option value="3">Three</option>
+										<option value="1">공개</option>
+										<option value="2">비공개</option>
+										<option value="3">폐강</option>
 									</select>
 								</div>
 							</div>

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -46,124 +47,88 @@
 							<button class="checked">수강평 작성</button>
 						</div>
 						<div class="course-sel">
-							<select id="fav_sel">
-								<option value="latest">최신순</option>
-								<option value="title">제목순</option>
-							</select>
+							<form action="MyDashboard" method="get">
+								<select id="course_sel" name="filterType" onchange="this.form.submit(filterType.value)">
+									<option value="newest" <c:if test="${param.filterType eq 'newest'}">selected</c:if>>최신순</option>
+									<option value="title" <c:if test="${param.filterType eq 'title'}">selected</c:if>>제목순</option>
+								</select>
+							</form>
 						</div>
 						<div class="course-wrap">
 							<ul class="course-card row-3">
+								<c:choose>
+									<c:when test="${empty mycourse}">
+										<li class="empty">수강 목록이 존재하지 않습니다.</li>
+									</c:when>
+									<c:otherwise>
+										<c:forEach var="course" items="${mycourse}">
+											<li>
+												<div class="thumb-area">
+													<img src="${pageContext.request.contextPath}/resources/images/thumb_01.webp" class="card-thumb" alt="thumbnail" />
+												</div>
+												<div class="card-info">
+													<div class="category">
+														<span>${course.class_category}</span>
+													</div>
+													<div class="ttl">${course.class_title}</div>
+													<div class="name">${course.teacher_name}</div>
+												</div>
+												
+												<div class="card-info2">
+													<div class="course-status">
+														<progress class="progress" id="progress" value="80" min="0" max="100"></progress>
+														<p><span>8</span>강/<span>10</span>강 (80%)</p>
+													</div>
+													<c:choose>
+														<c:when test="${course.review_write_status == 1}">
+															<button class="btn-review" onclick="showModal('viewWriteReview')"><i class="fa-solid fa-star"></i> 5.0</button>
+														</c:when>
+														
+													</c:choose>
+												</div>
+											</li>
+										</c:forEach>
+									</c:otherwise>
+								</c:choose>
 								<!-- 6개 -->
-								<li>
-									<div class="thumb-area">
-										<img src="${pageContext.request.contextPath}/resources/images/thumb_01.webp" class="card-thumb" alt="thumbnail" />
-									</div>
-									<div class="card-info">
-										<div class="category">
-											<span>IT/개발</span>
-										</div>
-										<div class="ttl">초심자를 위한 알고리즘 강의</div>
-										<div class="name">프로그래머 홍길동</div>
-									</div>
-									<div class="card-info2">
-										<div class="course-status">
-											<progress class="progress" id="progress" value="80" min="0" max="100"></progress>
-											<p><span>8</span>강/<span>10</span>강 (80%)</p>
-										</div>
-										<button class="btn-review" onclick="showModal('viewWriteReview')"><i class="fa-solid fa-star"></i> 5.0</button>
-									</div>
-								</li>
-								<li>
-									<div class="thumb-area">
-										<img src="${pageContext.request.contextPath}/resources/images/thumb_01.webp" class="card-thumb" alt="thumbnail" />
-									</div>
-									<div class="card-info">
-										<div class="category">
-											<span>IT/개발</span>
-										</div>
-										<div class="ttl">초심자를 위한 알고리즘 강의</div>
-										<div class="name">프로그래머 홍길동</div>
-									</div>
-									<div class="card-info2">
-										<div class="course-status">
-											<progress class="progress" id="progress" value="0" min="0" max="100"></progress>
-											<p><span>0</span>강 / <span>10</span>강 (0%)</p>
-										</div>
-									</div>
-								</li>
-								<li>
-									<div class="thumb-area">
-										<img src="${pageContext.request.contextPath}/resources/images/thumb_01.webp" class="card-thumb" alt="thumbnail" />
-									</div>
-									<div class="card-info">
-										<div class="category">
-											<span>IT/개발</span>
-										</div>
-										<div class="ttl">초심자를 위한 알고리즘 강의</div>
-										<div class="name">프로그래머 홍길동</div>
-									</div>
-									<div class="card-info2">
-										<div class="course-status">
-											<progress class="progress" id="progress" value="50" min="0" max="100"></progress>
-											<p><span>5</span>강 / <span>10</span>강 (50%)</p>
-										</div>
-									</div>
-								</li>
-								<li>
-									<div class="thumb-area">
-										<img src="${pageContext.request.contextPath}/resources/images/thumb_01.webp" class="card-thumb" alt="thumbnail" />
-									</div>
-									<div class="card-info">
-										<div class="category">
-											<span>IT/개발</span>
-										</div>
-										<div class="ttl">초심자를 위한 알고리즘 강의</div>
-										<div class="name">프로그래머 홍길동</div>
-									</div>
-									<div class="card-info2">
-										<div class="course-status">
-											<progress class="progress" id="progress" value="80" min="0" max="100"></progress>
-											<p><span>8</span>강/<span>10</span>강 (80%)</p>
-										</div>
-										<button class="btn-write" onclick="showModal('writeReview')">수강평 작성 <i class="fa-regular fa-pen-to-square"></i></button>
-									</div>
-								</li>
-								<li>
-									<div class="thumb-area">
-										<img src="${pageContext.request.contextPath}/resources/images/thumb_01.webp" class="card-thumb" alt="thumbnail" />
-									</div>
-									<div class="card-info">
-										<div class="category">
-											<span>IT/개발</span>
-										</div>
-										<div class="ttl">초심자를 위한 알고리즘 강의</div>
-										<div class="name">프로그래머 홍길동</div>
-									</div>
-									<div class="card-info2">
-										<div class="course-status">
-											<progress class="progress" id="progress" value="0" min="0" max="100"></progress>
-											<p><span>0</span>강 / <span>10</span>강 (0%)</p>
-										</div>
-									</div>
-								</li>
-								<li>
-									<div class="thumb-area">
-										<img src="${pageContext.request.contextPath}/resources/images/thumb_01.webp" class="card-thumb" alt="thumbnail" />
-									</div>
-									<div class="card-info">
-										<div class="category">
-											<span>IT/개발</span>
-										</div>
-										<div class="ttl">초심자를 위한 알고리즘 강의</div>
-										<div class="name">프로그래머 홍길동</div>
-									</div>
-									<div class="card-info2">
-										<div class="course-status">
-											<progress class="progress" id="progress" value="50" min="0" max="100"></progress>
-											<p><span>5</span>강 / <span>10</span>강 (50%)</p>
-										</div>
-									</div>
-								</li>
+<!-- 								<li> -->
+<!-- 									<div class="thumb-area"> -->
+<%-- 										<img src="${pageContext.request.contextPath}/resources/images/thumb_01.webp" class="card-thumb" alt="thumbnail" /> --%>
+<!-- 									</div> -->
+<!-- 									<div class="card-info"> -->
+<!-- 										<div class="category"> -->
+<!-- 											<span>IT/개발</span> -->
+<!-- 										</div> -->
+<!-- 										<div class="ttl">초심자를 위한 알고리즘 강의</div> -->
+<!-- 										<div class="name">프로그래머 홍길동</div> -->
+<!-- 									</div> -->
+<!-- 									<div class="card-info2"> -->
+<!-- 										<div class="course-status"> -->
+<!-- 											<progress class="progress" id="progress" value="80" min="0" max="100"></progress> -->
+<!-- 											<p><span>8</span>강/<span>10</span>강 (80%)</p> -->
+<!-- 										</div> -->
+<!-- 										<button class="btn-review" onclick="showModal('viewWriteReview')"><i class="fa-solid fa-star"></i> 5.0</button> -->
+<!-- 									</div> -->
+<!-- 								</li> -->
+<!-- 								<li> -->
+<!-- 									<div class="thumb-area"> -->
+<%-- 										<img src="${pageContext.request.contextPath}/resources/images/thumb_01.webp" class="card-thumb" alt="thumbnail" /> --%>
+<!-- 									</div> -->
+<!-- 									<div class="card-info"> -->
+<!-- 										<div class="category"> -->
+<!-- 											<span>IT/개발</span> -->
+<!-- 										</div> -->
+<!-- 										<div class="ttl">초심자를 위한 알고리즘 강의</div> -->
+<!-- 										<div class="name">프로그래머 홍길동</div> -->
+<!-- 									</div> -->
+<!-- 									<div class="card-info2"> -->
+<!-- 										<div class="course-status"> -->
+<!-- 											<progress class="progress" id="progress" value="80" min="0" max="100"></progress> -->
+<!-- 											<p><span>8</span>강/<span>10</span>강 (80%)</p> -->
+<!-- 										</div> -->
+<!-- 										<button class="btn-write" onclick="showModal('writeReview')">수강평 작성 <i class="fa-regular fa-pen-to-square"></i></button> -->
+<!-- 									</div> -->
+<!-- 								</li> -->
 							</ul>
 						</div>
 						<!-- 수강평 작성하기 모달 -->

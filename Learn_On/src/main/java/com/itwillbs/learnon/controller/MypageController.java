@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.itwillbs.learnon.service.MypageService;
+import com.itwillbs.learnon.vo.MyCourseVO;
 import com.itwillbs.learnon.vo.WishlistVO;
 
 @Controller
@@ -75,8 +76,20 @@ public class MypageController {
 	
 	// 나의강의실
 	@GetMapping("MyDashboard")
-	public String myDashboard() {
+	public String myDashboard(@RequestParam(defaultValue = "") String filterType, HttpSession session, Model model) {
 		
+//		String id = (String)session.getAttribute("sId");
+//		if(id == null) {
+//			model.addAttribute("msg", "로그인 필수!\\n 로그인 페이지로 이동합니다!");
+//			model.addAttribute("targetURL", "MemberLogin");
+//			return "result/fail";
+//		}
+		// 로그인 했다 치고..
+		String id = "hong1234";
+		
+		List<MyCourseVO> mycourse = myService.getMyCourse(id, filterType);
+		
+		model.addAttribute("mycourse", mycourse);
 		
 		return "my_page/mypage_dashboard";
 	}

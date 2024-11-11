@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.itwillbs.learnon.service.MypageService;
 import com.itwillbs.learnon.vo.MyCourseVO;
+import com.itwillbs.learnon.vo.MyReviewVO;
 import com.itwillbs.learnon.vo.WishlistVO;
 
 @Controller
@@ -95,11 +96,16 @@ public class MypageController {
 	}
 	
 	@PostMapping("MyReviewWrite")
-	public String myReviewForm(String rating, String class_id) {
-		System.out.println("rating : " + rating);
-		System.out.println("class_id : " + class_id);
+	public String MyReviewWrite(MyReviewVO review, HttpSession session, Model model) {
 		
+		String id = (String)session.getAttribute("sId");
+		if(id == null) {
+			model.addAttribute("msg", "로그인 필수!\\n 로그인 페이지로 이동합니다!");
+			model.addAttribute("targetURL", "MemberLogin");
+			return "result/fail";
+		}
 		
+		int insertCount = myService.registReview(review);
 		
 		return "";
 	}

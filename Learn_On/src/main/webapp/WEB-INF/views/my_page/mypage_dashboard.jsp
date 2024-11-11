@@ -74,24 +74,17 @@
 													<div class="ttl">${course.class_title}</div>
 													<div class="name">${course.teacher_name}</div>
 												</div>
-												
 												<div class="card-info2">
 													<div class="course-status">
 														<progress class="progress" id="progress" value="<fmt:formatNumber value="${(course.study_time/course.class_runtime)*100}" pattern="#" />" min="0" max="100"></progress>
 														<p>총 <span>${course.curriculum_count}</span>강 (<fmt:formatNumber value="${(course.study_time/course.class_runtime)*100}" pattern="#" />%)</p>
 													</div>
-													<c:choose>
-														<c:when test="${course.course_status == 2 and not empty course.review_idx}">
-															<button class="btn-review" onclick="showModal(${course.class_id})">
-																<i class="fa-solid fa-star"></i> 작성한 수강평
-															</button>
-														</c:when>
-														<c:when test="${course.course_status >= 1 and empty review_idx}">
-															<button class="btn-write" onclick="showModal(${course.class_id})">
-																수강평 작성 <i class="fa-regular fa-pen-to-square"></i>
-															</button>
-														</c:when>
-													</c:choose>
+													<button class="btn-write" onclick="showModal(${course.class_id})">
+														수강평 작성 <i class="fa-regular fa-pen-to-square"></i>
+													</button>
+													<button class="btn-review" onclick="showModal(${course.class_id})">
+														<i class="fa-solid fa-star"></i> 작성한 수강평
+													</button>
 												</div>
 											</li>
 										</c:forEach>
@@ -107,47 +100,48 @@
 					        <button class="modal-close" onclick="hideModal()"><i class="fa-solid fa-xmark"></i></button>
 					        <div class="modal-con">
 					        	<form id="review_update_frm" action="MyReviewWrite" method="post">
+					        		<input type="hidden" name="mem_id" value="${sessionScope.sId}">
 					        		<input type="hidden" id="course_id" name="class_id" value="">
 						        	<!-- 별점 -->
 						        	<section class="course-rating">
 						        		<label class="rating-lab rating-lab-half" for="starhalf">
-									        <input type="radio" id="starhalf" class="rating-input" name="rating" value="0.5">
+									        <input type="radio" id="starhalf" class="rating-input" name="review_score" value="0.5">
 									        <span class="star-icon"></span>
 									    </label>
 									    <label class="rating-lab rating-lab-full" for="star1">
-									        <input type="radio" id="star1" class="rating-input" name="rating1" value="1">
+									        <input type="radio" id="star1" class="rating-input" name="review_score" value="1">
 									        <span class="star-icon"></span>
 									    </label>
 									    <label class="rating-lab rating-lab-half" for="star1half">
-									        <input type="radio" id="star1half" class="rating-input" name="rating" value="1.5">
+									        <input type="radio" id="star1half" class="rating-input" name="review_score" value="1.5">
 									        <span class="star-icon"></span>
 									    </label>
 									    <label class="rating-lab rating-lab-full" for="star2">
-									        <input type="radio" id="star2" class="rating-input" name="rating" value="2">
+									        <input type="radio" id="star2" class="rating-input" name="review_score" value="2">
 									        <span class="star-icon"></span>
 									    </label>
 									    <label class="rating-lab rating-lab-half" for="star2half">
-									        <input type="radio" id="star2half" class="rating-input" name="rating" value="2.5">
+									        <input type="radio" id="star2half" class="rating-input" name="review_score" value="2.5">
 									        <span class="star-icon"></span>
 									    </label>
 									    <label class="rating-lab rating-lab-full" for="star3">
-									        <input type="radio" id="star3" class="rating-input" name="rating" value="3">
+									        <input type="radio" id="star3" class="rating-input" name="review_score" value="3">
 									        <span class="star-icon"></span>
 									    </label>
 									    <label class="rating-lab rating-lab-half" for="star3half">
-									        <input type="radio" id="star3half" class="rating-input" name="rating" value="3.5">
+									        <input type="radio" id="star3half" class="rating-input" name="review_score" value="3.5">
 									        <span class="star-icon"></span>
 									    </label>
 									    <label class="rating-lab rating-lab-full" for="star4">
-									        <input type="radio" id="star4" class="rating-input" name="rating" value="4">
+									        <input type="radio" id="star4" class="rating-input" name="review_score" value="4">
 									        <span class="star-icon"></span>
 									    </label>
 									    <label class="rating-lab rating-lab-half" for="star4half">
-									        <input type="radio" id="star4half" class="rating-input" name="rating" value="4.5">
+									        <input type="radio" id="star4half" class="rating-input" name="review_score" value="4.5">
 									        <span class="star-icon"></span>
 									    </label>
 									    <label class="rating-lab rating-lab-full" for="star5">
-									        <input type="radio" id="star5" class="rating-input" name="rating" value="5" checked>
+									        <input type="radio" id="star5" class="rating-input" name="review_score" value="5" checked>
 									        <span class="star-icon"></span>
 									    </label>
 						        	</section>
@@ -158,6 +152,7 @@
 					        				<li>공개 게시판이므로 소중한 개인정보를 남기지 않도록 해주세요.</li>
 					        				<li>사적인 상담 및 광고성, 욕설, 비방, 도배 등 부적절한 글은 무통보 삭제처리될 수 있습니다.</li>
 					        			</ul>
+					        			<input type="text" name="review_subject" placeholder="제목을 입력하세요">
 					        			<textarea name="review_content" rows="6" placeholder="수강후기를 남겨주세요"></textarea>
 					        		</section>
 					        	</form>

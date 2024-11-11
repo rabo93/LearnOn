@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.itwillbs.learnon.mapper.MypageMapper;
 import com.itwillbs.learnon.vo.MyCourseVO;
+import com.itwillbs.learnon.vo.MyReviewVO;
 import com.itwillbs.learnon.vo.WishlistVO;
 
 @Service
@@ -25,5 +26,10 @@ public class MypageService {
 	public List<MyCourseVO> getMyCourse(String id, String filterType) {
 		return myMapper.selectMyCourse(id, filterType);
 	}
+
+	public int registReview(MyReviewVO review) {
+		return myMapper.insertReview(review);
+	}
+
 
 }

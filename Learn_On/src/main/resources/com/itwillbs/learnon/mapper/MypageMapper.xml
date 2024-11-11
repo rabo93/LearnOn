@@ -38,7 +38,7 @@
 		DELETE FROM WISHLIST
 		WHERE CLASS_ID = #{class_id};
 	</delete>
-	<select id="selectMyCourse" resultType="course">
+	<select id="selectMyCourse" resultType="mycourse">
 		-- 나의 강의실 목록 조회
 		SELECT 
 			  A.MEM_ID
@@ -70,4 +70,21 @@
 		 	</when>
 		 </choose>
 	</select>
+	
+	<insert id="insertReview">
+		-- 수강평 등록
+		INSERT 
+		INTO REVIEW
+		VALUES (
+				null 				-- 번호 자동증가
+				, #{mem_id}
+			    , #{review_subject}
+			    , #{review_content}
+			    , NOW()
+			    , #{class_id}
+			    , #{review_score}
+			    , null
+			    , null
+		   		)
+	</insert>
 </mapper>

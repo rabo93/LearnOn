@@ -16,5 +16,7 @@
 	<typeAliases>
 <!-- 		<typeAlias type="com.itwillbs.learnon.vo.MemberVO" alias="member" /> -->
 <!-- 		<typeAlias type="com.itwillbs.learnon.vo.BoardVO" alias="board" /> -->
+		<typeAlias type="com.itwillbs.learnon.vo.CourseVO" alias="course"/>
+		<typeAlias type="com.itwillbs.learnon.vo.CommonCodeTypeVO" alias="codeType"/>
 	</typeAliases>
 </configuration>

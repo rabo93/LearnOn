@@ -3,6 +3,13 @@
  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script src="${pageContext.request.contextPath}/resources/js/top.js"></script>
 <%-- header --%>
+<script>
+	function logout() {
+		if(confirm("로그아웃하시겠습니까?")){
+			location.href = "MemberLogout"
+		}
+	}
+</script>
 <header id="hd">
 	<section id="hd_top">
 		<div id="hd_logo">
@@ -29,17 +36,16 @@
 					<i class="fa-solid fa-cart-shopping"></i>
 				</a>
 				<a href="MemberLogin" class="login-btn">로그인</a>
-				<a href="MyInfo">마이페이지</a> <%-- 임시링크! --%>
 			</div>
 			<div class="login-area">
 
 				<a href="#">나의 강의실</a>
 				<a href="#"><span>${sessionScope.sId}</span> 님</a>
-				
+				<a href="MemberLogout" onclick="logout()">로그아웃</a>
 				<div class="login-menu">
+<!-- 					<a href="MemberLogout" onclick="logout()">로그아웃</a> -->
 					<a href="MyInfo">마이페이지</a>
 					<a href="#">관리자 홈</a>
-					<a href="#">로그아웃</a>
 				</div>
 			</div>
 		</div>

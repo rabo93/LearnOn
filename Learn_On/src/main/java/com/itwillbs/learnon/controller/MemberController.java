@@ -38,7 +38,7 @@ public class MemberController {
 	
 	@PostMapping("MemberLogin")
 	public String login(MemberVO member,Model model,HttpSession session,BCryptPasswordEncoder passwordEncoder) {
-		MemberVO dbMember = memberService.getMenver(member);
+		MemberVO dbMember = memberService.getMember(member);
 		System.out.println(dbMember);
 		
 		if(dbMember == null || !passwordEncoder.matches(member.getMEM_PASSWD(), dbMember.getMEM_PASSWD())) {		
@@ -132,10 +132,6 @@ public class MemberController {
 			model.addAttribute("msg", "회원가입 실패//n항목을 다시 확인해주세요");
 			return "result/fail";
 		}
-		
-		
-		
-		
 	}
 	
 	@GetMapping("MemberJoinSuccess")
@@ -144,5 +140,9 @@ public class MemberController {
 		return "result/success";
 	}
 	
-	//-----------------회원가입시 파일첨부
+	@GetMapping("MemberLogout")
+	public String memberLogout(HttpSession session) {
+		session.invalidate();
+		return "redirect:/";
+	}
 }

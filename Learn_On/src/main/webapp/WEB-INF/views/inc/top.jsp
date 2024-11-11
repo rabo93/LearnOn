@@ -29,12 +29,15 @@
 					<i class="fa-solid fa-cart-shopping"></i>
 				</a>
 				<a href="MemberLogin" class="login-btn">로그인</a>
+				<a href="MyInfo">마이페이지</a> <%-- 임시링크! --%>
 			</div>
 			<div class="login-area">
+
 				<a href="#">나의 강의실</a>
 				<a href="#"><span>${sessionScope.sId}</span> 님</a>
+				
 				<div class="login-menu">
-					<a href="#">마이페이지</a>
+					<a href="MyInfo">마이페이지</a>
 					<a href="#">관리자 홈</a>
 					<a href="#">로그아웃</a>
 				</div>

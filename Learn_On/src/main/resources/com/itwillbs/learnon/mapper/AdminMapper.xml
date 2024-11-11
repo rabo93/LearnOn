@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itwillbs.learnon.mapper.AdminMapper">
+
+	<insert id="insertClass">
+		<selectKey keyProperty="CLASS_ID" resultType="int" order="BEFORE">
+			SELECT IFNULL(MAX(CLASS_ID), 0)
+			FROM CLASS;
+		</selectKey>
+	INSERT
+	INTO CLASS
+	VALUES (
+		#{CLASS_ID} + 1
+		, #{CLASS_TITLE}
+		, #{MEM_ID}
+		, #{CLASS_INTRO}
+		, #{CLASS_PRICE}
+		, #{CLASS_CATEGORY}
+		, #{CLASS_CATEGORY2}
+		, now()
+		, #{CLASS_RUNTIME}
+		, #{CLASS_PIC1}
+		, #{CLASS_CONTENTS}
+		, #{CLASS_STATUS});
+	
+	</insert>
+
+
+
+</mapper>

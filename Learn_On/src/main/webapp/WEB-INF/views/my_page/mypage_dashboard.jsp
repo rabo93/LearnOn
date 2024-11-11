@@ -147,7 +147,7 @@
 									        <span class="star-icon"></span>
 									    </label>
 									    <label class="rating-lab rating-lab-full" for="star5">
-									        <input type="radio" id="star5" class="rating-input" name="rating" value="5">
+									        <input type="radio" id="star5" class="rating-input" name="rating" value="5" checked>
 									        <span class="star-icon"></span>
 									    </label>
 						        	</section>

@@ -22,6 +22,8 @@ public class MypageController {
 	@Autowired
 	private MypageService myService;
 	
+	
+	
 	// 계정정보
 	@GetMapping("MyInfo")
 	public String mypageForm() {
@@ -33,14 +35,13 @@ public class MypageController {
 	public String myFav(@RequestParam(defaultValue = "") String filterType, HttpSession session, Model model) {
 //		System.out.println("필터타입: " + filterType);
 		
-//		String id = (String)session.getAttribute("sId");
-//		if(id == null) {
-//			model.addAttribute("msg", "로그인 필수!\\n 로그인 페이지로 이동합니다!");
-//			model.addAttribute("targetURL", "MemberLogin");
-//			return "result/fail";
-//		}
-		// 로그인 했다치고
-		String id = "hong1234";
+		String id = (String)session.getAttribute("sId");
+		System.out.println(id);
+		if(id == null) {
+			model.addAttribute("msg", "로그인 필수!\\n 로그인 페이지로 이동합니다!");
+			model.addAttribute("targetURL", "MemberLogin");
+			return "result/fail";
+		}
 		
 		List<WishlistVO> wishlist = myService.getWishlist(id, filterType);
 		
@@ -54,14 +55,12 @@ public class MypageController {
 	public String myFavDel(String class_id, HttpSession session, Model model) {
 		System.out.println("class_id: " + class_id);
 
-//		String id = (String)session.getAttribute("sId");
-//		if(id == null) {
-//			model.addAttribute("msg", "로그인 필수!\\n 로그인 페이지로 이동합니다!");
-//			model.addAttribute("targetURL", "MemberLogin");
-//			return "result/fail";
-//		}
-		// 로그인 했다 치고..
-		String id = "hong1234";
+		String id = (String)session.getAttribute("sId");
+		if(id == null) {
+			model.addAttribute("msg", "로그인 필수!\\n 로그인 페이지로 이동합니다!");
+			model.addAttribute("targetURL", "MemberLogin");
+			return "result/fail";
+		}
 		
 		int deleteCount = myService.cancelMyFav(class_id);
 
@@ -96,8 +95,12 @@ public class MypageController {
 	}
 	
 	@PostMapping("MyReviewWrite")
-	public String myReviewForm(String rating) {
+	public String myReviewForm(String rating, String class_id) {
 		System.out.println("rating : " + rating);
+		System.out.println("class_id : " + class_id);
+		
+		
+		
 		return "";
 	}
 	

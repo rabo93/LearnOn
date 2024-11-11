@@ -10,7 +10,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.StringJoiner;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
@@ -27,7 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.learnon.service.NoticeBoardService;
 import com.itwillbs.learnon.vo.NoticeBoardVO;
-import com.itwillbs.learnon.vo.PageInfo2;
+import com.itwillbs.learnon.vo.PageInfo;
 
 @Controller
 public class NoticeBoardController {
@@ -133,7 +132,7 @@ public class NoticeBoardController {
 		
 		model.addAttribute("pageNum", pageNum);
 		
-		PageInfo2 pageInfo = new PageInfo2(listCount, pageListLimit, maxPage, startPage, endPage);
+		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
 		model.addAttribute("pageInfo", pageInfo);
 		
 		List<NoticeBoardVO> noticeList = noticeService.getBoardList(startRow, listLimit, sort);

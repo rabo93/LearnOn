@@ -16,9 +16,10 @@ public class MemberService {
 		return mapper.insertMember(member);
 	}
 
-	public MemberVO getMenver(MemberVO member) {
+	public MemberVO getMember(MemberVO member) {
 		// TODO Auto-generated method stub
 		return mapper.selectMember(member);
 	}
+
 
 }

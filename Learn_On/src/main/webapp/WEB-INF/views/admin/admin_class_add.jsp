@@ -40,6 +40,7 @@
 	
 	<%-- 내용 시작 --%>
 	<!-- Blank Start -->
+		<form action="admin_class_add" name="addForm" method="post" enctype="multipart/form-data">
             <div class="container-fluid pt-4 px-4">
                 <div class="row vh-100 bg-light rounded align-items-center justify-content-center mx-0">
                 	<div class="bg-light rounded p-4">
@@ -48,30 +49,30 @@
 	                			<h5>클래스 등록</h5>
 							</div>
 							<div class="p-2 bd-highlight">
-		                		<button type="button" class="btn btn-lg btn-primary">클래스 등록</button>
+		                		<button type="submit" class="btn btn-lg btn-primary">클래스 등록</button>
 		                		<button type="button" class="btn btn-lg btn-primary ms-3">클래스 삭제</button>
 							</div>
 						</div>
 						<div class="d-flex justify-content-between">
 							<div class="col-8">
 		                		<div class="form-floating mb-3">
-		                			<input type="text" class="form-control" id="floatingInput">
+		                			<input type="text" class="form-control" id="floatingInput" name="CLASS_TITLE">
 		                			<label for="floatingInput">강의 제목</label>
 		                		</div>
 								<div class="form-floating mb-3">
-									<input type="text" class="form-control" id="floatingInput">
+									<input type="text" class="form-control" id="floatingInput" name="CLASS_INTRO">
 									<label for="floatingInput">강의 소개</label>
 								</div>
 								<div class="form-floating mb-3">
-									<input type="text" class="form-control" id="floatingTextarea" style="height: 150px;"/>
+									<input type="text" class="form-control" id="floatingTextarea" style="height: 150px;" name="CLASS_CONTENTS"/>
 									<label for="floatingTextarea">강의 상세내용</label>
 								</div>
 								<div class="d-flex">
 									<div class="form-floating flex-fill me-3">
-										<select class="form-select" id="floatingSelect" aria-label="Floating label select example">
-											<option value="1">One</option>
-											<option value="2">Two</option>
-											<option value="3">Three</option>
+										<select class="form-select" id="floatingSelect" aria-label="Floating label select example" name="CLASS_CATEGORY">
+											<option value="IT/개발">IT/개발</option>
+											<option value="외국어">외국어</option>
+											<option value="운동/건강">운동/건강</option>
 										</select>
 										<label for="floatingSelect">대분류</label>
 									</div>
@@ -84,7 +85,7 @@
 										<label for="floatingSelect">소분류</label>
 									</div>
 									<div class="form-floating flex-fill">
-										<input type="text" class="form-control" id="floatingInput">
+										<input type="text" class="form-control" id="floatingInput" name="MEM_ID">
 										<label for="floatingInput">강사</label>
 									</div>
 								</div>
@@ -113,7 +114,7 @@
                    		 	<div class="col-3 me-3">
 								<h6>가격</h6>
 								<div class="input-group">
-									<input type="number" class="form-control" aria-label="Amount (to the nearest dollar)">
+									<input type="number" class="form-control" aria-label="Amount (to the nearest dollar)" name="CLASS_PRICE">
 									<span class="input-group-text">원</span>
 								</div>
 							</div>
@@ -127,8 +128,7 @@
 							<div class="col-2 me-3">
 								<h6>공개상태</h6>
 								<div class="form-floating">
-									<select class="form-select mb-3" aria-label="Default select example">
-										<option selected="">Open this select menu</option>
+									<select class="form-select mb-3" aria-label="Default select example" name="CLASS_STATUS">
 										<option value="1">One</option>
 										<option value="2">Two</option>
 										<option value="3">Three</option>
@@ -139,6 +139,7 @@
 					</div>
                 </div>
             </div>
+		</form>
             <!-- Blank End -->
 	<%-- 내용 끝 --%>
             

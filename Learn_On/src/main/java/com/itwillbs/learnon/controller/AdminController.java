@@ -1,20 +1,51 @@
 package com.itwillbs.learnon.controller;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import com.itwillbs.learnon.service.adminService;
+import com.itwillbs.learnon.vo.AdminVO;
 
 @Controller
-public class Admin_Controller {
+public class AdminController {
+	@Autowired
+	private adminService adminService;
+	
+	private String uploadPath = "/resources/upload";
 	
 	// 어드민 메인페이지 매핑
 	@GetMapping("admin_index")
 	public String admin_home() {
+//	public String admin_home(HttpSession session, Model model, HttpServletRequest request) {
+		
+		//로그인 감지
+//		String id = (String)session.getAttribute("sId");
+//		if(id == null) {
+//			model.addAttribute("msg", "접근 권한이 없습니다");
+//			model.addAttribute("targetURL", "MemberLogin");
+//			
+//			// 로그인 성공 후 다시 현재 페이지로 돌아오기 위해 prevURL 세션 속성값 설정
+//			String prevURL = request.getServletPath();
+//			String queryString = request.getQueryString();
+//			
+//			if(queryString != null) {
+//				prevURL += "?" + queryString;
+//			}
+//			
+//			// 세션 객체에 prevURL 값 저장
+//			session.setAttribute("prevURL", prevURL);
+//			
+//			return "admin/fail";
+//		}
+		
 		return "admin/admin_index";
+		
 	}
 	// =======================================================================
 	
@@ -24,12 +55,21 @@ public class Admin_Controller {
 		return "admin/admin_class_add";
 	}
 	
+	@PostMapping("admin_class_add")
+	public String admin_class_add(AdminVO VO, HttpServletRequest request, HttpSession session, Model model) {
+		System.out.println(VO);
+		
+		int insertCount = adminService.registClass(VO);
+		if (insertCount < 0) {
+			model.addAttribute("msg", "글쓰기 실패!");
+			return "admin/fail";
+		}
+		return "admin/admin_class_add";
+	}
+	
 	// 어드민 클래스 목록 페이지 매핑
 	@GetMapping("admin_class_list")
-	public String admin_class_list(Model model) {
-		
-		
-		
+	public String admin_class_list() {
 		return "admin/admin_class_list";
 	}
 	

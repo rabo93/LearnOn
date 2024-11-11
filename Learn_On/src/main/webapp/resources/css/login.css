@@ -1,0 +1,86 @@
+@charset "UTF-8";
+
+.login-wrap form label {
+    display: block;
+    font-size: 15px;
+    margin-bottom: 8px;
+    font-weight: 700;
+    color: var(--dark);
+}
+
+.login-wrap form input[type="text"], .login-wrap form input[type="password"] {
+    display: block;
+    width: 100%;
+    margin-bottom: 20px;
+    border: 1px solid #E5E9F5;
+    background-color: #F6F7FA;
+    padding: 15px;
+    border-radius: 30px;
+    box-sizing: border-box;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    align-items: baseline
+}
+
+.checkbox-container input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+#form-controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+#form-controls button {
+    border: none;
+    font-size: 1.2rem;
+    padding: 14px 80px;
+    background-color: #4b76ed;
+    border-radius: 50px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+    font-weight: 700;
+}
+
+#form-controls button:hover {
+    background-color: #3b5eb1;
+}
+
+.signup-link {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 20px;
+}
+
+.signup-link a {
+    color: #4b76ed;
+    text-decoration: none;
+}
+.signup-link a:hover {
+    text-decoration: underline;
+}
+
+.passwd_find{text-align: right;}
+
+/* login */
+.login-wrap {max-width:1320px;margin:20px auto;padding:3rem 0;}
+.login-wrap .login-ttl {font-size: 1.8rem;font-weight:700;text-align:center;margin:10px auto;}
+.login-wrap .login-box {max-width: 500px;margin:0 auto;}
+.login-wrap .login-box .mem-select {display:flex;align-items:center;justify-content:center;gap:2rem;padding:1rem;font-weight:500;color:var(--dark);}
+.login-wrap .login-box .mem-select label {display:flex;align-items:center; justify-content:center; gap:8px;}
+
+.passwd_find a {color:var(--dark);}
+
+
+
+
+
+
+
+

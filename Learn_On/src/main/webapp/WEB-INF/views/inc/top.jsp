@@ -59,7 +59,7 @@
 	        				<a href="MemberLogin" class="login-link">로그인을 해주세요. <i class="fa-solid fa-arrow-right-to-bracket"></i></a>
 						</c:when>
 						<c:otherwise>
-		        			<a href="#" class="my-info"><i class="fa-solid fa-gear"></i> <span>${sessionScope.sId}</span> 님</a>
+		        			<a href="#" class="my-info"><i class="fa-solid fa-gear"></i> <span>${sessionScope.sId} </span> 님</a>
 		        			<a href="#" class="my-course"> <i class="fa-solid fa-circle-play"></i> 나의 강의실</a>
 						</c:otherwise>				
 					</c:choose>

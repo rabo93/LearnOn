@@ -22,46 +22,41 @@
 	</header>
 	<!-- page 영역 -->
 	<main>
-    <h1>로그인</h1>
-    <div id="form-container">
-        <div id="form-inner-container">
-            <!-- Sign up form -->
-            <div id="sign-up-container">
-                <div id="mem">
-                    <label>
-                        <input type="radio" name="mem_status" id="mem_user" value="일반회원"> 일반회원
-                    </label>
-                    <label>
-                        <input type="radio" name="mem_status" id="mem_teacher" value="강사회원"> 강사회원
-                    </label>
-                </div>
-
-                <form action="MemberLogin" method="post">
-                    <label for="mem_id">아이디</label>
-                    <input type="text" name="MEM_ID" id="mem_id" placeholder="아이디">
-
-                    <label for="mem_passwd">비밀번호</label>
-                    <input type="password" name="MEM_PASSWD" id="mem_passwd" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;">
-
-                    <div class="checkbox-container">
-                        <input type="checkbox" name="terms" id="terms">
-                        <label for="terms">아이디 기억하기</label>
-                    </div>
-
-                    <div class="passwd_find">
-                    	<label for="passwd_find"><a href="#">비밀번호 찾기</a></label>
-					</div>
-                    <div id="form-controls">
-                        <button type="submit">로그인</button>
-                    </div>
-
-                    <div class="signup-link">
-                        <span>런온(LearmOn)이 처음이신가요? <a href="MemberJoin">회원가입</a></span>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+	<div class="member-wrap">
+	
+	</div>
+   <div class="login-wrap">
+	    <h1 class="login-ttl">로그인</h1>
+	    <div class="login-box">
+           <div class="mem-select">
+               <label>
+                   <input type="radio" name="mem_status" id="mem_user" value="일반회원"> 일반회원
+               </label>
+               <label>
+                   <input type="radio" name="mem_status" id="mem_teacher" value="강사회원"> 강사회원
+               </label>
+           </div>
+           <form action="MemberLogin" method="post">
+               <label for="mem_id">아이디</label>
+               <input type="text" name="MEM_ID" id="mem_id" placeholder="아이디">
+               <label for="mem_passwd">비밀번호</label>
+               <input type="password" name="MEM_PASSWD" id="mem_passwd" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;">
+               <div class="checkbox-container">
+                   <input type="checkbox" name="terms" id="terms">
+                   <label for="terms">아이디 기억하기</label>
+               </div>
+               <div class="passwd_find">
+					<label for="passwd_find"><a href="#">비밀번호 찾기</a></label>
+               </div>
+               <div id="form-controls">
+					<button type="submit">로그인</button>
+               </div>
+               <div class="signup-link">
+                   <span>런온(LearmOn)이 처음이신가요? <a href="MemberJoin">회원가입</a></span>
+               </div>
+           </form>
+       </div>
+   </div>
 	</main>
 	<!-- // page 영역 -->
 	<footer id="ft">

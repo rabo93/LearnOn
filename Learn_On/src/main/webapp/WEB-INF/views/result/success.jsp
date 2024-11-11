@@ -20,7 +20,7 @@
 	</header>
 	
 	<div class="success-container">
-		<h1>안녕하세요 ${sessionScope.sId}님</h1><br>
+		<h1>안녕하세요 ${sessionScope.sId}님🥳</h1><br>
 		<h1>지금 바로 강의를 시작 해보세요!</h1><br>
 		
 		<div id="controls">

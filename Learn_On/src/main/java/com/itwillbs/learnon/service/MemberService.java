@@ -11,14 +11,14 @@ public class MemberService {
 	@Autowired
 	private MemberMapper mapper;
 
-	public MemberVO memberSelect(MemberVO member) {
-		// TODO Auto-generated method stub
-		return mapper.selectMember(member);
-	}
-
 	public int registMember(MemberVO member) {
 		// TODO Auto-generated method stub
 		return mapper.insertMember(member);
+	}
+
+	public MemberVO getMenver(MemberVO member) {
+		// TODO Auto-generated method stub
+		return mapper.selectMember(member);
 	}
 
 }

@@ -9,13 +9,36 @@
 		  FROM MEMBER
 		 WHERE MEM_ID = #{MEM_ID}
 	</select>
+	
+	<select id="selectMemberPasswd" resultType="String">
+	SELECT MEM_PASSWD
+	FROM MEMBER
+	WHERE MEM_ID = #{MEM_ID} 
+	</select>
 
+	
 	<insert id="insertMember">
-	INSERT INTO MEMBER (MEM_ID , MEM_NAME , MEM_PASSWD)
+	INSERT INTO MEMBER
 	VALUES(
-		 #{MEM_ID}
-		,#{MEM_NAME}
-		,#{MEM_PASSWD}
+	null
+	,#{MEM_ID}
+	,#{MEM_PASSWD}
+	,#{MEM_NAME}
+	,#{MEM_NICK}
+	,#{MEM_BIRTHDAY}
+	,CONCAT(#{MEM_EMAIL1},'@',#{MEM_EMAIL2})
+	,#{MEM_GENDER}
+	,#{MEM_PHONE}
+	,#{MEM_POST_CODE}
+	,#{MEM_ADDRESS1}
+	,#{MEM_ADDRESS2}
+	,'MEM01'
+	,1
+	,NOW()
+	,NULL
+	,#{MEM_LIKE1_CLASS}
+	,#{MEM_LIKE2_CLASS}
+ 	,SUBSTR(#{FILE_PP}, INSTR(#{FILE_PP}, '_') + 1)
 	)
 	</insert>
 </mapper>

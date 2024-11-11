@@ -14,14 +14,15 @@ $(document).ready(function() {
 
 // 이메일 구현중...
 $(document).ready(function() {
-	$("#emailDmain").change(function() {
-		$("#email2").val(("#emailDmain").val());
+	$("#EMAILDMAIN").change(function() {
+		$("#MEM_EMAIL2").val($("#EMAILDMAIN").val());
 	});
 });
 
 
+
+
 // *************유효성 검사**************
-// ************* 검사**************
 // ************* 검사**************
 
 let checkName = false;
@@ -29,7 +30,7 @@ let checkId = false;
 let checkPasswd1 = false;
 let checkPasswd2 = false;
 let checkNic = false;
-let checkGender = false;
+let checkNumber = false;
 let checkAddr = false;
 let checkMail = false;
 let checkCode = false;
@@ -85,7 +86,10 @@ function checkPasswdLength1(){
 function checkPasswdResult(){
 	let passwd1 = $("#MEM_PASSWD1").val();
 	let passwd2 = $("#MEM_PASSWD2").val();
-	if(passwd1 == passwd2){
+	if(passwd1 == ""){
+		$("#checkPasswd2").text("비밀번호를 입력해주세요.");
+		$("#checkPasswd2").css("color","red");
+	}else if(passwd1 == passwd2){
 		$("#checkPasswd2").text("비밀번호가 일치합니다.");
 		$("#checkPasswd2").css("color","green");
 	}else {
@@ -94,3 +98,35 @@ function checkPasswdResult(){
 		
 	}
 }
+// *************연락처 null검사**************
+function numberCk(){
+	let number = $("#MEM_NUMBER").val();
+	if(number == ""){
+		$("#checkNumber").text("핸드폰 번호를 입력해주세요");
+		$("#checkNumber").css("color","red");
+	}
+	
+}
+// *************이용약관 체크**************
+
+$("#terms_all").click(function() {
+	console.log("join.js 파일이 로드되었습니다111111111");
+		// 전체선택을 제외한 나머지 체크박스에 대한 반복 수행
+		$("input[name=terms]").each(function(index, item) {
+	console.log("join.js 파일이 로드되었습니다.");
+			// 전체선택 체크박스 체크상태값을 각 체크박스 체크상태값으로 설정
+			$(item).prop("checked", $("#terms_all").prop("checked"));
+		});
+		
+	});
+
+
+//	document.querySelector("#terms_all").onclick = function() {
+//	    let isChecked = document.querySelector("#terms_all").checked;
+//	    let termsCheckboxes = document.querySelectorAll("input[name='terms']");
+//	    
+//	    for (let checkbox of termsCheckboxes) {
+//	console.log("join.js 파일이 로드되었습니다.");
+//	        checkbox.checked = isChecked;
+//	    }
+//	};

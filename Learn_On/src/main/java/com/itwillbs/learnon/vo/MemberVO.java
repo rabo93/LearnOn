@@ -11,10 +11,15 @@ import lombok.Data;
 		private String MEM_ID;
 		//private String mem_passwd1;
 		private String MEM_PASSWD;
-		private String MEM_NIC;
+		private String MEM_NICK;
 		private String MEM_GENDER;
+		//--------------
 		private String MEM_BIRTHDAY;
-		private String MEM_NUMBER;
+//		private String YEAR;
+//		private String MONTH;
+//		private String DAY;
+		//--------------
+		private String MEM_PHONE;
 		private String MEM_POST_CODE;
 		private String MEM_ADDRESS1;
 		private String MEM_ADDRESS2;
@@ -25,19 +30,23 @@ import lombok.Data;
 		//-----------------
 		//만약 뷰페이지에서 자바스트립트 활용하여 email 결합할 경우 email1,email2 멤버변수 불필요
 		private String EMAIL;
-		private String EMAIL1;
-		private String EMAIL2;
+		private String MEM_EMAIL1;
+		private String MEM_EMAIL2;
 		//-----------------
 		private String MAIL_AUTH_STATUS; // 이메일 인증상태 (Y:인증 N:미인증)
-		private String MEM_FOR_TEACHER;
+		private String MEM_GRADE;
 		//---------------------
-		private MultipartFile MEM_PP_FILE;
 		private String TERMS1;
 		private String TERMS2;
 		private String TERMS3;
+
+		private int MEM_STATUS; //회원상태 (1:정상 2:휴먼 3:탈퇴)
+		private Date MEM_REG_DATE;
+		private Date MEM_WITHDRAW_DATE;  
+		private String MEM_LIKE1_CLASS;
+		private String MEM_LIKE2_CLASS;
+		private MultipartFile MEM_PP_FILE;
+		private String FILE_PP;
 		
-		private Date REG_DATE;
-		private Date WITHDRAW_DATE;  
-		private int MEMBER_STATUS; //회원상태 (1:정상 2:휴먼 3:탈퇴)
 
 }

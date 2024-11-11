@@ -1,49 +1,14 @@
 @charset "UTF-8";
 
-h1 {
-    text-align: center;
-    font-size: xx-large;
-    margin-top: 25;
-}
-
-#form-container {
-    height: 60vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #fff;
-    margin: 0;
-    padding: 0;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-}
-
-#form-inner-container {
-    background-color: white;
-    max-width: 500px;
-    border-radius: 8px;
-    box-shadow: 0 0 20px gainsboro;
-    padding:50px 100px;
-}
-
-#mem {
-    text-align: center;
-    margin-bottom: 30px;
-    font-size: large;
-    display: flex;
-    justify-content: space-around;
-}
-
-#sign-up-container {
-    width: 100%;
-}
-
-form label {
+.login-wrap form label {
     display: block;
-    font-size: 16px;
+    font-size: 15px;
     margin-bottom: 8px;
+    font-weight: 700;
+    color: var(--dark);
 }
 
-form input[type="text"], form input[type="password"] {
+.login-wrap form input[type="text"], .login-wrap form input[type="password"] {
     display: block;
     width: 100%;
     margin-bottom: 20px;
@@ -72,13 +37,15 @@ form input[type="text"], form input[type="password"] {
 
 #form-controls button {
     border: none;
-    font-size: 16px;
-    padding: 12px 80px;
+    font-size: 1.2rem;
+    padding: 14px 80px;
     background-color: #4b76ed;
-    border-radius: 10px;
+    border-radius: 50px;
     color: white;
     cursor: pointer;
     transition: background-color 0.3s;
+    width: 100%;
+    font-weight: 700;
 }
 
 #form-controls button:hover {
@@ -99,6 +66,21 @@ form input[type="text"], form input[type="password"] {
     text-decoration: underline;
 }
 
-.passwd_find{
-text-align: right;
-}
+.passwd_find{text-align: right;}
+
+/* login */
+.login-wrap {max-width:1320px;margin:20px auto;padding:3rem 0;}
+.login-wrap .login-ttl {font-size: 1.8rem;font-weight:700;text-align:center;margin:10px auto;}
+.login-wrap .login-box {max-width: 500px;margin:0 auto;}
+.login-wrap .login-box .mem-select {display:flex;align-items:center;justify-content:center;gap:2rem;padding:1rem;font-weight:500;color:var(--dark);}
+.login-wrap .login-box .mem-select label {display:flex;align-items:center; justify-content:center; gap:8px;}
+
+.passwd_find a {color:var(--dark);}
+
+
+
+
+
+
+
+

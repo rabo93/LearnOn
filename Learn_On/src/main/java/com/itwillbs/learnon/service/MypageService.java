@@ -17,4 +17,8 @@ public class MypageService {
 		return myMapper.selectWishlist(id, filterType);
 	}
 
+	public int cancelMyFav(String class_id) {
+		return myMapper.deleteWish(class_id);
+	}
+
 }

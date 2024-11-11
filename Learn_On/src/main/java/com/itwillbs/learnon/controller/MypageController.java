@@ -49,15 +49,27 @@ public class MypageController {
 	}
 	
 	@PostMapping("MyFavDel")
-	public String myFavDel(String class_id) {
-		System.out.println("class_id" + class_id);
+	public String myFavDel(String class_id, HttpSession session, Model model) {
+		System.out.println("class_id: " + class_id);
 
+//		String id = (String)session.getAttribute("sId");
+//		if(id == null) {
+//			model.addAttribute("msg", "로그인 필수!\\n 로그인 페이지로 이동합니다!");
+//			model.addAttribute("targetURL", "MemberLogin");
+//			return "result/fail";
+//		}
 		// 로그인 했다 치고..
-//		String id = "hong1234";
+		String id = "hong1234";
 		
-//		int deleteCount = myService.cancelMyFav();
+		int deleteCount = myService.cancelMyFav(class_id);
+
+		if (deleteCount > 0) {
+			return "redirect:/MyFav";
+		} else {
+			model.addAttribute("msg", "삭제 실패!");
+			return "result/fail";
+		}
 		
-		return "redirect:/MyFav";
 	}
 	
 	

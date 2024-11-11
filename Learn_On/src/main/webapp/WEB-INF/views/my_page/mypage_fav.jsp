@@ -56,9 +56,9 @@
 									<li>
 										<div class="thumb-area">
 											<img src="${pageContext.request.contextPath}/resources/images/thumb_01.webp" class="card-thumb" alt="thumbnail" />
-											<form action="MyFavDel" method="post">
-												<input type="hidden" name="${wish.class_id}">
-												<button type="submit" class="fav-on" onclick="deleteWish()"><i class="fa-solid fa-bookmark"></i></button>
+											<form action="MyFavDel" method="post" class="MyFavDelFrm">
+												<input type="hidden" name="class_id" value="${wish.class_id}">
+												<button type="submit" class="fav-on" onclick="confirmDeleteWishItem()"><i class="fa-solid fa-bookmark"></i></button>
 											</form>
 										</div>
 										<div class="card-info">
@@ -86,5 +86,12 @@
 	<footer>
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
 	</footer>
+	<script>
+		function confirmDeleteWishItem() {
+			if(confirm("관심목록에서 삭제하시겠습니까?")) {
+				docmuent.querySelector("MyFavDelFrm").submit();
+			}
+		}
+	</script>
 </body>
 </html>

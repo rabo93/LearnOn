@@ -6,7 +6,7 @@
 	<select id="selectWishlist" resultType="wish">
 		-- 관심목록 조회
 		SELECT 
-			 W.MEM_ID AS USER
+			 W.MEM_ID
 			 , W.CLASS_ID
 			 , C.CLASS_CATEGORY
 			 , C.CLASS_TITLE
@@ -14,8 +14,8 @@
 		     , TRUNCATE(IFNULL(AVG(REVIEW_SCORE), 0), 1) AS REVIEW_SCORE
 		     , M.MEM_NAME AS TEACHER_NAME
 		  FROM WISHLIST W 
-		  JOIN CLASS C ON C.CLASS_ID = W.CLASS_ID
-		  JOIN MEMBER M ON M.MEM_ID = C.MEM_ID
+		  LEFT JOIN CLASS C ON C.CLASS_ID = W.CLASS_ID
+		  LEFT JOIN MEMBER M ON M.MEM_ID = C.MEM_ID
 		  LEFT JOIN REVIEW R ON R.CLASS_ID = C.CLASS_ID
 		 WHERE W.MEM_ID = 'hong1234'
 		 GROUP BY W.MEM_ID
@@ -33,20 +33,33 @@
 		 	</when>
 		 </choose>
 	</select>
+	<delete id="deleteWish">
+		-- 관심목록 삭제
+		DELETE FROM WISHLIST
+		WHERE CLASS_ID = #{class_id};
+	</delete>
 	<select id="selectMyCourse" resultType="course">
 		-- 나의 강의실 목록 조회
 		SELECT 
 			  A.MEM_ID
 		      , A.COURSE_STATUS
-		      , A.REVIEW_IDX
-		      , A.REVIEW_WRITE_STATUS
-		      , A.CLASS_ID
+		      , IFNULL(A.STUDY_TIME, 0) AS STUDY_TIME
+		      , C.CLASS_ID
 		      , C.CLASS_CATEGORY
 		      , C.CLASS_TITLE
+		      , C.CLASS_RUNTIME
+		      , (SELECT COUNT(CUR_ID)
+		        FROM CURRICULUM
+		        WHERE CLASS_ID = C.CLASS_ID) AS CURRICULUM_COUNT
 		      , M.MEM_NAME AS TEACHER_NAME
+		      , R.REVIEW_IDX
+		      , R.REVIEW_SUBJECT
+		      , R.REVIEW_CONTENT
 		  FROM MYCOURSE A
-		  JOIN CLASS C ON C.CLASS_ID = A.CLASS_ID
-		  JOIN MEMBER M ON C.MEM_ID = M.MEM_ID
+		  LEFT JOIN CLASS C ON C.CLASS_ID = A.CLASS_ID
+		  LEFT JOIN MEMBER M ON C.MEM_ID = M.MEM_ID
+		  LEFT JOIN REVIEW R ON R.CLASS_ID = A.CLASS_ID
+					   AND R.MEM_ID = A.MEM_ID
 		WHERE A.MEM_ID = #{id}
 		<choose>
 		 	<when test="filterType.equals('newest')">
@@ -57,9 +70,4 @@
 		 	</when>
 		 </choose>
 	</select>
-	<delete id="deleteWish">
-		-- 관심목록 삭제
-		DELETE FROM WISHLIST
-		WHERE CLASS_ID = #{class_id};
-	</delete>
 </mapper>

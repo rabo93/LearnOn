@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -76,109 +77,77 @@
 												
 												<div class="card-info2">
 													<div class="course-status">
-														<progress class="progress" id="progress" value="80" min="0" max="100"></progress>
-														<p><span>8</span>강/<span>10</span>강 (80%)</p>
+														<progress class="progress" id="progress" value="<fmt:formatNumber value="${(course.study_time/course.class_runtime)*100}" pattern="#" />" min="0" max="100"></progress>
+														<p>총 <span>${course.curriculum_count}</span>강 (<fmt:formatNumber value="${(course.study_time/course.class_runtime)*100}" pattern="#" />%)</p>
 													</div>
 													<c:choose>
-														<c:when test="${course.review_write_status == 1}">
-															<button class="btn-review" onclick="showModal('viewWriteReview')"><i class="fa-solid fa-star"></i> 5.0</button>
+														<c:when test="${course.course_status == 2 and not empty course.review_idx}">
+															<button class="btn-review" onclick="showModal(${course.class_id})">
+																<i class="fa-solid fa-star"></i> 작성한 수강평
+															</button>
 														</c:when>
-														
+														<c:when test="${course.course_status >= 1 and empty review_idx}">
+															<button class="btn-write" onclick="showModal(${course.class_id})">
+																수강평 작성 <i class="fa-regular fa-pen-to-square"></i>
+															</button>
+														</c:when>
 													</c:choose>
 												</div>
 											</li>
 										</c:forEach>
 									</c:otherwise>
 								</c:choose>
-								<!-- 6개 -->
-<!-- 								<li> -->
-<!-- 									<div class="thumb-area"> -->
-<%-- 										<img src="${pageContext.request.contextPath}/resources/images/thumb_01.webp" class="card-thumb" alt="thumbnail" /> --%>
-<!-- 									</div> -->
-<!-- 									<div class="card-info"> -->
-<!-- 										<div class="category"> -->
-<!-- 											<span>IT/개발</span> -->
-<!-- 										</div> -->
-<!-- 										<div class="ttl">초심자를 위한 알고리즘 강의</div> -->
-<!-- 										<div class="name">프로그래머 홍길동</div> -->
-<!-- 									</div> -->
-<!-- 									<div class="card-info2"> -->
-<!-- 										<div class="course-status"> -->
-<!-- 											<progress class="progress" id="progress" value="80" min="0" max="100"></progress> -->
-<!-- 											<p><span>8</span>강/<span>10</span>강 (80%)</p> -->
-<!-- 										</div> -->
-<!-- 										<button class="btn-review" onclick="showModal('viewWriteReview')"><i class="fa-solid fa-star"></i> 5.0</button> -->
-<!-- 									</div> -->
-<!-- 								</li> -->
-<!-- 								<li> -->
-<!-- 									<div class="thumb-area"> -->
-<%-- 										<img src="${pageContext.request.contextPath}/resources/images/thumb_01.webp" class="card-thumb" alt="thumbnail" /> --%>
-<!-- 									</div> -->
-<!-- 									<div class="card-info"> -->
-<!-- 										<div class="category"> -->
-<!-- 											<span>IT/개발</span> -->
-<!-- 										</div> -->
-<!-- 										<div class="ttl">초심자를 위한 알고리즘 강의</div> -->
-<!-- 										<div class="name">프로그래머 홍길동</div> -->
-<!-- 									</div> -->
-<!-- 									<div class="card-info2"> -->
-<!-- 										<div class="course-status"> -->
-<!-- 											<progress class="progress" id="progress" value="80" min="0" max="100"></progress> -->
-<!-- 											<p><span>8</span>강/<span>10</span>강 (80%)</p> -->
-<!-- 										</div> -->
-<!-- 										<button class="btn-write" onclick="showModal('writeReview')">수강평 작성 <i class="fa-regular fa-pen-to-square"></i></button> -->
-<!-- 									</div> -->
-<!-- 								</li> -->
 							</ul>
 						</div>
 						<!-- 수강평 작성하기 모달 -->
 					    <div class="modal" id="writeReview">
-					      <div class="modal-dim" onclick="hideModal('writeReview')"></div>
+					      <div class="modal-dim" onclick="hideModal()"></div>
 					      <div class="modal-layer">
 					        <div class="modal-hd">수강평 작성하기</div>
-					        <button class="modal-close" onclick="hideModal('writeReview')"><i class="fa-solid fa-xmark"></i></button>
+					        <button class="modal-close" onclick="hideModal()"><i class="fa-solid fa-xmark"></i></button>
 					        <div class="modal-con">
-					        	<form id="review_update_frm" action="" method="post">
+					        	<form id="review_update_frm" action="MyReviewWrite" method="post">
+					        		<input type="hidden" id="course_id" name="class_id" value="">
 						        	<!-- 별점 -->
 						        	<section class="course-rating">
 						        		<label class="rating-lab rating-lab-half" for="starhalf">
-									        <input type="radio" id="starhalf" class="rating-input" name="rating" value="">
+									        <input type="radio" id="starhalf" class="rating-input" name="rating" value="0.5">
 									        <span class="star-icon"></span>
 									    </label>
 									    <label class="rating-lab rating-lab-full" for="star1">
-									        <input type="radio" id="star1" class="rating-input" name="rating" value="">
+									        <input type="radio" id="star1" class="rating-input" name="rating1" value="1">
 									        <span class="star-icon"></span>
 									    </label>
 									    <label class="rating-lab rating-lab-half" for="star1half">
-									        <input type="radio" id="star1half" class="rating-input" name="rating" value="">
+									        <input type="radio" id="star1half" class="rating-input" name="rating" value="1.5">
 									        <span class="star-icon"></span>
 									    </label>
 									    <label class="rating-lab rating-lab-full" for="star2">
-									        <input type="radio" id="star2" class="rating-input" name="rating" value="">
+									        <input type="radio" id="star2" class="rating-input" name="rating" value="2">
 									        <span class="star-icon"></span>
 									    </label>
 									    <label class="rating-lab rating-lab-half" for="star2half">
-									        <input type="radio" id="star2half" class="rating-input" name="rating" value="">
+									        <input type="radio" id="star2half" class="rating-input" name="rating" value="2.5">
 									        <span class="star-icon"></span>
 									    </label>
 									    <label class="rating-lab rating-lab-full" for="star3">
-									        <input type="radio" id="star3" class="rating-input" name="rating" value="">
+									        <input type="radio" id="star3" class="rating-input" name="rating" value="3">
 									        <span class="star-icon"></span>
 									    </label>
 									    <label class="rating-lab rating-lab-half" for="star3half">
-									        <input type="radio" id="star3half" class="rating-input" name="rating" value="">
+									        <input type="radio" id="star3half" class="rating-input" name="rating" value="3.5">
 									        <span class="star-icon"></span>
 									    </label>
 									    <label class="rating-lab rating-lab-full" for="star4">
-									        <input type="radio" id="star4" class="rating-input" name="rating" value="">
+									        <input type="radio" id="star4" class="rating-input" name="rating" value="4">
 									        <span class="star-icon"></span>
 									    </label>
 									    <label class="rating-lab rating-lab-half" for="star4half">
-									        <input type="radio" id="star4half" class="rating-input" name="rating" value="">
+									        <input type="radio" id="star4half" class="rating-input" name="rating" value="4.5">
 									        <span class="star-icon"></span>
 									    </label>
 									    <label class="rating-lab rating-lab-full" for="star5">
-									        <input type="radio" id="star5" class="rating-input" name="rating" value="">
+									        <input type="radio" id="star5" class="rating-input" name="rating" value="5" checked>
 									        <span class="star-icon"></span>
 									    </label>
 						        	</section>
@@ -194,77 +163,8 @@
 					        	</form>
 					        </div>
 					        <div class="modal-ft">
-					          <button class="normal" onclick="hideModal('writeReview')">취소</button>
-					          <button type="submit" form="review_update_frm" class="active" onclick="hideModal('writeReview')">작성하기</button>
-					        </div>
-					      </div>
-					    </div>
-						<!-- // 수강평 수정하기 모달 -->
-						<!-- 수강평 수정하기 모달 -->
-					    <div class="modal" id="viewWriteReview">
-					      <div class="modal-dim" onclick="hideModal('viewWriteReview')"></div>
-					      <div class="modal-layer">
-					        <div class="modal-hd">수강평 수정하기</div>
-					        <button class="modal-close" onclick="hideModal('viewWriteReview')"><i class="fa-solid fa-xmark"></i></button>
-					        <div class="modal-con">
-					        	<form id="review_update_frm" action="" method="post">
-						        	<!-- 별점 -->
-						        	<section class="course-rating">
-						        		<label class="rating-lab rating-lab-half" for="starhalf">
-									        <input type="radio" id="starhalf" class="rating-input" name="rating" value="">
-									        <span class="star-icon"></span>
-									    </label>
-									    <label class="rating-lab rating-lab-full" for="star1">
-									        <input type="radio" id="star1" class="rating-input" name="rating" value="">
-									        <span class="star-icon"></span>
-									    </label>
-									    <label class="rating-lab rating-lab-half" for="star1half">
-									        <input type="radio" id="star1half" class="rating-input" name="rating" value="">
-									        <span class="star-icon"></span>
-									    </label>
-									    <label class="rating-lab rating-lab-full" for="star2">
-									        <input type="radio" id="star2" class="rating-input" name="rating" value="">
-									        <span class="star-icon"></span>
-									    </label>
-									    <label class="rating-lab rating-lab-half" for="star2half">
-									        <input type="radio" id="star2half" class="rating-input" name="rating" value="">
-									        <span class="star-icon"></span>
-									    </label>
-									    <label class="rating-lab rating-lab-full" for="star3">
-									        <input type="radio" id="star3" class="rating-input" name="rating" value="">
-									        <span class="star-icon"></span>
-									    </label>
-									    <label class="rating-lab rating-lab-half" for="star3half">
-									        <input type="radio" id="star3half" class="rating-input" name="rating" value="">
-									        <span class="star-icon"></span>
-									    </label>
-									    <label class="rating-lab rating-lab-full" for="star4">
-									        <input type="radio" id="star4" class="rating-input" name="rating" value="">
-									        <span class="star-icon"></span>
-									    </label>
-									    <label class="rating-lab rating-lab-half" for="star4half">
-									        <input type="radio" id="star4half" class="rating-input" name="rating" value="">
-									        <span class="star-icon"></span>
-									    </label>
-									    <label class="rating-lab rating-lab-full" for="star5">
-									        <input type="radio" id="star5" class="rating-input" name="rating" value="">
-									        <span class="star-icon"></span>
-									    </label>
-						        	</section>
-						        	<!-- // 별점 -->
-						        	<!-- 수강평 -->
-					        		<section class="review-write">
-					        			<ul class="noti">
-					        				<li>공개 게시판이므로 소중한 개인정보를 남기지 않도록 해주세요.</li>
-					        				<li>사적인 상담 및 광고성, 욕설, 비방, 도배 등 부적절한 글은 무통보 삭제처리될 수 있습니다.</li>
-					        			</ul>
-					        			<textarea name="review_content" rows="6">작성한 수강평 내용 다시 뿌리기</textarea>
-					        		</section>
-					        	</form>
-					        </div>
-					        <div class="modal-ft">
-					          <button class="normal" onclick="hideModal('viewWriteReview')">취소</button>
-					          <button type="submit" form="review_update_frm" class="active" onclick="hideModal('viewWriteReview')">수정하기</button>
+					          <button class="reset" onclick="hideModal()">취소</button>
+					          <button type="submit" form="review_update_frm" class="active" onclick="hideModal()">작성하기</button>
 					        </div>
 					      </div>
 					    </div>

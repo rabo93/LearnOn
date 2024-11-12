@@ -80,11 +80,11 @@
 					<li class="mgnb-menu">
 						<a href="#">카테고리</a>
 						<ul class="mgnb-dep-01">
-							<li><a href="#">IT/개발</a></li>
-							<li><a href="#">외국어</a></li>
-							<li><a href="#">운동/건강</a></li>
-							<li><a href="#">라이프스타일</a></li>
-							<li><a href="#">음료/술</a></li>
+							<li><a href="Category?CODETYPE=CATE&NAME=ItProgramming">IT/개발</a></li>
+							<li><a href="Category?CODETYPE=CATE&NAME=ItProgramming">외국어</a></li>
+							<li><a href="Category">운동/건강</a></li>
+							<li><a href="Category">라이프스타일</a></li>
+							<li><a href="Category">음료/술</a></li>
 						</ul>
 					</li>
 					<li class="gnb-menu"><a href="#">BEST</a></li>
@@ -101,25 +101,26 @@
 				<div class="dropdown-bg"></div>
 				<ul class="dropdown">
 					<li>
-						<a href="#">IT/개발</a>
+						<a href="Category?CODETYPE=CATE01">IT/개발</a>
 						<ul class="sub-dropdown">
-							<li><a href="#">전체</a></li>
-							<li><a href="#">프로그래밍</a></li>
-							<li><a href="#">WEB 개발</a></li>
-							<li><a href="#">프론트엔드</a></li>
-							<li><a href="#">백엔드</a></li>
-							<li><a href="#">App</a></li>
+							<li><a href="Category?CODETYPE=CATE01">전체</a></li>
+							<li><a href="Category?CODETYPE=CATE01&CODETYPE_ID=01">프로그래밍</a></li>
+							<li><a href="Category?CODETYPE=CATE01&CODETYPE_ID=02">WEB 개발</a></li>
+							<li><a href="Category?CODETYPE=CATE01&CODETYPE_ID=03">프론트엔드</a></li>
+							<li><a href="Category?CODETYPE=CATE01&CODETYPE_ID=04">백엔드</a></li>
+							<li><a href="Category?CODETYPE=CATE01&CODETYPE_ID=05">App</a></li>
 						</ul>
 					</li>
 					<li>
-						<a href="#">외국어</a>
+						<a href="Category?CODETYPE=CATE02">외국어</a>
 						<ul class="sub-dropdown">
 							<li><a href="#">전체</a></li>
-							<li><a href="#">영어</a></li>
-							<li><a href="#">중국어</a></li>
-							<li><a href="#">일본어</a></li>
-							<li><a href="#">스페인어</a></li>
-							<li><a href="#">기타언어</a></li>
+							<li><a href="Category?CODETYPE=CATE02&CODETYPE_ID=06">영어</a></li>
+							<li><a href="Category?CODETYPE=CATE02&CODETYPE_ID=07">중국어</a></li>
+							<li><a href="Category?CODETYPE=CATE02&CODETYPE_ID=08">일본어</a></li>
+							<li><a href="Category?CODETYPE=CATE02&CODETYPE_ID=09">스페인어</a></li>
+							<li><a href="Category?CODETYPE=CATE02&CODETYPE_ID=10">프랑스어</a></li>
+							<li><a href="Category?CODETYPE=CATE02&CODETYPE_ID=11">기타언어</a></li>
 						</ul>
 					</li>
 					<li>

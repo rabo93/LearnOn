@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itwillbs.learnon.mapper.CourseMapper">
+	<select id="selectCourseList" resultType="course">
+		SELECT C.CLASS_TITLE 
+		     , C.MEM_ID
+		     , C.CLASS_INTRO
+		     , C.CLASS_PRICE
+		     , C.CLASS_CATEGORY
+		     , C.CLASS_REG_DATE
+		     , C.CLASS_RUNTIME
+		     , C.CLASS_PIC1
+		     , C.CLASS_CONTENTS
+			 , C.CLASS_STATUS
+			 , C.CLASS_ID
+			 , T.NAME
+			 , T.CODETYPE
+			 , T.DESCRIPTION
+			 , (SELECT CODENAME FROM COMMONCODE WHERE CODEID = #{CODETYPE}) as CATENAME
+			 , T.CODETYPE_ID
+			 , (SELECT TRUNCATE(AVG(REVIEW_SCORE), 1) FROM REVIEW WHERE CLASS_ID=#{CLASS_ID}) AS REVIEW_SCORE
+		  FROM CLASS C
+		  JOIN COMMONCODETYPE T 
+		    ON C.CLASS_CATEGORY = T.NAME
+		WHERE 1 = 1
+  		  <if test="CODETYPE != null"> 
+		  	AND T.CODETYPE = #{CODETYPE}
+		  </if>
+  		  <if test="CODETYPE_ID != null"> 
+		  	AND T.CODETYPE_ID = #{CODETYPE_ID}
+		  </if>
+	</select>
+	<select id="selectCommonCodeType" resultType="codeType" parameterType="string">
+		SELECT CODETYPE
+			 , NAME
+			 , DESCRIPTION
+			 , CODETYPE_ID
+		  FROM COMMONCODETYPE
+		 WHERE CODETYPE = #{CODETYPE}
+	</select>
+	
+	<select id="selectCourse" resultType="course" parameterType="int">
+		 SELECT 
+			     C.CLASS_TITLE
+			   , M.MEM_NAME		AS MEM_ID
+			   , C.CLASS_INTRO
+			   , C.CLASS_PRICE
+			   , C.CLASS_CATEGORY
+			   , C.CLASS_REG_DATE
+			   , C.CLASS_RUNTIME
+			   , C.CLASS_PIC1
+			   , C.CLASS_CONTENTS
+			   , C.CLASS_STATUS
+			   , C.CLASS_ID
+			   , CR.CUR_ID
+			   , CR.CUR_TITLE
+			   , CR.CUR_VIDEO
+			   , (SELECT TRUNCATE(AVG(REVIEW_SCORE), 1)
+					FROM REVIEW
+				   WHERE C.CLASS_ID = #{CLASS_ID}
+					) AS REVIEW_SCORE
+			FROM CLASS C
+			JOIN MEMBER M ON M.MEM_ID = C.MEM_ID
+			JOIN CURRICULUM CR ON CR.CLASS_ID = C.CLASS_ID
+		   WHERE C.CLASS_ID = #{CLASS_ID}
+	</select>
+</mapper>

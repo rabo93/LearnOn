@@ -7,6 +7,9 @@
 	function logout() {
 		if(confirm("로그아웃하시겠습니까?")){
 			location.href = "MemberLogout"
+			console.log("로그아웃 네!!!!!!!!!!!!!");
+		}else {
+			console.log("로그아웃 아니요");
 		}
 	}
 </script>
@@ -41,10 +44,10 @@
 
 				<a href="#">나의 강의실</a>
 				<a href="#"><span>${sessionScope.sId}</span> 님</a>
+					<a href="MyInfo">마이페이지</a>
 				<a href="MemberLogout" onclick="logout()">로그아웃</a>
 				<div class="login-menu">
 <!-- 					<a href="MemberLogout" onclick="logout()">로그아웃</a> -->
-					<a href="MyInfo">마이페이지</a>
 					<a href="#">관리자 홈</a>
 				</div>
 			</div>

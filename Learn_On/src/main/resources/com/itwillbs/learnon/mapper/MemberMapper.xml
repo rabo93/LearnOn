@@ -12,8 +12,8 @@
 	
 	<select id="selectMemberPasswd" resultType="String">
 	SELECT MEM_PASSWD
-	FROM MEMBER
-	WHERE MEM_ID = #{MEM_ID} 
+	  FROM MEMBER
+	 WHERE MEM_ID = #{MEM_ID} 
 	</select>
 
 	
@@ -41,4 +41,20 @@
  	,SUBSTR(#{FILE_PP}, INSTR(#{FILE_PP}, '_') + 1)
 	)
 	</insert>
+	
+	<update id="updateMember">
+	UPDATE MEMBER
+	SET MEM_NAME = #{MEM_NAME}
+		<if test="!MEM_PASSWD.equals('')">
+			,MEM_PASSWD = #{MEM_PASSWD}
+		</if>
+		,MEM_NICK = #{MEM_NICK}
+		,MEM_POST_CODE = #{MEM_POST_CODE}
+		,MEM_ADDRESS1 = #{MEM_ADDRESS1}
+		,MEM_ADDRESS2 = #{MEM_ADDRESS2}
+		,MEM_PHONE = #{MEM_PHONE}
+	
+	</update>
+	
+	
 </mapper>

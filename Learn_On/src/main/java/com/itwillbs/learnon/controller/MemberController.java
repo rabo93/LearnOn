@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -116,11 +117,7 @@ public class MemberController {
 			if (!mFile.getOriginalFilename().equals("")){
 	        	try {
 					mFile.transferTo(new File (realPath,saveFileName));
-				} catch (IllegalStateException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -142,7 +139,25 @@ public class MemberController {
 	
 	@GetMapping("MemberLogout")
 	public String memberLogout(HttpSession session) {
-		session.invalidate();
-		return "redirect:/";
+		
+		if(true) {
+			session.invalidate();
+			return "redirect:/";
+		}else {
+			return "";
+		}
 	}
+	
+	
+	@GetMapping("MemberModify")
+	public String memberModify(Map<String, String>map, BCryptPasswordEncoder passwordEncoder , HttpSession session , Model model , HttpServletRequest request ,MemberVO member) {
+		String id = (String)session.getAttribute("sId");
+		member.setMEM_ID(id);
+		map.put("id", id);
+		
+		String dbPasswd = memberService.modifyMember(map);
+		
+		return"";
+	}
+	
 }

@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/reset.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/index.js"></script>
+<%-- <script src="${pageContext.request.contextPath}/resources/js/index.js"></script> --%>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/login.css">
 
 </head>

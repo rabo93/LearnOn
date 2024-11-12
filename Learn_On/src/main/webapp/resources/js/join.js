@@ -108,19 +108,17 @@ function numberCk(){
 	
 }
 // *************이용약관 체크**************
-
+$(document).ready(function() {
 $("#terms_all").click(function() {
-	console.log("join.js 파일이 로드되었습니다111111111");
 		// 전체선택을 제외한 나머지 체크박스에 대한 반복 수행
 		$("input[name=terms]").each(function(index, item) {
-	console.log("join.js 파일이 로드되었습니다.");
 			// 전체선택 체크박스 체크상태값을 각 체크박스 체크상태값으로 설정
 			$(item).prop("checked", $("#terms_all").prop("checked"));
 		});
 		
 	});
-
-
+});
+//
 //	document.querySelector("#terms_all").onclick = function() {
 //	    let isChecked = document.querySelector("#terms_all").checked;
 //	    let termsCheckboxes = document.querySelectorAll("input[name='terms']");

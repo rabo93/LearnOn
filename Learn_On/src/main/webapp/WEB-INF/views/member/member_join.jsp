@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/reset.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/index.js"></script>
+<%-- <script src="${pageContext.request.contextPath}/resources/js/index.js"></script> --%>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/join.css">
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/join.js"></script>
@@ -128,7 +128,7 @@
 								<ul>
 									<li class="on">
 										<div class="title">
-											<label for="terms1"><input type="checkbox"name="terms" id="terms1" class="terms">(필수) 런온(LearnOn)이용약관 동의</label>
+											<label for="terms1"><input type="checkbox"name="terms" id="terms1" class="terms" required>(필수) 런온(LearnOn)이용약관 동의</label>
 										</div> 
 											<textarea rows="4" cols="40">
 	이용약관 (Terms of Service)
@@ -146,7 +146,6 @@
 회원은 타인의 개인정보를 부정하게 사용해서는 안 됩니다.
 제5조 (서비스의 중단 및 변경)
 회사는 시스템 점검, 유지보수, 교체, 장애, 운영상 필요 등 불가피한 경우 서비스의 전부 또는 일부를 일시 중단할 수 있습니다.
-
 제6조 (면책 조항)
 회사는 천재지변, 불가항력 등에 의해 서비스를 제공할 수 없는 경우 책임이 면제됩니다.
 회원의 고의 또는 과실로 인해 발생한 손해에 대해서는 책임을 지지 않습니다.</textarea>
@@ -155,7 +154,7 @@
 									<li class="on">
 										<div class="title">
 											<label for="terms2"><input type="checkbox"
-												name="terms" id="terms2" class="terms">(필수) 개인정보 수집 및이용 동의</label>
+												name="terms" id="terms2" class="terms" required>(필수) 개인정보 수집 및이용 동의</label>
 										</div> 
 											<textarea rows="4" cols="40">
 	개인정보 수집 및 이용 동의서 (Privacy Policy Agreement)
@@ -170,7 +169,6 @@
 고객 지원: 민원 처리, 공지사항 전달
 3. 개인정보 보유 및 이용 기간
 회사는 회원이 서비스를 이용하는 동안 개인정보를 보유하며, 회원 탈퇴 시 해당 정보를 지체 없이 파기합니다. 단, 관련 법령에 의거해 보존이 필요한 경우 일정 기간 동안 보관할 수 있습니다.
-
 4. 동의 거부 권리 및 불이익
 회원은 개인정보 수집 및 이용에 동의하지 않을 권리가 있으며, 이 경우 서비스 이용이 제한될 수 있습니다.</textarea>
 									</li>

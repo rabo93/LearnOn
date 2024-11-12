@@ -19,9 +19,16 @@ public interface MypageMapper {
 	int deleteWish(String class_id);
 
 	// 나의 강의실 목록 조회
-	List<MyCourseVO> selectMyCourse(@Param("id") String id, @Param("filterType") String filterType);
+	List<MyCourseVO> selectMyCourse(@Param("id") String id, @Param("filterType") String filterType, String statusType);
 
 	// 수강평 등록
 	int insertReview(MyReviewVO review);
+
+	// 수강률 계산
+	int selectCompletionRate(@Param("id") String id, @Param("class_id") String class_id);
+
+	// 수강후기 작성 여부
+	Boolean selectIsReviewed(@Param("id") String id, @Param("class_id") String class_id);
+	
 
 }

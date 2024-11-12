@@ -23,13 +23,25 @@ public class MypageService {
 		return myMapper.deleteWish(class_id);
 	}
 
-	public List<MyCourseVO> getMyCourse(String id, String filterType) {
-		return myMapper.selectMyCourse(id, filterType);
+	public List<MyCourseVO> getMyCourse(String id, String filterType, String statusType) {
+		return myMapper.selectMyCourse(id, filterType, statusType);
 	}
 
 	public int registReview(MyReviewVO review) {
 		return myMapper.insertReview(review);
 	}
 
+
+	// 수강률 
+	public int getCompletionRate(String id, String class_id) throws Exception {
+		return myMapper.selectCompletionRate(id, class_id);
+	}
+	
+	// 수강후기 작성 여부
+	public Boolean isReviewWrited(String id, String class_id) {
+		return myMapper.selectIsReviewed(id, class_id);
+	}
+	
+	
 
 }

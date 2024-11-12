@@ -1,7 +1,6 @@
 package com.itwillbs.learnon.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -74,28 +73,39 @@ public class MypageController {
 		
 	}
 	
-	
-	// 나의강의실
+	// 나의 강의실
 	@GetMapping("MyDashboard")
-	public String myDashboard(@RequestParam(defaultValue = "") String filterType, HttpSession session, Model model) {
+	public String myDashboard(@RequestParam(defaultValue = "") String filterType,
+							  @RequestParam(defaultValue = "") String statusType,
+							  HttpSession session, Model model) {
 		
-//		String id = (String)session.getAttribute("sId");
-//		if(id == null) {
-//			model.addAttribute("msg", "로그인 필수!\\n 로그인 페이지로 이동합니다!");
-//			model.addAttribute("targetURL", "MemberLogin");
-//			return "result/fail";
-//		}
-		// 로그인 했다 치고..
-		String id = "hong1234";
+		String id = (String)session.getAttribute("sId");
+		if(id == null) {
+			model.addAttribute("msg", "로그인 필수!\\n 로그인 페이지로 이동합니다!");
+			model.addAttribute("targetURL", "MemberLogin");
+			return "result/fail";
+		}
 		
-		List<MyCourseVO> mycourse = myService.getMyCourse(id, filterType);
+		List<MyCourseVO> mycourse = myService.getMyCourse(id, filterType, statusType);
+		
+		for(MyCourseVO course : mycourse) {
+			try {
+				course.setCompletion_rate(myService.getCompletionRate(id, course.getClass_id()));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			course.setIs_reviewed(myService.isReviewWrited(id, course.getClass_id()));
+		}
+		
+		System.out.println(mycourse);
 		
 		model.addAttribute("mycourse", mycourse);
 		
 		return "my_page/mypage_dashboard";
 	}
 	
-	@PostMapping("MyReviewWrite")
+	// 나의 강의실 - 수강 후기 작성
+	@PostMapping("MyReview")
 	public String MyReviewWrite(MyReviewVO review, HttpSession session, Model model) {
 		
 		String id = (String)session.getAttribute("sId");
@@ -105,7 +115,9 @@ public class MypageController {
 			return "result/fail";
 		}
 		
-		int insertCount = myService.registReview(review);
+		
+//		int insertCount = myService.registReview(review);
+		int insertCount = 0;
 		
 		return "";
 	}

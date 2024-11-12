@@ -58,7 +58,7 @@
 											<img src="${pageContext.request.contextPath}/resources/images/thumb_01.webp" class="card-thumb" alt="thumbnail" />
 											<form action="MyFavDel" method="post" class="MyFavDelFrm">
 												<input type="hidden" name="class_id" value="${wish.class_id}">
-												<button type="submit" class="fav-on" onclick="confirmDeleteWishItem()"><i class="fa-solid fa-bookmark"></i></button>
+												<button type="button" class="fav-on" onclick="confirmDeleteWishItem()"><i class="fa-solid fa-bookmark"></i></button>
 											</form>
 										</div>
 										<div class="card-info">
@@ -89,7 +89,9 @@
 	<script>
 		function confirmDeleteWishItem() {
 			if(confirm("관심목록에서 삭제하시겠습니까?")) {
-				docmuent.querySelector("MyFavDelFrm").submit();
+				document.querySelector(".MyFavDelFrm").submit();
+			} else {
+				return;
 			}
 		}
 	</script>

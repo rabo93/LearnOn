@@ -70,7 +70,6 @@
 		 	</when>
 		 </choose>
 	</select>
-	
 	<insert id="insertReview">
 		-- 수강평 등록
 		INSERT 
@@ -87,4 +86,21 @@
 			    , null
 		   		)
 	</insert>
+	<select id="selectCompletionRate" resultType="int">
+		-- 수강률 계산
+		SELECT 
+			COALESCE(TRUNCATE((STUDY_TIME / CLASS_RUNTIME) * 100, 0), 0) AS COMPLETION_RATE
+		  FROM MYCOURSE A
+		  JOIN CLASS B
+		    ON A.CLASS_ID = B.CLASS_ID
+		 WHERE A.MEM_ID = #{id}
+		   AND A.CLASS_ID = #{class_id};
+	</select>
+	<select id="selectIsReviewed" resultType="Boolean">
+		-- 수강 후기 작성 여부
+		SELECT CASE WHEN COUNT(*) > 0 THEN TRUE ELSE FALSE END AS IS_REVIEWED
+	      FROM REVIEW
+	     WHERE MEM_ID = #{id}
+	       AND CLASS_ID = #{class_id}
+	</select>
 </mapper>

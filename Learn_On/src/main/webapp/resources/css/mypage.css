@@ -91,7 +91,9 @@
 .review-write .noti {padding: 1rem;background: var(--light-blue);margin: 1rem 0;line-height: 1.6;text-align: left;}
 .review-write .noti li {font-size: 0.875rem;padding-left: 1rem;font-weight: 500;color: var(--dark);position: relative;}
 .review-write .noti li:before {display:block;content:'';position:absolute;width: 3px;height: 3px;border-radius:50%;left: 5px;top: 9px;background: var(--dark);}
-.review-write textarea {width:100%;border:1px solid var(--light-gray);padding:1rem;font-size: 0.875rem;font-weight: 500;color: var(--dark);background: var(--milk);}
+.review-write .rev-ttl {width:100%;border:1px solid var(--light-gray);padding:0.8rem 1rem;font-weight:700;border-radius:4px;margin-bottom:10px;background:var(--milk);}
+.review-write .rev-ttl::placeholder {font-weight:500;font-size:0.875rem;}
+.review-write .rev-con {width:100%;border:1px solid var(--light-gray);padding:1rem;font-size: 0.875rem;font-weight: 500;color: var(--dark);background: var(--milk);}
 
 /* 작성한 수강평 목록 */
 .my-rev-li {display: grid;gap: 0.4rem;}

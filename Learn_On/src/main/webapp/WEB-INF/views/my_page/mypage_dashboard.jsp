@@ -79,12 +79,15 @@
 														<progress class="progress" id="progress" value="<fmt:formatNumber value="${(course.study_time/course.class_runtime)*100}" pattern="#" />" min="0" max="100"></progress>
 														<p>총 <span>${course.curriculum_count}</span>강 (<fmt:formatNumber value="${(course.study_time/course.class_runtime)*100}" pattern="#" />%)</p>
 													</div>
-													<button class="btn-write" onclick="showModal(${course.class_id})">
-														수강평 작성 <i class="fa-regular fa-pen-to-square"></i>
-													</button>
-													<button class="btn-review" onclick="showModal(${course.class_id})">
-														<i class="fa-solid fa-star"></i> 작성한 수강평
-													</button>
+													
+													<c:if test="${course.completion_rate >= 80 and !course.is_reviewed}">
+														<button class="btn-write" onclick="showModal(${course.class_id})">
+															수강평 작성 <i class="fa-regular fa-pen-to-square"></i>
+														</button>
+													</c:if>
+<%-- 														<button class="btn-review" onclick="showModal(${course.class_id})"> --%>
+<!-- 															<i class="fa-solid fa-star"></i> 작성한 수강평 -->
+<!-- 														</button> -->
 												</div>
 											</li>
 										</c:forEach>
@@ -152,8 +155,8 @@
 					        				<li>공개 게시판이므로 소중한 개인정보를 남기지 않도록 해주세요.</li>
 					        				<li>사적인 상담 및 광고성, 욕설, 비방, 도배 등 부적절한 글은 무통보 삭제처리될 수 있습니다.</li>
 					        			</ul>
-					        			<input type="text" name="review_subject" placeholder="제목을 입력하세요">
-					        			<textarea name="review_content" rows="6" placeholder="수강후기를 남겨주세요"></textarea>
+					        			<input class="rev-ttl" type="text" name="review_subject" placeholder="제목을 입력하세요">
+					        			<textarea class="rev-con" name="review_content" rows="6" placeholder="수강후기를 남겨주세요"></textarea>
 					        		</section>
 					        	</form>
 					        </div>

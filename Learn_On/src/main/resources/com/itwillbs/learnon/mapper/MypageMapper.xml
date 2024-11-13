@@ -17,7 +17,7 @@
 		  LEFT JOIN CLASS C ON C.CLASS_ID = W.CLASS_ID
 		  LEFT JOIN MEMBER M ON M.MEM_ID = C.MEM_ID
 		  LEFT JOIN REVIEW R ON R.CLASS_ID = C.CLASS_ID
-		 WHERE W.MEM_ID = 'hong1234'
+		 WHERE W.MEM_ID = #{id}
 		 GROUP BY W.MEM_ID
 				  , W.CLASS_ID
 		          , C.CLASS_CATEGORY
@@ -53,7 +53,6 @@
 		        WHERE CLASS_ID = C.CLASS_ID) AS CURRICULUM_COUNT
 		      , M.MEM_NAME AS TEACHER_NAME
 		      , R.REVIEW_IDX
-		      , R.REVIEW_SUBJECT
 		      , R.REVIEW_CONTENT
 		  FROM MYCOURSE A
 		  LEFT JOIN CLASS C ON C.CLASS_ID = A.CLASS_ID
@@ -103,4 +102,59 @@
 	     WHERE MEM_ID = #{id}
 	       AND CLASS_ID = #{class_id}
 	</select>
+	<select id="selectReview" resultType="myreview">
+		-- 수강평 작성 목록 조회
+		SELECT 
+			   R.REVIEW_IDX
+		       , R.MEM_ID
+		       , M.MEM_NAME AS TEACHER_NAME
+		       , R.REVIEW_CONTENT
+		       , R.REVIEW_DATE
+		       , R.CLASS_ID
+		       , C.CLASS_TITLE
+		       , R.REVIEW_SCORE
+		       , R.REVIEW_ANSWER_CONTENT
+		  FROM REVIEW R
+		  JOIN CLASS C
+		    ON C.CLASS_ID = R.CLASS_ID
+		  JOIN MEMBER M
+		    ON C.MEM_ID = M.MEM_ID
+		 WHERE R.MEM_ID = #{mem_id}
+	</select>
+	<select id="selectReviewCount" resultType="int">
+		-- 수강평 작성 개수 조회
+		SELECT COUNT(*) AS TOTAL_COUNT
+		FROM REVIEW
+		WHERE MEM_ID = #{mem_id}
+	</select>
+	<select id="selectReviewDetail" resultType="myreview">
+		-- 수강평 작성 조회
+		SELECT 
+			   R.REVIEW_IDX
+		       , R.MEM_ID
+		       , M.MEM_NAME AS TEACHER_NAME
+		       , R.REVIEW_CONTENT
+		       , R.REVIEW_DATE
+		       , R.CLASS_ID
+		       , C.CLASS_TITLE
+		       , R.REVIEW_SCORE
+		       , R.REVIEW_ANSWER_CONTENT
+		  FROM REVIEW R
+		  JOIN CLASS C
+		    ON C.CLASS_ID = R.CLASS_ID
+		  JOIN MEMBER M
+		    ON C.MEM_ID = M.MEM_ID
+		 WHERE R.MEM_ID = #{mem_id}
+		   AND R.CLASS_ID = #{class_id}
+	</select>
+	<update id="updateReview">
+		UPDATE REVIEW
+		   SET
+			   REVIEW_CONTENT = #{review_content}
+	    	   , REVIEW_DATE = NOW()
+	    	   , REVIEW_SCORE = #{review_score}
+		 WHERE 
+		 	   MEM_ID = #{mem_id}
+		   AND CLASS_ID = #{class_id}
+	</update>
 </mapper>

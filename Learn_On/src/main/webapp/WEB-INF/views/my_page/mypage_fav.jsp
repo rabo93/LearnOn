@@ -46,37 +46,39 @@
 						</form>
 					</div>
 					<div class="course-wrap">
-						<ul class="course-card row-3">
-							<c:choose>
-								<c:when test="${empty wishlist}">
+						<c:choose>
+							<c:when test="${empty wishlist}">
+								<ul class="course-card row-1">
 									<li class="empty">관심목록이 존재하지 않습니다.</li>
-								</c:when>
-								<c:otherwise>
+								</ul>
+							</c:when>
+							<c:otherwise>
+								<ul class="course-card row-3">
 									<c:forEach var="wish" items="${wishlist}">
-									<li>
-										<div class="thumb-area">
-											<img src="${pageContext.request.contextPath}/resources/images/thumb_01.webp" class="card-thumb" alt="thumbnail" />
-											<form action="MyFavDel" method="post" class="MyFavDelFrm">
-												<input type="hidden" name="class_id" value="${wish.class_id}">
-												<button type="button" class="fav-on" onclick="confirmDeleteWishItem()"><i class="fa-solid fa-bookmark"></i></button>
-											</form>
-										</div>
-										<div class="card-info">
-											<div class="category">
-												<span>${wish.class_category}</span>
+										<li>
+											<div class="thumb-area">
+												<img src="${pageContext.request.contextPath}/resources/images/thumb_01.webp" class="card-thumb" alt="thumbnail" />
+												<form action="MyFavDel" method="post" class="MyFavDelFrm">
+													<input type="hidden" name="class_id" value="${wish.class_id}">
+													<button type="button" class="fav-on" onclick="confirmDeleteWishItem()"><i class="fa-solid fa-bookmark"></i></button>
+												</form>
 											</div>
-											<div class="ttl">${wish.class_title}</div>
-											<div class="rating">
-												<i class="fa-solid fa-star"></i>
-												<span>${wish.review_score}</span>
+											<div class="card-info">
+												<div class="category">
+													<span>${wish.class_category}</span>
+												</div>
+												<div class="ttl">${wish.class_title}</div>
+												<div class="rating">
+													<i class="fa-solid fa-star"></i>
+													<span>${wish.review_score}</span>
+												</div>
+												<div class="name">${wish.teacher_name}</div>
 											</div>
-											<div class="name">${wish.teacher_name}</div>
-										</div>
-									</li>
+										</li>
 									</c:forEach>
-								</c:otherwise>
-							</c:choose>
-						</ul>
+								</ul>
+							</c:otherwise>
+						</c:choose>
 					</div>
 					<!-- // contents -->
 				</div>

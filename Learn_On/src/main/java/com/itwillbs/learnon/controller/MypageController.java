@@ -1,15 +1,20 @@
 package com.itwillbs.learnon.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.learnon.service.MypageService;
 import com.itwillbs.learnon.vo.MyCourseVO;
@@ -86,9 +91,9 @@ public class MypageController {
 			return "result/fail";
 		}
 		
-		List<MyCourseVO> mycourse = myService.getMyCourse(id, filterType, statusType);
+		List<MyCourseVO> myCourse = myService.getMyCourse(id, filterType, statusType);
 		
-		for(MyCourseVO course : mycourse) {
+		for(MyCourseVO course : myCourse) {
 			try {
 				course.setCompletion_rate(myService.getCompletionRate(id, course.getClass_id()));
 			} catch (Exception e) {
@@ -97,17 +102,16 @@ public class MypageController {
 			course.setIs_reviewed(myService.isReviewWrited(id, course.getClass_id()));
 		}
 		
-		System.out.println(mycourse);
+		System.out.println(myCourse);
 		
-		model.addAttribute("mycourse", mycourse);
+		model.addAttribute("myCourse", myCourse);
 		
 		return "my_page/mypage_dashboard";
 	}
 	
-	// 나의 강의실 - 수강 후기 작성
-	@PostMapping("MyReview")
-	public String MyReviewWrite(MyReviewVO review, HttpSession session, Model model) {
-		
+	// 작성한 수강평 목록
+	@GetMapping("MyReview")
+	public String myReview(MyReviewVO review, HttpSession session, Model model) {
 		String id = (String)session.getAttribute("sId");
 		if(id == null) {
 			model.addAttribute("msg", "로그인 필수!\\n 로그인 페이지로 이동합니다!");
@@ -115,18 +119,47 @@ public class MypageController {
 			return "result/fail";
 		}
 		
+		review.setMem_id(id);
+		Map<String, Object> result = myService.getMyReview(review);
 		
-//		int insertCount = myService.registReview(review);
-		int insertCount = 0;
+		model.addAttribute("myReview", result.get("myReview"));
+		model.addAttribute("reviewCount", result.get("myReviewCount"));
 		
-		return "";
-	}
-	
-	// 작성한 수강평
-	@GetMapping("MyReview")
-	public String myReview() {
 		return "my_page/mypage_review";
 	}
+	
+	// 수강 후기 작성
+	@ResponseBody
+	@GetMapping("MyReviewWrite")
+	public String myReviewWrite(MyReviewVO review, HttpSession session) {
+		
+		String id = (String)session.getAttribute("sId");
+		review.setMem_id(id);
+		
+		review = myService.getMyReviewDetail(review);
+		
+		JSONObject jo = new JSONObject(review);
+		
+		return jo.toString();
+	}
+	
+	@PostMapping("MyReviewUpdate")
+	public String myReviewUpdate(MyReviewVO review, HttpSession session, Model model) {
+		
+		String id = (String)session.getAttribute("sId");
+		review.setMem_id(id);
+		
+		int updateCount = myService.modifyMyReview(review);
+		
+		if(updateCount > 0) {
+			return "redirect:/MyDashboard";
+		} else {
+			model.addAttribute("msg", "수정 실패!");
+			return "result/fail";
+		}
+		
+	}
+	
 		
 	// 결제내역
 	@GetMapping("MyPayment")

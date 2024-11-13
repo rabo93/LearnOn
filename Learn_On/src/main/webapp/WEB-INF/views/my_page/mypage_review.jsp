@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,35 +38,45 @@
 				<a href="MyAttendance">출석체크</a>
 			</aside>
 			<div class="my-container">
-				<div class="contents-ttl">작성한 수강평 <small>(총 <span>3</span>건)</small></div>
+				<div class="contents-ttl">작성한 수강평 <small>(총 <span>${reviewCount}</span>건)</small></div>
 				<div class="contents">
 					<!-- contents -->
 					<section class="my-rev-wrap">
 						<div class="my-rev-li">
-							<article class="rev-box">
-								<div class="info">
-									<img src="/resources/images/thumb_06.webp" alt="썸네일">
-									<div class="right">
-										<p class="ttl">한국에서 제일 쉬운 리눅스 강의</p>
-										<span class="name">리눅스마스터</span>
-									</div>
-								</div>
-								<div class="detail">
-									<p class="date">작성일시 : <span>2024.10.30</span></p>
-									<div class="rating">
-										<i class="fa-solid fa-star"></i>
-										<span>4.0</span>
-									</div>
-									<div class="content">
-										코딩에 다시 흥미를 느끼게 해주셔서 감사합니다. 이거 다 듣고 다른 강의들도 수강할 예정입니다. 코딩에 다시 흥미를 느끼게 해주셔서 감사합니다. 
-										이거 다 듣고 다른 강의들도 수강할 예정입니다.
-									</div>
-									<div class="btns">
-										<button class="btn-rev" onclick="showModal('viewWriteReview')">수정</button>
-										<button class="btn-rev" onclick="">삭제</button>
-									</div>
-								</div>
-							</article>
+							<c:choose>
+								<c:when test="${empty myReview}">
+									<article class="rev-box empty">
+										작성한 수강평이 존재하지 않습니다.
+									</article>
+								</c:when>
+								<c:otherwise>
+									<c:forEach var="review" items="${myReview}">
+										<article class="rev-box">
+											<div class="info">
+												<img src="/resources/images/thumb_06.webp" alt="썸네일">
+												<div class="right">
+													<p class="ttl">${review.class_title}</p>
+													<span class="name">${review.teacher_name}</span>
+												</div>
+											</div>
+											<div class="detail">
+												<p class="date">작성일시 : <span>${review.review_date}</span></p>
+												<div class="rating">
+													<i class="fa-solid fa-star"></i>
+													<span>${review.review_score}</span>
+												</div>
+												<div class="content">
+													${review.review_content}
+												</div>
+												<div class="btns">
+													<button class="btn-rev" onclick="showModal('viewWriteReview')">수정</button>
+													<button class="btn-rev" onclick="">삭제</button>
+												</div>
+											</div>
+										</article>
+									</c:forEach>
+								</c:otherwise>
+							</c:choose>
 						</div>
 						<!-- 수강평 수정하기 모달 -->
 					    <div class="modal" id="viewWriteReview">
@@ -124,7 +136,7 @@
 					        				<li>공개 게시판이므로 소중한 개인정보를 남기지 않도록 해주세요.</li>
 					        				<li>사적인 상담 및 광고성, 욕설, 비방, 도배 등 부적절한 글은 무통보 삭제처리될 수 있습니다.</li>
 					        			</ul>
-					        			<textarea name="review_content" rows="6">작성한 수강평 내용 다시 뿌리기</textarea>
+					        			<textarea class="rev-con" name="review_content" rows="6">작성한 수강평 내용 다시 뿌리기</textarea>
 					        		</section>
 					        	</form>
 					        </div>

@@ -1,6 +1,8 @@
 package com.itwillbs.learnon.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,6 +42,26 @@ public class MypageService {
 	// 수강후기 작성 여부
 	public Boolean isReviewWrited(String id, String class_id) {
 		return myMapper.selectIsReviewed(id, class_id);
+	}
+
+	// 수강 후기 목록, 개수 조회
+	public Map<String, Object> getMyReview(MyReviewVO review) {
+		Map<String, Object> reviewMap = new HashMap<String, Object>();
+		
+		reviewMap.put("myReview", myMapper.selectReview(review));
+		reviewMap.put("myReviewCount", myMapper.selectReviewCount(review));
+		
+		return reviewMap;
+	}
+	
+	// 수강 후기 상세 조회
+	public MyReviewVO getMyReviewDetail(MyReviewVO review) {
+		return myMapper.selectReviewDetail(review);
+	}
+
+	// 수강 후기 수정
+	public int modifyMyReview(MyReviewVO review) {
+		return myMapper.updateReview(review);
 	}
 	
 	

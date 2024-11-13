@@ -27,8 +27,21 @@ public interface MypageMapper {
 	// 수강률 계산
 	int selectCompletionRate(@Param("id") String id, @Param("class_id") String class_id);
 
-	// 수강후기 작성 여부
+	// 수강후기 작성 여부 조회
 	Boolean selectIsReviewed(@Param("id") String id, @Param("class_id") String class_id);
+
+	// 작성된 수강 후기 목록 조회
+	List<MyReviewVO> selectReview(MyReviewVO review);
+	
+	// 작성된 수강 후기 개수 조회
+	int selectReviewCount(MyReviewVO review);
+
+	// 작성된 수강 후기 조회
+	MyReviewVO selectReviewDetail(MyReviewVO review);
+
+	// 작성된 수강 후기 수정 요청
+	int updateReview(MyReviewVO review);
+	
 	
 
 }

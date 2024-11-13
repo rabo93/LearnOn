@@ -113,7 +113,7 @@
 							<div class="tabmenu" id="tab04">
 								<div class="question_title">
 									<h2>문의</h2><h4>(전체 3개)</h4>
-						            <button onclick="window.location.href='CourseFaq';">
+						            <button onclick="window.location.href='CourseFaq?class_id=${course[0].class_id}'">
 						            	문의작성하기
 						            </button>
 					            </div>

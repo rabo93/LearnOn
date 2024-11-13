@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.itwillbs.learnon.mapper.CourseMapper;
 import com.itwillbs.learnon.vo.CommonCodeTypeVO;
 import com.itwillbs.learnon.vo.CourseVO;
+import com.itwillbs.learnon.vo.FaqVO;
 import com.itwillbs.learnon.vo.MyReviewVO;
 
 @Service
@@ -32,6 +33,10 @@ public class CourseService {
 
 	public  List<MyReviewVO> getReviewList(int class_id) {
 		return mapper.selectReviewList(class_id);
+	}
+
+	public int registFaq(FaqVO faq) {
+		return mapper.insertFaq(faq);
 	}
 	
 

@@ -95,8 +95,27 @@
 			 , R.REVIEW_SCORE
 			 , R.REVIEW_CONTENT
 		
-		  FROM (SELECT distinct CLASS_ID FROM CLASS WHERE CLASS_ID = #{CLASS_ID}) C 
+		  FROM (SELECT distinct CLASS_ID FROM CLASS WHERE CLASS_ID = #{class_id}) C 
 		  JOIN REVIEW R
 		  JOIN MEMBER M ON M.MEM_ID = R.MEM_ID
+		 WHERE R.CLASS_ID = #{class_id}
 	</select>
+	
+	<insert id="insertFaq" parameterType="faq">
+		<selectKey keyProperty="faq_idx" resultType="int" order="BEFORE">
+			SELECT IFNULL(MAX(FAQ_IDX),0)
+			  FROM FAQ
+		</selectKey>
+		INSERT
+		  INTO FAQ
+	    VALUES (
+		       #{faq_idx} +1
+		     , #{faq_subject}
+		     , #{faq_content} 
+		     , #{faq_cate} 
+		     , #{faq_file} 
+		     , #{class_category} 
+		)   
+	</insert>
+	
 </mapper>

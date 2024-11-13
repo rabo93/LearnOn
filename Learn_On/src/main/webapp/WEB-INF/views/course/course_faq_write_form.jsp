@@ -55,13 +55,13 @@
 	<!-- 게시판 등록 -->
 	<article id="writeForm">
 		<h1>문의하기</h1>
-		<form action="CourseFaqWrite" name="writeForm" method="post">
-		<input type="hidden" name="FAQ_IDX">
+		<form action="CourseFaqWrite" method="post">
+		<input type="hidden" name="faq_idx">
 			<table>
 				<tr>
 					<td><label for="board_content">내용</label></td>
 					<td>
-						<textarea id="board_content" name="FAQ_CONTENT" rows="15" cols="40" required="required" placeholder="문의할 내용"></textarea>
+						<textarea id="board_content" name="faq_content" rows="15" cols="40" required="required" placeholder="문의할 내용"></textarea>
 					</td>
 				</tr>
 				

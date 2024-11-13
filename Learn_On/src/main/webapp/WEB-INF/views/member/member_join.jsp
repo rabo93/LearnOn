@@ -30,33 +30,35 @@
 				<div id="sign-up-container">
 					<form action="MemberJoin" name="joinForm" method="post"
 						enctype="multipart/form-data">
-						<label for="MEM_NAME">이름</label>
+						<label for="mem_name">이름</label>
 						<div id="checkName"></div>
-						<input type="text" name="MEM_NAME" id="MEM_NAME" placeholder="이름"
-							onblur="checkNameLength()"> <label for="MEM_ID">아이디</label>
-						<div id="checkId"></div>
-						<input type="text" name="MEM_ID" id="MEM_ID" placeholder="아이디"
-							onblur="checkIdLength()"> <label for="MEM_PASSWD1">비밀번호</label>
+						<input type="text" name="mem_name" id="mem_name" placeholder="이름"
+							onblur="checkNameLength()"> 
+						<label for="mem_id">아이디</label>
+						<div id="checkIdResult"></div>
+						<input type="text" name="mem_id" id="mem_id" placeholder="아이디"
+							onblur="checkId()"> 
+						<label for="mem_passwd1">비밀번호</label>
 						<div id="checkPasswd1"></div>
-						<input type="password" name="MEM_PASSWD" id="MEM_PASSWD1"
+						<input type="password" name="mem_passwd" id="mem_passwd1"
 							placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"
-							onblur="checkPasswdLength1()"> <label for="MEM_PASSWD2">비밀번호
-							확인</label>
+							onblur="checkPasswdLength1()"> 
+						<label for="mem_passwd2">비밀번호확인</label>
 						<div id="checkPasswd2"></div>
-						<input type="password" name="MEM_PASSWD2" id="MEM_PASSWD2"
-							placeholder="비밀번호 확인" onkeyup="checkPasswdResult()"> <label
-							for="MEM_NICK">닉네임</label>
+						<input type="password" name="mem_passwd2" id="mem_passwd2"
+							placeholder="비밀번호 확인" onkeyup="checkPasswdResult()"> 
+						<label for="mem_nick">닉네임</label>
 						<div id="checkNic"></div>
-						<input type="text" name="MEM_NICK" id="MEM_NICK" placeholder="닉네임">
+						<input type="text" name="mem_nick" id="mem_nick" placeholder="닉네임">
 	
 						<label>성별</label>
 						<div id="gender-container">
 							<div class="gender-option">
-								<input type="radio" name="MEM_GENDER" id="male" value="M">
+								<input type="radio" name="mem_gender" id="male" value="M">
 								<label for="male">남</label>
 							</div>
 							<div class="gender-option">
-								<input type="radio" name="MEM_GENDER" id="female" value="F">
+								<input type="radio" name="mem_gender" id="female" value="F">
 								<label for="female">여</label>
 							</div>
 						</div>
@@ -72,29 +74,29 @@
 						<!-- 						<option value="DAY">일</option> -->
 						<!-- 					</select>  -->
 						<input type="date" min="1990-01-01" max="2000-12-31"
-							name="MEM_BIRTHDAY"> 
-							<br> <label for="MEM_PHONE">연락처</label>
+							name="mem_birthday"> 
+							<br> <label for="mem_phone">연락처</label>
 						<div id="checkNumber"></div>
-						<input type="text" name="MEM_PHONE" id="MEM_PHONE"
+						<input type="text" name="mem_phone" id="mem_phone"
 							placeholder="'-'없이 입력해주세요" onblur="numberCk()"> 
 						
 						<label for="mem_ddress1">주소</label>
 						<div id="checkAddr"></div>
 						<div class=mem_addr_form>
-							<input type="text" name="MEM_ADDRESS1" placeholder="주소찾기"
+							<input type="text" name="mem_address1" placeholder="주소찾기"
 									onclick="search_address()" id="mem_ddress1" size="25" readonly>
 							<input type="text" placeholder="우편번호" id="mem_post_code"
-								name="MEM_POST_CODE" size="6" readonly>
+								name="mem_post_code" size="6" readonly>
 						</div>
 	
-						<input type="text" name="MEM_ADDRESS2" placeholder="상세주소" id="mem_address2" size="25">
-						<label for="MEM_EMAIL1">이메일</label>
+						<input type="text" name="mem_address2" placeholder="상세주소" id="mem_address2" size="25">
+						<label for="mem_email1">이메일</label>
 						<div id="checkMail"></div>
 						<div class="email_form">
-							<input type="text" name="MEM_EMAIL1" id="MEM_EMAIL1" placeholder="Email">
+							<input type="text" name="mem_email1" id="mem_email1" placeholder="Email">
 							@
-							<input type="text" size="10" id="MEM_EMAIL2" name="MEM_EMAIL2">
-							<select id="EMAILDMAIN">
+							<input type="text" size="10" id="mem_email2" name="mem_email2">
+							<select id="emaildmain">
 								<option value="">직접입력</option>
 								<option value="naver.com">naver.com</option>
 								<option value="gmail.com">gmail.com</option>
@@ -109,15 +111,15 @@
 <!-- 							<div id="checkCode"></div> -->
 						</div>
 						<div class="mem-grade">
-							<label for="MEM_GRADE">
-								<input type="checkbox" id="MEM_GRADE">
+							<label for="mem_grade">
+								<input type="checkbox" id="mem_grade">
 								강사 회원 신청
 							</label>
 						
 						</div>
 	
 						<div id="file">
-							<input type="file" name="MEM_PP_FILE" id="MEM_PP_FILE"><br>
+							<input type="file" name="mem_pp_file" id="mem_pp_file"><br>
 						</div>
 	
 
@@ -211,16 +213,16 @@
 			new daum.Postcode({
 				oncomplete : function(data) {
 					console.log(data);
-					document.joinForm.MEM_POST_CODE.value = data.zonecode;
+					document.joinForm.mem_post_code.value = data.zonecode;
 
 					let address = data.address;
 					if (data.buildingName != "") {
 						address += " (" + data.buildingName + ")";
 					}
 
-					document.joinForm.MEM_ADDRESS1.value = address;
+					document.joinForm.mem_address1.value = address;
 
-					document.joinForm.MEM_ADDRESS2.focus();
+					document.joinForm.mem_address2.focus();
 
 				}
 			}).open();

@@ -14,8 +14,8 @@ $(document).ready(function() {
 
 // 이메일 구현중...
 $(document).ready(function() {
-	$("#EMAILDMAIN").change(function() {
-		$("#MEM_EMAIL2").val($("#EMAILDMAIN").val());
+	$("#emaildmain").change(function() {
+		$("#mem_email2").val($("#emaildmain").val());
 	});
 });
 
@@ -26,7 +26,6 @@ $(document).ready(function() {
 // ************* 검사**************
 
 let checkName = false;
-let checkId = false;
 let checkPasswd1 = false;
 let checkPasswd2 = false;
 let checkNic = false;
@@ -34,10 +33,11 @@ let checkNumber = false;
 let checkAddr = false;
 let checkMail = false;
 let checkCode = false;
+let checkIdResult = false;
 
 // ************* 이름 null 검사**************
 function checkNameLength(){
-	let name = $("#MEM_NAME").val();
+	let name = $("#mem_name").val();
 	if(name == "" ){
 		$("#checkName").text("이름을 입력해주세요.");	
 		$("#checkName").css("color","red");	
@@ -45,28 +45,59 @@ function checkNameLength(){
 	}
 }
 
-// ************* 아이디 길이검사**************
-function checkIdLength (){
-	let id = $("#MEM_ID").val();
-	if(id.length >= 4 && id.length <= 8){
-		$("#checkId").text("사용가능한 아이디입니다.");
-		$("#checkId").css("color","green");
-		checkId = true;
-	}else if(id == ""){
-		$("#checkId").text("아이디를 입력해주세요");
-		$("#checkId").css("color","red");
-		checkId = false;
-	}else {
-		$("#checkId").text("4~8 글자만 사용 가능합니다");
-		$("#checkId").css("color","red");
-		checkId = false;
+// ************* 아이디 중복체크/길이검사**************
+function checkId(){
+	let id = $("#mem_id").val();
+	let regex = /^[\d\w][\d\w_]{4,8}$/;
+	if(regex.exec(id)){
+		$.ajax({
+			type : "get" ,
+		   	 url : "MemberCheckId" ,
+		   	data : {
+			MEM_ID:id
+		} ,
+			success : function(result){
+				
+				if(result.trim() == "false"){
+					$("#checkIdResult").text("사용가능한 아이디 입니다.").css("color","GREEN");
+					checkIdResult = true;
+				}else{
+					$("#checkIdResult").text("이미 있는 아이디 입니다.").css("color","RED");
+					checkIdResult = false;
+				}
+			} ,
+			error : function(){
+				alert("일시적인 서비스 장애로\n아이디 중복검사 불가")
+			}
+		});
+	}else{
+		$("#checkIdResult").text("4~8글자만 사용가능");
+		$("#checkIdResult").css("color", "red");
+		checkIdResult = false;
 	}
 }
+
+//function checkIdLength (){
+//	let id = $("#MEM_ID").val();
+//	if(id.length >= 4 && id.length <= 8){
+//		$("#checkId").text("사용가능한 아이디입니다.");
+//		$("#checkId").css("color","green");
+//		checkId = true;
+//	}else if(id == ""){
+//		$("#checkId").text("아이디를 입력해주세요");
+//		$("#checkId").css("color","red");
+//		checkId = false;
+//	}else {
+//		$("#checkId").text("4~8 글자만 사용 가능합니다");
+//		$("#checkId").css("color","red");
+//		checkId = false;
+//	}
+//}
 
 // ************* 비밀번호 길이검사**************
 
 function checkPasswdLength1(){
-	let passwd = $("#MEM_PASSWD1").val();
+	let passwd = $("#mem_passwd1").val();
 	if(passwd.length >= 4 && passwd.length <= 8){
 		$("#checkPasswd1").text("사용가능한 비밀번호 입니다");
 		$("#checkPasswd1").css("color","green");
@@ -84,8 +115,8 @@ function checkPasswdLength1(){
 // ************* 비밀번호 검사**************
 
 function checkPasswdResult(){
-	let passwd1 = $("#MEM_PASSWD1").val();
-	let passwd2 = $("#MEM_PASSWD2").val();
+	let passwd1 = $("#mem_passwd1").val();
+	let passwd2 = $("#mem_passwd2").val();
 	if(passwd1 == ""){
 		$("#checkPasswd2").text("비밀번호를 입력해주세요.");
 		$("#checkPasswd2").css("color","red");
@@ -100,7 +131,7 @@ function checkPasswdResult(){
 }
 // *************연락처 null검사**************
 function numberCk(){
-	let number = $("#MEM_NUMBER").val();
+	let number = $("#mem_number").val();
 	if(number == ""){
 		$("#checkNumber").text("핸드폰 번호를 입력해주세요");
 		$("#checkNumber").css("color","red");

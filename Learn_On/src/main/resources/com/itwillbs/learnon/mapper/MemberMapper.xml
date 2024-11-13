@@ -7,13 +7,13 @@
 	<select id="selectMember" resultType="member">
 		SELECT *
 		  FROM MEMBER
-		 WHERE MEM_ID = #{MEM_ID}
+		 WHERE mem_id = #{mem_id}
 	</select>
 	
 	<select id="selectMemberPasswd" resultType="String">
-	SELECT MEM_PASSWD
+	SELECT mem_passwd
 	  FROM MEMBER
-	 WHERE MEM_ID = #{MEM_ID} 
+	 WHERE mem_id = #{mem_id} 
 	</select>
 
 	
@@ -21,40 +21,62 @@
 	INSERT INTO MEMBER
 	VALUES(
 	null
-	,#{MEM_ID}
-	,#{MEM_PASSWD}
-	,#{MEM_NAME}
-	,#{MEM_NICK}
-	,#{MEM_BIRTHDAY}
-	,CONCAT(#{MEM_EMAIL1},'@',#{MEM_EMAIL2})
-	,#{MEM_GENDER}
-	,#{MEM_PHONE}
-	,#{MEM_POST_CODE}
-	,#{MEM_ADDRESS1}
-	,#{MEM_ADDRESS2}
-	,'MEM01'
-	,1
-	,NOW()
-	,NULL
-	,#{MEM_LIKE1_CLASS}
-	,#{MEM_LIKE2_CLASS}
- 	,SUBSTR(#{FILE_PP}, INSTR(#{FILE_PP}, '_') + 1)
+	, #{mem_id}
+	, #{mem_passwd}
+	, #{mem_name}
+	, #{mem_nick}
+	, #{mem_birthday}
+	, CONCAT(#{mem_email1},'@',#{mem_email2})
+	, #{mem_gender}
+	, #{mem_phone}
+	, #{mem_post_code}
+	, #{mem_address1}
+	, #{mem_address2}
+	, 'MEM01'
+	, 1
+	, now()
+	, null
+	, #{mem_like1_class}
+	, #{mem_like2_class}
+ 	, SUBSTR(#{file_pp}, INSTR(#{file_pp}, '_') + 1)
 	)
 	</insert>
 	
-	<update id="updateMember">
-	UPDATE MEMBER
-	SET MEM_NAME = #{MEM_NAME}
-		<if test="!MEM_PASSWD.equals('')">
-			,MEM_PASSWD = #{MEM_PASSWD}
-		</if>
-		,MEM_NICK = #{MEM_NICK}
-		,MEM_POST_CODE = #{MEM_POST_CODE}
-		,MEM_ADDRESS1 = #{MEM_ADDRESS1}
-		,MEM_ADDRESS2 = #{MEM_ADDRESS2}
-		,MEM_PHONE = #{MEM_PHONE}
+<!-- 	<update id="updateMember"> -->
+<!-- 	UPDATE MEMBER -->
+<!-- 	SET mem_name = #{mem_name} -->
+<!-- 		<if test="!mem_passwd.equals('')"> -->
+<!-- 			,mem_passwd = #{mem_passwd} -->
+<!-- 		</if> -->
+<!-- 	, mem_nick = #{mem_nick} -->
+<!-- 	, mem_post_code = #{mem_post_code} -->
+<!-- 	, mem_address1 = #{mem_address1} -->
+<!-- 	, mem_address2 = #{mem_address2} -->
+<!-- 	, mem_phone = #{mem_phone} -->
 	
-	</update>
+<!-- 	</update> -->
 	
+<!-- 	<delete id="deleteMailAuthInfo"> -->
+<!-- 	DELETE FROM mail_auth_info -->
+<!-- 	WHERE email = #{email} -->
+<!-- 	</delete> -->
 	
+<!-- 	<insert id="insertMailAuthInfo"> -->
+<!-- 	INSERT INTO mail_auth_info -->
+<!-- 	VALUES( -->
+<!-- 		#{email} -->
+<!-- 		, #{auth_code} -->
+<!-- 	) -->
+<!-- 	</insert> -->
+<!-- 	<update id="updateMailAuthInfo"> -->
+<!-- 	UPDATE mail_auth_info -->
+<!-- 	SET auth_code = #{auth_code} -->
+<!-- 	WHERE email=#{email} -->
+<!-- 	</update> -->
+<!--	이메일 인증정보 조회 --> 
+<!-- 	<select id="selectMailAuthInfo" resultType="MailAuthInfo"> -->
+<!-- 	SELECT * -->
+<!-- 	FROM MEMBER -->
+<!-- 	WHERE email = #{email} -->
+<!-- 	</select> -->
 </mapper>

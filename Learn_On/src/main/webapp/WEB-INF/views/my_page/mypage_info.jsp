@@ -50,7 +50,7 @@
 									아이디
 								</label>
 								<div>
-									<input type="text" name="id" id="id" value="" value="#{sessionScope.sId}" disabled>
+									<input type="text" name="id" id="id" value="" value="홍길동" disabled>
 								</div>
 							</div>
 							<div class="set">

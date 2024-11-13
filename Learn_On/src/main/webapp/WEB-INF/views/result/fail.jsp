@@ -24,12 +24,6 @@
 			location.href = "${targetURL}";
 		}
 		
-		
-		
-		history.back();
-		
-	
-	
 	</script>
 
 </body>

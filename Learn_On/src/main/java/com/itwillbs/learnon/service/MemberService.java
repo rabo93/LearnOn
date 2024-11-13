@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.learnon.mapper.MemberMapper;
+import com.itwillbs.learnon.vo.MailAuthInfo;
 import com.itwillbs.learnon.vo.MemberVO;
 
 @Service
@@ -25,6 +26,16 @@ public class MemberService {
 	public String modifyMember(Map<String, String> map) {
 		// TODO Auto-generated method stub
 		return mapper.updateMember(map);
+	}
+
+	public void registMemberAuthInfo(MailAuthInfo mailauthInfo) {
+		MailAuthInfo dbMailAuthInfo = mapper.selectMailAuthInfo(mailauthInfo);
+		if(dbMailAuthInfo == null) {
+			mapper.insertMailAuthInfo(mailauthInfo);
+		}else {
+			mapper.updateMailAuthInfo(mailauthInfo);
+		}
+		
 	}
 
 

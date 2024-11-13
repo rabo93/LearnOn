@@ -18,27 +18,48 @@
 			 , T.NAME
 			 , T.CODETYPE
 			 , T.DESCRIPTION
-			 , (SELECT CODENAME FROM COMMONCODE WHERE CODEID = #{CODETYPE}) as CATENAME
+			 , (SELECT CODENAME FROM COMMONCODE WHERE CODEID = #{course.codetype}) as CATENAME
 			 , T.CODETYPE_ID
-			 , (SELECT TRUNCATE(AVG(REVIEW_SCORE), 1) FROM REVIEW WHERE CLASS_ID=#{CLASS_ID}) AS REVIEW_SCORE
+			 , (SELECT TRUNCATE(AVG(REVIEW_SCORE), 1) FROM REVIEW WHERE CLASS_ID=#{course.class_id}) AS REVIEW_SCORE
 		  FROM CLASS C
 		  JOIN COMMONCODETYPE T 
 		    ON C.CLASS_CATEGORY = T.NAME
-		WHERE 1 = 1
-  		  <if test="CODETYPE != null"> 
-		  	AND T.CODETYPE = #{CODETYPE}
-		  </if>
-  		  <if test="CODETYPE_ID != null"> 
-		  	AND T.CODETYPE_ID = #{CODETYPE_ID}
-		  </if>
+		 WHERE 1 = 1
+		  AND T.CODETYPE = #{course.codetype}
+  		 <if test="course.CODETYPE_ID != null"> 
+		  AND T.CODETYPE_ID = #{course.codetype_id}
+		 </if>
+		 
+		 <if test="searchType.equals('')">
+		 	 ORDER BY CLASS_ID DESC
+		 </if>
+		  <if test="!searchType.equals('')">	 
+			 <choose>
+		  		<when test="searchType.equals('new')">
+		  			ORDER BY CLASS_ID DESC
+		  		</when>
+		  		<when test="searchType.equals('title')">
+		  			ORDER BY CLASS_TITLE DESC
+		  		</when>
+		  		<when test="searchType.equals('price')">
+		  			ORDER BY CLASS_PRICE DESC
+		  		</when>
+		  		<when test="searchType.equals('score')">
+		  			ORDER BY REVIEW_SCORE DESC
+		  		</when>
+			 </choose>
+		</if>
 	</select>
+	
+	
+	
 	<select id="selectCommonCodeType" resultType="codeType" parameterType="string">
 		SELECT CODETYPE
 			 , NAME
 			 , DESCRIPTION
 			 , CODETYPE_ID
 		  FROM COMMONCODETYPE
-		 WHERE CODETYPE = #{CODETYPE}
+		 WHERE CODETYPE = #{codetype}
 	</select>
 	
 	<select id="selectCourse" resultType="course" parameterType="int">
@@ -59,11 +80,23 @@
 			   , CR.CUR_VIDEO
 			   , (SELECT TRUNCATE(AVG(REVIEW_SCORE), 1)
 					FROM REVIEW
-				   WHERE C.CLASS_ID = #{CLASS_ID}
+				   WHERE C.CLASS_ID = #{class_id}
 					) AS REVIEW_SCORE
 			FROM CLASS C
 			JOIN MEMBER M ON M.MEM_ID = C.MEM_ID
 			JOIN CURRICULUM CR ON CR.CLASS_ID = C.CLASS_ID
-		   WHERE C.CLASS_ID = #{CLASS_ID}
+		   WHERE C.CLASS_ID = #{class_id}
+	</select>
+	
+<!-- 	<select id="selectReviewList" resultType="myReviewVO" parameterType="int"> -->
+	<select id="selectReviewList" resultType="myreview" parameterType="int">
+		SELECT M.MEM_NAME AS MEM_ID
+			 , R.REVIEW_DATE
+			 , R.REVIEW_SCORE
+			 , R.REVIEW_CONTENT
+		
+		  FROM (SELECT distinct CLASS_ID FROM CLASS WHERE CLASS_ID = #{CLASS_ID}) C 
+		  JOIN REVIEW R
+		  JOIN MEMBER M ON M.MEM_ID = R.MEM_ID
 	</select>
 </mapper>

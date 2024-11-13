@@ -11,9 +11,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/reset.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/course.css">
-    
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
-
 </head>
 <body>
 	<header>
@@ -23,41 +21,69 @@
 		<div class="wrapper">
 			<div class="cls-wrap">
 				<div class="cls-cate">
-					<h1 class="cls-ttl">${courseList[0].CATENAME}</h1>
+					<h1 class="cls-ttl">${courseList[0].catename}</h1>
 					<div class="cate-li">
-						<button <c:if test="${param.CODETYPE eq codeType[0].CODETYPE && param.CODETYPE_ID eq null}">class="on"</c:if>>
-							<a href="Category?CODETYPE=CATE01" >전체</a>
+						<button <c:if test="${param.codetype eq codeType[0].codetype && param.codetype_id eq null}">class="on"</c:if>>
+							<a href="Category?codetype=CATE01" >전체</a>
 						</button>
 						<c:forEach var="category" items="${requestScope.codeType}" varStatus="status">
- 							<button <c:if test="${param.CODETYPE_ID eq category.CODETYPE_ID}">class="on"</c:if>> 
-								 <a href="Category?CODETYPE=${category.CODETYPE}&CODETYPE_ID=${category.CODETYPE_ID}">${category.NAME}</a>
+ 							<button <c:if test="${param.codetype_id eq category.codetype_id}">class="on"</c:if>> 
+								 <a href="Category?codetype=${category.codetype}&codetype_id=${category.codetype_id}">${category.name}</a>
 							</button>
 						</c:forEach>
 						
-						<select name="searchType">
-							<option value="new" <c:if test="${param.searchType eq 'new'}">selected</c:if>>최신순</option>
-							<option value="popularity" <c:if test="${param.searchType eq 'popularity'}">selected</c:if>>인기순</option>
-							<option value="average" <c:if test="${param.searchType eq 'average'}">selected</c:if>>평점순</option>
-							<option value="like" <c:if test="${param.searchType eq 'like'}">selected</c:if>>좋아요 순</option>
-						</select>
+						
+						
+						
+						<form action="Category">
+<!-- 							<select name="searchType" id="searchType" onchange="handleChange(event)"> -->
+							<select name="searchType">
+<!-- 							<select name="searchType"> -->
+								<option value="new" <c:if test="${param.searchType eq 'new'}">selected</c:if>>최신순</option>
+								<option value="title" <c:if test="${param.searchType eq 'title'}">selected</c:if>>제목순</option>
+								<option value="price" <c:if test="${param.searchType eq 'price'}">selected</c:if>>가격순</option>
+								<option value="score" <c:if test="${param.searchType eq 'score'}">selected</c:if>>평점순</option>
+							</select>
+							<input type="submit" value="검색" />
+						</form>
+						<script>
+							function handleChange(event) {
+// 								console.log("되나?? " + document.querySelector("#searchType").value);
+// 								console.log("되나?? " + document.querySelector("#searchType").value);
+								
+								let form = document.searchType;
+						        form.method = "get";
+						        form.submit();
+								
+// 								let searchType = document.querySelector("#searchType").value;
+// 								document.querySelector("#searchType").value.submit();
+// 								document.queryselector("searchType") = event.target.value;
+								
+							}
+						</script>
+						
+						
+						
+						
+						
 					</div>
 				</div>
 				<div class="course-wrap">
 					<ul class="course-card">
 							<c:forEach var="course" items="${requestScope.courseList}" varStatus="status">
-								<li>
-									<a href="CourseDetail?CLASS_ID=${course.CLASS_ID}">
+								<li> 
+									<a href="CourseDetail?class_id=${course.class_id}">
 										<img src="${pageContext.request.contextPath}/resources/images/thumb_0${status.count}.webp" class="card-thumb" alt="thumbnail" />
 										<div class="card-info">
 											<div class="category">
-												<span>${course.CATENAME}</span>
+												<span>${course.catename}</span>
 											</div>
-											<div class="ttl">${course.CLASS_TITLE}</div>
+											<div class="ttl">${course.class_title}</div>
 											<div class="rating">
 												<i class="fa-solid fa-star"></i>
-												<span>${course.REVIEW_SCORE}</span>
+												<span>${course.review_score}</span>
 											</div>
-											<div class="name">${course.MEM_ID}</div>
+											<div class="name">${course.mem_id}</div>
 										</div>
 									</a>
 								</li>

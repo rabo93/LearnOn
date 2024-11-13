@@ -275,6 +275,7 @@
 
     <!-- Template Javascript -->
     <script src="resources/admin/js/main.js"></script>
+    <script src="resources/admin/js/main_chart.js"></script>
     <script type="text/javascript">
     		var link = document.location.href;
 	    	if (link.includes("admin_index")) {

@@ -15,7 +15,7 @@ public class AdminVO {
 	private int class_price;
 	private String class_category;
 	private String class_category2;
-	private Timestamp class_reg_date;
+//	private Timestamp class_reg_date;
 	private int class_runtime;
 	private String class_pic1;
 //	private multipartfile class_pic;

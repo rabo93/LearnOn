@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.itwillbs.learnon.service.adminService;
+import com.itwillbs.learnon.service.AdminService;
 import com.itwillbs.learnon.vo.AdminVO;
 
 @Controller
@@ -28,7 +28,7 @@ public class AdminController {
 	private static final AdminVO VO = null;
 
 	@Autowired
-	private adminService adminService;
+	private AdminService adminService;
 	
 	private String uploadPath = "/resources/upload";
 	
@@ -79,7 +79,7 @@ public class AdminController {
 		int insertCount = adminService.registClass(VO);
 		
 		if (insertCount < 0) {
-			model.addAttribute("msg", "글쓰기 실패!");
+			model.addAttribute("msg", "클래스 등록 실패!");
 			return "admin/fail";
 		}
 		return "admin/admin_class_add";
@@ -87,17 +87,37 @@ public class AdminController {
 	
 	// 어드민 클래스 목록 페이지 매핑
 	@GetMapping("admin_class_list")
-	public String admin_class_list() {
-		
-		
-		
+	public String admin_class_list(Model model) {
+		model.addAttribute("getClassList", adminService.getClassList());
 		
 		return "admin/admin_class_list";
 	}
 	
+	@GetMapping("admClassListModify")
+	public String admin_class_list_modi(String class_id, Model model) {
+		System.out.println(class_id);
+		int loadClass = adminService.getClass(class_id);
+		
+		if (loadClass < 0) {
+			model.addAttribute("msg", "클래스 불러오기 실패!");
+			return "admin/fail";
+		}
+		
+		int updateClass = adminService.updateClass(class_id);
+		
+		if (updateClass < 0) {
+			model.addAttribute("msg", "클래스 수정 실패!");
+			return "admin/fail";
+		}
+		
+		return "admin/admin_class_list_modi";
+	}
+	
 	// 어드민 삭제된 클래스 목록 페이지 매핑
 	@GetMapping("admin_class_delete")
-	public String admin_class_delete() {
+	public String admin_class_delete(Model model) {
+		model.addAttribute("getClassList", adminService.getClassList());
+		
 		return "admin/admin_class_delete";
 	}
 	
@@ -105,19 +125,22 @@ public class AdminController {
 	
 	// 어드민 회원 목록 페이지 매핑
 	@GetMapping("admin_member_list")
-	public String admin_member_list() {
+	public String admin_member_list(Model model) {
+		model.addAttribute("getMemberList", adminService.getMemberList());
 		return "admin/admin_member_list";
 	}
 	
 	// 어드민 강사 회원 목록 페이지 매핑
 	@GetMapping("admin_member_list_instructor")
-	public String admin_member_list_instructor() {
+	public String admin_member_list_instructor(Model model) {
+		model.addAttribute("getMemberList", adminService.getMemberList());
 		return "admin/admin_member_list_instructor";
 	}
 	
 	// 어드민 탈퇴한 회원 목록 페이지 매핑
 	@GetMapping("admin_member_list_delete")
-	public String admin_member_list_delete() {
+	public String admin_member_list_delete(Model model) {
+		model.addAttribute("getMemberList", adminService.getMemberList());
 	return "admin/admin_member_list_delete";
 	}
 

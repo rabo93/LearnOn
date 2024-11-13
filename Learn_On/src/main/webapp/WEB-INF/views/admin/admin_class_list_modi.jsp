@@ -47,10 +47,10 @@
                 	<div class="bg-light rounded p-4">
                 		<div class="d-flex justify-content-between mb-3">
 							<div class="p-2 bd-highlight">
-	                			<h5>클래스 등록</h5>
+	                			<h5>클래스 수정</h5>
 							</div>
 							<div class="p-2 bd-highlight">
-		                		<button type="submit" class="btn btn-lg btn-primary">클래스 등록</button>
+		                		<button type="submit" class="btn btn-lg btn-primary" onclick="">클래스 수정</button>
 		                		<button type="button" class="btn btn-lg btn-primary ms-3" onclick="moveBack()">클래스 삭제</button>
 							</div>
 						</div>

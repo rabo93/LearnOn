@@ -6,33 +6,48 @@
 
 	<insert id="insertClass">
 		<selectKey keyProperty="CLASS_ID" resultType="int" order="BEFORE">
-			SELECT IFNULL(MAX(CLASS_ID), 0)
-			FROM CLASS;
+			select ifnull(MAX(CLASS_ID), 0)
+			from CLASS;
 		</selectKey>
-	INSERT
-	INTO CLASS
-	VALUES (
-		#{CLASS_ID} + 1
-		, #{CLASS_TITLE}
-		, #{MEM_ID}
-		, #{CLASS_INTRO}
-		, #{CLASS_PRICE}
-		, #{CLASS_CATEGORY}
-		, curdate()
-		, #{CLASS_RUNTIME}
-		, #{CLASS_PIC1}
-		, #{CLASS_CONTENTS}
-		, #{CLASS_STATUS});
+		insert
+		into CLASS
+		values (
+			#{CLASS_ID} + 1
+			, #{CLASS_TITLE}
+			, #{MEM_ID}
+			, #{CLASS_INTRO}
+			, #{CLASS_PRICE}
+			, #{CLASS_CATEGORY}
+			, curdate()
+			, #{CLASS_RUNTIME}
+			, #{CLASS_PIC1}
+			, #{CLASS_CONTENTS}
+			, #{CLASS_STATUS});
 	</insert>
 	
 	<select id="getCategory">
-	SELECT *
-	FROM COMMONCODE;
+		select *
+		from COMMONCODE;
 	</select>
 	
 	<select id="getSubCategory">
-	SELECT *
-	FROM COMMONCODETYPE;
+		select *
+		from COMMONCODETYPE
+	</select>
+	
+	<select id="getClassList">
+		select *
+		from CLASS;
+	</select>
+	<select id="getClass" resultType="int">
+		select *
+		from CLASS;
+		where #{class_id};
+	</select>
+	
+	<select id="getMemberList"> 
+		select *
+		from MEMBER;
 	</select>
 
 

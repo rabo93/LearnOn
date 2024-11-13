@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -62,12 +63,14 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<th><input class="form-check-input" type="checkbox" id="gridCheck1"></th>
-									<td><input class="form-control" type="text" placeholder="Default input" aria-label="default input example" value="자바(Java)알고리즘 문제풀이 입문:코딩테스트 대비-누구나 할 수 있는 알고리즘 문제"></td>
-									<td>
+								<c:forEach items="${getClassList}" var="li">
+								<c:if test="${li.class_status eq 3}">
+									<tr>
+										<th><input class="form-check-input" type="checkbox" id="gridCheck1"></th>
+										<td><input class="form-control" type="text" placeholder="Default input" aria-label="default input example" value="${li.class_title}"></td>
+										<td>
 										<select class="form-select" aria-label="Default select example">
-											<option selected="">대분류</option>
+											<option>대분류</option>
 											<option value="1">IT/개발</option>
 											<option value="2">외국어</option>
 											<option value="3">운동/건강</option>
@@ -77,7 +80,7 @@
 									</td>
 									<td>
 										<select class="form-select" aria-label="Default select example">
-											<option selected="">소분류</option>
+											<option>소분류</option>
 											<option value="1">IT/개발</option>
 											<option value="2">외국어</option>
 											<option value="3">운동/건강</option>
@@ -86,13 +89,15 @@
 										</select>
 									</td>
 									<td>
-										<select class="form-select" aria-label="Default select example">
-											<option value="1">공개</option>
-											<option value="2">비공개</option>
-											<option value="3" selected>폐강</option>
+										<select class="form-select" aria-label="Default select example" id="classStat">
+											<option value="1" <c:if test="${li.class_status == 1}">selected</c:if>>공개</option>
+											<option value="2" <c:if test="${li.class_status == 2}">selected</c:if>>비공개</option>
+											<option value="3" <c:if test="${li.class_status == 3}">selected</c:if>>폐강</option>
 										</select>
                                  	</td>
-                             	</tr>
+									</tr>
+								</c:if>
+								</c:forEach>
 							</tbody>
 						</table>
 					</div>

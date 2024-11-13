@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -70,40 +71,46 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<th><input class="form-check-input" type="checkbox" id="gridCheck1"></th>
-									<td class="col-1"><input class="form-control" type="text" placeholder="회원 번호" aria-label="default input example" value="001"></td>
-									<td class="col-1"><input class="form-control" type="text" placeholder="아이디" aria-label="default input example" value="admin1234"></td>
-									<td class="col-1"><input class="form-control" type="text" placeholder="이름" aria-label="default input example" value="홍길동"></td>
-									<td class="col-1"><input class="form-control" type="text" placeholder="닉네임" aria-label="default input example" value="admin"></td>
-									<td class="col-1"><input class="form-control" type="text" placeholder="생년월일" aria-label="default input example" value="901010"></td>
-									<td class="col-1">
-										<select class="form-select" aria-label="Default select example">
-											<option value="1">남자</option>
-											<option value="2">여자</option>
-										</select>
-									</td>
-									<td>
-										<div class="input-group ">
-											<input type="text" class="form-control" placeholder="Username" aria-label="Username" value="hong091010">
-											<span class="input-group-text">@</span>
-											<input type="text" class="form-control" placeholder="Server" aria-label="Server" value="gmail.com">
-                 		  				</div>
-                          		 	</td>
-									<td><input class="form-control " type="text" placeholder="연락처" aria-label="default input example" value="010-1234-5678"></td>
-									<td class="col-1">
-										<select class="form-select " aria-label="Default select example">
-											<option value="1">정상</option>
-											<option value="2">휴면</option>
-										</select>
-									</td>
-									<td class="col-1">
-										<select class="form-select " aria-label="Default select example">
-											<option value="1">관리자</option>
-											<option value="2">일반회원</option>
-										</select>
-                                 	</td>
-                             	</tr>
+								<c:forEach items="${getMemberList}" var="ml">
+								<c:if test="${ml.MEM_GRADE ne 'MEM02' and ml.MEM_STATUS ne '2'}">
+									<tr>
+										<th><input class="form-check-input" type="checkbox" id="gridCheck1"></th>
+										<td class="col-1"><input class="form-control" type="text" placeholder="회원 번호" aria-label="default input example" value="${ml.IDX}"></td>
+										<td class="col-1"><input class="form-control" type="text" placeholder="아이디" aria-label="default input example" value="${ml.MEM_ID}"></td>
+										<td class="col-1"><input class="form-control" type="text" placeholder="이름" aria-label="default input example" value="${ml.MEM_NAME}"></td>
+										<td class="col-1"><input class="form-control" type="text" placeholder="닉네임" aria-label="default input example" value="${ml.MEM_NICK}"></td>
+										<td class="col-1"><input class="form-control" type="text" placeholder="생년월일" aria-label="default input example" value="${ml.MEM_BIRTHDAY}"></td>
+										<td class="col-1">
+											<select class="form-select" aria-label="Default select example">
+												<option value="1" <c:if test="${ml.MEM_GENDER eq 'M'}">selected</c:if>>남자</option>
+												<option value="2" <c:if test="${ml.MEM_GENDER eq 'F'}">selected</c:if>>여자</option>
+											</select>
+										</td>
+										<td>
+											<div class="input-group ">
+												<input type="text" class="form-control" placeholder="Username" aria-label="Username" value="${ml.MEM_EMAIL1}">
+												<span class="input-group-text">@</span>
+												<input type="text" class="form-control" placeholder="Server" aria-label="Server" value="${ml.MEM_EMAIL2}">
+	                 		  				</div>
+	                          		 	</td>
+										<td><input class="form-control " type="text" placeholder="연락처" aria-label="default input example" value="${ml.MEM_PHONE}"></td>
+										<td class="col-1">
+											<select class="form-select " aria-label="Default select example">
+												<option value="1" <c:if test="${ml.MEM_STATUS == 1}">selected</c:if>>정상</option>
+												<option value="2" <c:if test="${ml.MEM_STATUS == 2}">selected</c:if>>대기</option>
+												<option value="3" <c:if test="${ml.MEM_STATUS == 3}">selected</c:if>>휴면</option>
+												<option value="4" <c:if test="${ml.MEM_STATUS == 3}">selected</c:if>>탈퇴</option>
+											</select>
+										</td>
+										<td class="col-1">
+											<select class="form-select " aria-label="Default select example">
+												<option value="1" <c:if test="${ml.MEM_GRADE eq 'MEM03'}">selected</c:if>>관리자</option>
+												<option value="2" <c:if test="${ml.MEM_GRADE eq 'MEM01'}">selected</c:if>>일반회원</option>
+											</select>
+	                                 	</td>
+	                             	</tr>
+	                            </c:if>
+								</c:forEach>
 							</tbody>
 						</table>
 					</div>

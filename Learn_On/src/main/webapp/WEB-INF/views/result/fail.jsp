@@ -26,7 +26,6 @@
 		
 		
 		
-		history.back();
 		
 	
 	

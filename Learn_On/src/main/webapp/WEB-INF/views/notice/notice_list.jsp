@@ -40,6 +40,12 @@
 						</select>
 					</form>
 					<form class="nt-search-form" method="get">
+						<select name="searchType">
+							<option value="subject" <c:if test="${param.searchType eq 'subject'}">selected</c:if>>제목</option>
+							<option value="content" <c:if test="${param.searchType eq 'content'}">selected</c:if>>내용</option>
+							<option value="subject_content" <c:if test="${param.searchType eq 'subject_content'}">selected</c:if>>제목&내용</option>
+							<option value="name" <c:if test="${param.searchType eq 'name'}">selected</c:if>>작성자</option>
+						</select>
 						<input type="text" name="searchKeyword" placeholder="검색어를 입력하세요">
 						<input type="submit" value="검색">
 					</form>
@@ -62,10 +68,10 @@
 							</tr>
 							<c:forEach items="${noticeList}" var="noticeBoard">
 								<tr>
-									<td class="nt_idx">${noticeBoard.NOTICE_IDX}</td>
-									<td class="nt_subject">${noticeBoard.NOTICE_SUBJECT}</td>
-									<td>${noticeBoard.MEM_ID}</td>
-									<td>${noticeBoard.NOTICE_DATE}</td>
+									<td class="nt_idx">${noticeBoard.notice_idx}</td>
+									<td class="nt_subject">${noticeBoard.notice_subject}</td>
+									<td>${noticeBoard.mem_id}</td>
+									<td>${noticeBoard.notice_date}</td>
 								</tr>
 							</c:forEach>
 					</table>
@@ -73,14 +79,24 @@
 			</section>
 	<!--  ==============================    페이지처리영역		================================ -->
 			<section id="nt_pagingArea">
-				<input type="button" value="&lt;&lt;"
-					onclick="location.href='NoticeList?pageNum=${pageInfo.startPage - pageInfo.pageListLimit}&sort=${sort}'"
-					<c:if test="${pageInfo.startPage eq 1}">disabled</c:if>
-				>
-				<input type="button" value="&lt;"
-					   onclick="location.href='NoticeList?pageNum=${pageNum - 1}&sort=${sort}'"
-					   <c:if test="${pageNum eq 1}">disabled</c:if>
-			    >
+				<button
+				onclick="location.href='NoticeList?pageNum=${pageInfo.startPage - pageInfo.pageListLimit}&sort=${sort}'"
+				<c:if test="${pageInfo.startPage eq 1}">disabled</c:if>>
+					<i class="fa-solid fa-angles-left"></i>
+				</button>
+<!-- 				<input type="button" value="&lt;&lt;" -->
+<%-- 					onclick="location.href='NoticeList?pageNum=${pageInfo.startPage - pageInfo.pageListLimit}&sort=${sort}'" --%>
+<%-- 					<c:if test="${pageInfo.startPage eq 1}">disabled</c:if> --%>
+<!-- 				> -->
+				<button
+				onclick="location.href='NoticeList?pageNum=${pageNum - 1}&sort=${sort}'"
+				<c:if test="${pageNum eq 1}">disabled</c:if>>
+					<i class="fa-solid fa-angle-left"></i>
+				</button>
+<!-- 				<input type="button" value="&lt;" -->
+<%-- 					   onclick="location.href='NoticeList?pageNum=${pageNum - 1}&sort=${sort}'" --%>
+<%-- 					   <c:if test="${pageNum eq 1}">disabled</c:if> --%>
+<!-- 			    > -->
 				<c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
 					<c:choose>
 						<c:when test="${i eq pageNum}">
@@ -92,14 +108,24 @@
 					</c:choose>
 				</c:forEach>
 				
-				<input type="button" value="&gt;"
-					   onclick="location.href='NoticeList?pageNum=${pageNum + 1}&sort=${sort}'"
-					   <c:if test="${pageNum eq pageInfo.maxPage}">disabled</c:if>
-			   	>
-				<input type="button" value="&gt;&gt;"
-					   onclick="location.href='NoticeList?pageNum=${pageInfo.startPage + pageInfo.pageListLimit}&sort=${sort}'"
-					   <c:if test="${pageInfo.endPage eq pageInfo.maxPage}">disabled</c:if>
-			   	>
+				<button
+				onclick="location.href='NoticeList?pageNum=${pageNum + 1}&sort=${sort}'"
+				<c:if test="${pageNum eq pageInfo.maxPage}">disabled</c:if>>
+					<i class="fa-solid fa-angle-right"></i>
+				</button>
+<!-- 				<input type="button" value="&gt;" -->
+<%-- 					   onclick="location.href='NoticeList?pageNum=${pageNum + 1}&sort=${sort}'" --%>
+<%-- 					   <c:if test="${pageNum eq pageInfo.maxPage}">disabled</c:if> --%>
+<!-- 			   	> -->
+			   	<button
+			   	onclick="location.href='NoticeList?pageNum=${pageInfo.startPage + pageInfo.pageListLimit}&sort=${sort}'"
+				<c:if test="${pageInfo.endPage eq pageInfo.maxPage}">disabled</c:if>>
+			   		<i class="fa-solid fa-angles-right"></i>
+			   	</button>
+<!-- 				<input type="button" value="&gt;&gt;" -->
+<%-- 					   onclick="location.href='NoticeList?pageNum=${pageInfo.startPage + pageInfo.pageListLimit}&sort=${sort}'" --%>
+<%-- 					   <c:if test="${pageInfo.endPage eq pageInfo.maxPage}">disabled</c:if> --%>
+<!-- 			   	> -->
 			</section>
 				<div class="nt-writebtn">
 					<input type="button" value="공지사항 쓰기" onclick="location.href='NoticeWrite'">
@@ -112,7 +138,6 @@
 	<script type="text/javascript">
 		$(".nt_subject").on("click", function(event){
 			let parent = $(event.target).parent();
-			
 			let notice_idx = $(parent).find(".nt_idx").text();
 			
 			location.href = "NoticeDetail?notice_idx=" + notice_idx;

@@ -80,52 +80,36 @@
 	<!--  ==============================    페이지처리영역		================================ -->
 			<section id="nt_pagingArea">
 				<button
-				onclick="location.href='NoticeList?pageNum=${pageInfo.startPage - pageInfo.pageListLimit}&sort=${sort}'"
+				onclick="location.href='NoticeList?pageNum=${pageInfo.startPage - pageInfo.pageListLimit}&sort=${sort}&searchType=${searchType}&searchKeyword=${searchKeyword}'"
 				<c:if test="${pageInfo.startPage eq 1}">disabled</c:if>>
 					<i class="fa-solid fa-angles-left"></i>
 				</button>
-<!-- 				<input type="button" value="&lt;&lt;" -->
-<%-- 					onclick="location.href='NoticeList?pageNum=${pageInfo.startPage - pageInfo.pageListLimit}&sort=${sort}'" --%>
-<%-- 					<c:if test="${pageInfo.startPage eq 1}">disabled</c:if> --%>
-<!-- 				> -->
 				<button
-				onclick="location.href='NoticeList?pageNum=${pageNum - 1}&sort=${sort}'"
+				onclick="location.href='NoticeList?pageNum=${pageNum - 1}&sort=${sort}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}'"
 				<c:if test="${pageNum eq 1}">disabled</c:if>>
 					<i class="fa-solid fa-angle-left"></i>
 				</button>
-<!-- 				<input type="button" value="&lt;" -->
-<%-- 					   onclick="location.href='NoticeList?pageNum=${pageNum - 1}&sort=${sort}'" --%>
-<%-- 					   <c:if test="${pageNum eq 1}">disabled</c:if> --%>
-<!-- 			    > -->
 				<c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
 					<c:choose>
 						<c:when test="${i eq pageNum}">
 							<strong>${i}</strong>
 						</c:when>
 						<c:otherwise>
-							<a href="NoticeList?pageNum=${i}&sort=${sort}">${i}</a>
+							<a href="NoticeList?pageNum=${i}&sort=${sort}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">${i}</a>
 						</c:otherwise>
 					</c:choose>
 				</c:forEach>
 				
 				<button
-				onclick="location.href='NoticeList?pageNum=${pageNum + 1}&sort=${sort}'"
+				onclick="location.href='NoticeList?pageNum=${pageNum + 1}&sort=${sort}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}'"
 				<c:if test="${pageNum eq pageInfo.maxPage}">disabled</c:if>>
 					<i class="fa-solid fa-angle-right"></i>
 				</button>
-<!-- 				<input type="button" value="&gt;" -->
-<%-- 					   onclick="location.href='NoticeList?pageNum=${pageNum + 1}&sort=${sort}'" --%>
-<%-- 					   <c:if test="${pageNum eq pageInfo.maxPage}">disabled</c:if> --%>
-<!-- 			   	> -->
 			   	<button
-			   	onclick="location.href='NoticeList?pageNum=${pageInfo.startPage + pageInfo.pageListLimit}&sort=${sort}'"
+			   	onclick="location.href='NoticeList?pageNum=${pageInfo.startPage + pageInfo.pageListLimit}&sort=${sort}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}'"
 				<c:if test="${pageInfo.endPage eq pageInfo.maxPage}">disabled</c:if>>
 			   		<i class="fa-solid fa-angles-right"></i>
 			   	</button>
-<!-- 				<input type="button" value="&gt;&gt;" -->
-<%-- 					   onclick="location.href='NoticeList?pageNum=${pageInfo.startPage + pageInfo.pageListLimit}&sort=${sort}'" --%>
-<%-- 					   <c:if test="${pageInfo.endPage eq pageInfo.maxPage}">disabled</c:if> --%>
-<!-- 			   	> -->
 			</section>
 				<div class="nt-writebtn">
 					<input type="button" value="공지사항 쓰기" onclick="location.href='NoticeWrite'">
@@ -136,6 +120,10 @@
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
 	</footer>
 	<script type="text/javascript">
+		if (performance.navigation.type === 1) {
+			location.href= "NoticeList";
+		}
+	
 		$(".nt_subject").on("click", function(event){
 			let parent = $(event.target).parent();
 			let notice_idx = $(parent).find(".nt_idx").text();

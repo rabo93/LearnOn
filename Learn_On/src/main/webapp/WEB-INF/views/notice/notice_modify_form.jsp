@@ -28,7 +28,7 @@
 	<article id="modifyForm">
 		<h1>글 상세내용 보기</h1>
 		<form action="NoticeModify" method="post" enctype="multipart/form-data">
-			<input type="hidden" name="notice_num" value="${param.mem_id}">
+			<input type="hidden" name="notice_idx" value="${param.notice_idx}">
 			<input type="hidden" name="pageNum" value="${param.pageNum}">
 			<table>
 				<tr>
@@ -40,13 +40,13 @@
 				<tr>
 					<td class="write_td_left"><label for="notice_subject">제목</label></td>
 					<td class="write_td_right">
-						<input type="text" id="notice_subject" name="notice_subject" value="${board.notice_subject}" required />
+						<input type="text" id="notice_subject" name="notice_subject" value="${notice.notice_subject}" required />
 					</td>
 				</tr>
 				<tr>
 					<td class="write_td_left"><label for="notice_content">내용</label></td>
 					<td class="write_td_right">
-						<textarea id="notice_content" name="notice_content" rows="15" cols="40" required>${board.notice_content}</textarea>
+						<textarea id="notice_content" name="notice_content" rows="15" cols="40" required>${notice.notice_content}</textarea>
 					</td>
 				</tr>
 				<tr>
@@ -54,11 +54,10 @@
 					<td class="write_td_right">
 					
 						<c:forEach var="file" items="${fileList}" varStatus="status">
-							<div class="board_file">
+							<div class="board_file" id="file_${status.count}">
 								<c:choose>
 									<c:when test="${not empty file}">
-										<input type="text" name="notice_file_get" value="${originalFileList[status.index]}">
-<%-- 										${originalFileList[status.index]} --%>
+										<input type="text" name="notice_file_get" value="${originalFileList[status.index]}" readonly>
 										<a href="${pageContext.request.contextPath}/resources/upload/${file}" download="${originalFileList[status.index]}"><i class="fa-solid fa-download"></i></a>
 										<a href="javascript:deleteFile(${notice.notice_idx}, '${file}', ${status.count})"><i class="fa-solid fa-trash"></i></a>
 									</c:when>
@@ -86,15 +85,22 @@
 		
 		function deleteFile(notice_idx, file, index) {
 			console.log(notice_idx + "," + file + "," + index);
-// 			$.ajax({
-// 				url : '/deleteFile',
-// 				type : 'POST',
-// 				data : {
-// 					notice_idx : notice_Idx,
-// 					file : file
-// 				}
-// 			});
-		}
+			$.ajax ({
+				type : "POST",
+				url : "/notice/deleteFile",
+				data : {
+					notice_idx : notice_idx,
+					file : file,
+					index : index - 1
+				},
+			}).done(function(result) {
+				console.log("파일 삭제 성공" , result);
+				$("#file_" + index).remove();
+			}).fail(function(jqXHR){
+				console.log("파일 삭제 실패 : " + jqXHR.status);
+				alert("파일삭제에 실패했습니다. 다시 시도해주세요");
+			});
+		};
 		
 	</script>
 </body>

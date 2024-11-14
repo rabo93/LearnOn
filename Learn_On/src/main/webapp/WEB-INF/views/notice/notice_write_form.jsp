@@ -28,7 +28,7 @@
 					<tr>
 						<td>글쓴이</td>
 						<td>
-							<input type="text" name="mem_id">
+							<input type="text" name="mem_id" value="${sessionScope.sId}" readonly>
 						</td>
 					</tr>
 					<tr>

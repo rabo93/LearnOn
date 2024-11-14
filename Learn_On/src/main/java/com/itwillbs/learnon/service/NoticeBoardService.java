@@ -27,8 +27,14 @@ public class NoticeBoardService {
 		return noticeMapper.selectBoardListCount(searchKeyword, searchType);
 	}
 	
-	public NoticeBoardVO getNoticeBoard(int notice_idx) {
-		return noticeMapper.selectNoticeBoard(notice_idx);
+	public NoticeBoardVO getNoticeBoard(int notice_idx, boolean isReadCount) {
+		NoticeBoardVO board =  noticeMapper.selectNoticeBoard(notice_idx);
+		
+		if(board != null && isReadCount) {
+			noticeMapper.updateReadcount(board);
+		}
+		
+		return board;
 	}
 	
 	
@@ -36,5 +42,19 @@ public class NoticeBoardService {
 	public int removeNotice(int notice_idx) {
 		return noticeMapper.deleteBoard(notice_idx);
 	}
+
+	public int getFileUpdate(int notice_idx ,String updatedFileList) {
+		return noticeMapper.updateFile(notice_idx, updatedFileList);
+	}
+
+	public int addNoitceFile(int notice_idx, String fileName) {
+		return noticeMapper.addNoitceFile(notice_idx, fileName);
+	}
+
+	public int modifyNoticeBoard(NoticeBoardVO board) {
+		return noticeMapper.updateNoticeBoard(board);
+	}
+
+
 	
 }

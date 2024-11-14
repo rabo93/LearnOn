@@ -20,10 +20,21 @@ public interface NoticeBoardMapper {
 
 	int selectBoardListCount(@Param("searchKeyword") String searchKeyword,
 							 @Param("searchType") String searchType);
-
+	
 	int insertNoticeBoard(NoticeBoardVO board);
 
 	int deleteBoard(int notice_idx);
+
+	int updateFile(@Param("notice_idx") int notice_idx,
+				   @Param("updatedFileList") String updatedFileList);
+
+	int addNoitceFile(@Param("notice_idx") int notice_idx,
+						  @Param("fileName") String fileName);
+
+	int updateNoticeBoard(NoticeBoardVO board);
+
+	void updateReadcount(NoticeBoardVO board);
+
 	
 	
 }

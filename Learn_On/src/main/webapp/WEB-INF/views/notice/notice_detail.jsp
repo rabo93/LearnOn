@@ -27,18 +27,20 @@
 			<section class="tb-wrap">
 				<table class="tb-02">
 					<colgroup>
-						<col width="70%">
+						<col width="60%">
 						<col width="15%">
 						<col width="15%">
+						<col width="10%">
 					</colgroup>
 					<tr>
-						<th class="dt-title">${notice.NOTICE_SUBJECT}</th>	<%-- 제목 --%>
-						<th class="dt-author">${notice.MEM_ID}</th>			<%-- 작성자 --%>
-						<th class="dt-date">${notice.NOTICE_DATE}</th>		<%-- 작성날짜 --%>
+						<th class="dt-title">${notice.notice_subject}</th>	<%-- 제목 --%>
+						<th class="dt-author">${notice.mem_id}</th>			<%-- 작성자 --%>
+						<th class="dt-date">${notice.notice_date}</th>		<%-- 작성날짜 --%>
+						<th class="dt-readCount">${notice.notice_read_count}</th>		<%-- 작성날짜 --%>
 					</tr>
 					<tr>
 						<td colspan="3">
-							<div class="dt-content">${notice.NOTICE_CONTENT}</div>
+							<div class="dt-content">${notice.notice_content}</div>
 						</td>
 					</tr>
 					<tfoot>
@@ -59,11 +61,48 @@
 					</tfoot>
 				</table>
 			</section>
+			<section>
+				<div>
+					<button onclick="noticeModify()">수정</button>
+					<button onclick="noticeDelete()">삭제</button>
+					<button onclick="location.href='NoticeList'">목록</button>
+				</div>
+			</section>
 			<!-- 목록, 수정, 삭제 버튼 추가하기! -->
 		</div>
 	</main>
 	<footer>
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
 	</footer>
+	<script type="text/javascript">
+		
+		function getParams() {
+			let params = "";
+			let searchParams = new URLSearchParams(location.search);	//	[notice_idx : XX]
+																		//		키값	: 값
+																		//	 param[0]	: param[1]
+			for (let param of searchParams) {
+				params += param[0] + "=" + param[1] + "&";
+			}
+			
+			if (params.lastIndexOf("&" == params.length - 1)) {
+				params = params.substring(0, params.length - 1);
+			}
+			
+			return params;
+		}
+	
+		function noticeDelete() {
+			if (confirm("삭제하시겠습니까?")) {
+				location.href = "NoticeDelete?" + getParams();
+			}
+		}
+		
+		function noticeModify() {
+			location.href = "NoticeModify?" + getParams();
+		}
+		
+	</script>
+	
 </body>
 </html>

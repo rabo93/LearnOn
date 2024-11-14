@@ -11,9 +11,30 @@
 		     , NOTICE_CONTENT
 			 , NOTICE_DATE
 		     , NOTICE_CATE
-		     , NOTICE_FILE 
+		     , NOTICE_FILE
 		     , NOTICE_READ_COUNT
 		  FROM	NOTICE
+		<if test="!searchKeyword.equals('')">
+		 WHERE
+			<choose>
+				<when test="searchType.equals('subject')">
+					NOTICE_SUBJECT LIKE CONCAT('%', #{searchKeyword}, '%')
+				</when>
+				<when test="searchType.equals('content')">
+					NOTICE_CONTENT LIKE CONCAT('%', #{searchKeyword}, '%')
+				</when>
+				<when test="searchType.equals('subject_content')">
+					NOTICE_SUBJECT LIKE CONCAT('%', #{searchKeyword}, '%')
+					OR NOTICE_CONTENT LIKE CONCAT('%', #{searchKeyword}, '%')
+				</when>
+				<when test="searchType.equals('name')">
+					MEM_ID LIKE CONCAT('%', #{searchKeyword}, '%')
+				</when>
+				<otherwise>
+					WHERE	1 = 1
+				</otherwise>
+			</choose>
+		</if>
 		<choose>
 			<when test="sort.equals('latest')">
 				ORDER
@@ -23,10 +44,6 @@
 				ORDER
 		    	   BY	NOTICE_DATE ASC
 			</when>
-			<otherwise>
-				ORDER
-				   BY	NOTICE_DATE DESC
-			</otherwise>
 		</choose>
 		LIMIT	#{startRow}
 				, #{listLimit}
@@ -35,35 +52,103 @@
 	
 	<select id="selectBoardListCount" resultType="int">
 		SELECT	COUNT(*)
-		FROM	NOTICE
+		  FROM	NOTICE
+		
+		<if test="!searchKeyword.equals('')">
+		 WHERE
+			<choose>
+				<when test="searchType.equals('subject')">
+					NOTICE_SUBJECT LIKE CONCAT('%', #{searchKeyword}, '%')
+				</when>
+				<when test="searchType.equals('content')">
+					NOTICE_CONTENT LIKE CONCAT('%', #{searchKeyword}, '%')
+				</when>
+				<when test="searchType.equals('subject_content')">
+					NOTICE_SUBJECT LIKE CONCAT('%', #{searchKeyword}, '%')
+					OR NOTICE_CONTENT LIKE CONCAT('%', #{searchKeyword}, '%')
+				</when>
+				<when test="searchType.equals('name')">
+					MEM_ID LIKE CONCAT('%', #{searchKeyword}, '%')
+				</when>
+				<otherwise>
+					WHERE	1 = 1
+				</otherwise>
+			</choose>
+		</if>
 	</select>
 	
 	<select id="selectNoticeBoard" resultType="noticeBoard">
 		SELECT	*
 		FROM	NOTICE
-		WHERE	NOTICE_IDX = #{NOTICE_IDX}
+		WHERE	NOTICE_IDX = #{notice_idx}
 	</select>
 	
 	<insert id="insertNoticeBoard">
-		<selectKey keyProperty="NOTICE_IDX" resultType="int" order="BEFORE" >
-			SELECT	IFNULL(MAX(NOTICE_IDX), 0)
+		<selectKey keyProperty="notice_idx" resultType="int" order="BEFORE" >
+			SELECT	IFNULL(MAX(notice_idx), 0)
 			FROM	NOTICE
 		</selectKey>
 		INSERT
 		INTO	NOTICE
 		VALUES (
-			#{NOTICE_IDX} + 1
-			, #{MEM_ID}
-			, #{NOTICE_SUBJECT}
-			, #{NOTICE_CONTENT}
+			#{notice_idx} + 1
+			, #{mem_id}
+			, #{notice_subject}
+			, #{notice_content}
 			, NOW()
-			, 1					--	NOTICE_CAFE
-			, #{NOTICE_FILE}	
-			, 0					--	NOTICE_READ_COUNT
+			, 1					--	notice_cafe
+			, #{notice_file}	
+			, 0					--	notice_read_count
 			)
 		
 	</insert>
 	
+	<delete id="deleteBoard">
+		DELETE	
+		FROM	NOTICE
+		WHERE	NOTICE_IDX = #{notice_idx}
+	</delete>
+	
+	<update id="updateFile">
+		UPDATE	NOTICE
+		SET		NOTICE_FILE = #{updatedFileList}
+		WHERE	NOTICE_IDX	= #{notice_idx}
+	</update>
+	
+	<update id="addNoitceFile">
+		UPDATE	NOTICE AS N
+		  JOIN	(
+				SELECT	NOTICE_IDX, NOTICE_FILE
+     	      	  FROM	NOTICE
+    	     	 WHERE	NOTICE_IDX = #{notice_idx}
+				) AS S
+			ON	N.NOTICE_IDX = S.NOTICE_IDX
+		   SET	N.NOTICE_FILE = CONCAT (
+					IFNULL(N.NOTICE_FILE, '')
+					, ','
+					, IFNULL(#{fileName}, '')
+				)
+		WHERE	N.NOTICE_IDX = #{notice_idx}
+	</update>
+	
+	<update id="updateNoticeBoard">
+		UPDATE	NOTICE
+		SET		NOTICE_SUBJECT = #{notice_subject}
+				, NOTICE_CONTENT = #{notice_content}
+		WHERE	NOTICE_IDX = #{notice_idx}
+	</update>
+	
+	<update id="updateReadcount">
+		<selectKey keyProperty="notice_read_count" resultType="int" order="AFTER">
+			SELECT	NOTICE_READ_COUNT
+			FROM	NOTICE
+			WHERE	NOTICE_IDX = #{notice_idx}
+		</selectKey>
+	
+		UPDATE	NOTICE
+		SET		NOTICE_READ_COUNT = NOTICE_READ_COUNT + 1
+		WHERE	NOTICE_IDX = #{notice_idx}
+	</update>
 	
 	
 </mapper>

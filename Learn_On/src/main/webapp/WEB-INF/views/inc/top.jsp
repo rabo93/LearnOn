@@ -39,8 +39,8 @@
 			</div>
 			<div class="login-area">
 
-				<a href="#">나의 강의실</a>
-				<a href="#"><span>${sessionScope.sId}</span> 님</a>
+				<a href="MyDashboard">나의 강의실</a>
+				<a href="MyInfo"><span>${sessionScope.sId}</span> 님</a>
 				<a href="MemberLogout" onclick="logout()">로그아웃</a>
 				<div class="login-menu">
 <!-- 					<a href="MemberLogout" onclick="logout()">로그아웃</a> -->
@@ -68,8 +68,8 @@
 	        				<a href="MemberLogin" class="login-link">로그인을 해주세요. <i class="fa-solid fa-arrow-right-to-bracket"></i></a>
 						</c:when>
 						<c:otherwise>
-		        			<a href="#" class="my-info"><i class="fa-solid fa-gear"></i> <span>${sessionScope.sId} </span> 님</a>
-		        			<a href="#" class="my-course"> <i class="fa-solid fa-circle-play"></i> 나의 강의실</a>
+		        			<a href="MyInfo" class="my-info"><i class="fa-solid fa-gear"></i> <span>${sessionScope.sId} </span> 님</a>
+		        			<a href="MyDashboard" class="my-course"> <i class="fa-solid fa-circle-play"></i> 나의 강의실</a>
 						</c:otherwise>				
 					</c:choose>
         		</div>

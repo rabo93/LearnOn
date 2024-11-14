@@ -30,11 +30,13 @@
 .withdraw-link {font-size: 0.875rem;color: var(--gray);text-align:right;display: block;margin-top: 2rem;margin-left: auto;width: 60px;}
 
 /* 찜 목록 */
-.course-sel {text-align:right;margin:0 0 1rem;}
-.course-sel select {background: var(--white);border:0;color: var(--gray);padding: 0 1rem;border-radius:4px;font-size: 0.875rem;border: 1px solid #ddd;font-weight: 600;height: 36px;}
+.course-sel {/* text-align:right; */margin: 0 0 1rem;}
+.course-sel form {display:flex;align-items:center;justify-content:space-between;gap:1rem;}
+.course-sel select {background: var(--white);border:0;color: var(--gray);padding: 0 1rem;border-radius:4px;font-size: 0.875rem;border: 1px solid #ddd;font-weight: 600;height: 36px;margin-left: auto;}
 .course-card {display: grid;-webkit-column-gap: 1rem;column-gap: 1rem;row-gap: 1rem;grid-template-columns: repeat(4, minmax(0, 1fr));} 
 .course-card li {cursor:pointer;}
 .course-card.row-3 {grid-template-columns: repeat(3, minmax(0, 1fr))}
+.course-card.row-1 {grid-template-columns: 1fr}
 .course-card .card-thumb { display: block; object-fit: fill; border: 1px solid var(--light-gray); border-radius:1rem;} 
 .course-card .thumb-area {position:relative;}
 .course-card .thumb-area .fav-on {position:absolute;top: -1px;left: 26px;color: var(--secondary);font-size: 1.6rem;text-shadow: 1px 2px 3px rgba(0,0,0,0.2);background: transparent;}
@@ -48,6 +50,8 @@
 .course-card .card-info .rating i {color:var(--yellow);}
 .course-card .card-info .rating span {font-weight:700;color:var(--dark);}
 .course-card .card-info .name {font-size: 0.8rem;color:var(--gray);}
+.course-card .empty {background:url('/resources/images/no_data.svg') no-repeat center top;padding-top: 22rem;text-align:center;font-weight: 600;color: #434f61;margin-bottom: 2rem;background-size: auto 100%;}
+
 .btn-more {padding:0.8rem 3rem;font-size:1rem;border-radius:50px;margin:1rem auto;display:block;border:1px solid var(--light-gray);}
 
 @media screen and (max-width:1023px){
@@ -70,18 +74,19 @@
 #progress {appearance: none;width: 100%;}
 #progress::-webkit-progress-bar {background: var(--white);border-radius: 50px;border: 1px solid #bac3d2;height: 14px;width: 100%;overflow: hidden;}
 #progress::-webkit-progress-value {background: var(--primary);border-radius: 0px;height: 14px;width: 100%;}
-.card-info2 .btn-review {background: var(--white);color: var(--dark);padding: 0 1rem;border-radius: 4px;font-size: 0.875rem;border: 1px solid #ddd;font-weight: 600;height: 36px;margin: 4px auto;width: 100%;}
+.card-info2 .btn-review {background: var(--white);cursor:pointer;color: var(--dark);padding: 0 1rem;border-radius: 4px;font-size: 0.875rem;border: 1px solid #ddd;font-weight: 600;height: 36px;margin: 4px auto;width: 100%;}
 .card-info2 .btn-review i {color:var(--yellow);}
 .card-info2 .btn-write {background: var(--white);color: var(--primary);padding: 0 1rem;border-radius: 4px;font-size: 0.875rem;border: 1px solid #ddd;font-weight: 600;height: 36px;margin: 4px auto;width: 100%;}
 .my-tabs button {border-radius:50px;padding: 8px 12px;font-size: 14px;border: 1px solid #ddd;background: var(--white);font-weight: 500;}
 .my-tabs button.checked {border-color: var(--primary); color: var(--primary); font-weight: 700;}
+.my-tabs .reset-btn {background: var(--primary); color: var(--white); border: 1px solid var(--primary);}
 
 /* 별점 기능 */
 .course-rating {display:flex;align-items: center;justify-content: center;}
 .rating-input {display: none;}
-.rating-lab {width: 18px;overflow: hidden;cursor: pointer;margin-left: -2px;}
+.rating-lab {width: 33px;overflow: hidden;cursor: pointer;margin-left: -2px;}
 .rating-lab-full {margin-right:5px}
-.rating-lab .star-icon {width: 18px; height: 32px;display: block;position: relative;left: 0;background-image: url("/resources/images/ic-star-gray.svg");background-repeat: no-repeat;}
+.rating-lab .star-icon {width: 33px;height: 32px;display: block;position: relative;left: 0;background-image: url("/resources/images/ic-star-gray.svg");background-repeat: no-repeat;}
 .rating-lab-full .star-icon {background-position: right;}
 .rating-lab-half .star-icon {background-position: left;}
 .rating-lab .star-icon.filled {background-image: url("/resources/images/ic-star.svg");}
@@ -91,25 +96,28 @@
 .review-write .noti {padding: 1rem;background: var(--light-blue);margin: 1rem 0;line-height: 1.6;text-align: left;}
 .review-write .noti li {font-size: 0.875rem;padding-left: 1rem;font-weight: 500;color: var(--dark);position: relative;}
 .review-write .noti li:before {display:block;content:'';position:absolute;width: 3px;height: 3px;border-radius:50%;left: 5px;top: 9px;background: var(--dark);}
-.review-write textarea {width:100%;border:1px solid var(--light-gray);padding:1rem;font-size: 0.875rem;font-weight: 500;color: var(--dark);background: var(--milk);}
+.review-write .rev-ttl {width:100%;border:1px solid var(--light-gray);padding:0.8rem 1rem;font-weight:700;border-radius:4px;margin-bottom:10px;background:var(--milk);}
+.review-write .rev-ttl::placeholder {font-weight:500;font-size:0.875rem;}
+.review-write .rev-con {width:100%;border:1px solid var(--light-gray);padding:1rem;font-size: 0.875rem;font-weight: 500;color: var(--dark);background: var(--milk);}
 
 /* 작성한 수강평 목록 */
 .my-rev-li {display: grid;gap: 0.4rem;}
 .my-rev-li .rev-box {padding: 1rem;background:var(--white);border:1px solid #ddd;border-radius:10px;box-shadow: 0 0 5px rgba(0,0,0,0.1);}
-.my-rev-li .rev-box .info {display: flex;align-items: center;gap: 0 1rem;margin-bottom: 1rem;}
-.my-rev-li .rev-box .info img {width:120px;height:80px;object-fit:cover;border-radius:10px;border:1px solid #eee;grid-row: 1 / 3;}
+.my-rev-li .rev-box.empty {background:url('/resources/images/no_data.svg') no-repeat center top;padding-top: 22rem;text-align:center;font-weight: 600;color: #434f61;margin-bottom: 2rem;background-size: auto 100%;box-shadow: none;border: 0;}
+.my-rev-li .rev-box .info {display: flex;align-items: center;gap: 0 10px;margin-bottom: 10px;}
+.my-rev-li .rev-box .info img {width: 120px;height:80px;object-fit:cover;border-radius:10px;border:1px solid #eee;grid-row: 1 / 3;}
 .my-rev-li .rev-box .info .ttl {font-size: 1rem;font-weight:700;margin-bottom: 4px;}
 .my-rev-li .rev-box .info .name {font-size: 0.875rem;color:var(--gray);font-weight:600;}
 
-.my-rev-li .rev-box .detail { border-top: 1px solid #ddd; padding: 1rem 1rem 0; font-size: 0.875rem;}
-.my-rev-li .rev-box .detail .date {font-size: 12px; font-weight: 700; color: var(--gray); margin-bottom: 6px;}
+.my-rev-li .rev-box .detail {border-top: 1px solid #ddd;padding: 10px 10px 0;font-size: 0.875rem;}
+.my-rev-li .rev-box .detail .date {font-size: 12px;font-weight: 700;color: var(--gray);margin-bottom: 6px;}
 .my-rev-li .rev-box .detail .date span {}
-.my-rev-li .rev-box .detail .rating {font-size: 0.875rem; margin-bottom: 6px; font-weight: 700; color: var(--dak);}
+.my-rev-li .rev-box .detail .rating {margin-bottom: 6px;font-weight: 700;color: var(--dak);}
 .my-rev-li .rev-box .detail .rating i { color: var(--yellow);}
 .my-rev-li .rev-box .detail .rating span {}
 .my-rev-li .rev-box .detail .content {color: var(--dark);font-weight: 500;line-height: 1.4;}
 
-.my-rev-li .rev-box .btns {margin: 5px 0 0;display: flex;align-items: center;justify-content: right;gap: 1rem;}
+.my-rev-li .rev-box .btns {margin: 5px 0 0;display: flex;align-items: center;justify-content: right;gap: 0.5rem;}
 .my-rev-li .rev-box .btns .btn-rev {padding: 8px 1rem;border: 1px solid #ddd;border-radius: 4px;font-weight: 700;color: var(--dark);background: var(--light-blue);}
 
 /* 결제내역 */
@@ -147,7 +155,7 @@
 
 /* 쿠폰 */
 .coupon-wrap{display: flex;align-items: stretch;justify-content: center;gap: 1rem;width: 100%;}
-.coupon-total {background: var(--white);border: 1px solid #ddd;border-radius: 8px;padding: 20px 0;flex: 0 0 150px;display: flex;align-items: center;justify-content: center;flex-direction: column;}
+.coupon-total {background: var(--white);border: 1px solid #ddd;border-radius: 8px;padding: 20px 0;flex: 0 0 150px;display: flex;align-items: center;justify-content: center;flex-direction: column;max-height: 300px;}
 .coupon-total .coupon-title {font-size: 0.875rem;color: var(--dark);font-weight: 700;margin-bottom: 6px;}
 .coupon-total .coupon-count {font-size: 1.4rem;font-weight: 700;color: var(--primary);display: inline-block;}
 .coupon-total .coupon-unit {font-size: 0.875rem;font-weight: 700;color: var(--gray);display: inline-block;}

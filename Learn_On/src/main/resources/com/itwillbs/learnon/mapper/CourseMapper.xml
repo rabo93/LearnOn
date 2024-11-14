@@ -89,6 +89,7 @@
 	<select id="selectCourseSupportList" resultType="cSupport">
 		SELECT *
 		  FROM CLASS_SUPPORT
+ 	 	 WHERE C_CLASS_ID = #{c_class_id}
 		  
 	</select>
 	<insert id="insertCourseSupport">

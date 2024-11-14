@@ -75,7 +75,6 @@ public class CourseController {
 	
 	@PostMapping("CourseSupportWrite") 
 	public String faqWrite(CourseSupportVO cSupport, int class_id, HttpSession session, Model model) {
-		System.out.println("클래스아이딪ㄷㅂㄱㅃㄸ@#$!$!@#$!@#$@#$ " + class_id);
 		String id = (String)session.getAttribute("sId");
 		cSupport.setMem_id(id);
 		cSupport.setC_class_id(class_id);

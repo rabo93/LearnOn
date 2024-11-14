@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itwillbs.learnon.mapper.CartMapper">
+	<resultMap type="" id="">
+	
+	
+	
+	
+	
+	</resultMap>
+
+
+
+	<!-- 회원ID로 장바구니 목록 조회 (결과반환: CartVO(String))-->
+	<select id="selectCart" resultType="cart" parameterType="string">
+		SELECT
+			 ca.CARTITEM_IDX
+			, cl.CLASS_ID 
+			, cl.CLASS_TITLE
+			, m.MEM_ID
+			, m.MEM_NAME -- 강사명
+			, cl.CLASS_PRICE
+			, cl.CLASS_PIC1 -- 썸네일사진
+			, 
+		FROM CLASS cl JOIN MEMBER m
+		ON cl.MEM_ID = m.MEM_ID
+		JOIN CART ca
+		ON cl.CLASS_ID = ca.CLASS_ID
+		WHERE ca.MEM_ID = #{memId} -- 로그인한 회원
+<!-- 		WHERE ca.MEM_ID = 'rabo';-->
+		ORDER BY ca.CARTITEM_IDX DESC -- 최근에 담은 목록순
+	</select>
+	
+	
+	
+	<!-- 각 상품 X클릭시 장바구니 삭제 -->
+	<delete id="deleteCart">
+		DELETE 
+		FROM CART
+		WHERE CARTITEM_IDX = #{CARTITEM_IDX} 
+		-- AND MEM_ID = #{MEM_ID}
+	</delete>
+	
+	
+	
+	
+	
+	
+	
+</mapper>

@@ -55,13 +55,26 @@
 	<!-- 게시판 등록 -->
 	<article id="writeForm">
 		<h1>문의하기</h1>
-		<form action="CourseFaqWrite" method="post">
-		<input type="hidden" name="faq_idx">
+		
+		<form action="CourseSupportWrite" method="post">
+		
+ 			<input type="hidden" name="class_id" value="${param.class_id}">
+ 			<select name="c_support_category">
+ 				<option>카테고리 선택</option>
+ 				<option value="강의수강/영상" <c:if test="${param.c_support_cate eq '01'}">selected</c:if>>수강/영상</option>
+ 				<option value="강의결제/환불" <c:if test="${param.c_support_cate eq '02'}">selected</c:if>>결제/환불</option>
+ 				<option value="강의기타" <c:if test="${param.c_support_cate eq '03'}">selected</c:if>>기타</option>
+ 			</select>
+ 			
 			<table>
 				<tr>
-					<td><label for="board_content">내용</label></td>
+					<td>제목</td>
+					<td><input type="text" name="c_support_subject"/></td>
+				</tr>
+				<tr>
+					<td>내용</td>
 					<td>
-						<textarea id="board_content" name="faq_content" rows="15" cols="40" required="required" placeholder="문의할 내용"></textarea>
+						<textarea name="c_support_content" rows="15" cols="40" required="required" placeholder="문의할 내용"></textarea>
 					</td>
 				</tr>
 				

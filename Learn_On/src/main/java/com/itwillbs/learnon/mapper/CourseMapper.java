@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.itwillbs.learnon.vo.CommonCodeTypeVO;
+import com.itwillbs.learnon.vo.CourseSupportVO;
 import com.itwillbs.learnon.vo.CourseVO;
 import com.itwillbs.learnon.vo.FaqVO;
 import com.itwillbs.learnon.vo.MyReviewVO;
@@ -25,6 +26,8 @@ public interface CourseMapper {
 
 	List<MyReviewVO> selectReviewList(int class_id);
 
-	int insertFaq(FaqVO faq);
+	int insertCourseSupport(CourseSupportVO cSupport);
+
+	List<CourseSupportVO> selectCourseSupportList();
 
 }

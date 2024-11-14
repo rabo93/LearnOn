@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.itwillbs.learnon.mapper.CourseMapper;
 import com.itwillbs.learnon.vo.CommonCodeTypeVO;
+import com.itwillbs.learnon.vo.CourseSupportVO;
 import com.itwillbs.learnon.vo.CourseVO;
 import com.itwillbs.learnon.vo.FaqVO;
 import com.itwillbs.learnon.vo.MyReviewVO;
@@ -35,8 +36,12 @@ public class CourseService {
 		return mapper.selectReviewList(class_id);
 	}
 
-	public int registFaq(FaqVO faq) {
-		return mapper.insertFaq(faq);
+	public int registCourseSupport(CourseSupportVO cSupport) {
+		return mapper.insertCourseSupport(cSupport);
+	}
+
+	public List<CourseSupportVO> getCourseSupportList() {
+		return mapper.selectCourseSupportList();
 	}
 	
 

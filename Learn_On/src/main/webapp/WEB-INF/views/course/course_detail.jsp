@@ -77,7 +77,7 @@
 							
 							<div class="tabmenu" id="tab03">
 								<div class="review_title">
-									<h2>수강평</h2><h4>(전체 개)</h4>
+									<h2>수강평</h2><h4>(전체 ???개)</h4>
 									<select>
 										<option>최신순</option>
 										<option>오래된순</option>
@@ -112,58 +112,49 @@
 							
 							<div class="tabmenu" id="tab04">
 								<div class="question_title">
-									<h2>문의</h2><h4>(전체 3개)</h4>
-						            <button onclick="window.location.href='CourseFaq?class_id=${course[0].class_id}'">
+									<h2>문의</h2><h4>(전체 ???? 개)</h4>
+						            <button onclick="window.location.href='CourseSupport?class_id=${course[0].class_id}'">
 						            	문의작성하기
 						            </button>
 					            </div>
 					            
-					            <div class="question_qna">
-						            <div class="question_q">
-									    <div class="r_header">
-									        <div class="profile-icon"></div>
-									        <div class="user-info">
-									            <div class="name">초보자</div>
-									            <div class="date">2024.10.30</div>
-									        </div>
-									    </div>
-									    <div class="review-text">
-									        안녕하세요. 강의 난이도가 궁금합니다. 초보자도 들을 수 있나요??
-									    </div>
-									</div>
-									
-									<div class="question_a">
-									    <div class="r_header">
-									        <div class="profile-icon"></div>
-									        <div class="user-info">
-									            <div class="name">자바강사 홍길동</div>
-									            <div class="date">2024.10.30</div>
-									        </div>
-									    </div>
-									    <div class="review-text">
-									        초보자도 열심히 따라오시면 충분히 가능합니다.
-									    </div>
-									</div>
-								</div>
-								<div class="question_qna">
-						            <div class="question_q">
-									    <div class="r_header">
-									        <div class="profile-icon"></div>
-									        <div class="user-info">
-									            <div class="name">홍길동</div>
-									            <div class="date">2024.11.07</div>
-									        </div>
-									    </div>
-									    <div class="review-text">
-									        안녕하세요. 자바 교재는 무엇으로 하나요??
-									    </div>
-									</div>
-									
-								</div>
+					            <c:forEach var="support" items="${courseSupportList}">
+						            <div class="question_qna">
+							            <div class="question_q">
+										    <div class="r_header">
+										        <div class="profile-icon"></div>
+										        <div class="user-info">
+										            <div class="name">${support.mem_id}</div>
+										            <div class="date">${support.c_support_date}</div>
+										        </div>
+										    </div>
+										    <div class="review-title">
+										    	${support.c_support_subject}
+										    </div>
+										    <div class="review-text">
+										        ${support.c_support_content}
+										    </div>
+										</div>
+										
+										
+										
+										<div class="question_a">
+										    <div class="r_header">
+										        <div class="profile-icon"></div>
+										        <div class="user-info">
+										            <div class="name"></div>
+										            <div class="date"></div>
+										        </div>
+										    </div>
+										    <div class="review-text">
+										    </div>
+										</div>
+									</div> <!-- question_qna 문의사항 질문-답변 -->
+								</c:forEach>
 							</div>
 							
 							
-						</div><!-- tabcontent 끝 -->
+						</div><!-- tabcontent(클래스소개) 끝 -->
 						
 							
 				    </div>

@@ -332,6 +332,7 @@
     color: #333;
     line-height: 1.5;
     margin-top: 10px;
+    border-top: #ddd 1px solid;
 }
 
 

@@ -5,7 +5,7 @@
 <mapper namespace="com.itwillbs.learnon.mapper.CourseMapper">
 	<select id="selectCourseList" resultType="course">
 		SELECT C.CLASS_TITLE 
-		     , C.MEM_ID
+		     , M.MEM_NAME AS MEM_ID 
 		     , C.CLASS_INTRO
 		     , C.CLASS_PRICE
 		     , C.CLASS_CATEGORY
@@ -20,35 +20,22 @@
 			 , T.DESCRIPTION
 			 , (SELECT CODENAME FROM COMMONCODE WHERE CODEID = #{course.codetype}) as CATENAME
 			 , T.CODETYPE_ID
-			 , (SELECT TRUNCATE(AVG(REVIEW_SCORE), 1) FROM REVIEW WHERE CLASS_ID=#{course.class_id}) AS REVIEW_SCORE
+			 , R.REVIEW_SCORE
 		  FROM CLASS C
-		  JOIN COMMONCODETYPE T 
-		    ON C.CLASS_CATEGORY = T.NAME
+	LEFT  JOIN MEMBER M ON C.MEM_ID = M.MEM_ID
+		  JOIN COMMONCODETYPE T ON C.CLASS_CATEGORY = T.NAME
+ 	 LEFT JOIN (SELECT TRUNCATE(AVG(REVIEW_SCORE), 1) AS REVIEW_SCORE, CLASS_ID FROM REVIEW GROUP BY CLASS_ID) R ON R.CLASS_ID  = C.CLASS_ID
 		 WHERE 1 = 1
 		  AND T.CODETYPE = #{course.codetype}
   		 <if test="course.CODETYPE_ID != null"> 
 		  AND T.CODETYPE_ID = #{course.codetype_id}
 		 </if>
-		 
-		 <if test="searchType.equals('')">
+		 <choose>
+		 	<when test="searchType.equals('new')">
 		 	 ORDER BY CLASS_ID DESC
-		 </if>
-		  <if test="!searchType.equals('')">	 
-			 <choose>
-		  		<when test="searchType.equals('new')">
-		  			ORDER BY CLASS_ID DESC
-		  		</when>
-		  		<when test="searchType.equals('title')">
-		  			ORDER BY CLASS_TITLE DESC
-		  		</when>
-		  		<when test="searchType.equals('price')">
-		  			ORDER BY CLASS_PRICE DESC
-		  		</when>
-		  		<when test="searchType.equals('score')">
-		  			ORDER BY REVIEW_SCORE DESC
-		  		</when>
-			 </choose>
-		</if>
+		 	</when>
+		 </choose>
+		  
 	</select>
 	
 	
@@ -88,7 +75,6 @@
 		   WHERE C.CLASS_ID = #{class_id}
 	</select>
 	
-<!-- 	<select id="selectReviewList" resultType="myReviewVO" parameterType="int"> -->
 	<select id="selectReviewList" resultType="myreview" parameterType="int">
 		SELECT M.MEM_NAME AS MEM_ID
 			 , R.REVIEW_DATE
@@ -100,22 +86,30 @@
 		  JOIN MEMBER M ON M.MEM_ID = R.MEM_ID
 		 WHERE R.CLASS_ID = #{class_id}
 	</select>
-	
-	<insert id="insertFaq" parameterType="faq">
-		<selectKey keyProperty="faq_idx" resultType="int" order="BEFORE">
-			SELECT IFNULL(MAX(FAQ_IDX),0)
-			  FROM FAQ
+	<select id="selectCourseSupportList" resultType="cSupport">
+		SELECT *
+		  FROM CLASS_SUPPORT
+		  
+	</select>
+	<insert id="insertCourseSupport">
+		<selectKey keyProperty="c_support_idx" resultType="int" order="BEFORE">
+			SELECT IFNULL(MAX(C_SUPPORT_IDX),0)
+			  FROM CLASS_SUPPORT
 		</selectKey>
 		INSERT
-		  INTO FAQ
+		  INTO CLASS_SUPPORT 
 	    VALUES (
-		       #{faq_idx} +1
-		     , #{faq_subject}
-		     , #{faq_content} 
-		     , #{faq_cate} 
-		     , #{faq_file} 
-		     , #{class_category} 
+		       #{c_support_idx} +1
+		     , now()
+		     , #{c_support_category}
+		     , #{mem_id} 
+		     , #{c_support_subject} 
+		     , #{c_support_content} 
+		     , #{c_support_answer_date} 
+		     , #{c_support_answer_subject} 
+		     , #{c_support_answer_content} 
+		     , #{c_support_file} 
+		     , #{c_class_id}
 		)   
 	</insert>
-	
 </mapper>

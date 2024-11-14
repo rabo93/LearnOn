@@ -11,3 +11,5 @@ public class FaqVO {
 	private String faq_file; 
 	private int class_category;
 }
+
+

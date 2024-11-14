@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+ <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+ <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -41,31 +43,32 @@
 					<section class="coupon-wrap">
 						<div class="coupon-total">
 					        <div class="coupon-title">사용가능한 쿠폰</div>
-					        <div class="coupon-count">2</div>
+					        <div class="coupon-count">${couponCount}</div>
 					        <div class="coupon-unit">개</div>
 						</div>
 						<div class="coupon-list">
 					    	<ul class="myCoupon">
-					    		<li id="coupon1">
-					    			<p class="c-name">🎉오픈기념🎉 반짝 쿠폰✨</p>
-					    			<p class="c-exp-date">사용기한 : ~ 2025.01.20</p>
-					    			<p class="c-dis">30%</p>
-					    		</li>
-					    		<li id="coupon2">
-					    			<p class="c-name">🐤신규가입🐤 쿠폰</p>
-					    			<p class="c-exp-date">사용기한 : ~ 2025.01.20</p>
-					    			<p class="c-dis">10,000원</p>
-					    		</li>
-					    		<li id="coupon3">
-					    			<p class="c-name">생일 기념 반값 쿠폰</p>
-					    			<p class="c-exp-date">사용기한 : ~ 2025.01.20</p>
-					    			<p class="c-dis">50%</p>
-					    		</li>
-					    		<li id="coupon3" class="end">
-					    			<p class="c-name">생일 기념 반값 쿠폰</p>
-					    			<p class="c-exp-date">사용기한 : ~ 2025.01.20</p>
-					    			<p class="c-dis">50%</p>
-					    		</li>
+					    		<c:forEach var="coupon" items="${myCoupon}">
+					    			<li class="<c:if test='${coupon.COUPON_STATUS >= 2}'>end</c:if>">
+						    			<p class="c-name">${coupon.COUPON_NAME}</p>
+						    			<p class="c-exp-date">
+						    				사용기한 : ~ 
+						    				<fmt:parseDate value="${coupon.C_EXPIRY_DATE}" var="couponDate" pattern="yyyyMMdd" />
+						    				<fmt:formatDate value="${couponDate}" pattern="yyyy년 MM월 dd일" /> 까지
+						    			</p>
+						    						
+						    			<p class="c-dis">
+						    				<c:choose>
+						    					<c:when test="${not empty coupon.DISCOUNT_PERCENT}">
+						    						${coupon.DISCOUNT_PERCENT} %
+						    					</c:when>
+						    					<c:when test="${not empty coupon.DISCOUNT_AMOUNT}">
+						    						${coupon.DISCOUNT_AMOUNT} 원
+						    					</c:when>
+						    				</c:choose>
+						    			</p>
+						    		</li>
+					    		</c:forEach>
 					    	</ul>
 						</div>
 					</section>

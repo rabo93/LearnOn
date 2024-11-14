@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/modal.css">
     
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/modal.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/dashboard.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/rating.js"></script>
 
 </head>
@@ -42,14 +42,15 @@
 				<div class="contents">
 					<!-- contents -->
 					<section class="dashboard-wrap">
-						<div class="my-tabs">
-							<button class="checked">학습중</button>
-							<button>완강</button>
-							<button class="checked">수강평 작성</button>
-						</div>
+						
 						<div class="course-sel">
-							<form action="MyDashboard" method="get">
-								<select id="course_sel" name="filterType" onchange="this.form.submit(filterType.value)">
+							<form action="MyDashboard" method="get" class="course-sel-form">
+								<div class="my-tabs">
+									<button class="reset-btn" onclick="this.form.reset()"><i class="fa-solid fa-rotate"></i> 초기화</button>
+									<button class="status-studying <c:if test="${param.statusType eq 'studying'}">checked</c:if>" name="statusType" value="studying" onclick="toggleStatus('studying')">학습중</button>
+									<button class="status-completed <c:if test="${param.statusType eq 'completed'}">checked</c:if>" name="statusType" value="completed" onclick="toggleStatus('completed')">완강</button>
+								</div>
+								<select id="course_sel" name="filterType" onchange="this.form.submit()">
 									<option value="newest" <c:if test="${param.filterType eq 'newest'}">selected</c:if>>최신순</option>
 									<option value="title" <c:if test="${param.filterType eq 'title'}">selected</c:if>>제목순</option>
 								</select>
@@ -177,24 +178,24 @@
         		<input type="hidden" id="course_id" name="class_id">
 	        	<!-- 별점 -->
 	        	<section class="course-rating">
-				    <label class="rating-lab rating-lab-full" for="star1">
-				        <input type="radio" id="star1" class="rating-input" name="review_score" value="1">
+				    <label class="rating-lab rating-lab-full" for="star01">
+				        <input type="radio" id="star01" class="rating-input" name="review_score" value="1">
 				        <span class="star-icon"></span>
 				    </label>
-				    <label class="rating-lab rating-lab-full" for="star2">
-				        <input type="radio" id="star2" class="rating-input" name="review_score" value="2">
+				    <label class="rating-lab rating-lab-full" for="star02">
+				        <input type="radio" id="star02" class="rating-input" name="review_score" value="2">
 				        <span class="star-icon"></span>
 				    </label>
-				    <label class="rating-lab rating-lab-full" for="star3">
-				        <input type="radio" id="star3" class="rating-input" name="review_score" value="3">
+				    <label class="rating-lab rating-lab-full" for="star03">
+				        <input type="radio" id="star03" class="rating-input" name="review_score" value="3">
 				        <span class="star-icon"></span>
 				    </label>
-				    <label class="rating-lab rating-lab-full" for="star4">
-				        <input type="radio" id="star4" class="rating-input" name="review_score" value="4">
+				    <label class="rating-lab rating-lab-full" for="star04">
+				        <input type="radio" id="star04" class="rating-input" name="review_score" value="4">
 				        <span class="star-icon"></span>
 				    </label>
-				    <label class="rating-lab rating-lab-full" for="star5">
-				        <input type="radio" id="star5" class="rating-input" name="review_score" value="5">
+				    <label class="rating-lab rating-lab-full" for="star05">
+				        <input type="radio" id="star05" class="rating-input" name="review_score" value="5">
 				        <span class="star-icon"></span>
 				    </label>
 	        	</section>

@@ -61,27 +61,37 @@
 					   AND R.MEM_ID = A.MEM_ID
 		WHERE A.MEM_ID = #{id}
 		<choose>
-		 	<when test="filterType.equals('newest')">
+			<when test="statusType == 'studying'">
+			  AND A.COURSE_STATUS = 1
+			</when>
+			<when test="statusType == 'completed'">
+			  AND A.COURSE_STATUS = 2
+			</when>
+		</choose>
+		<choose>
+		 	<when test="filterType == 'newest'">
 				ORDER BY C.CLASS_REG_DATE DESC
 		 	</when>
-		 	<when test="filterType.equals('title')">
+		 	<when test="filterType == 'title'">
 				ORDER BY C.CLASS_TITLE
 		 	</when>
 		 </choose>
 	</select>
 	<insert id="insertReview">
+		<selectKey keyProperty="review_idx" resultType="int" order="BEFORE">
+			SELECT IFNULL(MAX(REVIEW_IDX), 0)
+			FROM REVIEW
+		</selectKey>
 		-- 수강평 등록
 		INSERT 
 		INTO REVIEW
 		VALUES (
-				null 				-- 번호 자동증가
+				#{review_idx} + 1 				-- 번호 자동증가
 				, #{mem_id}
-			    , #{review_subject}
 			    , #{review_content}
 			    , NOW()
 			    , #{class_id}
 			    , #{review_score}
-			    , null
 			    , null
 		   		)
 	</insert>
@@ -146,15 +156,49 @@
 		    ON C.MEM_ID = M.MEM_ID
 		 WHERE R.MEM_ID = #{mem_id}
 		   AND R.CLASS_ID = #{class_id}
+		 ORDER BY R.REVIEW_IDX DESC
 	</select>
 	<update id="updateReview">
+		-- 작성된 수강 후기 수정
 		UPDATE REVIEW
 		   SET
-			   REVIEW_CONTENT = #{review_content}
-	    	   , REVIEW_DATE = NOW()
+	    	   REVIEW_DATE = NOW()
+		   <if test="review_content != null and review_content != ''">
+			   , REVIEW_CONTENT = #{review_content}
+		   </if>
+		   <if test="review_score != null and review_score != 0">
 	    	   , REVIEW_SCORE = #{review_score}
+		   </if>
 		 WHERE 
 		 	   MEM_ID = #{mem_id}
 		   AND CLASS_ID = #{class_id}
 	</update>
+	<delete id="deleteReview">
+		-- 수강 후기 삭제
+		DELETE 
+		  FROM REVIEW
+		 WHERE MEM_ID = #{mem_id}
+		   AND CLASS_ID = #{class_id};
+	</delete>
+	<select id="selectCoupon" resultType="map">
+		-- 쿠폰 목록 조회
+		SELECT M.COUPON_ID
+			   , M.ISSUE_DATE
+		       , M.COUPON_STATUS
+		       , C.COUPON_NAME
+		       , C.COUPON_CODE
+		       , C.DISCOUNT_PERCENT
+		       , C.DISCOUNT_AMOUNT
+		       , C.C_EXPIRY_DATE
+		  FROM MYCOUPON M
+		  JOIN COUPONINFO C
+		    ON M.COUPON_ID = C.COUPON_ID
+		WHERE M.MEM_ID = #{mem_id}
+	</select>
+	<select id="selectCouponCount" resultType="int">
+		SELECT COUNT(*) AS COUPON_COUNT
+		  FROM MYCOUPON
+		 WHERE MEM_ID = #{mem_id}
+		   AND COUPON_STATUS != 2
+	</select>
 </mapper>

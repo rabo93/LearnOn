@@ -1,6 +1,7 @@
 package com.itwillbs.learnon.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -19,7 +20,7 @@ public interface MypageMapper {
 	int deleteWish(String class_id);
 
 	// 나의 강의실 목록 조회
-	List<MyCourseVO> selectMyCourse(@Param("id") String id, @Param("filterType") String filterType, String statusType);
+	List<MyCourseVO> selectMyCourse(@Param("id") String id, @Param("filterType") String filterType, @Param("statusType") String statusType);
 
 	// 수강평 등록
 	int insertReview(MyReviewVO review);
@@ -41,6 +42,15 @@ public interface MypageMapper {
 
 	// 작성된 수강 후기 수정 요청
 	int updateReview(MyReviewVO review);
+
+	// 수강 후기 삭제
+	int deleteReview(MyReviewVO review);
+
+	// 쿠폰 목록 조회
+	List<Map<String, Object>> selectCoupon(String id);
+
+	// 쿠폰 개수 조회
+	int selectCouponCount(String id);
 	
 	
 

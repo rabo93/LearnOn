@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/modal.css">
     
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/modal.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/review.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/rating.js"></script>
 
 </head>
@@ -44,13 +44,13 @@
 					<section class="my-rev-wrap">
 						<div class="my-rev-li">
 							<c:choose>
-								<c:when test="${empty myReview}">
+								<c:when test="${empty myReviewList}">
 									<article class="rev-box empty">
 										작성한 수강평이 존재하지 않습니다.
 									</article>
 								</c:when>
 								<c:otherwise>
-									<c:forEach var="review" items="${myReview}">
+									<c:forEach var="review" items="${myReviewList}">
 										<article class="rev-box">
 											<div class="info">
 												<img src="/resources/images/thumb_06.webp" alt="썸네일">
@@ -69,8 +69,8 @@
 													${review.review_content}
 												</div>
 												<div class="btns">
-													<button class="btn-rev" onclick="showModal('viewWriteReview')">수정</button>
-													<button class="btn-rev" onclick="">삭제</button>
+													<button class="btn-rev" onclick="showUpdateModal(${review.class_id})">수정</button>
+													<button class="btn-rev" onclick="showDeleteModal(${review.class_id})">삭제</button>
 												</div>
 											</div>
 										</article>
@@ -78,75 +78,6 @@
 								</c:otherwise>
 							</c:choose>
 						</div>
-						<!-- 수강평 수정하기 모달 -->
-					    <div class="modal" id="viewWriteReview">
-					      <div class="modal-dim" onclick="hideModal('viewWriteReview')"></div>
-					      <div class="modal-layer">
-					        <div class="modal-hd">수강평 수정하기</div>
-					        <button class="modal-close" onclick="hideModal('viewWriteReview')"><i class="fa-solid fa-xmark"></i></button>
-					        <div class="modal-con">
-					        	<form id="review_update_frm" action="" method="post">
-						        	<!-- 별점 -->
-						        	<section class="course-rating">
-						        		<label class="rating-lab rating-lab-half" for="starhalf">
-									        <input type="radio" id="starhalf" class="rating-input" name="rating" value="">
-									        <span class="star-icon"></span>
-									    </label>
-									    <label class="rating-lab rating-lab-full" for="star1">
-									        <input type="radio" id="star1" class="rating-input" name="rating" value="">
-									        <span class="star-icon"></span>
-									    </label>
-									    <label class="rating-lab rating-lab-half" for="star1half">
-									        <input type="radio" id="star1half" class="rating-input" name="rating" value="">
-									        <span class="star-icon"></span>
-									    </label>
-									    <label class="rating-lab rating-lab-full" for="star2">
-									        <input type="radio" id="star2" class="rating-input" name="rating" value="">
-									        <span class="star-icon"></span>
-									    </label>
-									    <label class="rating-lab rating-lab-half" for="star2half">
-									        <input type="radio" id="star2half" class="rating-input" name="rating" value="">
-									        <span class="star-icon"></span>
-									    </label>
-									    <label class="rating-lab rating-lab-full" for="star3">
-									        <input type="radio" id="star3" class="rating-input" name="rating" value="">
-									        <span class="star-icon"></span>
-									    </label>
-									    <label class="rating-lab rating-lab-half" for="star3half">
-									        <input type="radio" id="star3half" class="rating-input" name="rating" value="">
-									        <span class="star-icon"></span>
-									    </label>
-									    <label class="rating-lab rating-lab-full" for="star4">
-									        <input type="radio" id="star4" class="rating-input" name="rating" value="">
-									        <span class="star-icon"></span>
-									    </label>
-									    <label class="rating-lab rating-lab-half" for="star4half">
-									        <input type="radio" id="star4half" class="rating-input" name="rating" value="">
-									        <span class="star-icon"></span>
-									    </label>
-									    <label class="rating-lab rating-lab-full" for="star5">
-									        <input type="radio" id="star5" class="rating-input" name="rating" value="">
-									        <span class="star-icon"></span>
-									    </label>
-						        	</section>
-						        	<!-- // 별점 -->
-						        	<!-- 수강평 -->
-					        		<section class="review-write">
-					        			<ul class="noti">
-					        				<li>공개 게시판이므로 소중한 개인정보를 남기지 않도록 해주세요.</li>
-					        				<li>사적인 상담 및 광고성, 욕설, 비방, 도배 등 부적절한 글은 무통보 삭제처리될 수 있습니다.</li>
-					        			</ul>
-					        			<textarea class="rev-con" name="review_content" rows="6">작성한 수강평 내용 다시 뿌리기</textarea>
-					        		</section>
-					        	</form>
-					        </div>
-					        <div class="modal-ft">
-					          <button class="normal" onclick="hideModal('viewWriteReview')">취소</button>
-					          <button type="submit" form="review_update_frm" class="active" onclick="hideModal('viewWriteReview')">수정하기</button>
-					        </div>
-					      </div>
-					    </div>
-						<!-- // 수강평 수정하기 모달 -->
 					</section>
 					<!-- // contents -->
 				</div>
@@ -156,5 +87,76 @@
 	<footer>
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
 	</footer>
+	<!-- 수강평 수정하기 모달 -->
+    <div class="modal" id="updateReview">
+      <div class="modal-dim" onclick="hideModal('updateReview')"></div>
+      <div class="modal-layer">
+        <div class="modal-hd">수강평 수정하기</div>
+        <button class="modal-close" onclick="hideModal('updateReview')"><i class="fa-solid fa-xmark"></i></button>
+        <div class="modal-con">
+        	<form id="review_update_frm" action="MyReviewUpdate" method="post">
+        		<input type="hidden" name="mem_id" value="${sessionScope.sId}">
+        		<input type="hidden" id="course_id" name="class_id">
+	        	<!-- 별점 -->
+	        	<section class="course-rating">
+				    <label class="rating-lab rating-lab-full" for="star1">
+				        <input type="radio" id="star1" class="rating-input" name="review_score" value="1">
+				        <span class="star-icon"></span>
+				    </label>
+				    <label class="rating-lab rating-lab-full" for="star2">
+				        <input type="radio" id="star2" class="rating-input" name="review_score" value="2">
+				        <span class="star-icon"></span>
+				    </label>
+				    <label class="rating-lab rating-lab-full" for="star3">
+				        <input type="radio" id="star3" class="rating-input" name="review_score" value="3">
+				        <span class="star-icon"></span>
+				    </label>
+				    <label class="rating-lab rating-lab-full" for="star4">
+				        <input type="radio" id="star4" class="rating-input" name="review_score" value="4">
+				        <span class="star-icon"></span>
+				    </label>
+				    <label class="rating-lab rating-lab-full" for="star5">
+				        <input type="radio" id="star5" class="rating-input" name="review_score" value="5">
+				        <span class="star-icon"></span>
+				    </label>
+	        	</section>
+	        	<!-- // 별점 -->
+	        	<!-- 수강평 -->
+        		<section class="review-write">
+        			<ul class="noti">
+        				<li>공개 게시판이므로 소중한 개인정보를 남기지 않도록 해주세요.</li>
+        				<li>사적인 상담 및 광고성, 욕설, 비방, 도배 등 부적절한 글은 무통보 삭제처리될 수 있습니다.</li>
+        			</ul>
+        			<textarea class="rev-con" name="review_content" rows="6"></textarea>
+        		</section>
+        	</form>
+        </div>
+        <div class="modal-ft">
+          <button class="normal" onclick="hideModal('updateReview')">취소</button>
+          <button type="submit" form="review_update_frm" class="active" onclick="hideModal('updateReview')">수정하기</button>
+        </div>
+      </div>
+    </div>
+	<!-- // 수강평 수정하기 모달 -->
+	<!-- 수강평 삭제하기 모달 -->
+    <div class="modal" id="deleteReview">
+      <div class="modal-dim" onclick="hideModal('deleteReview')"></div>
+      <div class="modal-layer">
+        <div class="modal-hd">수강평 삭제하기</div>
+        <button class="modal-close" onclick="hideModal('deleteReview')"><i class="fa-solid fa-xmark"></i></button>
+        <div class="modal-con">
+        	<form id="review_delete_frm" action="MyReviewDelete" method="post">
+        		<input type="hidden" name="mem_id" value="${sessionScope.sId}">
+        		<input type="hidden" id="course_id" name="class_id">
+        		<p>해당 수강평을 삭제하시겠습니까?</p>
+        	</form>
+        </div>
+        <div class="modal-ft">
+          <button class="normal" onclick="hideModal('deleteReview')">취소</button>
+          <button type="submit" form="review_delete_frm" class="active" onclick="hideModal('deleteReview')">삭제하기</button>
+        </div>
+      </div>
+    </div>
+	<!-- // 수강평 삭제하기 모달 -->
 </body>
 </html>

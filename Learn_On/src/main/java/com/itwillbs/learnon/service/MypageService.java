@@ -29,6 +29,7 @@ public class MypageService {
 		return myMapper.selectMyCourse(id, filterType, statusType);
 	}
 
+	// 수강후기 등록
 	public int registReview(MyReviewVO review) {
 		return myMapper.insertReview(review);
 	}
@@ -44,15 +45,16 @@ public class MypageService {
 		return myMapper.selectIsReviewed(id, class_id);
 	}
 
-	// 수강 후기 목록, 개수 조회
-	public Map<String, Object> getMyReview(MyReviewVO review) {
-		Map<String, Object> reviewMap = new HashMap<String, Object>();
-		
-		reviewMap.put("myReview", myMapper.selectReview(review));
-		reviewMap.put("myReviewCount", myMapper.selectReviewCount(review));
-		
-		return reviewMap;
+	// 수강 후기 목록 조회
+	public List<MyReviewVO> getMyReview(MyReviewVO review) {
+		return myMapper.selectReview(review);
 	}
+	
+	// 수강 후기 개수 조회
+	public int getMyReviewCount(MyReviewVO review) {
+		return myMapper.selectReviewCount(review);
+	}
+	
 	
 	// 수강 후기 상세 조회
 	public MyReviewVO getMyReviewDetail(MyReviewVO review) {
@@ -62,6 +64,18 @@ public class MypageService {
 	// 수강 후기 수정
 	public int modifyMyReview(MyReviewVO review) {
 		return myMapper.updateReview(review);
+	}
+
+	public int removeReview(MyReviewVO review) {
+		return myMapper.deleteReview(review);
+	}
+
+	public List<Map<String, Object>> getMyCouponList(String id) {
+		return myMapper.selectCoupon(id);
+	}
+
+	public int getMyCouponCount(String id) {
+		return myMapper.selectCouponCount(id);
 	}
 	
 	

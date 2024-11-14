@@ -6,7 +6,7 @@ function showUpdateModal(id) {
 	
 	$.ajax({
 		type : "GET",
-		url: "MyReviewWrite",
+		url: "MyReviewUpdateForm",
 		data : {
 			class_id : id
 		},
@@ -26,7 +26,7 @@ function showUpdateModal(id) {
 
 function showWriteModal(id) {
 	const modal = document.querySelector("#writeReview");
-	modal.querySelector(".rev-con").value = "";
+	modal.querySelector("#course_id").value = id;
 	modal.classList.add('show-modal');
 }
 

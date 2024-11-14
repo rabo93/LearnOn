@@ -1,6 +1,7 @@
 package com.itwillbs.learnon.controller;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,21 +35,21 @@ public class CartController {
 	// 클래스제목(class_title), 강사이름(mem_name), 클래스가격(class_price) 
 	@GetMapping("Cart")
 	public String cartList( 
-			@RequestParam(value = "sId", defaultValue = "bborara") String sId
+//			@RequestParam(value = "sId", defaultValue = "bborara") String sId
 			//이 경우 sId가 하드코딩으로 설정(테스트용), 사용자가 미리 로그인하거나 멤버 정보를 선택하여야 할 수 있음
 			//컨트롤러 메서드에서 sId 파라미터에 기본값을 설정하면, sId가 전달되지 않았을 때 기본값을 사용하도록 할 수 있음
-			, HttpSession session
+			 HttpSession session
 			, Model model) {
 		
 		// 로그인 정보 가져오기 (세션 아이디값 확인) => 나중에 로그인 페이지 다 구현되고 작업하기
-//		String sId = (String) session.getAttribute("sId");
-//		System.out.println(sId);
+		String sId = (String) session.getAttribute("sId");
+		System.out.println(sId);
 		
 		// sId가 null인지 확인 (로그인하지 않은 경우)
-//		if(sId == null) {
-//			model.addAttribute("msg", "로그인 후 진행해주세요.");
-//			return "redirect:/MemberLogin"; //로그인 페이지로 리다이렉트
-//		}
+		if(sId == null) {
+			model.addAttribute("msg", "로그인 후 진행해주세요.");
+			return "redirect:/MemberLogin"; //로그인 페이지로 리다이렉트
+		}
 		
 		//--------------------------------------------------------------
 		// CartService - getCartList() 메서드 호출하여 장바구니 목록 조회 요청
@@ -63,12 +64,6 @@ public class CartController {
 	
 	}//Cart-Get매핑 끝
 	
-	//=================================================================================
-	// 상품 정보 내역 클릭시 강의 상세 페이지로 이동(class_id 전달)
-//	@GetMapping("CourseDetail")
-//	public String CourseDetail() {
-//		return "course_detail"; 
-//	}//CourseDetail-Get매핑 끝
 	
 	
 	//=================================================================================
@@ -133,18 +128,17 @@ public class CartController {
 	// 장바구니 갯수 표시
 	@ResponseBody
 	@GetMapping("CartCount")
-	public String cartCount(@RequestParam(value = "sId", defaultValue = "bborara") String sId,
-							HttpSession session) {
+	public String cartCount(HttpSession session, Model model) {
 		
 		//세션아이디값 가져오기 => 멤버로그인 연동하고 설정
-//		String sId = (String) session.getAttribute("sId");
-//		System.out.println(sId);
+		String sId = (String) session.getAttribute("sId");
+		System.out.println(sId);
 		
-		//로그인 여부
-//		if (sId == null) {
-//	        return "redirect:/MemberLogin"; //로그인 페이지로 리다이렉트
-//			return Collections.singletonMap("cartCount", 0);  // 로그인되지 않은 경우 0 반환
-//	    }
+		// sId가 null인지 확인 (로그인하지 않은 경우)
+		if(sId == null) {
+			model.addAttribute("msg", "로그인 후 진행해주세요.");
+			return "redirect:/MemberLogin"; //로그인 페이지로 리다이렉트
+		}
 		
 		//해당 로그인아이디로 담긴 장바구니 갯수 조회 요청
 		int cartCount = cartService.getCartCount(sId);

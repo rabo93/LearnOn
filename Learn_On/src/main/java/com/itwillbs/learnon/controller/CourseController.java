@@ -71,8 +71,6 @@ public class CourseController {
 		return "course/course_support_write_form";
 	}
 	
-	
-	
 	@PostMapping("CourseSupportWrite") 
 	public String faqWrite(CourseSupportVO cSupport, int class_id, HttpSession session, Model model) {
 		String id = (String)session.getAttribute("sId");

@@ -57,7 +57,7 @@
 						<div class="d-flex justify-content-between">
 							<div class="col-8">
 		                		<div class="form-floating mb-3">
-		                			<input type="text" class="form-control" id="floatingInput" name="CLASS_TITLE">
+		                			<input type="text" class="form-control" id="floatingInput" name="CLASS_TITLE" value="${class_title}">
 		                			<label for="floatingInput">강의 제목</label>
 		                		</div>
 								<div class="form-floating mb-3">
@@ -171,6 +171,8 @@
 	    		document.getElementById("classAdd").classList.toggle("active");
 	    		document.getElementById("classManage").classList.toggle("active");
 	    	};
+	    	${getClass}
+	    	console.log();
     </script>
 </body>
 </html>

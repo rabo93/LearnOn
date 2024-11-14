@@ -2,8 +2,6 @@ package com.itwillbs.learnon.vo;
 
 import java.sql.Timestamp;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import lombok.Data;
 
 @Data
@@ -14,21 +12,19 @@ public class AdminVO {
 	private String class_intro;
 	private int class_price;
 	private String class_category;
-	private String class_category2;
-//	private Timestamp class_reg_date;
+	private String class_reg_date;
 	private int class_runtime;
 	private String class_pic1;
-//	private multipartfile class_pic;
 	private String class_contents;
 	private int class_status;
-	
-	//=======================================
-	
-	private String codeid;
 	private String codetype;
+	private String codetype_id;
+	private String codeid;
 	private String codename;
+	private String name;
 	
 	//=======================================
 	
-	private String name;
+	//=======================================
+	
 }

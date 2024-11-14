@@ -6,48 +6,67 @@
 
 	<insert id="insertClass">
 		<selectKey keyProperty="CLASS_ID" resultType="int" order="BEFORE">
-			select ifnull(MAX(CLASS_ID), 0)
-			from CLASS;
+			SELECT IFNULL(MAX(CLASS_ID), 0)
+			FROM CLASS;
 		</selectKey>
-		insert
-		into CLASS
-		values (
+		INSERT
+		INTO CLASS
+		VALUES (
 			#{CLASS_ID} + 1
 			, #{CLASS_TITLE}
 			, #{MEM_ID}
 			, #{CLASS_INTRO}
 			, #{CLASS_PRICE}
 			, #{CLASS_CATEGORY}
-			, curdate()
+			, CURDATE()
 			, #{CLASS_RUNTIME}
 			, #{CLASS_PIC1}
 			, #{CLASS_CONTENTS}
 			, #{CLASS_STATUS});
 	</insert>
 	
-	<select id="getCategory">
-		select *
-		from COMMONCODE;
+<!-- 	<select id="getCategory"> -->
+<!-- 		SELECT * -->
+<!-- 		FROM COMMONCODE; -->
+<!-- 	</select> -->
+	<select id="getCategory" resultType="map">
+		SELECT 
+				C.CODEID
+		        , C.CODETYPE
+		        , C.CODENAME
+		        , T.CODETYPE_ID
+		        , T.NAME
+		FROM COMMONCODE C
+		JOIN COMMONCODETYPE T
+		ON C.CODEID = T.CODETYPE
 	</select>
 	
-	<select id="getSubCategory">
-		select *
-		from COMMONCODETYPE
-	</select>
+<!-- 	<select id="getSubCategory"> -->
+<!-- 		SELECT * -->
+<!-- 		FROM COMMONCODETYPE; -->
+<!-- 	</select> -->
 	
 	<select id="getClassList">
-		select *
-		from CLASS;
+		SELECT *
+		FROM CLASS;
 	</select>
 	<select id="getClass" resultType="int">
-		select *
-		from CLASS;
-		where #{class_id};
+		SELECT CLA.CLASS_ID, CLA.CLASS_TITLE, CLA.MEM_ID
+		   , CLA.CLASS_INTRO, CLA.CLASS_PRICE, CLA.CLASS_CATEGORY
+	       , CLA.CLASS_REG_DATE, CLA.CLASS_RUNTIME, CLA.CLASS_PIC1
+	       , CLA.CLASS_CONTENTS, CLA.CLASS_STATUS, COMTY.CODETYPE
+	       , COMTY.CODETYPE_ID, COM.CODEID, COM.CODENAME
+	       , NAME
+		FROM CLASS CLA JOIN COMMONCODETYPE COMTY
+		ON CLA.CLASS_CATEGORY = COMTY.NAME
+		JOIN COMMONCODE COM
+		ON  COM.CODEID = COMTY.CODETYPE
+		WHERE CLA.CLASS_ID = #{CLASS_ID};
 	</select>
 	
 	<select id="getMemberList"> 
-		select *
-		from MEMBER;
+		SELECT *
+		FROM MEMBER;
 	</select>
 
 

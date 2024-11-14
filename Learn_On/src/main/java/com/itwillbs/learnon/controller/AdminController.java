@@ -7,6 +7,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -64,10 +66,10 @@ public class AdminController {
 	
 	// 어드민 클래스 등록 페이지 매핑
 	@GetMapping("admin_class_add")
-	public String admin_class_add(Model model) {
-		model.addAttribute("getSubCategory", adminService.getSubCategory());
-		model.addAttribute("getCategory", adminService.getCategory());
+	public String admin_class_add(Model model, AdminVO VO) {
 		
+//		List<Map<String, String>> mapArr = ;
+//		model.addAttribute("getCategory", adminService.getCategory());
 		
 		return "admin/admin_class_add";
 	}
@@ -93,24 +95,17 @@ public class AdminController {
 		return "admin/admin_class_list";
 	}
 	
+	// 어드민 클래스 수정 페이지 매핑
 	@GetMapping("admClassListModify")
-	public String admin_class_list_modi(String class_id, Model model) {
-		System.out.println(class_id);
-		int loadClass = adminService.getClass(class_id);
+	public String admin_class_list_modi(int class_id, Model model) {
+		model.addAttribute("getClass", adminService.getClass(class_id));
 		
-		if (loadClass < 0) {
-			model.addAttribute("msg", "클래스 불러오기 실패!");
-			return "admin/fail";
-		}
+//		if (loadClass < 0) {
+//			model.addAttribute("msg", "클래스 불러오기 실패!");
+//			return "admin/fail";
+//		}
 		
-		int updateClass = adminService.updateClass(class_id);
-		
-		if (updateClass < 0) {
-			model.addAttribute("msg", "클래스 수정 실패!");
-			return "admin/fail";
-		}
-		
-		return "admin/admin_class_list_modi";
+		return "admin/admin_class_list_modify";
 	}
 	
 	// 어드민 삭제된 클래스 목록 페이지 매핑

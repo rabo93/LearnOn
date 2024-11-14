@@ -6,6 +6,11 @@
 <head>
 	<meta charset="utf-8">
     <title>LearnOn - 관리자 페이지</title>
+    <script
+		src="https://code.jquery.com/jquery-3.7.1.js"
+		integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+		crossorigin="anonymous">
+    </script>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -72,17 +77,15 @@
 									<div class="form-floating flex-fill me-3">
 										<select class="form-select" id="floatingSelect" aria-label="Floating label select example"
 												name="class_maincate">
-											<c:forEach items="${getCategory}" var="cate">
-												<option><c:out value="${cate.codename}"></c:out></option>
-											</c:forEach>
+												<c:forEach items="${getCategory}" var="cate">
+													<option>${cate.codename}</option>
+												</c:forEach>
 										</select>
 										<label for="floatingSelect">대분류</label>
 									</div>
 									<div class="form-floating flex-fill me-3">
-										<select class="form-select" id="floatingSelect" aria-label="Floating label select example" name="class_subcate">
-											<c:forEach items="${getSubCategory}" var="subcate">
-												<option><c:out value="${subcate.name}"></c:out></option>
-											</c:forEach>
+										<select class="form-select" id="floatingSelect" aria-label="Floating label select example"
+												name="class_subcate">
 										</select>
 										<label for="floatingSelect">소분류</label>
 									</div>
@@ -165,12 +168,14 @@
 
     <!-- Template Javascript -->
     <script src="resources/admin/js/main.js"></script>
+    <script src="resources/admin/js/admClass.js"></script>
     <script type="text/javascript">
-    		var link = document.location.href;
-	    	if (link.includes("class")) {
-	    		document.getElementById("classAdd").classList.toggle("active");
-	    		document.getElementById("classManage").classList.toggle("active");
-	    	};
+   		var link = document.location.href;
+    	if (link.includes("class")) {
+    		document.getElementById("classAdd").classList.toggle("active");
+    		document.getElementById("classManage").classList.toggle("active");
+    	};
+    	
     </script>
 </body>
 </html>

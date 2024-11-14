@@ -22,5 +22,7 @@
 		<typeAlias type="com.itwillbs.learnon.vo.MyCourseVO" alias="mycourse" />
 		<typeAlias type="com.itwillbs.learnon.vo.MyReviewVO" alias="myreview" />
 		<typeAlias type="com.itwillbs.learnon.vo.CourseSupportVO" alias="cSupport" />
+		<typeAlias type="com.itwillbs.learnon.vo.CartVO" alias="cart" />
+		<typeAlias type="com.itwillbs.learnon.vo.CouponVO" alias="coupon" />
 	</typeAliases>
 </configuration>

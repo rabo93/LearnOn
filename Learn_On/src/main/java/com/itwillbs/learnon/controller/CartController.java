@@ -65,10 +65,10 @@ public class CartController {
 	
 	//=================================================================================
 	// 상품 정보 내역 클릭시 강의 상세 페이지로 이동(class_id 전달)
-	@GetMapping("CourseDetail")
-	public String CourseDetail() {
-		return "course_detail"; 
-	}//CourseDetail-Get매핑 끝
+//	@GetMapping("CourseDetail")
+//	public String CourseDetail() {
+//		return "course_detail"; 
+//	}//CourseDetail-Get매핑 끝
 	
 	
 	//=================================================================================

@@ -47,9 +47,9 @@
 	</select>
 	
 	<!-- 주문할 장바구니 목록 주문 테이블에 삽입 -->
-	<insert id="">
+<!-- 	<insert id=""> -->
 	
 	
 	
-	</insert>
+<!-- 	</insert> -->
 </mapper>

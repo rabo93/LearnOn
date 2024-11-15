@@ -6,6 +6,11 @@
 <head>
 	<meta charset="utf-8">
     <title>LearnOn - 관리자 페이지</title>
+    <script
+		src="https://code.jquery.com/jquery-3.7.1.js"
+		integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+		crossorigin="anonymous">
+    </script>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -70,20 +75,23 @@
 								</div>
 								<div class="d-flex">
 									<div class="form-floating flex-fill me-3">
-											<select class="form-select" id="floatingSelect" aria-label="Floating label select example" name="CLASS_CATEGORY">
-												<c:forEach items="${getCategory}" var="cate">
-													<option><c:out value="${cate.codename}"></c:out></option>
-												</c:forEach>
-											</select>
+										<select class="form-select" id="floatingSelect" name="class_maincate">
+											<c:forEach items="${getCategory}" var="cate">
+												<option>${cate.CODENAME}</option>
+												
+												
+												
+											</c:forEach>
+										</select>
 										<label for="floatingSelect">대분류</label>
 									</div>
 									<div class="form-floating flex-fill me-3">
-										<select class="form-select" id="floatingSelect" aria-label="Floating label select example">
-											<c:forEach items="${getSubCategory}" var="subcate">
-												<option><c:out value="${subcate.name}"></c:out></option>
+										<select class="form-select" id="floatingSelect2" name="class_subcate">
+											<c:forEach items="${getCategory}" var="cate">
+												<option>${cate.CODENAME}</option>
 											</c:forEach>
 										</select>
-										<label for="floatingSelect">소분류</label>
+										<label for="floatingSelect2">소분류</label>
 									</div>
 									<div class="form-floating flex-fill">
 										<input type="text" class="form-control" id="floatingInput" name="MEM_ID">
@@ -117,14 +125,14 @@
                    		 	<div class="col-3 me-3">
 								<h6>가격</h6>
 								<div class="input-group">
-									<input type="number" class="form-control" aria-label="Amount (to the nearest dollar)" name="CLASS_PRICE">
+									<input type="number" class="form-control" name="CLASS_PRICE">
 									<span class="input-group-text">원</span>
 								</div>
 							</div>
 							<div class="col-3 me-3">
 								<h6>할인</h6>
 								<div class="input-group">
-									<input type="number" class="form-control" aria-label="Amount (to the nearest dollar)">
+									<input type="number" class="form-control" ">
 									<span class="input-group-text">원</span>
 								</div>
 							</div>
@@ -164,12 +172,13 @@
 
     <!-- Template Javascript -->
     <script src="resources/admin/js/main.js"></script>
+    <script src="resources/admin/js/admClass.js"></script>
     <script type="text/javascript">
-    		var link = document.location.href;
-	    	if (link.includes("class")) {
-	    		document.getElementById("classAdd").classList.toggle("active");
-	    		document.getElementById("classManage").classList.toggle("active");
-	    	};
+   		var link = document.location.href;
+    	if (link.includes("class")) {
+    		document.getElementById("classAdd").classList.toggle("active");
+    		document.getElementById("classManage").classList.toggle("active");
+    	};
     </script>
 </body>
 </html>

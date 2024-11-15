@@ -50,13 +50,13 @@
 									아이디
 								</label>
 								<div>
-									<input type="text" name="id" id="id" value="" disabled>
+									<input type="text" name="id" id="id" value="" value="홍길동" disabled>
 								</div>
 							</div>
 							<div class="set">
 								<label>닉네임</label>
 								<div>
-									<input type="text" name="nickname" value="홍길동">
+									<input type="text" name="nickname" value="#{SessionScope.sId}">
 								</div>
 							</div>
 							<div class="set">

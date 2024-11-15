@@ -43,56 +43,47 @@
 			<div class="container-fluid pt-4 px-4">
 				<div class="bg-light rounded p-4">
 					<div class="d-flex mb-5">
-						<h5 class="me-auto tableSubject">클래스 목록</h5>
-						<button type="button" class="btn btn-lg btn-primary ms-3" onclick="location.href='admin_class_add'">클래스 등록</button>
-						<button type="button" class="btn btn-lg btn-primary ms-3">클래스 수정</button>
-						<button type="button" class="btn btn-lg btn-primary ms-3">클래스 삭제</button>
+						<h5 class="me-auto tableSubject">FAQ 관리</h5>
+						<button type="button" class="btn btn-lg btn-primary ms-3">FAQ 등록</button>
+						<button type="button" class="btn btn-lg btn-primary ms-3">FAQ 삭제</button>
 					</div>
 					<div class="d-flex input-group mb-3">
-						<input type="text" class="form-control" placeholder="클래스 제목 검색" aria-label="Recipient's username" aria-describedby="button-addon2">
+						<input type="text" class="form-control" placeholder="FAQ 검색" aria-label="Recipient's username" aria-describedby="button-addon2">
 						<button class="btn btn-primary" type="button" id="button-addon2">검색</button>
 					</div>
 						<table class="table table-striped">
 							<thead>
 								<tr>
 									<th scope="col">#</th>
-									<th scope="col">제목</th>
-									<th scope="col">대분류</th>
-									<th scope="col">소분류</th>
-									<th scope="col">공개상태</th>
+									<th scope="col">FAQ 번호</th>
+									<th scope="col">FAQ 제목</th>
+									<th scope="col">FAQ 카테고리</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr>
 									<th><input class="form-check-input" type="checkbox" id="gridCheck1"></th>
-									<td><input class="form-control" type="text" placeholder="Default input" aria-label="default input example" value="자바(Java)알고리즘 문제풀이 입문:코딩테스트 대비-누구나 할 수 있는 알고리즘 문제"></td>
+									<td><input class="form-control" type="text" placeholder="FAQ 번호" aria-label="default input example" value="001"></td>
+									<td><input class="form-control" type="text" placeholder="FAQ 제목" aria-label="default input example" value="홈페이지에 버그가 있어요"></td>
 									<td>
 										<select class="form-select" aria-label="Default select example">
-											<option selected="">대분류</option>
-											<option value="1">IT/개발</option>
-											<option value="2">외국어</option>
-											<option value="3">운동/건강</option>
-											<option value="4">라이프스타일</option>
-											<option value="5">요리/음료</option>
+											<option value="1">페이지 이용 문의</option>
+											<option value="2">클래스 이용 문의</option>
+											<option value="3">결제 및 환불</option>
 										</select>
 									</td>
+                             	</tr>
+								<tr>
+									<th><input class="form-check-input" type="checkbox" id="gridCheck1"></th>
+									<td><input class="form-control" type="text" placeholder="FAQ 번호" aria-label="default input example" value="002"></td>
+									<td><input class="form-control" type="text" placeholder="FAQ 제목" aria-label="default input example" value="환불은 어디서 해야하나요?"></td>
 									<td>
 										<select class="form-select" aria-label="Default select example">
-											<option selected="">소분류</option>
-											<option value="1">IT/개발</option>
-											<option value="2">외국어</option>
-											<option value="3">운동/건강</option>
-											<option value="4">라이프스타일</option>
-											<option value="5">요리/음료</option>
+											<option value="1">페이지 이용 문의</option>
+											<option value="2">클래스 이용 문의</option>
+											<option value="3" selected>결제 및 환불</option>
 										</select>
 									</td>
-									<td>
-										<select class="form-select" aria-label="Default select example">
-											<option value="1">공개</option>
-											<option value="2">비공개</option>
-											<option value="3" selected>폐강</option>
-										</select>
-                                 	</td>
                              	</tr>
 							</tbody>
 						</table>
@@ -121,9 +112,9 @@
     <script src="resources/admin/js/main.js"></script>
     <script type="text/javascript">
     		var link = document.location.href;
-	    	if (link.includes("class")) {
-	    		document.getElementById("classList").classList.toggle("active");
-	    		document.getElementById("classManage").classList.toggle("active");
+	    	if (link.includes("AdmFaq")) {
+	    		document.getElementById("support").classList.toggle("active");
+	    		document.getElementById("AdmFaq").classList.toggle("active");
 	    	};
     </script>
 </body>

@@ -76,19 +76,16 @@
 								<div class="d-flex">
 									<div class="form-floating flex-fill me-3">
 										<select class="form-select" id="floatingSelect" name="class_maincate">
-											<c:forEach items="${getCategory}" var="cate">
-												<option>${cate.CODENAME}</option>
-												
-												
-												
+											<c:forEach items="${getMainCate}" var="cate">
+												<option>${cate.CODEID}</option>
 											</c:forEach>
 										</select>
 										<label for="floatingSelect">대분류</label>
 									</div>
 									<div class="form-floating flex-fill me-3">
 										<select class="form-select" id="floatingSelect2" name="class_subcate">
-											<c:forEach items="${getCategory}" var="cate">
-												<option>${cate.CODENAME}</option>
+											<c:forEach items="${getMainCate}" var="cate">
+												<option>${cate.CODEID}</option>
 											</c:forEach>
 										</select>
 										<label for="floatingSelect2">소분류</label>

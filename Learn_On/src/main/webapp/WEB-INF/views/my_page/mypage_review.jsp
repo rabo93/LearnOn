@@ -34,7 +34,7 @@
 				<a href="MyReview" class="active">작성한 수강평</a>
 				<a href="MyPayment">결제내역</a>
 				<a href="MyCoupon">보유한 쿠폰</a>
-				<a href="MyInquiry">문의내역</a>
+				<a href="MySupport">문의내역</a>
 				<a href="MyAttendance">출석체크</a>
 			</aside>
 			<div class="my-container">

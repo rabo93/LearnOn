@@ -45,6 +45,12 @@
 		    <scope>provided</scope>
 		</dependency>
 		
+		<dependency>
+			<groupId>org.thymeleaf</groupId>
+			<artifactId>thymeleaf</artifactId>
+			<version>3.1.2.RELEASE</version>
+		</dependency>
+		
 		<!-- ********************************************************************** -->
 		<!-- MySQL - JDBC 연동에 필요한 라이브러리 추가 -->
 		<!-- 2. 스프링에서 JDBC 연동에 필요한 기능을 제공하는 spring-jdbc 라이브러리 -->

@@ -14,12 +14,15 @@ import javax.mail.Session;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.taglibs.standard.lang.jstl.test.beans.PublicBean1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -236,11 +239,61 @@ public class MemberController {
 		return isDuplicate+"";
 	}
 	
+	//*************로그아웃***************
 	@GetMapping("MemberLogout")
 	public String logout(HttpSession session) {
 		session.invalidate();
 		
 		return "redirect:/";
 	}
+		
+	//*************회원정보 수정***************
+	@GetMapping("MemberModify")
+	public String memberModify(MemberVO member, HttpSession session,Model model) {
+		
+		String id = (String)session.getAttribute("sId");
+		if(id == null) {
+			model.addAttribute("msg", "로그인 후 이용해주세요");
+			model.addAttribute("targetURL", "MemberLogin");
+			
+			return "member/fail";
+		}
+		
+		member.setMem_id(id);
+		member = memberService.getMember(member);
+		model.addAttribute("member", member);
+		System.out.println("member : "+member);
+		
+		return "my_page/mypage_info";
+		
+	}
+	
+	@PostMapping("MemberModify")
+	public String memberModifyForm(MemberVO member,Model model , BCryptPasswordEncoder passwordEncoder ,@RequestParam Map<String, String>map,HttpSession session ) {
+		System.out.println("MAP : "+map);
+		
+		String id = (String)session.getAttribute("sId");
+		map.put("id", id);
 
+		String dbpasswd = memberService.getMemberPasswd(id);
+		if(dbpasswd == null || !passwordEncoder.matches(map.get("oldPasswd"),dbpasswd)) {
+			model.addAttribute("msg", "비밀번호가 일치하지 않습니다.");
+			return "result/fail";
+		}
+		if(!map.get("passwd").equals("")) {
+			map.put("passwd",passwordEncoder.encode(map.get("passwd"))); //암호화된 새로운 비밀번호
+		}
+		
+		int updateCount = memberService.modifyMember(map);
+		
+		if(updateCount > 0) {
+			model.addAttribute("msg", "회원정보 수정성공");
+			
+			return"result/success";
+		}else {
+			model.addAttribute("msg", "회원정보 수정실패\\n다시 확인해주세요 ");
+			return"result/fail";
+			// 지금상황: mem_id null 이 떠서 수정이 안되는 상태
+		}
+	}
 }

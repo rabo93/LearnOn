@@ -15,7 +15,7 @@ public interface MemberMapper {
 
 	int insertMember(MemberVO member);
 
-	String updateMember(Map<String, String> map);
+	int updateMember(Map<String, String> map);
 
 	void insertMailAuthInfo(MailAuthInfo mailauthInfo);
 
@@ -27,6 +27,8 @@ public interface MemberMapper {
 	void updateMailAuthStatus(MailAuthInfo mailAuthInfo);
 
 	void deleteMailAuthInfo(MailAuthInfo mailAuthInfo);
+
+	String selectMemberPasswd(String id);
 
 	
 }

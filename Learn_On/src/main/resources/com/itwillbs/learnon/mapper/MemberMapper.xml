@@ -64,23 +64,25 @@ INSERT INTO MEMBER (
 )
 </insert>
 	
-<!-- 	<update id="updateMember"> -->
-<!-- 	UPDATE MEMBER -->
-<!-- 	SET mem_name = #{mem_name} -->
-<!-- 		<if test="!mem_passwd.equals('')"> -->
-<!-- 			,mem_passwd = #{mem_passwd} -->
-<!-- 		</if> -->
-<!-- 	, mem_nick = #{mem_nick} -->
-<!-- 	, mem_post_code = #{mem_post_code} -->
-<!-- 	, mem_address1 = #{mem_address1} -->
-<!-- 	, mem_address2 = #{mem_address2} -->
-<!-- 	, mem_phone = #{mem_phone} -->
+	<update id="updateMember">
+	UPDATE MEMBER
+	   SET
+	 mem_nick = #{mem_nick}
+<!-- 		<if test="!mem_passwd.equals('')">  -->
+		<if test="mem_passwd != null and mem_passwd != ''">
+			,mem_passwd = #{mem_passwd}
+		</if>
+	, mem_post_code = #{mem_post_code}
+	, mem_address1 = #{mem_address1}
+	, mem_address2 = #{mem_address2}
+	, mem_phone = #{mem_phone}
+	WHERE mem_id = #{mem_id}
+	</update>
 	
-<!-- 	</update> -->
 	<update id="updateMailAuthStatus">
 		UPDATE MEMBER
-		SET mail_auth_status = 'Y'
-		WHERE mem_email = #{mem_email}
+		   SET mail_auth_status = 'Y'
+		 WHERE mem_email = #{mem_email}
 	</update>
 	
 	<delete id="deleteMailAuthInfo">
@@ -98,14 +100,14 @@ INSERT INTO MEMBER (
 	
 	<update id="updateMailAuthInfo">
 	UPDATE MAIL_AUTH_INFO
-	SET auth_code = #{auth_code}
-	WHERE mem_email = #{mem_email}
+	   SET auth_code = #{auth_code}
+	 WHERE mem_email = #{mem_email}
 	</update>
 
 <!-- 	이메일 인증정보 조회  -->
 	<select id="selectMailAuthInfo" resultType="mailAuthInfo">
 	SELECT *
-	FROM MAIL_AUTH_INFO
-	WHERE mem_email = #{mem_email}
+	  FROM MAIL_AUTH_INFO
+	 WHERE mem_email = #{mem_email}
 	</select>
 </mapper>

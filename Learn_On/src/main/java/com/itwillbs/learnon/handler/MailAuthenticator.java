@@ -21,8 +21,8 @@ public class MailAuthenticator extends Authenticator {
 	}
 	@Override
 	protected PasswordAuthentication getPasswordAuthentication() {
-//		passwordAuthentication = new PasswordAuthentication(sender_mail_address, gmail_app_password);
-		passwordAuthentication = new PasswordAuthentication("paighkdlxld2@gmail.com", "fhotnojirxjwxanc");
+		passwordAuthentication = new PasswordAuthentication(sender_mail_address, gmail_app_password);
+//		passwordAuthentication = new PasswordAuthentication("paighkdlxld2@gmail.com", "fhotnojirxjwxanc");
 		return passwordAuthentication;
 	}
 	

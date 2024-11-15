@@ -67,25 +67,24 @@ public class AdminController {
 	// 어드민 카테고리 편집 저장
 	@PostMapping("AdmClassCategory")
 	public String admin_class_categorySubmit(AdminVO VO, Model model) {
-		System.out.println(VO.getOld_codetype_subcate());
-		String[] oldArrSubCodetype = VO.getOld_codetype_subcate().split(",");
-		String[] oldArrSubCodeTypeId = VO.getOld_codetype_id_subcate().split(",");
-		String[] oldArrSubName = VO.getOld_name_subcate().split(",");
-		String[] oldArrSubDescription = VO.getOld_description_subcate().split(",");
-		String[] oldArrSubOrder = VO.getOld_order_subcate().split(",");
-		
-		AdminVO UpdateVO = new AdminVO();
-		int updateRowCnt = oldArrSubCodetype.length;
-		
-		for (int i = 0; i < updateRowCnt; i++) {
-			UpdateVO.setOld_codetype_subcate(oldArrSubCodetype[i]);
-			UpdateVO.setOld_codetype_id_subcate(oldArrSubCodeTypeId[i]);
-			UpdateVO.setOld_name_subcate(oldArrSubName[i]);
-			UpdateVO.setOld_description_subcate(oldArrSubDescription[i]);
-			UpdateVO.setOld_order_subcate(oldArrSubOrder[i]);
-			
-			adminService.updateCate(UpdateVO);
-		}
+//		String[] oldArrSubCodetype = VO.getOld_codetype_subcate().split(",");
+//		String[] oldArrSubCodeTypeId = VO.getOld_codetype_id_subcate().split(",");
+//		String[] oldArrSubName = VO.getOld_name_subcate().split(",");
+//		String[] oldArrSubDescription = VO.getOld_description_subcate().split(",");
+//		String[] oldArrSubOrder = VO.getOld_order_subcate().split(",");
+//		
+//		AdminVO UpdateVO = new AdminVO();
+//		int updateRowCnt = oldArrSubCodetype.length;
+//		
+//		for (int i = 0; i < updateRowCnt; i++) {
+//			UpdateVO.setOld_codetype_subcate(oldArrSubCodetype[i]);
+//			UpdateVO.setOld_codetype_id_subcate(oldArrSubCodeTypeId[i]);
+//			UpdateVO.setOld_name_subcate(oldArrSubName[i]);
+//			UpdateVO.setOld_description_subcate(oldArrSubDescription[i]);
+//			UpdateVO.setOld_order_subcate(oldArrSubOrder[i]);
+//			
+//			adminService.updateCate(UpdateVO);
+//		}
 		
 		AdminVO insertVO = new AdminVO();
 		

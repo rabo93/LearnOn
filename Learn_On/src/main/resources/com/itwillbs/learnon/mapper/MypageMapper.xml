@@ -192,9 +192,78 @@
 		WHERE M.MEM_ID = #{mem_id}
 	</select>
 	<select id="selectCouponCount" resultType="int">
+		-- 보유한 쿠폰수 조회
 		SELECT COUNT(*) AS COUPON_COUNT
 		  FROM MYCOUPON
 		 WHERE MEM_ID = #{mem_id}
 		   AND COUPON_STATUS != 2
 	</select>
+	<insert id="insertSupport">
+		<selectKey keyProperty="support_idx" resultType="int" order="BEFORE">
+			SELECT IFNULL(MAX(SUPPORT_IDX), 0)
+			  FROM SUPPORT
+		</selectKey>
+		-- 1:1 문의글 작성
+		INSERT 
+		  INTO SUPPORT
+	    VALUES (
+				#{support_idx} + 1
+				, now()
+				, #{support_category}
+				, #{mem_id}
+				, #{support_subject}
+				, #{support_content}
+				, null
+				, null
+				, null
+				, #{support_file1}
+			   )
+	</insert>
+	<select id="selectSupportListCount" resultType="int">
+		-- 1:1문의 전체 게시글수
+		SELECT COUNT(*)
+		  FROM SUPPORT
+	</select>
+	<select id="selectSupportList" resultType="mysupport">
+		-- 1:1문의 전체 목록
+		SELECT S.SUPPORT_IDX
+				, S.SUPPORT_DATE
+				, S.SUPPORT_CATEGORY
+			    , M.MEM_NAME
+				, S.MEM_ID
+				, S.SUPPORT_SUBJECT
+				, S.SUPPORT_CONTENT
+				, S.SUPPORT_FILE AS SUPPORT_FILE1
+		  FROM SUPPORT S
+		  JOIN MEMBER M 
+		    ON M.MEM_ID = S.MEM_ID
+		 ORDER BY
+		 	SUPPORT_IDX DESC
+		 LIMIT
+		 	#{startRow}
+		 	, #{listLimit}
+	</select>
+	<select id="selectSupportDetail" resultType="mysupport">
+		-- 1:1문의 상세내용
+		SELECT SUPPORT_IDX
+			   , SUPPORT_DATE
+			   , SUPPORT_CATEGORY
+			   , MEM_ID
+			   , SUPPORT_SUBJECT
+			   , SUPPORT_CONTENT
+			   , SUPPORT_FILE AS SUPPORT_FILE1
+		  FROM SUPPORT
+		 WHERE SUPPORT_IDX = #{support_idx}
+	</select>
+	<update id="updateSupport">
+		UPDATE SUPPORT
+		SET SUPPORT_SUBJECT = #{support_subject}
+			, SUPPORT_CONTENT = #{support_content}
+			, SUPPORT_CATEGORY = #{support_category}
+			<if test="!support_file1.equals('')">
+			, SUPPORT_FILE = #{support_file1}
+			</if>
+		WHERE
+			SUPPORT_IDX = #{support_idx}
+	</update>
 </mapper>

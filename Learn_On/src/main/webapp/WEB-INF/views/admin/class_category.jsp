@@ -43,7 +43,7 @@
 	
 	<%-- 내용 시작 --%>
 	<!-- Blank Start -->
-	<form action="admin_class_category" name="addForm" method="post">
+	<form action="AdmClassCategory" name="addForm" method="post">
 		<div class="container-fluid pt-4 px-4">
 			<div class="bg-light rounded p-4">
 				<div class="d-flex mb-5">
@@ -138,7 +138,7 @@
     <script src="resources/admin/js/admClass.js"></script>
     <script type="text/javascript">
    		var link = document.location.href;
-    	if (link.includes("class")) {
+    	if (link.includes("Adm")) {
     		document.getElementById("classCategory").classList.toggle("active");
     		document.getElementById("classManage").classList.toggle("active");
     	};

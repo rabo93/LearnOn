@@ -111,7 +111,7 @@
     <script src="resources/admin/js/main.js"></script>
     <script type="text/javascript">
     		var link = document.location.href;
-	    	if (link.includes("payment")) {
+	    	if (link.includes("Adm")) {
 	    		document.getElementById("payment").classList.toggle("active");
 	    		document.getElementById("paymentList").classList.toggle("active");
 	    	};

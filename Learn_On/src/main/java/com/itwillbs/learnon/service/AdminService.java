@@ -47,8 +47,10 @@ public class AdminService {
 		return mapper.getSubCate();
 	}
 	public int deleteMainCate(String CODEID) {
-		System.out.println("호출치ㅏ어리커ㅣㄴㅇㄹ");
 		return mapper.deleteMainCate(CODEID);
+	}
+	public int deleteSubCate(String old_codetype_subcate) {
+		return mapper.deleteSubCate(old_codetype_subcate);
 	}
 	public int updateCate(AdminVO updateVO) {
 		return mapper.updateCate(updateVO);

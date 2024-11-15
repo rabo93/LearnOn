@@ -167,7 +167,7 @@
     <script src="resources/admin/js/main.js"></script>
     <script type="text/javascript">
     		var link = document.location.href;
-	    	if (link.includes("class")) {
+	    	if (link.includes("Adm")) {
 	    		document.getElementById("classList").classList.toggle("active");
 	    		document.getElementById("classManage").classList.toggle("active");
 	    	};

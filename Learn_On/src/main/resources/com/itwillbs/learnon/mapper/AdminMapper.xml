@@ -94,17 +94,23 @@
 	<delete id="deleteMainCate">
 		DELETE
 		FROM COMMONCODE
-		WHERE CODEID = #{CODEID};
+		WHERE CODEID = #{codeid};
 	</delete>
 	
-	<update id="updateCate">
+	<delete id="deleteSubCate">
+		DELETE
+		FROM COMMONCODETYPE
+		WHERE CODETYPE = #{old_codetype_subcate};
+	</delete>
+	
+<!-- 	<update id="updateCate"> -->
 <!-- 		UPDATE COMMONCODETYPE -->
 <!-- 		SET -->
 <!-- 			CODETYPE = #{old_codetype_subcate} -->
 <!-- 			, CODETYPE_ID = #{old_codetype_id_subcate} -->
 <!-- 			, NAME = #{old_name_subcate} -->
 <!-- 			, DESCRIPTION = #{old_description_subcate} -->
-	</update>
+<!-- 	</update> -->
 
 
 </mapper>

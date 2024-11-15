@@ -48,7 +48,7 @@
 				<div class="bg-light rounded p-4">
 					<div class="d-flex mb-5">
 						<h5 class="me-auto tableSubject">클래스 목록</h5>
-						<button type="button" class="btn btn-lg btn-primary ms-3" onclick="location.href='admin_class_add'">클래스 등록</button>
+						<button type="button" class="btn btn-lg btn-primary ms-3" onclick="location.href='AdmClassAdd'">클래스 등록</button>
 <!-- 						<button type="button" class="btn btn-lg btn-primary ms-3" onclick="classModi()">클래스 수정</button> -->
 						<button type="button" class="btn btn-lg btn-primary ms-3">클래스 삭제</button>
 					</div>
@@ -134,7 +134,7 @@
     <script src="resources/admin/js/main.js"></script>
     <script type="text/javascript">
     		var link = document.location.href;
-	    	if (link.includes("class")) {
+	    	if (link.includes("Adm")) {
 	    		document.getElementById("classList").classList.toggle("active");
 	    		document.getElementById("classManage").classList.toggle("active");
 	    	};

@@ -179,7 +179,6 @@
     		document.getElementById("classAdd").classList.toggle("active");
     		document.getElementById("classManage").classList.toggle("active");
     	};
-    	
     </script>
 </body>
 </html>

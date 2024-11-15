@@ -278,7 +278,7 @@
     <script src="resources/admin/js/main_chart.js"></script>
     <script type="text/javascript">
     		var link = document.location.href;
-	    	if (link.includes("admin_index")) {
+	    	if (link.includes("Adm")) {
 	    		document.getElementById("adminIndex").classList.toggle("active");
 	    	};
     </script>

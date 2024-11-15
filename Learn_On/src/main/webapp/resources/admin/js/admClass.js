@@ -28,7 +28,7 @@ function deleteRow() {
 // 클래스 수정 클래스 id값 가져오기
 function modifyClass(elem) {
 	let classId = $(elem).parent().parent().attr("id");
-	location.href="admClassListModify?class_id=" + classId;
+	location.href="AdmClassListModify?class_id=" + classId;
 }
 
 // 카테고리 수정
@@ -86,8 +86,8 @@ function deleteSubCateRow() {
 	for (var i = 0; i < checkboxArray.length; i++) {
 		if (checkboxArray[i].checked) {
 			if (confirm('삭제하시겠습니까?')) {
-				location.href="subCateDelete?CODETYPE_ID="
-				+ checkboxArray[i].parentElement.parentElement.getElementsByClassName("form-control")[1].value;
+				location.href="subCateDelete?old_codetype_subcate="
+				+ checkboxArray[i].parentElement.parentElement.getElementsByClassName("form-control")[0].value;
 			} else {
 				return;	
 			}

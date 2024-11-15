@@ -17,7 +17,7 @@ public class AdminController {
 	private AdminService adminService;
 	
 	// 어드민 메인페이지 매핑
-	@GetMapping("admin_index")
+	@GetMapping("AdmIndex")
 	public String admin_home() {
 //	public String admin_home(HttpSession session, Model model, HttpServletRequest request) {
 		
@@ -47,7 +47,7 @@ public class AdminController {
 	// =======================================================================
 	
 	// 어드민 카테고리 편집 페이지 매핑
-	@GetMapping("admin_class_category")
+	@GetMapping("AdmClassCategory")
 	public String admin_class_categoryModify(Model model) {
 		model.addAttribute("getMainCate", adminService.getMainCate());
 		model.addAttribute("getSubCate", adminService.getSubCate());
@@ -56,7 +56,7 @@ public class AdminController {
 	}
 	
 	// 어드민 카테고리 편집 저장
-	@PostMapping("admin_class_category")
+	@PostMapping("AdmClassCategory")
 	public String admin_class_categorySubmit(AdminVO VO, Model model) {
 		System.out.println(VO.getOld_codetype_subcate());
 		String[] oldArrSubCodetype = VO.getOld_codetype_subcate().split(",");
@@ -130,23 +130,23 @@ public class AdminController {
 			
 		}
 		
-		return "redirect:/admin_class_category";
+		return "redirect:/AdmClassCategory";
 	}
 	
 	// 어드민 카테고리 삭제 로직
 	@GetMapping("mainCateDelete")
 	public String mainCateDelete(String CODEID) {
 		adminService.deleteMainCate(CODEID);
-		return "redirect:/admin_class_category";
+		return "redirect:/AdmClassCategory";
 	}
 	@GetMapping("subCateDelete")
-	public String subCateDelete(String CODEID) {
-		adminService.deleteMainCate(CODEID);
-		return "redirect:/admin_class_category";
+	public String subCateDelete(String old_codetype_subcate) {
+		adminService.deleteSubCate(old_codetype_subcate);
+		return "redirect:/AdmClassCategory";
 	}
 	
 	// 어드민 클래스 등록 페이지 매핑
-	@GetMapping("admin_class_add")
+	@GetMapping("AdmClassAdd")
 	public String admin_class_add(Model model) {
 		model.addAttribute("getCategory", adminService.getCategory());
 		
@@ -155,7 +155,7 @@ public class AdminController {
 		
 	}
 	
-	@PostMapping("admin_class_add")
+	@PostMapping("AdmClassAdd")
 	public String admin_class_add1(Model model) {
 		int insertCount = adminService.registClass();
 		
@@ -168,7 +168,7 @@ public class AdminController {
 	}
 	
 	// 어드민 클래스 목록 페이지 매핑
-	@GetMapping("admin_class_list")
+	@GetMapping("AdmClassList")
 	public String admin_class_list(Model model) {
 		model.addAttribute("getClassList", adminService.getClassList());
 		
@@ -176,7 +176,7 @@ public class AdminController {
 	}
 	
 	// 어드민 클래스 수정 페이지 매핑
-	@GetMapping("admClassListModify")
+	@GetMapping("AdmClassListModify")
 	public String admin_class_list_modi(int class_id, Model model) {
 		model.addAttribute("getClass", adminService.getClass(class_id));
 		
@@ -189,31 +189,31 @@ public class AdminController {
 	}
 	
 	// 어드민 삭제된 클래스 목록 페이지 매핑
-	@GetMapping("admin_class_delete")
-	public String admin_class_delete(Model model) {
-		model.addAttribute("getClassList", adminService.getClassList());
-		
-		return "admin/class_delete";
-	}
+//	@GetMapping("admin_class_delete")
+//	public String admin_class_delete(Model model) {
+//		model.addAttribute("getClassList", adminService.getClassList());
+//		
+//		return "admin/class_delete";
+//	}
 	
 	// =======================================================================
 	
 	// 어드민 회원 목록 페이지 매핑
-	@GetMapping("admin_member_list")
+	@GetMapping("AdmMemList")
 	public String admin_member_list(Model model) {
 		model.addAttribute("getMemberList", adminService.getMemberList());
 		return "admin/member_list";
 	}
 	
 	// 어드민 강사 회원 목록 페이지 매핑
-	@GetMapping("admin_member_list_instructor")
+	@GetMapping("AdmMemInstructor")
 	public String admin_member_list_instructor(Model model) {
 		model.addAttribute("getMemberList", adminService.getMemberList());
 		return "admin/member_list_instructor";
 	}
 	
 	// 어드민 탈퇴한 회원 목록 페이지 매핑
-	@GetMapping("admin_member_list_delete")
+	@GetMapping("AdmMemListDelete")
 	public String admin_member_list_delete(Model model) {
 		model.addAttribute("getMemberList", adminService.getMemberList());
 	return "admin/member_list_delete";
@@ -222,33 +222,39 @@ public class AdminController {
 	// =======================================================================
 	
 	// 어드민 결제 내역 관리 페이지 매핑
-	@GetMapping("admin_payment_list")
+	@GetMapping("AdmPayList")
 	public String admin_payment_list() {
 	return "admin/payment_list";
 	}
 	
 	// 어드민 쿠폰 관리 페이지 매핑
-	@GetMapping("admin_payment_list_coupon")
+	@GetMapping("AdmPayListCoupon")
 	public String admin_payment_list_coupon() {
 		return "admin/payment_list_coupon";
 	}
 	
 	// =======================================================================
 	
-	// 어드민 게시판 관리 페이지 매핑
-	@GetMapping("admin_board_management")
-	public String admin_board_management() {
-		return "admin/board_management";
+	// 어드민 공지사항 관리 페이지 매핑
+	@GetMapping("AdmNotice")
+	public String admin_notice_management() {
+		return "admin/notice_management";
+	}
+	
+	// 어드민 1:1 문의 관리 페이지 매핑
+	@GetMapping("AdmSupport")
+	public String admin_support_management2() {
+		return "admin/support_management2";
 	}
 	
 	// 어드민 FAQ 관리 페이지 매핑
-	@GetMapping("admin_board_faq")
+	@GetMapping("AdmFaq")
 	public String admin_board_faq() {
 		return "admin/board_faq";
 	}
 	
 	// 어드민 수강 후기 관리 페이지 매핑
-	@GetMapping("admin_board_review")
+	@GetMapping("AdmReview")
 	public String admin_board_review() {
 		return "admin/board_review";
 	}

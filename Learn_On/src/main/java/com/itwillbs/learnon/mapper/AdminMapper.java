@@ -35,4 +35,6 @@ public interface AdminMapper {
 
 	int updateCate(AdminVO updateVO);
 
+	int deleteSubCate(String old_codetype_subcate);
+
 }

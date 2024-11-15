@@ -112,9 +112,9 @@
     <script src="resources/admin/js/main.js"></script>
     <script type="text/javascript">
     		var link = document.location.href;
-	    	if (link.includes("board")) {
-	    		document.getElementById("board").classList.toggle("active");
-	    		document.getElementById("boardFaq").classList.toggle("active");
+	    	if (link.includes("AdmFaq")) {
+	    		document.getElementById("support").classList.toggle("active");
+	    		document.getElementById("AdmFaq").classList.toggle("active");
 	    	};
     </script>
 </body>

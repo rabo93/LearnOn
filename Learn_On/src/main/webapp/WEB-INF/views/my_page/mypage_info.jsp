@@ -10,8 +10,9 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/reset.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mypage.css">
-    
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/join.js"></script>
+    
 
 </head>
 <body>
@@ -37,7 +38,7 @@
 				<div class="contents">
 					<!-- contents -->
 					<section class="info-set-wrap">
-						<form action="" class="my-frm" method="post">
+						<form action="MemberModify" class="my-frm" method="post">
 							<div class="set">
 								<label>프로필</label>
 								<div>
@@ -50,13 +51,14 @@
 									아이디
 								</label>
 								<div>
-									<input type="text" name="id" id="id" value="" value="홍길동" disabled>
+									<input type="text" name="id" id="id" value="${member.mem_id}" disabled>
 								</div>
 							</div>
 							<div class="set">
 								<label>닉네임</label>
+								<div id="checkNic"></div>
 								<div>
-									<input type="text" name="nickname" value="#{SessionScope.sId}">
+									<input type="text" name="mem_nick" id="mem_nick" placeholder="${member.mem_nick }" onblur="ckNick()">
 								</div>
 							</div>
 							<div class="set">
@@ -68,7 +70,7 @@
 							<div class="set">
 								<label>변경할 비밀번호</label>
 								<div>
-									<input type="password" id="passwd" name="passwd" placeholder="8 ~ 16글자 사이 입력">
+									<input type="password" id="mem_passwd" name="mem_passwd" placeholder="8 ~ 16글자 사이 입력">
 								</div>
 								<div class="ip-tips" id="checkPasswd1Result">비밀번호는 최소 8글자 이상입니다</div>
 							</div>
@@ -82,30 +84,30 @@
 							<div class="set">
 								<label>주소</label>
 								<div>
-									<input type="text" id="postcode" name="post_code" value="" size="6" readonly placeholder="우편번호">
+									<input type="text" id="postcode" name="mem_post_code" value="" size="6" readonly placeholder="우편번호">
 									<input type="button" value="주소검색" onclick="" class="btn-frm"><br>
 								</div>
 								<div>
-									<input type="text" id="address1" name="address1" value="" size="25" readonly placeholder="기본주소"><br>
-									<input type="text" id="address2" name="address2" value="" size="25" placeholder="상세주소">
+									<input type="text" id="address1" name="mem_address1" value="" size="25" readonly placeholder="기본주소"><br>
+									<input type="text" id="address2" name="mem_address2" value="" size="25" placeholder="상세주소">
 								</div>
 							</div>
 							<div class="set">
 								<label>이메일 </label>
 								<div>
-									<input type="text" size="10" id="email1" value="" name="email1">@<input type="text" size="10"  value="" id="email2" name="email2">
+									<input type="text" size="10" id="email1" value="${member.mem_email1}" name="email1" required>@<input type="text" size="10"  value="${member.mem_mail2}" id="email2" name="email2">
 									<select id="emailDomain" class="sel-frm">
-										<option value="">직접입력</option>
-										<option value="naver.com">naver.com</option>
-										<option value="nate.com">nate.com</option>
-										<option value="gmail.com">gmail.com</option>
+<!-- 										<option value="">직접입력</option> -->
+<!-- 										<option value="naver.com">naver.com</option> -->
+<!-- 										<option value="nate.com">nate.com</option> -->
+<!-- 										<option value="gmail.com">gmail.com</option> -->
 									</select>
 								</div>
 							</div>
 							<div class="set">
 								<label>전화번호</label>
 								<div>
-									<input type="text" size="10" id="phone" value="" name="phone">
+									<input type="text" size="10" id="phone" value="" name="mem_phone">
 								</div>
 								<div id="checkPhoneResult" class="ip-tips">전화번호를 올바르게 입력해주세요</div>
 							</div>

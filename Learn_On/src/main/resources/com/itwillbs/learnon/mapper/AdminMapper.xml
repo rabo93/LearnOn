@@ -100,7 +100,7 @@
 	<delete id="deleteSubCate">
 		DELETE
 		FROM COMMONCODETYPE
-		WHERE CODETYPE = #{old_codetype_subcate};
+		WHERE CODETYPE_ID = #{old_codetype_subcate};
 	</delete>
 	
 <!-- 	<update id="updateCate"> -->

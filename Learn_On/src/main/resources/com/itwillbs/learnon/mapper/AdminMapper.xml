@@ -25,10 +25,6 @@
 			, #{CLASS_STATUS});
 	</insert>
 	
-<!-- 	<select id="getCategory"> -->
-<!-- 		SELECT * -->
-<!-- 		FROM COMMONCODE; -->
-<!-- 	</select> -->
 	<select id="getCategory" resultType="map">
 		SELECT 
 				C.CODEID
@@ -38,13 +34,18 @@
 		        , T.NAME
 		FROM COMMONCODE C
 		JOIN COMMONCODETYPE T
-		ON C.CODEID = T.CODETYPE
+		ON C.CODEID = T.CODETYPE;
 	</select>
 	
-<!-- 	<select id="getSubCategory"> -->
-<!-- 		SELECT * -->
-<!-- 		FROM COMMONCODETYPE; -->
-<!-- 	</select> -->
+	<select id="getMainCate" resultType="map">
+		SELECT *
+		FROM COMMONCODE;
+	</select>
+	
+	<select id="getSubCate" resultType="map">
+		SELECT *
+		FROM COMMONCODETYPE;
+	</select>
 	
 	<select id="getClassList">
 		SELECT *
@@ -68,7 +69,42 @@
 		SELECT *
 		FROM MEMBER;
 	</select>
-
+	
+	<insert id="insertMainCate">
+		INSERT
+		INTO COMMONCODE
+		VALUES (
+			#{codeid_maincate}
+			, #{codetype_maincate}
+			, #{codename_maincate}
+			, #{description_maincate});
+	</insert>
+	
+	<insert id="insertSubCate">
+		INSERT
+		INTO COMMONCODETYPE
+		VALUES (
+			#{codetype_subcate}
+			, #{codetype_id_subcate}
+			, #{name_subcate}
+			, #{description_subcate}
+			, #{order_subcate});
+	</insert>
+	
+	<delete id="deleteMainCate">
+		DELETE
+		FROM COMMONCODE
+		WHERE CODEID = #{CODEID};
+	</delete>
+	
+	<update id="updateCate">
+<!-- 		UPDATE COMMONCODETYPE -->
+<!-- 		SET -->
+<!-- 			CODETYPE = #{old_codetype_subcate} -->
+<!-- 			, CODETYPE_ID = #{old_codetype_id_subcate} -->
+<!-- 			, NAME = #{old_name_subcate} -->
+<!-- 			, DESCRIPTION = #{old_description_subcate} -->
+	</update>
 
 
 </mapper>

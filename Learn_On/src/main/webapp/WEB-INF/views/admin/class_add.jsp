@@ -75,19 +75,23 @@
 								</div>
 								<div class="d-flex">
 									<div class="form-floating flex-fill me-3">
-										<select class="form-select" id="floatingSelect" aria-label="Floating label select example"
-												name="class_maincate">
-												<c:forEach items="${getCategory}" var="cate">
-													<option>${cate.codename}</option>
-												</c:forEach>
+										<select class="form-select" id="floatingSelect" name="class_maincate">
+											<c:forEach items="${getCategory}" var="cate">
+												<option>${cate.CODENAME}</option>
+												
+												
+												
+											</c:forEach>
 										</select>
 										<label for="floatingSelect">대분류</label>
 									</div>
 									<div class="form-floating flex-fill me-3">
-										<select class="form-select" id="floatingSelect" aria-label="Floating label select example"
-												name="class_subcate">
+										<select class="form-select" id="floatingSelect2" name="class_subcate">
+											<c:forEach items="${getCategory}" var="cate">
+												<option>${cate.CODENAME}</option>
+											</c:forEach>
 										</select>
-										<label for="floatingSelect">소분류</label>
+										<label for="floatingSelect2">소분류</label>
 									</div>
 									<div class="form-floating flex-fill">
 										<input type="text" class="form-control" id="floatingInput" name="MEM_ID">
@@ -121,14 +125,14 @@
                    		 	<div class="col-3 me-3">
 								<h6>가격</h6>
 								<div class="input-group">
-									<input type="number" class="form-control" aria-label="Amount (to the nearest dollar)" name="CLASS_PRICE">
+									<input type="number" class="form-control" name="CLASS_PRICE">
 									<span class="input-group-text">원</span>
 								</div>
 							</div>
 							<div class="col-3 me-3">
 								<h6>할인</h6>
 								<div class="input-group">
-									<input type="number" class="form-control" aria-label="Amount (to the nearest dollar)">
+									<input type="number" class="form-control" ">
 									<span class="input-group-text">원</span>
 								</div>
 							</div>

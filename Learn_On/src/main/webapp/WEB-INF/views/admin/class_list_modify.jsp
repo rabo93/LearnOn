@@ -168,7 +168,7 @@
     <script type="text/javascript">
     		var link = document.location.href;
 	    	if (link.includes("class")) {
-	    		document.getElementById("classAdd").classList.toggle("active");
+	    		document.getElementById("classList").classList.toggle("active");
 	    		document.getElementById("classManage").classList.toggle("active");
 	    	};
 	    	${getClass}

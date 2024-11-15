@@ -29,6 +29,7 @@
                     <div class="nav-item dropdown">
                         <a href="#" id="classManage" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fas fa-chalkboard" style="margin-right: 10px;"></i>클래스 관리</a>
                         <div class="dropdown-menu bg-transparent border-0">
+                            <a href="admin_class_category" id="classCategory" class="dropdown-item" >카테고리 편집</a>
                             <a href="admin_class_add" id="classAdd" class="dropdown-item" >클래스 등록</a>
                             <a href="admin_class_list" id="classList" class="dropdown-item">클래스 목록</a>
                             <a href="admin_class_delete" id="classDelete" class="dropdown-item">삭제된 클래스 목록</a>

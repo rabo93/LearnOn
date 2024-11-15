@@ -1,38 +1,20 @@
 package com.itwillbs.learnon.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.learnon.service.AdminService;
 import com.itwillbs.learnon.vo.AdminVO;
 
 @Controller
 public class AdminController {
-	private static final AdminVO VO = null;
-
 	@Autowired
 	private AdminService adminService;
-	
-	private String uploadPath = "/resources/upload";
 	
 	// 어드민 메인페이지 매핑
 	@GetMapping("admin_index")
@@ -59,32 +41,130 @@ public class AdminController {
 //			return "admin/fail";
 //		}
 		
-		return "admin/admin_index";
+		return "admin/index";
 		
 	}
 	// =======================================================================
 	
+	// 어드민 카테고리 편집 페이지 매핑
+	@GetMapping("admin_class_category")
+	public String admin_class_categoryModify(Model model) {
+		model.addAttribute("getMainCate", adminService.getMainCate());
+		model.addAttribute("getSubCate", adminService.getSubCate());
+		
+		return "admin/class_category";
+	}
+	
+	// 어드민 카테고리 편집 저장
+	@PostMapping("admin_class_category")
+	public String admin_class_categorySubmit(AdminVO VO, Model model) {
+		System.out.println(VO.getOld_codetype_subcate());
+		String[] oldArrSubCodetype = VO.getOld_codetype_subcate().split(",");
+		String[] oldArrSubCodeTypeId = VO.getOld_codetype_id_subcate().split(",");
+		String[] oldArrSubName = VO.getOld_name_subcate().split(",");
+		String[] oldArrSubDescription = VO.getOld_description_subcate().split(",");
+		String[] oldArrSubOrder = VO.getOld_order_subcate().split(",");
+		
+		AdminVO UpdateVO = new AdminVO();
+		int updateRowCnt = oldArrSubCodetype.length;
+		
+		for (int i = 0; i < updateRowCnt; i++) {
+			UpdateVO.setOld_codetype_subcate(oldArrSubCodetype[i]);
+			UpdateVO.setOld_codetype_id_subcate(oldArrSubCodeTypeId[i]);
+			UpdateVO.setOld_name_subcate(oldArrSubName[i]);
+			UpdateVO.setOld_description_subcate(oldArrSubDescription[i]);
+			UpdateVO.setOld_order_subcate(oldArrSubOrder[i]);
+			
+			adminService.updateCate(UpdateVO);
+		}
+		
+		AdminVO insertVO = new AdminVO();
+		
+		if (VO.getCodeid_maincate() != null) {
+			String[] arrCodeId = VO.getCodeid_maincate().split(",");
+			String[] arrCodeType = VO.getCodetype_maincate().split(",");
+			String[] arrCodeName = VO.getCodename_maincate().split(",");
+			String[] arrDescription = VO.getDescription_maincate().split(",");
+			
+			int mainRowCnt = arrCodeId.length;
+			
+			for (int i = 0; i < mainRowCnt; i++) {
+				insertVO.setCodeid_maincate(arrCodeId[i]);
+				insertVO.setCodetype_maincate(arrCodeType[i]);
+				insertVO.setCodename_maincate(arrCodeName[i]);
+				insertVO.setDescription_maincate(arrDescription[i]);
+				
+				adminService.insertMainCate(insertVO);
+			}
+			
+			if (mainRowCnt < 0) {
+				model.addAttribute("msg", "대분류 등록 실패!");
+				return "admin/fail";
+			}
+			
+		}
+		
+		if (VO.getCodetype_id_subcate() != null) {
+			String[] arrSubCodetype = VO.getCodetype_subcate().split(",");
+			String[] arrSubCodeTypeId = VO.getCodetype_id_subcate().split(",");
+			String[] arrSubName = VO.getName_subcate().split(",");
+			String[] arrSubDescription = VO.getDescription_subcate().split(",");
+			String[] arrSubOrder = VO.getOrder_subcate().split(",");
+			
+			int subRowCnt = arrSubCodeTypeId.length;
+			
+			for (int i = 0; i < subRowCnt; i++) {
+				insertVO.setCodetype_subcate(arrSubCodetype[i]);
+				insertVO.setCodetype_id_subcate(arrSubCodeTypeId[i]);
+				insertVO.setName_subcate(arrSubName[i]);
+				insertVO.setDescription_subcate(arrSubDescription[i]);
+				insertVO.setOrder_subcate(arrSubOrder[i]);
+				
+				adminService.insertSubCate(insertVO);
+			}
+			
+			if (subRowCnt < 0) {
+				model.addAttribute("msg", "소분류 등록 실패!");
+				return "admin/fail";
+			}
+			
+		}
+		
+		return "redirect:/admin_class_category";
+	}
+	
+	// 어드민 카테고리 삭제 로직
+	@GetMapping("mainCateDelete")
+	public String mainCateDelete(String CODEID) {
+		adminService.deleteMainCate(CODEID);
+		return "redirect:/admin_class_category";
+	}
+	@GetMapping("subCateDelete")
+	public String subCateDelete(String CODEID) {
+		adminService.deleteMainCate(CODEID);
+		return "redirect:/admin_class_category";
+	}
+	
 	// 어드민 클래스 등록 페이지 매핑
 	@GetMapping("admin_class_add")
-	public String admin_class_add(Model model, AdminVO VO) {
+	public String admin_class_add(Model model) {
+		model.addAttribute("getCategory", adminService.getCategory());
 		
-//		List<Map<String, String>> mapArr = ;
-//		model.addAttribute("getCategory", adminService.getCategory());
 		
-		return "admin/admin_class_add";
+		return "admin/class_add";
+		
 	}
 	
 	@PostMapping("admin_class_add")
-	public String admin_class_add(AdminVO VO, HttpServletRequest request, HttpSession session, Model model) {
-		System.out.println(VO);
-//		
-		int insertCount = adminService.registClass(VO);
+	public String admin_class_add1(Model model) {
+		int insertCount = adminService.registClass();
 		
 		if (insertCount < 0) {
 			model.addAttribute("msg", "클래스 등록 실패!");
 			return "admin/fail";
 		}
-		return "admin/admin_class_add";
+		
+		return "admin/class_add";
 	}
 	
 	// 어드민 클래스 목록 페이지 매핑
@@ -92,7 +172,7 @@ public class AdminController {
 	public String admin_class_list(Model model) {
 		model.addAttribute("getClassList", adminService.getClassList());
 		
-		return "admin/admin_class_list";
+		return "admin/class_list";
 	}
 	
 	// 어드민 클래스 수정 페이지 매핑
@@ -105,7 +185,7 @@ public class AdminController {
 //			return "admin/fail";
 //		}
 		
-		return "admin/admin_class_list_modify";
+		return "admin/class_list_modify";
 	}
 	
 	// 어드민 삭제된 클래스 목록 페이지 매핑
@@ -113,7 +193,7 @@ public class AdminController {
 	public String admin_class_delete(Model model) {
 		model.addAttribute("getClassList", adminService.getClassList());
 		
-		return "admin/admin_class_delete";
+		return "admin/class_delete";
 	}
 	
 	// =======================================================================
@@ -122,21 +202,21 @@ public class AdminController {
 	@GetMapping("admin_member_list")
 	public String admin_member_list(Model model) {
 		model.addAttribute("getMemberList", adminService.getMemberList());
-		return "admin/admin_member_list";
+		return "admin/member_list";
 	}
 	
 	// 어드민 강사 회원 목록 페이지 매핑
 	@GetMapping("admin_member_list_instructor")
 	public String admin_member_list_instructor(Model model) {
 		model.addAttribute("getMemberList", adminService.getMemberList());
-		return "admin/admin_member_list_instructor";
+		return "admin/member_list_instructor";
 	}
 	
 	// 어드민 탈퇴한 회원 목록 페이지 매핑
 	@GetMapping("admin_member_list_delete")
 	public String admin_member_list_delete(Model model) {
 		model.addAttribute("getMemberList", adminService.getMemberList());
-	return "admin/admin_member_list_delete";
+	return "admin/member_list_delete";
 	}
 
 	// =======================================================================
@@ -144,13 +224,13 @@ public class AdminController {
 	// 어드민 결제 내역 관리 페이지 매핑
 	@GetMapping("admin_payment_list")
 	public String admin_payment_list() {
-	return "admin/admin_payment_list";
+	return "admin/payment_list";
 	}
 	
 	// 어드민 쿠폰 관리 페이지 매핑
 	@GetMapping("admin_payment_list_coupon")
 	public String admin_payment_list_coupon() {
-		return "admin/admin_payment_list_coupon";
+		return "admin/payment_list_coupon";
 	}
 	
 	// =======================================================================
@@ -158,19 +238,19 @@ public class AdminController {
 	// 어드민 게시판 관리 페이지 매핑
 	@GetMapping("admin_board_management")
 	public String admin_board_management() {
-		return "admin/admin_board_management";
+		return "admin/board_management";
 	}
 	
 	// 어드민 FAQ 관리 페이지 매핑
 	@GetMapping("admin_board_faq")
 	public String admin_board_faq() {
-		return "admin/admin_board_faq";
+		return "admin/board_faq";
 	}
 	
 	// 어드민 수강 후기 관리 페이지 매핑
 	@GetMapping("admin_board_review")
 	public String admin_board_review() {
-		return "admin/admin_board_review";
+		return "admin/board_review";
 	}
 	
 	// =======================================================================

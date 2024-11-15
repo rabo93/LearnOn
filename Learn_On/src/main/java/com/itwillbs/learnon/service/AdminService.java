@@ -1,7 +1,6 @@
 package com.itwillbs.learnon.service;
 
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.itwillbs.learnon.mapper.AdminMapper;
 import com.itwillbs.learnon.vo.AdminVO;
-import com.itwillbs.learnon.vo.CourseVO;
 import com.itwillbs.learnon.vo.MemberVO;
 
 @Service
@@ -18,17 +16,17 @@ public class AdminService {
 	@Autowired
 	private AdminMapper mapper;
 	
-//	public List<Map<String, String>> getCategory() {
-	public String getCategory() {
-		System.out.println(mapper.getCategory());
-//		return mapper.getCategory();
-		return "";
+	public List<Map<String, String>> getCategory() {
+		return mapper.getCategory();
 	}
-//	public List<AdminVO> getSubCategory() {
-//		return mapper.getSubCategory();
-//	}
-	public int registClass(AdminVO vO) {
-		return mapper.insertClass(vO);
+	public int registClass() {
+		return mapper.insertClass();
+	}
+	public int insertMainCate(AdminVO VO) {
+		return mapper.insertMainCate(VO);
+	}
+	public int insertSubCate(AdminVO VO) {
+		return mapper.insertSubCate(VO);
 	}
 	public List<AdminVO> getClassList() {
 		return mapper.getClassList();
@@ -41,6 +39,19 @@ public class AdminService {
 	}
 	public List<AdminVO> getClass(int class_id) {
 		return mapper.getClass(class_id);
+	}
+	public List<Map<String, String>> getMainCate() {
+		return mapper.getMainCate();
+	}
+	public List<Map<String, String>> getSubCate() {
+		return mapper.getSubCate();
+	}
+	public int deleteMainCate(String CODEID) {
+		System.out.println("호출치ㅏ어리커ㅣㄴㅇㄹ");
+		return mapper.deleteMainCate(CODEID);
+	}
+	public int updateCate(AdminVO updateVO) {
+		return mapper.updateCate(updateVO);
 	}
 
 

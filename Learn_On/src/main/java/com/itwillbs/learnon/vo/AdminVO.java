@@ -1,10 +1,10 @@
 package com.itwillbs.learnon.vo;
 
-import java.sql.Timestamp;
-
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class AdminVO {
 	private int class_id;
 	private String class_title;
@@ -17,13 +17,28 @@ public class AdminVO {
 	private String class_pic1;
 	private String class_contents;
 	private int class_status;
-	private String codetype;
 	private String codetype_id;
-	private String codeid;
-	private String codename;
 	private String name;
 	
+	// 카테고리
 	//=======================================
+	private String codeid_maincate;
+	private String codetype_maincate;
+	private String codename_maincate;
+	private String description_maincate;
+	
+	private String codetype_subcate;
+	private String codetype_id_subcate;
+	private String name_subcate;
+	private String description_subcate;
+	private String order_subcate;
+	
+	private String old_codetype_subcate;
+	private String old_codetype_id_subcate;
+	private String old_name_subcate;
+	private String old_description_subcate;
+	private String old_order_subcate;
+	
 	
 	//=======================================
 	

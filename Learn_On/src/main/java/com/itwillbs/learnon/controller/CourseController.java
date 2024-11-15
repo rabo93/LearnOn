@@ -16,7 +16,6 @@ import com.itwillbs.learnon.service.CourseService;
 import com.itwillbs.learnon.vo.CommonCodeTypeVO;
 import com.itwillbs.learnon.vo.CourseSupportVO;
 import com.itwillbs.learnon.vo.CourseVO;
-import com.itwillbs.learnon.vo.FaqVO;
 import com.itwillbs.learnon.vo.MyReviewVO;
 
 @Controller
@@ -40,7 +39,7 @@ public class CourseController {
 	public String courseDetail(int class_id, Model model) {
 		List<CourseVO> course = courseService.getCourse(class_id);
 		List<MyReviewVO> myReviewList = courseService.getReviewList(class_id);
-		List<CourseSupportVO> courseSupportList = courseService.getCourseSupportList();
+		List<CourseSupportVO> courseSupportList = courseService.getCourseSupportList(class_id);
 		
 		model.addAttribute("course", course);
 		model.addAttribute("myReview", myReviewList);
@@ -76,6 +75,8 @@ public class CourseController {
 		String id = (String)session.getAttribute("sId");
 		cSupport.setMem_id(id);
 		cSupport.setC_class_id(class_id);
+		System.out.println("클래스아이디#########$$$$$$$$$$$$  %%%%%%%%%%% " + class_id);
+//		int insertCount = courseService.registCourseSupport(cSupport, class_id);
 		int insertCount = courseService.registCourseSupport(cSupport);
 		
 		

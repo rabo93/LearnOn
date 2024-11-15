@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <script src="${pageContext.request.contextPath}/resources/js/top.js"></script>
     
 <%-- header --%>
@@ -71,9 +72,6 @@ function logout() {
 		        			<a href="MyDashboard" class="my-course"> <i class="fa-solid fa-circle-play"></i> 나의 강의실</a>
 						</c:otherwise>				
 					</c:choose>
-<!--         			<a href="#" class="login-link">로그인을 해주세요. <i class="fa-solid fa-arrow-right-to-bracket"></i></a> -->
-<!--         			<a href="#" class="my-info"><i class="fa-solid fa-gear"></i> <span>홍길동</span> 님</a> -->
-<!--         			<a href="#" class="my-course"> <i class="fa-solid fa-circle-play"></i> 나의 강의실</a> -->
         		</div>
 				<ul class="mgnb">
 					<li class="mgnb-menu">
@@ -99,67 +97,47 @@ function logout() {
 			<li><a href="#">카테고리</a>
 				<div class="dropdown-bg"></div>
 				<ul class="dropdown">
+<!-- 					<li> -->
+<!-- 						<a href="Category?codetype=CATE01">IT/개발</a> -->
+<!-- 						<ul class="sub-dropdown"> -->
+<!-- 							<li><a href="Category?codetype=CATE01">전체</a></li> -->
+<!-- 							<li><a href="Category?codetype=CATE01&codetype_id=01">프로그래밍</a></li> -->
+<!-- 							<li><a href="Category?codetype=CATE01&codetype_id=02">WEB 개발</a></li> -->
+<!-- 							<li><a href="Category?codetype=CATE01&codetype_id=03">프론트엔드</a></li> -->
+<!-- 							<li><a href="Category?codetype=CATE01&codetype_id=04">백엔드</a></li> -->
+<!-- 							<li><a href="Category?codetype=CATE01&codetype_id=05">App</a></li> -->
+<!-- 						</ul> -->
+<!-- 					</li> -->
+
 					<li>
-						<a href="Category?codetype=CATE01">IT/개발</a>
-						<ul class="sub-dropdown">
-							<li><a href="Category?codetype=CATE01">전체</a></li>
-							<li><a href="Category?codetype=CATE01&codetype_id=01">프로그래밍</a></li>
-							<li><a href="Category?codetype=CATE01&codetype_id=02">WEB 개발</a></li>
-							<li><a href="Category?codetype=CATE01&codetype_id=03">프론트엔드</a></li>
-							<li><a href="Category?codetype=CATE01&codetype_id=04">백엔드</a></li>
-							<li><a href="Category?codetype=CATE01&codetype_id=05">App</a></li>
-						</ul>
+					 
+						<c:set var="cnt" value="0" />  <!-- cnt를 처음에 0으로 초기화 -->
+						<c:forEach var="code" items="${requestScope.codeTypeAll}">
+						    <c:set var="num" value="${fn:substring(code.codetype, 4, 6)}"/>
+						    
+						    <!-- 처음 'num'이 cnt와 다를 때만 출력되게 설정 -->
+						    <c:choose>
+						        <c:when test="${num != cnt}">
+									<a href="Category?codetype=${code.codetype}">${code.name}</a>
+						            <!-- codetype이 바뀔 때만 출력 -->
+	<%-- 					            ${code.codetype} ${code.name} --%>
+						            <ul class="sub-dropdown">
+						            	<li><a href="Category?codetype=${code.codetype}">전체${code.codetype}</a></li>
+						            </ul>
+						            <c:set var="cnt" value="${num}" /> <!-- 출력 후 cnt 값을 num으로 갱신 -->
+						        </c:when>
+						    </c:choose>
+						</c:forEach>
 					</li>
-					<li>
-						<a href="Category?codetype=CATE02">외국어</a>
-						<ul class="sub-dropdown">
-							<li><a href="Category?codetype=CATE02&codetype_id=01">영어</a></li>
-							<li><a href="Category?codetype=CATE02&codetype_id=02">중국어</a></li>
-							<li><a href="Category?codetype=CATE02&codetype_id=03">일본어</a></li>
-							<li><a href="Category?codetype=CATE02&codetype_id=04">스페인어</a></li>
-							<li><a href="Category?codetype=CATE02&codetype_id=05">프랑스어</a></li>
-							<li><a href="Category?codetype=CATE02&codetype_id=06">기타언어</a></li>
-						</ul>
-					</li>
-					<li>
-						<a href="#">운동/건강</a>
-						<ul class="sub-dropdown">
-							<li><a href="Category?codetype=CATE03">전체</a></li>
-							<li><a href="Category?codetype=CATE03&codetype_id=01">요가</a></li>
-							<li><a href="Category?codetype=CATE03&codetype_id=02">필라테스</a></li>
-							<li><a href="Category?codetype=CATE03&codetype_id=03">발레</a></li>
-							<li><a href="Category?codetype=CATE03&codetype_id=04">피트니스</a></li>
-							<li><a href="Category?codetype=CATE03&codetype_id=05">수영</a></li>
-							<li><a href="Category?codetype=CATE03&codetype_id=06">러닝</a></li>
-							<li><a href="Category?codetype=CATE03&codetype_id=07">사이클</a></li>
-							<li><a href="Category?codetype=CATE03&codetype_id=08">스트레칭</a></li>
-						</ul>
-					</li>
-					<li>
-						<a href="#">라이프스타일</a>
-						<ul class="sub-dropdown">
-							<li><a href="Category?codetype=CATE04">전체</a></li>
-							<li><a href="Category?codetype=CATE04&codetype_id=01">드로잉</a></li>
-							<li><a href="Category?codetype=CATE04&codetype_id=02">공예</a></li>
-							<li><a href="Category?codetype=CATE04&codetype_id=03">사진,영상</a></li>
-							<li><a href="Category?codetype=CATE04&codetype_id=04">영상</a></li>
-							<li><a href="Category?codetype=CATE04&codetype_id=05">DIY</a></li>
-							<li><a href="Category?codetype=CATE04&codetype_id=06">기타</a></li>
-						</ul>
-					</li>
-					<li>
-						<a href="#">요리/음료</a>
-						<ul class="sub-dropdown">
-							<li><a href="#Category?codetype=CATE05">전체</a></li>
-							<li><a href="Category?codetype=CATE05&codetype_id=01">한식</a></li>
-							<li><a href="Category?codetype=CATE05&codetype_id=02">일식</a></li>
-							<li><a href="Category?codetype=CATE05&codetype_id=03">중식</a></li>
-							<li><a href="Category?codetype=CATE05&codetype_id=04">양식</a></li>
-							<li><a href="Category?codetype=CATE05&codetype_id=05">비건</a></li>
-							<li><a href="Category?codetype=CATE05&codetype_id=06">음료</a></li>
-							<li><a href="Category?codetype=CATE05&codetype_id=07">술</a></li>
-						</ul>
-					</li>
+									
+							
+					
+<!-- 						<a href="Category?codetype=CATE01">IT/개발</a> -->
+<!-- 							<ul class="sub-dropdown"> -->
+<!-- 								<li><a href="Category?codetype=CATE01">전체</a></li> -->
+<!-- 								<li><a href="Category?codetype=CATE01&codetype_id=01">프로그래밍</a></li> -->
+<!-- 							</ul> -->
+<%-- 					</c:forEach> --%>
 				</ul>
 			</li>
 			<li><a href="#">BEST</a></li>

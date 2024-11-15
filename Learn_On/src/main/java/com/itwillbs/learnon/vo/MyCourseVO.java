@@ -14,6 +14,7 @@ public class MyCourseVO {
 	private int curriculum_count;
 	private String teacher_name;
 	private int review_idx;
-	private String review_subject;
 	private String review_content;
+	private int completion_rate; // 수강률
+	private Boolean is_reviewed; // 수강후기 작성 여부
 }

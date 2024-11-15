@@ -27,14 +27,16 @@
 			<section class="tb-wrap">
 				<table class="tb-02">
 					<colgroup>
-						<col width="70%">
+						<col width="60%">
 						<col width="15%">
 						<col width="15%">
+						<col width="10%">
 					</colgroup>
 					<tr>
 						<th class="dt-title">${notice.notice_subject}</th>	<%-- 제목 --%>
 						<th class="dt-author">${notice.mem_id}</th>			<%-- 작성자 --%>
 						<th class="dt-date">${notice.notice_date}</th>		<%-- 작성날짜 --%>
+						<th class="dt-readCount">${notice.notice_read_count}</th>		<%-- 작성날짜 --%>
 					</tr>
 					<tr>
 						<td colspan="3">
@@ -63,7 +65,7 @@
 				<div>
 					<button onclick="noticeModify()">수정</button>
 					<button onclick="noticeDelete()">삭제</button>
-					<button>목록</button>
+					<button onclick="location.href='NoticeList'">목록</button>
 				</div>
 			</section>
 			<!-- 목록, 수정, 삭제 버튼 추가하기! -->

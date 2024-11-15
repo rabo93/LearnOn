@@ -68,8 +68,9 @@ s : 초(ss : 초 2자리)
 									<img alt="클래스썸네일" src="/resources/images/thumb_01.webp">
 								</div>
 								<div class="item-info">
-									<p>[무료특강] 백엔드 개발이 편리해지는 코틀린과 스프링 부트(CLASS_TITLE)</p>
-									<p>박승규(T_ID - MEM_NAME)</p>
+									<!-- AJAX로 불러와보자 -->
+									<p id="classTitle">(CLASS_TITLE)</p>
+									<p id="teacherName">(T_ID - MEM_NAME)</p>
 								</div>
 							</div>
 							<!-- 상품 금액부분 -->
@@ -143,7 +144,7 @@ s : 초(ss : 초 2자리)
 									<input type="checkbox" id="notice" name="cart1" value="cart1">	
 					 				<span>이용약관 동의(필수)</span>
 								</label>
-				 				<a href="#">내용보기</a>
+				 				<a href="Terms">내용보기</a>
 							</div>
 						</div>
 					</section>	

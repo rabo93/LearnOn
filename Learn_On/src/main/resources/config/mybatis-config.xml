@@ -20,5 +20,10 @@
 		<typeAlias type="com.itwillbs.learnon.vo.NoticeBoardVO" alias="noticeBoard" />
 		<typeAlias type="com.itwillbs.learnon.vo.WishlistVO" alias="wish" />
 		<typeAlias type="com.itwillbs.learnon.vo.MyCourseVO" alias="mycourse" />
+		<typeAlias type="com.itwillbs.learnon.vo.MyReviewVO" alias="myreview" />
+		<typeAlias type="com.itwillbs.learnon.vo.CourseSupportVO" alias="cSupport" />
+		<typeAlias type="com.itwillbs.learnon.vo.CartVO" alias="cart" />
+		<typeAlias type="com.itwillbs.learnon.vo.PayVO" alias="pay" />
+		<typeAlias type="com.itwillbs.learnon.vo.CouponVO" alias="coupon" />
 	</typeAliases>
 </configuration>

@@ -18,7 +18,16 @@ $(document).ready(function() {
         dataType: "json",
         
 		success : function(data) {
-			 $('#cartCount').html(data.cartCount); //장바구니 아이콘에 갯수 표시 
+			if (data.cartCount == "") {
+				$('.cart-btn').hide(); // 로그인하지 않은 경우 장바구니 아이콘 숨김
+			} else {
+				// 로그인되어 있으면 장바구니 개수 표시
+				$('#cartCount').html(data.cartCount);
+			}
+		},
+		error: function(jqXHR) {
+			console.log("장바구니 개수 불러오기 오류 : "+ jqXHR);
+			$('.cart-btn').hide(); // 오류 발생 시 아이콘 숨김
 		}
 	});
 });

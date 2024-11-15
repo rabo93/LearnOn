@@ -23,7 +23,7 @@ public class MemberService {
 
 	}
 
-	public String modifyMember(Map<String, String> map) {
+	public int modifyMember(Map<String, String> map) {
 		return mapper.updateMember(map);
 	}
 
@@ -56,5 +56,9 @@ public class MemberService {
 		}
 
 		return isAuthsuccess;
+	}
+
+	public String getMemberPasswd(String id) {
+		return mapper.selectMemberPasswd(id);
 	}
 }

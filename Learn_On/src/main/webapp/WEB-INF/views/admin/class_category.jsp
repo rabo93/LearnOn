@@ -60,8 +60,8 @@
 						<thead>
 							<tr>
 								<th scope="col">#</th>
-								<th scope="col">카테고리 아이디(CODEID)</th>
 								<th scope="col">카테고리 타입(CODETYPE)</th>
+								<th scope="col">카테고리 아이디(CODEID)</th>
 								<th scope="col">카테고리 이름(CODENAME)</th>
 								<th scope="col">카테고리 설명(DESCRIPTION)</th>
 							</tr>
@@ -70,8 +70,8 @@
 							<c:forEach items="${getMainCate}" var="mainCate">
 								<tr>
 									<td><input class="form-check-input" type="checkbox" id="gridCheck1" name="mainCateRowCheck"></td>
-									<td><input id="CODEID" class="form-control " type="text" placeholder="아이디" value="${mainCate.CODEID}"></td>
 									<td><input id="CODETYPE" class="form-control " type="text" placeholder="타입" value="${mainCate.CODETYPE}"></td>
+									<td><input id="CODEID" class="form-control " type="text" placeholder="아이디" value="${mainCate.CODEID}"></td>
 									<td><input id="CODENAME" class="form-control " type="text" placeholder="이름" value="${mainCate.CODENAME}"></td>
 									<td><input id="DESCRIPTION" class="form-control " type="text" placeholder="설명" value="${mainCate.DESCRIPTION}"></td>
 	                           	</tr>
@@ -79,12 +79,15 @@
 						</tbody>
 					</table>
 				</div>
+				<br><br>
 				<hr>
+				<br><br>
 				<div>
 					<div class="d-flex mb-3">
 						<h5 class="me-auto tableSubject">소분류</h5>
 						<button type="button" class="btn btn-lg btn-primary ms-3" onClick="deleteSubCateRow();">삭제</button>
 						<button type="button" class="btn btn-lg btn-primary ms-3" onClick="addSubCateRow();">추가</button>
+						<input type="hidden" id="aaaaaatest" value="${getMainCate}"/>
 					</div>
 					<table class="table table-striped" id="subCateTable">
 						<thead>
@@ -101,7 +104,12 @@
 							<c:forEach items="${getSubCate}" var="subCate">
 								<tr>
 									<td><input class="form-check-input" type="checkbox" id="gridCheck1" name="subCateRowCheck"></td>
-									<td><input name="old_codetype_subcate" class="form-control" type="text" placeholder="타입" value="${subCate.CODETYPE}"></td>
+<%-- 									<td><input name="old_codetype_subcate" class="form-control" type="text" placeholder="타입" value="${subCate.CODETYPE}"></td> --%>
+									<td><select class="form-select" id="floatingSelect" name="old_codetype_subcate">
+											<c:forEach items="${getMainCate}" var="cate">
+												<option>${cate.CODEID}</option>
+											</c:forEach>
+									</select></td>
 									<td><input name="old_codetype_id_subcate" class="form-control" type="text" placeholder="아이디" value="${subCate.CODETYPE_ID}"></td>
 									<td><input name="old_name_subcate" class="form-control" type="text" placeholder="이름" value="${subCate.NAME}"></td>
 									<td><input name="old_description_subcate" class="form-control" type="text" placeholder="설명" value="${subCate.DESCRIPTION}"></td>
@@ -136,12 +144,35 @@
     <!-- Template Javascript -->
     <script src="resources/admin/js/main.js"></script>
     <script src="resources/admin/js/admClass.js"></script>
-    <script type="text/javascript">
+    <script th:inline="javascript">
    		var link = document.location.href;
     	if (link.includes("Adm")) {
     		document.getElementById("classCategory").classList.toggle("active");
     		document.getElementById("classManage").classList.toggle("active");
     	};
+    	
+    	function addSubCateRow() {
+			var subCateTable = document.getElementById('subCateTable');
+			var newRow = subCateTable.insertRow();
+			var cell1 = newRow.insertCell();
+			var cell2 = newRow.insertCell();
+			var cell3 = newRow.insertCell();
+			var cell4 = newRow.insertCell();
+			var cell5 = newRow.insertCell();
+			var cell6 = newRow.insertCell();
+			
+			console.log(document.getElementById('aaaaaatest').value);
+			
+			cell1.innerHTML = '<td><input class="form-check-input" type="checkbox" id="gridCheck1" name="subCateRowCheck"></td>';
+			cell2.innerHTML = '<td><select class="form-select" id="floatingSelect" name="codetype_subcate">'
+											+ '<c:forEach items="${getMainCate}" var="cate">'
+											+ '<option>${cate.CODEID}</option>'
+											+ '</c:forEach>'
+			cell3.innerHTML = '<td><input name="codetype_id_subcate" class="form-control" type="text" placeholder="아이디"></td>';
+			cell4.innerHTML = '<td><input name="name_subcate" class="form-control" type="text" placeholder="이름"></td>';
+			cell5.innerHTML = '<td><input name="description_subcate" class="form-control" type="text" placeholder="설명"></td>';
+			cell6.innerHTML = '<td><input name="order_subcate" class="form-control" type="text" placeholder="오더"></td>';
+		}
     </script>
 </body>
 </html>

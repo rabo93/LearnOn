@@ -23,7 +23,7 @@
 		}else {
 			location.href = "${targetURL}";
 		}
-		
+	
 	</script>
 
 </body>

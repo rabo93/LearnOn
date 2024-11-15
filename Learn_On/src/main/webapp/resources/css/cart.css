@@ -18,10 +18,16 @@
 }
 
 .cart-select {margin-bottom: 10px;display: flex;align-items: center;gap: 0 10px;font-size: 14px;font-weight: 600;color: var(--dark);background: var(--light-blue);padding: 16px;border-radius: 10px;}
-.cart-select .btn-del {
+.cart-select .select-del {
+	margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+	
     margin-left: auto;
     background: var(--white);
-    font-weight: 700;
+    font-weight: 600;
     font-size: 14px;
     padding: 6px 10px;
     border: 1px solid #ddd;
@@ -36,14 +42,15 @@
 	padding: 16px;
 	margin-bottom: 10px;
 }
+
 .cart-list .cart-item .item-btns {
     display: flex;
     align-items: center;
     justify-content: space-between;
     font-size: 18px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 }
-.cart-list .cart-item .item-btns input {}
+
 .cart-list .cart-item .item-btns .btn-del {
     background: var(--white);
     color: var(--dark);
@@ -57,7 +64,7 @@
     overflow: hidden;
 }
 .cart-list .item-link .class-pic {
-    width: 100px;
+    width: 90px;
     border-radius: 10px;
     overflow: hidden;
     border: 1px solid #ddd;
@@ -128,7 +135,7 @@
     justify-content: center;
     gap: 10px;
 }
-.btns-box .btnSubmit, .btns-box .btnBack {
+.btns-box .btnSubmit, .btns-box .btnHome {
     border-radius: 6px;
     background-color: var(--primary);
     font-weight: 600;

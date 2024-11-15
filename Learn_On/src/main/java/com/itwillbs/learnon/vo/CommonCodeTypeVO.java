@@ -4,9 +4,9 @@ import lombok.Data;
 
 @Data
 public class CommonCodeTypeVO {
-	private String CODETYPE;
-	private String NAME;
-	private String DESCRIPTION;
-	private String CODETYPE_ID;
-	private String ORDER;
+	private String codetype;
+	private String name;
+	private String description;
+	private String codetype_id;
+	private String order;
 }

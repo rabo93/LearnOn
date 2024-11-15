@@ -24,31 +24,28 @@
 		<div id="nt_write_container">
 			<h2>공지사항 작성</h2>
 			<form action="NoticeWrite" name="writeForm" method="post" enctype="multipart/form-data">
-<!-- 				<input type="hidden" name="NOTICE_IDX" value="0"> -->
-<!-- 				<input type="hidden" name="NOTICE_CATE" value="1"> -->
-<!-- 				<input type="hidden" name="NOTICE_READ_COUNT" value="0"> -->
 				<table>
 					<tr>
 						<td>글쓴이</td>
 						<td>
-							<input type="text" name="MEM_ID">
+							<input type="text" name="mem_id" value="${sessionScope.sId}" readonly>
 						</td>
 					</tr>
 					<tr>
 						<td>제목</td>
 						<td>
-							<input type="text" name="NOTICE_SUBJECT">
+							<input type="text" name="notice_subject">
 						</td>
 					</tr>
 					<tr>
 						<td>내용</td>
 						<td>
-							<textarea rows="15" cols="40" name="NOTICE_CONTENT"></textarea>
+							<textarea rows="15" cols="40" name="notice_content"></textarea>
 						</td>
 					</tr>
 					<tr>
 						<td>
-							<input type="file" name="NOTICE_FILE_GET" multiple>
+							<input type="file" name="notice_file_get" multiple>
 						</td>
 					</tr>
 				</table>

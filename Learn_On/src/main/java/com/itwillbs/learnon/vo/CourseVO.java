@@ -4,27 +4,27 @@ import lombok.Data;
 
 @Data
 public class CourseVO {
-	private String CLASS_TITLE;
-	private String MEM_ID;
-	private String CLASS_INTRO;
-	private int CLASS_PRICE;
-	private String CLASS_CATEGORY;
-	private String CLASS_REG_DATE;
-	private int CLASS_RUNTIME;
-	private String CLASS_PIC1;
-	private String CLASS_CONTENTS;
-	private int CLASS_STATUS;
-	private int CLASS_ID;
+	private String class_title;
+	private String mem_id;
+	private String class_intro;
+	private int class_price;
+	private String class_category;
+	private String class_reg_date;
+	private int class_runtime;
+	private String class_pic1;
+	private String class_contents;
+	private int class_status;
+	private int class_id;
 	
-	private int CUR_ID;
-	private String CUR_TITLE;
-	private String CUR_VIDEO;
-	private double REVIEW_SCORE;
+	private int cur_id;
+	private String cur_title;
+	private String cur_video;
+	private double review_score;
 	
-	private String CODETYPE;
-	private String NAME;
-	private String DESCRIPTION;
-	private String CODETYPE_ID;
+	private String codetype;
+	private String name;
+	private String description;
+	private String codetype_id;
 	
-	private String CATENAME;
+	private String catename;
 }

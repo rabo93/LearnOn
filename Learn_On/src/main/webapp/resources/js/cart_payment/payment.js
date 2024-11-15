@@ -1,3 +1,17 @@
+//AJAX로 상품목록 표출
+//$.ajax({
+//		type : "POST",
+//			
+//			
+//			
+//			
+//$("#classTitle")
+//
+
+
+
+
+
 //=============================================================================
 // "쿠폰선택" 클릭 시 쿠폰 모달창 생성 이벤트(지금은 쿠폰 페이지로 이동)
 function couponSelect() {
@@ -7,19 +21,10 @@ function couponSelect() {
 // "쿠폰발급" 클릭 시 입력된 쿠폰번호 코드 확인 후 생성
 function couponCreate() {
 	
+	
+	
+	
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 //=============================================================================
 //https://developers.portone.io/opi/ko/integration/start/v1/auth?v=v1
@@ -39,8 +44,8 @@ function requestPay() {
 	    buyer_email: "gildong@gmail.com",
 	    buyer_name: "홍길동",
 	    buyer_tel: "010-4242-4242",
-	    buyer_addr: "서울특별시 강남구 신사동",
-	    buyer_postcode: "01181",
+//	    buyer_addr: "서울특별시 강남구 신사동",
+//	    buyer_postcode: "01181",
     }, 
     function (response) { // callback
     // 결제 종료 시 호출되는 콜백 함수

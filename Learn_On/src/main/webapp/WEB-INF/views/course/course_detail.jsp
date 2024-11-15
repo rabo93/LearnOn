@@ -150,8 +150,8 @@
 										</div>
 									</div> <!-- question_qna 문의사항 질문-답변 -->
 								</c:forEach>
+							<< 1 2 >>
 							</div>
-							
 							
 						</div><!-- tabcontent(클래스소개) 끝 -->
 						

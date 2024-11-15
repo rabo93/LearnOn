@@ -381,3 +381,61 @@ button:active {
 	z-index: 99;		
 	display: none;
 }
+
+/*=================== AdmNotice ==================*/
+.AdmNoticeDetail {
+	display: none;
+}
+
+/*=================== 페이징 처리 ==================*/
+#nt_pagingArea {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    margin: 1rem auto;
+}
+
+#nt_pagingArea button {
+    font-size: 13px;
+    font-weight: 700;
+    background: var(--white);
+    border: 1px solid var(--dark);
+    border-radius: 4px;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    color: var(--dark);
+}
+
+#nt_pagingArea button:disabled {
+	background:#eee;
+	border-color:#ddd;
+	color:#c999;
+}
+
+#nt_pagingArea button:hover {
+    background: var(--primary);
+    color: var(--white);
+    border-color: var(--primary);
+}
+
+#nt_pagingArea strong {
+    width: 20px;
+    display: inline-block;
+    text-align: center;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#nt_pagingArea a {
+    display: inline-block;
+    width: 20px;
+    text-align: center;
+}
+
+#nt_pagingArea a:hover {
+    color: var(--primary);
+    font-weight: 600;
+}
+

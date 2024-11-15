@@ -264,8 +264,8 @@ public class NoticeBoardController {
 //		System.out.println("board : " + board);
 		
 		String[] fileSplit = board.getNotice_file().split(",");
-		List<String> fileList = new ArrayList<String>();
 		
+		List<String> fileList = new ArrayList<String>();
 		for (String file : fileSplit) {
 			fileList.add(file);
 		}

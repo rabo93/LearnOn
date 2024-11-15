@@ -48,27 +48,35 @@
 						</div>
 						<div class="coupon-list">
 					    	<ul class="myCoupon">
-					    		<c:forEach var="coupon" items="${myCoupon}">
-					    			<li class="<c:if test='${coupon.COUPON_STATUS >= 2}'>end</c:if>">
-						    			<p class="c-name">${coupon.COUPON_NAME}</p>
-						    			<p class="c-exp-date">
-						    				사용기한 : ~ 
-						    				<fmt:parseDate value="${coupon.C_EXPIRY_DATE}" var="couponDate" pattern="yyyyMMdd" />
-						    				<fmt:formatDate value="${couponDate}" pattern="yyyy년 MM월 dd일" /> 까지
-						    			</p>
-						    						
-						    			<p class="c-dis">
-						    				<c:choose>
-						    					<c:when test="${not empty coupon.DISCOUNT_PERCENT}">
-						    						${coupon.DISCOUNT_PERCENT} %
-						    					</c:when>
-						    					<c:when test="${not empty coupon.DISCOUNT_AMOUNT}">
-						    						${coupon.DISCOUNT_AMOUNT} 원
-						    					</c:when>
-						    				</c:choose>
-						    			</p>
-						    		</li>
-					    		</c:forEach>
+					    		<c:choose>
+					    			<c:when test="${empty myCoupon}">
+					    				<li class="empty">발급받은 쿠폰이 없습니다.</li>
+					    			</c:when>
+					    			<c:otherwise>
+						    			<c:forEach var="coupon" items="${myCoupon}">
+							    			<li class="<c:if test='${coupon.COUPON_STATUS >= 2}'>end</c:if>">
+								    			<p class="c-name">${coupon.COUPON_NAME}</p>
+								    			<p class="c-exp-date">
+								    				사용기한 : ~ 
+								    				<fmt:parseDate value="${coupon.C_EXPIRY_DATE}" var="couponDate" pattern="yyyyMMdd" />
+								    				<fmt:formatDate value="${couponDate}" pattern="yyyy년 MM월 dd일" /> 까지
+								    			</p>
+								    						
+								    			<p class="c-dis">
+								    				<c:choose>
+								    					<c:when test="${not empty coupon.DISCOUNT_PERCENT}">
+								    						${coupon.DISCOUNT_PERCENT} %
+								    					</c:when>
+								    					<c:when test="${not empty coupon.DISCOUNT_AMOUNT}">
+								    						${coupon.DISCOUNT_AMOUNT} 원
+								    					</c:when>
+								    				</c:choose>
+								    			</p>
+								    		</li>
+							    		</c:forEach>
+					    			</c:otherwise>
+					    		</c:choose>
+					    		
 					    	</ul>
 						</div>
 					</section>

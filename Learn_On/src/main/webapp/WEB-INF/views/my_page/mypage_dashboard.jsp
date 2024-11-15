@@ -88,7 +88,7 @@
 																수강평 작성 <i class="fa-regular fa-pen-to-square"></i>
 															</button>
 														</c:when>
-														<c:when test="${course.is_reviewed}">
+														<c:when test="${course.is_reviewed eq true}">
 															<button class="btn-review" onclick="showUpdateModal(${course.class_id})">
 																<i class="fa-solid fa-star"></i> 작성한 수강평
 															</button>

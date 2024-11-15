@@ -162,10 +162,11 @@
 .coupon-list {background: var(--white);border: 1px solid #ddd;border-radius: 8px;padding: 1rem;flex: 1 0 0;}
 .coupon-list ul {display:flex;gap:1rem;flex-direction:column;}
 .coupon-list ul li {border-radius: 8px;background: #ffe8ef;padding: 10px 1rem;}
-.coupon-list .c-name {font-weight: 700;color: var(--dark);}
-.coupon-list .c-exp-date {font-size: 0.875rem;font-weight: 500;color: var(--gray);padding: 6px 0;}
-.coupon-list .c-dis {text-align: right;font-weight: 700;color: var(--primary);}
+.coupon-list ul li .c-name {font-weight: 700;color: var(--dark);}
+.coupon-list ul li .c-exp-date {font-size: 0.875rem;font-weight: 500;color: var(--gray);padding: 6px 0;}
+.coupon-list ul li .c-dis {text-align: right;font-weight: 700;color: var(--primary);}
 .coupon-list ul li.end {text-decoration: line-through;text-decoration-color: var(--dark);background: #eee;}
+.coupon-list ul li.empty {background:url('/resources/images/no_data.svg') no-repeat center top;padding-top: 13rem;text-align:center;font-weight: 600;color: #434f61;margin-bottom: 2rem;background-size: auto 200px;}
 
 /* 1:1 문의내역 */
 .inq-wrap {}
@@ -202,6 +203,7 @@
 /* 페이징 */
 #pageList {display: flex;justify-content: center;align-items: center;gap: 6px;margin: 1rem auto;}
 #pageList button {font-size: 13px;font-weight: 700;background: var(--white);border: 1px solid var(--dark);border-radius: 4px;cursor:pointer;width: 30px;height: 30px;}
+#pageList button:disabled {background:#eee;border-color:#ddd;color:#c999;}
 #pageList button:hover {background:var(--primary);color:var(--white);border-color:var(--primary);}
 #pageList strong {width: 20px;display: inline-block;text-align: center;text-decoration: underline;cursor:pointer;}
 #pageList a {display: inline-block;width: 20px;text-align: center;}

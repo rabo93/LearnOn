@@ -24,49 +24,33 @@
 	<main>
 		<div id="nt_dt_form">
 			<h2>공지사항</h2>
-			<section class="tb-wrap">
-				<table class="tb-02">
-					<colgroup>
-						<col width="60%">
-						<col width="15%">
-						<col width="15%">
-						<col width="10%">
-					</colgroup>
-					<tr>
-						<th class="dt-title">${notice.notice_subject}</th>	<%-- 제목 --%>
-						<th class="dt-author">${notice.mem_id}</th>			<%-- 작성자 --%>
-						<th class="dt-date">${notice.notice_date}</th>		<%-- 작성날짜 --%>
-						<th class="dt-readCount">${notice.notice_read_count}</th>		<%-- 작성날짜 --%>
-					</tr>
-					<tr>
-						<td colspan="3">
-							<div class="dt-content">${notice.notice_content}</div>
-						</td>
-					</tr>
-					<tfoot>
-						<tr>
-							<td colspan="3">
-								<c:forEach var="file" items="${fileList}" varStatus="status">
-									<c:if test="${not empty file}">
-									 	<div>
-									 		<i class="fa-solid fa-paperclip"></i> ${file}
-									 		<a href="${pageContext.request.contextPath}/resources/upload/${file}" download="${originalFileList[status.index]}">
-									 			<input type="button" value="download">
-									 		</a>
-									 	</div>
-									 </c:if>
-								</c:forEach>
-							</td>
-						</tr>
-					</tfoot>
-				</table>
-			</section>
-			<section>
-				<div>
-					<button onclick="noticeModify()">수정</button>
-					<button onclick="noticeDelete()">삭제</button>
-					<button onclick="location.href='NoticeList'">목록</button>
+			<section class="tb-con">
+				<div class="tb-hd">
+					<h3 class="ttl">${notice.notice_subject}</h3>
+					작성자 : <span class="author">${notice.mem_id}</span>
+					작성일자 : <span class="date">${notice.notice_date}</span>
+					조회수 : <span class="count">${notice.notice_read_count}</span>
 				</div>
+				<div class="tb-details">
+					${notice.notice_content}
+				</div>
+				<div class="tb-files">
+					<c:forEach var="file" items="${fileList}" varStatus="status">
+						<c:if test="${not empty file}">
+						 	<div>
+						 		<i class="fa-solid fa-paperclip"></i> ${file}
+						 		<a href="${pageContext.request.contextPath}/resources/upload/${file}" download="${originalFileList[status.index]}">
+						 			<input type="button" value="다운로드">
+						 		</a>
+						 	</div>
+						 </c:if>
+					</c:forEach>
+				</div>
+			</section>
+			<section class="tb-btns">
+				<button class="btn-02" onclick="noticeDelete()">삭제</button>
+				<button class="btn-03" onclick="noticeModify()">수정</button>
+				<button class="btn-03"onclick="location.href='NoticeList'">목록</button>
 			</section>
 			<!-- 목록, 수정, 삭제 버튼 추가하기! -->
 		</div>

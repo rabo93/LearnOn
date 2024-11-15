@@ -22,38 +22,47 @@
 	</header>
 	<main>
 		<div id="nt_write_container">
-			<h2>공지사항 작성</h2>
-			<form action="NoticeWrite" name="writeForm" method="post" enctype="multipart/form-data">
-				<table>
-					<tr>
-						<td>글쓴이</td>
-						<td>
-							<input type="text" name="mem_id" value="${sessionScope.sId}" readonly>
-						</td>
-					</tr>
-					<tr>
-						<td>제목</td>
-						<td>
-							<input type="text" name="notice_subject">
-						</td>
-					</tr>
-					<tr>
-						<td>내용</td>
-						<td>
-							<textarea rows="15" cols="40" name="notice_content"></textarea>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<input type="file" name="notice_file_get" multiple>
-						</td>
-					</tr>
-				</table>
-				<section>
-					<input type="submit" value="등록">
-					<input type="button" value="취소" onclick="history.back()">
-				</section>
-			</form>
+			<div class="nt-head">
+				<h2>공지사항 글쓰기</h2>
+			</div>
+			<section class="tb-wrap">
+				<form action="NoticeWrite" name="writeForm" method="post" enctype="multipart/form-data">
+					<table class="nt-table tb-02">
+						<colgroup>
+							<col width="20%">
+							<col width="80%">
+						</colgroup>
+						<tr>
+							<th>글쓴이</th>
+							<td>
+								<input type="text" name="mem_id" value="${sessionScope.sId}" readonly>
+							</td>
+						</tr>
+						<tr>
+							<th>제목</th>
+							<td>
+								<input type="text" name="notice_subject">
+							</td>
+						</tr>
+						<tr>
+							<th>내용</th>
+							<td>
+								<textarea rows="15" cols="40" name="notice_content"></textarea>
+							</td>
+						</tr>
+						<tr>
+							<th>파일첨부</th>
+							<td>
+								<input type="file" name="notice_file_get" multiple>
+							</td>
+						</tr>
+					</table>
+					<section class="btns">
+						<input type="submit" value="등록">
+						<input type="button" value="취소" onclick="history.back()">
+					</section>
+				</form>
+			</section>
 		</div>
 	</main>
 	<footer>

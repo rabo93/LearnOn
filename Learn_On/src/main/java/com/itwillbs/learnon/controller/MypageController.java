@@ -28,8 +28,6 @@ public class MypageController {
 	@Autowired
 	private MypageService myService;
 	
-	
-	
 	// 계정정보
 	@GetMapping("MyInfo")
 	public String mypageForm() {
@@ -38,14 +36,15 @@ public class MypageController {
 	
 	// 관심목록
 	@GetMapping("MyFav")
-	public String myFav(@RequestParam(defaultValue = "") String filterType, HttpSession session, Model model) {
+	public String myFav(@RequestParam(defaultValue = "") String filterType, HttpServletRequest request, HttpSession session, Model model) {
 //		System.out.println("필터타입: " + filterType);
 		
 		String id = (String)session.getAttribute("sId");
-		System.out.println(id);
 		if(id == null) {
 			model.addAttribute("msg", "로그인 필수!\\n 로그인 페이지로 이동합니다!");
 			model.addAttribute("targetURL", "MemberLogin");
+			savePreviousUrl(request, session);
+			
 			return "result/fail";
 		}
 		
@@ -58,13 +57,15 @@ public class MypageController {
 	
 	// 관심목록 삭제
 	@PostMapping("MyFavDel")
-	public String myFavDel(String class_id, HttpSession session, Model model) {
+	public String myFavDel(String class_id, HttpServletRequest request, HttpSession session, Model model) {
 		System.out.println("class_id: " + class_id);
 
 		String id = (String)session.getAttribute("sId");
 		if(id == null) {
 			model.addAttribute("msg", "로그인 필수!\\n 로그인 페이지로 이동합니다!");
 			model.addAttribute("targetURL", "MemberLogin");
+			savePreviousUrl(request, session);
+			
 			return "result/fail";
 		}
 		
@@ -86,6 +87,10 @@ public class MypageController {
 							  HttpServletRequest request, HttpSession session, Model model) {
 		
 		String id = (String)session.getAttribute("sId");
+		
+		// 나의 강의실, 작성한 수강평 모두 이전 페이지 저장 필요함 (수정, 삭제 이후 리다이렉트 때문)
+		savePreviousUrl(request, session);
+		
 		if(id == null) {
 			model.addAttribute("msg", "로그인 필수!\\n 로그인 페이지로 이동합니다!");
 			model.addAttribute("targetURL", "MemberLogin");
@@ -93,26 +98,6 @@ public class MypageController {
 		}
 		
 		List<MyCourseVO> myCourse = myService.getMyCourse(id, filterType, statusType);
-		
-		for(MyCourseVO course : myCourse) {
-			try {
-				course.setCompletion_rate(myService.getCompletionRate(id, course.getClass_id()));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			course.setIs_reviewed(myService.isReviewWrited(id, course.getClass_id()));
-		}
-		
-//		System.out.println(myCourse);
-	
-		String prevURL = request.getServletPath();
-		String queryString = request.getQueryString();
-		
-		if(queryString != null) {
-			prevURL += "?" + queryString;
-		}
-		
-		session.setAttribute("prevURL", prevURL);
 		
 		model.addAttribute("myCourse", myCourse);
 		
@@ -122,7 +107,12 @@ public class MypageController {
 	// 작성한 수강평 목록
 	@GetMapping("MyReview")
 	public String myReview(MyReviewVO review, HttpServletRequest request, HttpSession session, Model model) {
+		
 		String id = (String)session.getAttribute("sId");
+		
+		// 나의 강의실, 작성한 수강평 모두 이전 페이지 저장 필요함 (수정, 삭제 이후 리다이렉트 때문)
+		savePreviousUrl(request, session);
+		
 		if(id == null) {
 			model.addAttribute("msg", "로그인 필수!\\n 로그인 페이지로 이동합니다!");
 			model.addAttribute("targetURL", "MemberLogin");
@@ -134,15 +124,6 @@ public class MypageController {
 		List<MyReviewVO> myReviewList = myService.getMyReview(review);
 		int reviewCount = myService.getMyReviewCount(review);
 		
-		String prevURL = request.getServletPath();
-		String queryString = request.getQueryString();
-		
-		if(queryString != null) {
-			prevURL += "?" + queryString;
-		}
-		
-		session.setAttribute("prevURL", prevURL);
-		
 		model.addAttribute("myReviewList", myReviewList);
 		model.addAttribute("reviewCount", reviewCount);
 		
@@ -151,11 +132,12 @@ public class MypageController {
 	
 	// 수강평 작성하기
 	@PostMapping("MyReviewWrite")
-	public String myReviewWrite(MyReviewVO review, HttpSession session, Model model) {
+	public String myReviewWrite(MyReviewVO review, HttpServletRequest request, HttpSession session, Model model) {
 		String id = (String)session.getAttribute("sId");
 		if(id == null) {
 			model.addAttribute("msg", "로그인 필수!\\n 로그인 페이지로 이동합니다!");
 			model.addAttribute("targetURL", "MemberLogin");
+			
 			return "result/fail";
 		}
 		
@@ -175,12 +157,13 @@ public class MypageController {
 	// 작성된 수강후기 폼
 	@ResponseBody
 	@GetMapping("MyReviewUpdateForm")
-	public String myReviewUpdateForm(MyReviewVO review, HttpSession session, Model model) {
+	public String myReviewUpdateForm(MyReviewVO review, HttpServletRequest request, HttpSession session, Model model) {
 		
 		String id = (String)session.getAttribute("sId");
 		if(id == null) {
 			model.addAttribute("msg", "로그인 필수!\\n 로그인 페이지로 이동합니다!");
 			model.addAttribute("targetURL", "MemberLogin");
+			
 			return "result/fail";
 		}
 		
@@ -195,12 +178,13 @@ public class MypageController {
 	
 	// 작성된 수강후기 수정
 	@PostMapping("MyReviewUpdate")
-	public String myReviewUpdate(MyReviewVO review, HttpSession session, Model model) {
+	public String myReviewUpdate(MyReviewVO review, HttpServletRequest request, HttpSession session, Model model) {
 		
 		String id = (String)session.getAttribute("sId");
 		if(id == null) {
 			model.addAttribute("msg", "로그인 필수!\\n 로그인 페이지로 이동합니다!");
 			model.addAttribute("targetURL", "MemberLogin");
+			
 			return "result/fail";
 		}
 		
@@ -220,12 +204,14 @@ public class MypageController {
 	
 	// 수강평 삭제하기
 	@PostMapping("MyReviewDelete")
-	public String myReviewDelete(MyReviewVO review, HttpSession session, Model model) {
+	public String myReviewDelete(MyReviewVO review, HttpServletRequest request, HttpSession session, Model model) {
 		
 		String id = (String)session.getAttribute("sId");
 		if(id == null) {
 			model.addAttribute("msg", "로그인 필수!\\n 로그인 페이지로 이동합니다!");
 			model.addAttribute("targetURL", "MemberLogin");
+			savePreviousUrl(request, session);
+			
 			return "result/fail";
 		}
 		
@@ -255,12 +241,14 @@ public class MypageController {
 	
 	// 보유한 쿠폰
 	@GetMapping("MyCoupon")
-	public String myCoupon(HttpSession session, Model model) {
+	public String myCoupon(HttpServletRequest request, HttpSession session, Model model) {
 		
 		String id = (String)session.getAttribute("sId");
 		if(id == null) {
 			model.addAttribute("msg", "로그인 필수!\\n 로그인 페이지로 이동합니다!");
 			model.addAttribute("targetURL", "MemberLogin");
+			savePreviousUrl(request, session);
+			
 			return "result/fail";
 		}
 		
@@ -269,8 +257,6 @@ public class MypageController {
 		
 		model.addAttribute("myCoupon", myCoupon);
 		model.addAttribute("couponCount", couponCount);
-		
-		System.out.println(myCoupon);
 		
 		return "my_page/mypage_coupon";
 	}
@@ -281,11 +267,35 @@ public class MypageController {
 		return "my_page/mypage_inquiry_list";
 	}
 	
+	// 문의내역 글쓰기
+	
+	// 문의내역 수정
+	
+	// 문의내역 삭제
+	
+	
+	
+	
 	// 출석체크
 	@GetMapping("MyAttendance")
 	public String myAttendance() {
 		return "my_page/mypage_attendance";
 	}
 	
+	
+	// ===========================================================================================
+	// 이전 페이지 이동 저장
+	private void savePreviousUrl(HttpServletRequest request, HttpSession session) {
+		String prevURL = request.getServletPath();
+		String queryString = request.getQueryString();
+//		System.out.println("prevURL : " + prevURL);
+//		System.out.println("queryString : " + queryString);
+		
+		if (queryString != null) {
+			prevURL += "?" + queryString;
+		}
+		
+		session.setAttribute("prevURL", prevURL);
+	}
 	
 }

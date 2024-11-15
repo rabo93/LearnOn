@@ -240,6 +240,12 @@ public class MypageController {
 		}
 	}
 	
+	@GetMapping("MyCourseBoard")
+	public String myCourseBoard() {
+		
+		return "my_page/mypage_course";
+	}
+	
 		
 	// 결제내역
 	@GetMapping("MyPayment")

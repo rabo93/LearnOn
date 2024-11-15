@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -43,48 +44,60 @@
 			<div class="container-fluid pt-4 px-4">
 				<div class="bg-light rounded p-4">
 					<div class="d-flex mb-5">
-						<h5 class="me-auto tableSubject">FAQ 관리</h5>
-						<button type="button" class="btn btn-lg btn-primary ms-3">FAQ 등록</button>
-						<button type="button" class="btn btn-lg btn-primary ms-3">FAQ 삭제</button>
+						<h5 class="me-auto tableSubject">삭제된 클래스 목록</h5>
+						<button type="button" class="btn btn-lg btn-primary ms-3">클래스 수정</button>
+						<button type="button" class="btn btn-lg btn-primary ms-3">클래스 삭제</button>
 					</div>
 					<div class="d-flex input-group mb-3">
-						<input type="text" class="form-control" placeholder="FAQ 검색" aria-label="Recipient's username" aria-describedby="button-addon2">
+						<input type="text" class="form-control" placeholder="클래스 제목 검색" aria-label="Recipient's username" aria-describedby="button-addon2">
 						<button class="btn btn-primary" type="button" id="button-addon2">검색</button>
 					</div>
 						<table class="table table-striped">
 							<thead>
 								<tr>
 									<th scope="col">#</th>
-									<th scope="col">FAQ 번호</th>
-									<th scope="col">FAQ 제목</th>
-									<th scope="col">FAQ 카테고리</th>
+									<th scope="col">제목</th>
+									<th scope="col">대분류</th>
+									<th scope="col">소분류</th>
+									<th scope="col">공개상태</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<th><input class="form-check-input" type="checkbox" id="gridCheck1"></th>
-									<td><input class="form-control" type="text" placeholder="FAQ 번호" aria-label="default input example" value="001"></td>
-									<td><input class="form-control" type="text" placeholder="FAQ 제목" aria-label="default input example" value="홈페이지에 버그가 있어요"></td>
-									<td>
+								<c:forEach items="${getClassList}" var="li">
+								<c:if test="${li.class_status eq 3}">
+									<tr>
+										<th><input class="form-check-input" type="checkbox" id="gridCheck1"></th>
+										<td><input class="form-control" type="text" placeholder="Default input" aria-label="default input example" value="${li.class_title}"></td>
+										<td>
 										<select class="form-select" aria-label="Default select example">
-											<option value="1">페이지 이용 문의</option>
-											<option value="2">클래스 이용 문의</option>
-											<option value="3">결제 및 환불</option>
+											<option>대분류</option>
+											<option value="1">IT/개발</option>
+											<option value="2">외국어</option>
+											<option value="3">운동/건강</option>
+											<option value="4">라이프스타일</option>
+											<option value="5">요리/음료</option>
 										</select>
 									</td>
-                             	</tr>
-								<tr>
-									<th><input class="form-check-input" type="checkbox" id="gridCheck1"></th>
-									<td><input class="form-control" type="text" placeholder="FAQ 번호" aria-label="default input example" value="002"></td>
-									<td><input class="form-control" type="text" placeholder="FAQ 제목" aria-label="default input example" value="환불은 어디서 해야하나요?"></td>
 									<td>
 										<select class="form-select" aria-label="Default select example">
-											<option value="1">페이지 이용 문의</option>
-											<option value="2">클래스 이용 문의</option>
-											<option value="3" selected>결제 및 환불</option>
+											<option>소분류</option>
+											<option value="1">IT/개발</option>
+											<option value="2">외국어</option>
+											<option value="3">운동/건강</option>
+											<option value="4">라이프스타일</option>
+											<option value="5">요리/음료</option>
 										</select>
 									</td>
-                             	</tr>
+									<td>
+										<select class="form-select" aria-label="Default select example" id="classStat">
+											<option value="1" <c:if test="${li.class_status == 1}">selected</c:if>>공개</option>
+											<option value="2" <c:if test="${li.class_status == 2}">selected</c:if>>비공개</option>
+											<option value="3" <c:if test="${li.class_status == 3}">selected</c:if>>폐강</option>
+										</select>
+                                 	</td>
+									</tr>
+								</c:if>
+								</c:forEach>
 							</tbody>
 						</table>
 					</div>
@@ -112,9 +125,9 @@
     <script src="resources/admin/js/main.js"></script>
     <script type="text/javascript">
     		var link = document.location.href;
-	    	if (link.includes("board")) {
-	    		document.getElementById("board").classList.toggle("active");
-	    		document.getElementById("boardFaq").classList.toggle("active");
+	    	if (link.includes("Adm")) {
+	    		document.getElementById("classDelete").classList.toggle("active");
+	    		document.getElementById("classManage").classList.toggle("active");
 	    	};
     </script>
 </body>

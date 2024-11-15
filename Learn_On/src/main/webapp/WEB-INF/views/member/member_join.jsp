@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/reset.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/index.js"></script>
+<%-- <script src="${pageContext.request.contextPath}/resources/js/index.js"></script> --%>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/join.css">
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/join.js"></script>
@@ -28,35 +28,36 @@
 			<div id="form-inner-container">
 				<!-- Sign up form -->
 				<div id="sign-up-container">
-					<form action="MemberJoin" name="joinForm" method="post"
-						enctype="multipart/form-data">
-						<label for="MEM_NAME">이름</label>
+					<form action="MemberJoin" name="joinForm" method="post" enctype="multipart/form-data">
+						<label for="mem_name">이름</label>
 						<div id="checkName"></div>
-						<input type="text" name="MEM_NAME" id="MEM_NAME" placeholder="이름"
-							onblur="checkNameLength()"> <label for="MEM_ID">아이디</label>
-						<div id="checkId"></div>
-						<input type="text" name="MEM_ID" id="MEM_ID" placeholder="아이디"
-							onblur="checkIdLength()"> <label for="MEM_PASSWD1">비밀번호</label>
+						<input type="text" name="mem_name" id="mem_name" placeholder="이름"
+							onblur="checkNameLength()"> 
+						<label for="mem_id">아이디</label>
+						<div id="checkIdResult"></div>
+						<input type="text" name="mem_id" id="mem_id" placeholder="아이디"
+							onblur="checkId()"> 
+						<label for="mem_passwd1">비밀번호</label>
 						<div id="checkPasswd1"></div>
-						<input type="password" name="MEM_PASSWD" id="MEM_PASSWD1"
+						<input type="password" name="mem_passwd" id="mem_passwd1"
 							placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"
-							onblur="checkPasswdLength1()"> <label for="MEM_PASSWD2">비밀번호
-							확인</label>
+							onblur="checkPasswdLength1()"> 
+						<label for="mem_passwd2">비밀번호확인</label>
 						<div id="checkPasswd2"></div>
-						<input type="password" name="MEM_PASSWD2" id="MEM_PASSWD2"
-							placeholder="비밀번호 확인" onkeyup="checkPasswdResult()"> <label
-							for="MEM_NICK">닉네임</label>
+						<input type="password" name="mem_passwd2" id="mem_passwd2"
+							placeholder="비밀번호 확인" onkeyup="checkPasswdResult()"> 
+						<label for="mem_nick">닉네임</label>
 						<div id="checkNic"></div>
-						<input type="text" name="MEM_NICK" id="MEM_NICK" placeholder="닉네임">
+						<input type="text" name="mem_nick" id="mem_nick" placeholder="닉네임" onblur="ckNick()">
 	
 						<label>성별</label>
 						<div id="gender-container">
 							<div class="gender-option">
-								<input type="radio" name="MEM_GENDER" id="male" value="M">
+								<input type="radio" name="mem_gender" id="male" value="M">
 								<label for="male">남</label>
 							</div>
 							<div class="gender-option">
-								<input type="radio" name="MEM_GENDER" id="female" value="F">
+								<input type="radio" name="mem_gender" id="female" value="F">
 								<label for="female">여</label>
 							</div>
 						</div>
@@ -72,52 +73,56 @@
 						<!-- 						<option value="DAY">일</option> -->
 						<!-- 					</select>  -->
 						<input type="date" min="1990-01-01" max="2000-12-31"
-							name="MEM_BIRTHDAY"> 
-							<br> <label for="MEM_PHONE">연락처</label>
+							name="mem_birthday"> 
+							<br> <label for="mem_phone">연락처</label>
 						<div id="checkNumber"></div>
-						<input type="text" name="MEM_PHONE" id="MEM_PHONE"
+						<input type="text" name="mem_phone" id="mem_phone"
 							placeholder="'-'없이 입력해주세요" onblur="numberCk()"> 
 						
 						<label for="mem_ddress1">주소</label>
 						<div id="checkAddr"></div>
 						<div class=mem_addr_form>
-							<input type="text" name="MEM_ADDRESS1" placeholder="주소찾기"
+							<input type="text" name="mem_address1" placeholder="주소찾기"
 									onclick="search_address()" id="mem_ddress1" size="25" readonly>
 							<input type="text" placeholder="우편번호" id="mem_post_code"
-								name="MEM_POST_CODE" size="6" readonly>
+								name="mem_post_code" size="6" readonly>
 						</div>
 	
-						<input type="text" name="MEM_ADDRESS2" placeholder="상세주소" id="mem_address2" size="25">
-						<label for="MEM_EMAIL1">이메일</label>
+						<input type="text" name="mem_address2" placeholder="상세주소" id="mem_address2" size="25">
+						<label for="mem_email1">이메일</label>
 						<div id="checkMail"></div>
 						<div class="email_form">
-							<input type="text" name="MEM_EMAIL1" id="MEM_EMAIL1" placeholder="Email">
+							<input type="text" name="mem_email1" id="mem_email1" placeholder="Email" required>
 							@
-							<input type="text" size="10" id="MEM_EMAIL2" name="MEM_EMAIL2">
-							<select id="EMAILDMAIN">
+							<input type="text" size="10" id="mem_email2" name="mem_email2">
+							<select id="emaildmain">
 								<option value="">직접입력</option>
 								<option value="naver.com">naver.com</option>
 								<option value="gmail.com">gmail.com</option>
 								<option value="daum.net">daum.net</option>
 							</select> 
 						</div>
-						<div class="email-auth-bx">
-							<input type="button" value="인증코드 발송" name="mail_auth">
-<!-- 							<input type="text" placeholder="인증코드를 입력해주세요" name="mail_auth"><br> -->
-<!-- 							<input type="button" value="인증코드 확인" name="mail_auth_status" -->
-<!-- 								id="mail_auth_status"><br> -->
+
+<!-- 						<div class="email-auth-bx"> -->
+<!-- 							<input type="button" value="인증코드 번호" name="mail_auth" > -->
+<!-- 						<input type="text" placeholder="인증코드를 입력해주세요" name="mail_auth"><br> -->
+<!-- 						<button type="button" id="sendBtn" name="sendBtn" onclick="sendNumber()">인증번호 발송</button>  -->
+<!-- 						<input type="text" name="number" placeholder="인증번호입력"> -->
+<!-- 						<button type="button" id="confirmBtn" name="confirmBtn" onclick="confirmNumber()">인증번호 확인</button>  -->
 <!-- 							<div id="checkCode"></div> -->
-						</div>
+<!-- 						</div> -->
+						
+						
 						<div class="mem-grade">
-							<label for="MEM_GRADE">
-								<input type="checkbox" id="MEM_GRADE">
+							<label for="mem_grade">
+								<input type="checkbox" id="mem_grade">
 								강사 회원 신청
 							</label>
 						
 						</div>
 	
 						<div id="file">
-							<input type="file" name="MEM_PP_FILE" id="MEM_PP_FILE"><br>
+							<input type="file" name="mem_pp_file" id="mem_pp_file"><br>
 						</div>
 	
 
@@ -128,7 +133,7 @@
 								<ul>
 									<li class="on">
 										<div class="title">
-											<label for="terms1"><input type="checkbox"name="terms" id="terms1" class="terms">(필수) 런온(LearnOn)이용약관 동의</label>
+											<label for="terms1"><input type="checkbox"name="terms" id="terms1" class="terms" required>(필수) 런온(LearnOn)이용약관 동의</label>
 										</div> 
 											<textarea rows="4" cols="40">
 	이용약관 (Terms of Service)
@@ -146,7 +151,6 @@
 회원은 타인의 개인정보를 부정하게 사용해서는 안 됩니다.
 제5조 (서비스의 중단 및 변경)
 회사는 시스템 점검, 유지보수, 교체, 장애, 운영상 필요 등 불가피한 경우 서비스의 전부 또는 일부를 일시 중단할 수 있습니다.
-
 제6조 (면책 조항)
 회사는 천재지변, 불가항력 등에 의해 서비스를 제공할 수 없는 경우 책임이 면제됩니다.
 회원의 고의 또는 과실로 인해 발생한 손해에 대해서는 책임을 지지 않습니다.</textarea>
@@ -155,7 +159,7 @@
 									<li class="on">
 										<div class="title">
 											<label for="terms2"><input type="checkbox"
-												name="terms" id="terms2" class="terms">(필수) 개인정보 수집 및이용 동의</label>
+												name="terms" id="terms2" class="terms" required>(필수) 개인정보 수집 및이용 동의</label>
 										</div> 
 											<textarea rows="4" cols="40">
 	개인정보 수집 및 이용 동의서 (Privacy Policy Agreement)
@@ -170,7 +174,6 @@
 고객 지원: 민원 처리, 공지사항 전달
 3. 개인정보 보유 및 이용 기간
 회사는 회원이 서비스를 이용하는 동안 개인정보를 보유하며, 회원 탈퇴 시 해당 정보를 지체 없이 파기합니다. 단, 관련 법령에 의거해 보존이 필요한 경우 일정 기간 동안 보관할 수 있습니다.
-
 4. 동의 거부 권리 및 불이익
 회원은 개인정보 수집 및 이용에 동의하지 않을 권리가 있으며, 이 경우 서비스 이용이 제한될 수 있습니다.</textarea>
 									</li>
@@ -213,20 +216,21 @@
 			new daum.Postcode({
 				oncomplete : function(data) {
 					console.log(data);
-					document.joinForm.MEM_POST_CODE.value = data.zonecode;
+					document.joinForm.mem_post_code.value = data.zonecode;
 
 					let address = data.address;
 					if (data.buildingName != "") {
 						address += " (" + data.buildingName + ")";
 					}
 
-					document.joinForm.MEM_ADDRESS1.value = address;
+					document.joinForm.mem_address1.value = address;
 
-					document.joinForm.MEM_ADDRESS2.focus();
+					document.joinForm.mem_address2.focus();
 
 				}
 			}).open();
 		}
 	</script>
+
 </body>
 </html>

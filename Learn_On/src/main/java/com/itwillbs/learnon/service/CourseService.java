@@ -31,18 +31,26 @@ public class CourseService {
 	public List<CommonCodeTypeVO> getCodeType(String codeType) {
 		return mapper.selectCommonCodeType(codeType);
 	}
+	public List<CommonCodeTypeVO> getCodeTypeAll() {
+		return mapper.selectCommonCodeTypeAll();
+	}
 
 	public  List<MyReviewVO> getReviewList(int class_id) {
 		return mapper.selectReviewList(class_id);
 	}
 
+//	public int registCourseSupport(CourseSupportVO cSupport, int class_id) {
+//		return mapper.insertCourseSupport(cSupport, class_id);
+//	}
 	public int registCourseSupport(CourseSupportVO cSupport) {
 		return mapper.insertCourseSupport(cSupport);
 	}
 
-	public List<CourseSupportVO> getCourseSupportList() {
-		return mapper.selectCourseSupportList();
+	public List<CourseSupportVO> getCourseSupportList(int class_id) {
+		return mapper.selectCourseSupportList(class_id);
 	}
+
+	
 	
 
 

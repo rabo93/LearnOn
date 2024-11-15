@@ -34,17 +34,6 @@ public class MypageService {
 		return myMapper.insertReview(review);
 	}
 
-
-	// 수강률 
-	public int getCompletionRate(String id, String class_id) throws Exception {
-		return myMapper.selectCompletionRate(id, class_id);
-	}
-	
-	// 수강후기 작성 여부
-	public Boolean isReviewWrited(String id, String class_id) {
-		return myMapper.selectIsReviewed(id, class_id);
-	}
-
 	// 수강 후기 목록 조회
 	public List<MyReviewVO> getMyReview(MyReviewVO review) {
 		return myMapper.selectReview(review);

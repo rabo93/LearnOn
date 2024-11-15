@@ -57,7 +57,6 @@
 		<h1>문의하기</h1>
 		
 		<form action="CourseSupportWrite" method="post">
-		
  			<input type="hidden" name="class_id" value="${param.class_id}">
  			<select name="c_support_category">
  				<option>카테고리 선택</option>

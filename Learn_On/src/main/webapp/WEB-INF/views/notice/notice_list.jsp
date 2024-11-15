@@ -112,7 +112,7 @@
 			   	</button>
 			</section>
 				<div class="nt-writebtn">
-					<input type="button" value="공지사항 쓰기" onclick="location.href='NoticeWrite'">
+					<input type="button" value="글쓰기" onclick="location.href='NoticeWrite'">
 				</div>
 		</div>
 	</main>

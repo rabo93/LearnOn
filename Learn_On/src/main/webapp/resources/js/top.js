@@ -21,8 +21,7 @@ $(document).ready(function() {
 			if (data.cartCount == "") {
 				$('.cart-btn').hide(); // 로그인하지 않은 경우 장바구니 아이콘 숨김
 			} else {
-				// 로그인되어 있으면 장바구니 개수 표시
-				$('#cartCount').html(data.cartCount);
+				$('#cartCount').html(data.cartCount);// 로그인되어 있으면 장바구니 개수 표시
 			}
 		},
 		error: function(jqXHR) {

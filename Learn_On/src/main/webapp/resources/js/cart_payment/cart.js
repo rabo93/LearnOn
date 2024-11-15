@@ -145,16 +145,12 @@ function chkDelete() {
 function orderCart() {
 	//주문할 상품 있는지 판별 여부 팝업창
 	let checkedCnt = document.querySelectorAll('.chk:Checked').length;
+	
 	if(checkedCnt == 0) {
 		alert('주문할 상품이 없습니다.\n상품을 선택해 주세요.');
 		return;
 	}
 	//--------------------------------------------------------
-	// 선택한 상품을 결제 페이지로 넘겨야하는 데이터
-	// : CartVO => 체크한 장바구니번호(class_id,mem_idx), itemCount, totalAmount(금액)
-	// name속성으로 checkitem=${cart.cartitem_idx}
-	// 주문번호
-	
 	//선택된 상품들의 class_id, 갯수, 가격 등 필요한 데이터 배열에 담기
 	let selectedChk = []; 
 	let itemCount = 0;
@@ -175,21 +171,24 @@ function orderCart() {
 		totalAmount += purchaseitemPrice;
 		itemCount++;
 	});
-	console.log("selectedChk : " + selectedChk);
-	console.log("totalAmount : " + totalAmount);
-	console.log("itemCount : " + itemCount);
+	console.log("selectedChk : " + selectedChk); //selectedChk : [object Object],[object Object]
+	console.log("totalAmount : " + totalAmount); //totalAmount : 140000 
+	console.log("itemCount : " + itemCount); //itemCount : 2
 	
 	
 	//AJAX 요청 보내기
 	$.ajax({
-		type: "POST",
+		type: "post",
 		url: "Payment",
+		dataType: "json",
+		
 		data: Json.stringify({ //전송할 데이터들
 			purchasItems : selectedChk,
 			totalAmount : totalAmount,
 			itemCount : itemCount
 		}),
-		success: function(response) {
+		
+		success: function(data) {
 			window.location.href = 'Payment'; //Payment 매핑주소 포워딩 해야함 (controller)
 		},
 		error: function(jqXHR) {
@@ -197,21 +196,6 @@ function orderCart() {
 			alert("주문에 실패하였습니다. 다시 시도해주세요.");
 		}
 	});
-	
-	
-	
-	
-	
-	
-	
-	
-	/*
-	주문번호 생성 로직 (포맷 : yyyyMMddxxxxx) ======> service에서?
-	xxxxx: 5자리 정수 생성, 후에 해당 주문번호가 이미 존재하는지 확인을 반복
-	
-	*/
-	
-	
 	
 	
 }

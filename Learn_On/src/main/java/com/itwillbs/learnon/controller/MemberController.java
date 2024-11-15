@@ -249,7 +249,7 @@ public class MemberController {
 		
 	//*************회원정보 수정***************
 	@GetMapping("MemberModify")
-	public String memberModify(MemberVO member,HttpSession session,Model model) {
+	public String memberModify(MemberVO member, HttpSession session,Model model) {
 		
 		String id = (String)session.getAttribute("sId");
 		if(id == null) {
@@ -268,32 +268,32 @@ public class MemberController {
 		
 	}
 	
-//	@PostMapping("MemberModify")
-//	public String memberModifyForm(MemberVO member,Model model , PasswordEncoder encoder ,@RequestParam Map<String, String>map,HttpSession session ) {
-//		System.out.println("MAP : "+map);
-//
-//		String id = (String)session.getAttribute("sId");
-//		map.put("id", id);
-//
-//		String dbpasswd = memberService.getMemberPasswd(id);
-//		if(dbpasswd == null || !encoder.matches(map.get("oldPasswd"),dbpasswd)) {
-//			model.addAttribute("msg", "비밀번호가 일치하지 않습니다.");
-//			return "member/fail";
-//		}
-//		if(!map.get("mem_passwd").equals("")) {
-//			map.put("mem_passwd",encoder.encode(map.get("mem_passwd"))); //암호화된 새로운 비밀번호
-//		}
-//		
-//		int updateCount = memberService.modifyMember(map);
-//		
-//		if(updateCount > 0) {
-//			model.addAttribute("msg", "회원정보 수정성공");
-//			
-//			return"result/success";
-//		}else {
-//			model.addAttribute("msg", "회원정보 수정실패\\n다시 확인해주세요");
-//			return"result/fail";
-//			
-//		}
-//	}
+	@PostMapping("MemberModify")
+	public String memberModifyForm(MemberVO member,Model model , BCryptPasswordEncoder passwordEncoder ,@RequestParam Map<String, String>map,HttpSession session ) {
+		System.out.println("MAP : "+map);
+		
+		String id = (String)session.getAttribute("sId");
+		map.put("id", id);
+
+		String dbpasswd = memberService.getMemberPasswd(id);
+		if(dbpasswd == null || !passwordEncoder.matches(map.get("oldPasswd"),dbpasswd)) {
+			model.addAttribute("msg", "비밀번호가 일치하지 않습니다.");
+			return "result/fail";
+		}
+		if(!map.get("passwd").equals("")) {
+			map.put("passwd",passwordEncoder.encode(map.get("passwd"))); //암호화된 새로운 비밀번호
+		}
+		
+		int updateCount = memberService.modifyMember(map);
+		
+		if(updateCount > 0) {
+			model.addAttribute("msg", "회원정보 수정성공");
+			
+			return"result/success";
+		}else {
+			model.addAttribute("msg", "회원정보 수정실패\\n다시 확인해주세요 ");
+			return"result/fail";
+			// 지금상황: mem_id null 이 떠서 수정이 안되는 상태
+		}
+	}
 }

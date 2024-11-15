@@ -64,21 +64,20 @@ INSERT INTO MEMBER (
 )
 </insert>
 	
-<!-- 	<update id="updateMember"> -->
-<!-- 	UPDATE MEMBER -->
-<!-- 	   SET -->
-<!-- 	 mem_nick = #{mem_nick} -->
-<!-- 		<if test="!mem_passwd.equals('')"> --> 
-<!-- 		<if test="!mem_passwd.equals('')"> --> 
-<!-- 		<if test="mem_passwd != null and mem_passwd != ''"> -->
-<!-- 			,mem_passwd = #{mem_passwd} -->
-<!-- 		</if> -->
-<!-- 	, mem_post_code = #{mem_post_code} -->
-<!-- 	, mem_address1 = #{mem_address1} -->
-<!-- 	, mem_address2 = #{mem_address2} -->
-<!-- 	, mem_phone = #{mem_phone} -->
-<!-- 	WHERE mem_id = #{mem_id} -->
-<!-- 	</update> -->
+	<update id="updateMember">
+	UPDATE MEMBER
+	   SET
+	 mem_nick = #{mem_nick}
+<!-- 		<if test="!mem_passwd.equals('')">  -->
+		<if test="mem_passwd != null and mem_passwd != ''">
+			,mem_passwd = #{mem_passwd}
+		</if>
+	, mem_post_code = #{mem_post_code}
+	, mem_address1 = #{mem_address1}
+	, mem_address2 = #{mem_address2}
+	, mem_phone = #{mem_phone}
+	WHERE mem_id = #{mem_id}
+	</update>
 	
 	<update id="updateMailAuthStatus">
 		UPDATE MEMBER
@@ -111,11 +110,4 @@ INSERT INTO MEMBER (
 	  FROM MAIL_AUTH_INFO
 	 WHERE mem_email = #{mem_email}
 	</select>
-	
-<!-- 	<select id="selectMemberPasswd" resultType="member"> -->
-<!-- 	SELECT mem_passwd -->
-<!-- 	  FROM MEMBER -->
-<!-- 	 WHERE mem_id = #{mem_id} -->
-	
-<!-- 	</select> -->
 </mapper>

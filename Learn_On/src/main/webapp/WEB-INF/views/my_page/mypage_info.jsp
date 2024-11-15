@@ -38,12 +38,12 @@
 				<div class="contents">
 					<!-- contents -->
 					<section class="info-set-wrap">
-						<form action="MemberModify" class="my-frm" method="post">
+						<form action="MemberModify" class="my-frm" method="post" enctype="multipart/form-data">
 							<div class="set">
-								<label>프로필</label>
+								<label>프로필 변경</label>
 								<div>
 									<img src="${pageContext.request.contextPath}/resources/images/profile_thumb.svg" class="profile-thumb" alt="profile">
-									<input type="button" value="프로필 변경" class="btn-frm">
+									<input type="file"class="btn-frm" value="프로필변경">
 								</div>
 							</div>
 							<div class="set">
@@ -58,7 +58,7 @@
 								<label>닉네임</label>
 								<div id="checkNic"></div>
 								<div>
-									<input type="text" name="mem_nick" id="mem_nick" placeholder="${member.mem_nick }" onblur="ckNick()">
+									<input type="text" name="mem_nick" id="mem_nick" value="${member.mem_nick }" onblur="ckNick()">
 								</div>
 							</div>
 							<div class="set">
@@ -70,7 +70,7 @@
 							<div class="set">
 								<label>변경할 비밀번호</label>
 								<div>
-									<input type="password" id="mem_passwd" name="mem_passwd" placeholder="8 ~ 16글자 사이 입력">
+									<input type="password" id="passwd" name="passwd" placeholder="8 ~ 16글자 사이 입력">
 								</div>
 								<div class="ip-tips" id="checkPasswd1Result">비밀번호는 최소 8글자 이상입니다</div>
 							</div>
@@ -95,7 +95,7 @@
 							<div class="set">
 								<label>이메일 </label>
 								<div>
-									<input type="text" size="10" id="email1" value="${member.mem_email1}" name="email1" required>@<input type="text" size="10"  value="${member.mem_mail2}" id="email2" name="email2">
+									<input type="text" size="10" id="email1" value="" name="email1">@<input type="text" size="10"  value="" id="email2" name="email2">
 									<select id="emailDomain" class="sel-frm">
 <!-- 										<option value="">직접입력</option> -->
 <!-- 										<option value="naver.com">naver.com</option> -->

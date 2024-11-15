@@ -10,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.mail.Session;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -62,6 +63,7 @@ public class MemberController {
 		}else { //로그인 성공
 			session.setAttribute("sId", dbMember.getMem_name());
 			session.setAttribute("sId", member.getMem_id());
+			session.setMaxInactiveInterval(60 * 120);
 			return "redirect:/";
 		}
 		
@@ -73,106 +75,147 @@ public class MemberController {
 		return"member/member_join";
 	}
 	
-	
 	@PostMapping("MemberJoin")
-	public String join(MemberVO member , Model model , BCryptPasswordEncoder passwordEncoder,HttpSession session ,HttpServletRequest request) {
-		
-		String securePasswd = passwordEncoder.encode(member.getMem_passwd());
-		member.setMem_passwd(securePasswd);
-		
-		
-		/************ 파일 업로드 ************/
-		
-		
-		String realPath = session.getServletContext().getRealPath(uploadPath);
-		System.out.println("실제 경로: " + realPath);
+	public String join(MemberVO member, Model model, BCryptPasswordEncoder passwordEncoder, HttpSession session) {
+	    System.out.println("member : " + member);
+	    // 비밀번호 암호화
+	    String securePasswd = passwordEncoder.encode(member.getMem_passwd());
+	    member.setMem_passwd(securePasswd);
 
-		String subDir = "";
-		LocalDate today = LocalDate.now();
-		String datePattern = "yyyy/MM/dd";
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern(datePattern);
+	    // 파일 업로드 처리
+	    boolean fileUploadSuccess = handleFileUpload(member, session, model);
+	    if (!fileUploadSuccess) {
+	        model.addAttribute("msg", "파일 업로드 중 오류가 발생했습니다.");
+	        return "result/fail";
+	    }
 
-		subDir = today.format(dtf);
-		realPath += "/" + subDir;
+	    // 회원 가입 처리
+	    int insertCount = memberService.registMember(member);
+	    if (insertCount > 0) {
+	        session.setAttribute("sId", member.getMem_name());
+//	        session.setAttribute("sName", member.getMem_name());
 
-		// 서버에 파일을 저장할 디렉토리 생성
-		try {
-		    Path path = Paths.get(realPath);
-		    Files.createDirectories(path);  // 하위 디렉토리 생성
-		} catch (IOException e) {
-		    e.printStackTrace();
-		}
-		
-		MultipartFile mFile = member.getMem_pp_file();  // 업로드된 파일 가져오기
-		String originalFileName = mFile.getOriginalFilename();  // 원본 파일 이름
-		String saveFileName = UUID.randomUUID().toString() + "_" + originalFileName;  // UUID로 중복 방지
-		String filePath = realPath + "/" + saveFileName;  // 전체 파일 경로
-		member.setFile_pp(subDir + "/" + saveFileName); // String 파일명 저장
-		
+//	         이메일 인증 처리
+	        handleEmailAuth(member);
+//	        MailAuthInfo mailAuthInfo = mailService.sendAuthMail(member);
+//		    System.out.println("인증정보 : " + mailAuthInfo);
+//		    memberService.registMemberAuthInfo(mailAuthInfo);
 
-		// 파일을 서버에 저장
-		try {
-			Path path = Paths.get(realPath);
-			Files.createDirectories(path);  // 하위 디렉토리 생성
-		} catch (IOException e) {
-		    e.printStackTrace();
-		    model.addAttribute("msg", "파일 업로드 중 오류가 발생했습니다.");
-		    return "result/fail";
-		}
-
-		int insertCount = memberService.registMember(member);
-		if(insertCount > 0) {
-			session.setAttribute("sId", member.getMem_name());
-			
-			if (!mFile.getOriginalFilename().equals("")){
-	        	try {
-					mFile.transferTo(new File (realPath,saveFileName));
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-	        	
-	        	//**************인증메일 발송작업 추가*************
-	        	//ReSendAuthMail post
-//	        	MailAuthInfo mailauthInfo = mailService.sendAuthMail(member);
-	        	
-			}
-	        	
-			return "redirect:/MemberJoinSuccess";
-			
-		} else {
-			model.addAttribute("msg", "회원가입 실패//n항목을 다시 확인해주세요");
-			return "result/fail";
-		}
+	        return "redirect:/MemberJoinSuccess";
+	    } else {
+	        model.addAttribute("msg", "회원가입 실패\n항목을 다시 확인해주세요");
+	        return "result/fail";
+	    }
 	}
-	
+
+	// 파일 업로드 처리 메서드
+	private boolean handleFileUpload(MemberVO member, HttpSession session, Model model) {
+	    String realPath = session.getServletContext().getRealPath(uploadPath);
+	    System.out.println("실제 경로: " + realPath);
+
+	    LocalDate today = LocalDate.now();
+	    String datePattern = "yyyy/MM/dd";
+	    DateTimeFormatter dtf = DateTimeFormatter.ofPattern(datePattern);
+
+	    String subDir = today.format(dtf);
+	    realPath += "/" + subDir;
+
+	    try {
+	        Path path = Paths.get(realPath);
+	        Files.createDirectories(path);
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+
+	    MultipartFile mFile = member.getMem_pp_file();
+	    String originalFileName = mFile.getOriginalFilename();
+	    String saveFileName = UUID.randomUUID().toString() + "_" + originalFileName;
+	    member.setFile_pp(subDir + "/" + saveFileName);
+
+	    if (!mFile.getOriginalFilename().equals("")) {
+	        try {
+	            mFile.transferTo(new File(realPath, saveFileName));
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	            return false;
+	        }
+	    }
+	    return true;
+	}
+
+//	 이메일 인증 처리 메서드
+	private void handleEmailAuth(MemberVO member) {
+		System.out.println("memberHandle : " + member);
+	    MailAuthInfo mailAuthInfo = mailService.sendAuthMail(member ,member.getMem_email1(), member.getMem_email2());
+	    System.out.println("인증정보 : " + mailAuthInfo);
+	    memberService.registMemberAuthInfo(mailAuthInfo);
+	}
+
+
 	@GetMapping("MemberJoinSuccess")
 	public String memberJoinSuccess() {
+	    return "result/success";
+	}
+	
+	//*****************인증메일 재발송***********************
+
+	@GetMapping("ReSendAuthMail")
+	public String reSendAuthMail(MemberVO member,HttpSession session) {
+		
+		return "member/resend_auth_mail_form";
+		
+	}
+	
+	@PostMapping("ReSendAuthMail")
+	public String reSendAuthMail(MemberVO member,Model model , HttpSession session) {
+		MemberVO dbmember = memberService.getMember(member);
+
+		if(!member.getEmail().equals(dbmember.getEmail())) {
+			model.addAttribute("msg","[존재하지 않는 이메일]\\n이메일을 다시한번 확인해주세요");
+			return "result/fail";
+		}
+		
+//		MailAuthInfo mailAuthInfo = mailService.sendAuthMail(member);
+		MailAuthInfo mailAuthInfo = mailService.sendAuthMail(member, member.getMem_email1(), member.getMem_email2());
+		
+		memberService.registMemberAuthInfo(mailAuthInfo);
+		System.out.println("인증메일 다시 보냄!!@!!!!!!!!!");
+		model.addAttribute("msg", "인증메일 발송 성공");
+		model.addAttribute("targetURL", "MemberJoinSuccess");
 		
 		return "result/success";
-	}
+		}
+		
 	
-	@GetMapping("MemberLogout")
-	public String memberLogout(HttpSession session) {
-		session.invalidate();
-		return "redirect:/";
-	}
+	//****************************************
 	
-	
-//	@GetMapping("MemberModify")
-//	public String memberModify(Map<String, String>map, BCryptPasswordEncoder passwordEncoder , HttpSession session , Model model , HttpServletRequest request ,MemberVO member) {
-//		String id = (String)session.getAttribute("sId");
-//		member.setMEM_ID(id);
-//		map.put("id", id);
-//		
-//		String dbPasswd = memberService.modifyMember(map);
-//		
-//		return"";
-//	}
-	
+	//이메일 인증
+		@GetMapping ("MemberEmailAuth")
+		public String emailAuth(MailAuthInfo mailAuthInfo , Model model) {
+			System.out.println("mailAuthInfo"+mailAuthInfo);
+			
+			// MemberService
+			boolean isAuthSuccess = memberService.requestEmailAuth(mailAuthInfo);
+			
+			// 인증처리 결과판별
+			if(!isAuthSuccess) {
+				model.addAttribute("msg", "메일 인증 실패\\다시 인증해주세요");
+				return "result/fail";
+				
+			}else{
+				model.addAttribute("msg", "메일 인증 성공\\n홈페이지로 이동합니다");
+				model.addAttribute("targetURL", "/");
+				return "result/fail"; //fail로 가는이유는 문자 출력하기 위해서
+			}
+			
+		}
+
 	//*************아이디/닉네임 중복체크***************
 	@ResponseBody
 	@GetMapping("MemberCheckId")
-	public String memberCheckId(MemberVO member) {
+	public String memberCheckId(String mem_id,MemberVO member) {
+		System.out.println(mem_id);
 		member = memberService.getMember(member);
 		boolean isDuplicate = false;
 		if(member != null) { //아이디 중복
@@ -181,4 +224,23 @@ public class MemberController {
 		return isDuplicate+"";
 	}
 	
+	@ResponseBody
+	@GetMapping("MemberCheckNick")
+	public String memberCheckNick(String mem_nick,MemberVO member) {
+		System.out.println(mem_nick);
+		member = memberService.getMember(member);
+		boolean isDuplicate = false;
+		if(member != null) { //아이디 중복
+			isDuplicate= true;
+		}
+		return isDuplicate+"";
+	}
+	
+	@GetMapping("MemberLogout")
+	public String logout(HttpSession session) {
+		session.invalidate();
+		
+		return "redirect:/";
+	}
+
 }

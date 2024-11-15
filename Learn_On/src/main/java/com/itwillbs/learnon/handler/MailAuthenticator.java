@@ -15,13 +15,15 @@ public class MailAuthenticator extends Authenticator {
 	private String gmail_app_password;
 	
 	private PasswordAuthentication passwordAuthentication;
+	
+	public MailAuthenticator() {
+		System.out.println("MailAuthenticator()");
+	}
 	@Override
 	protected PasswordAuthentication getPasswordAuthentication() {
-		System.out.println("getPasswordAuthentication() - " + sender_mail_address + ", " + gmail_app_password);
-		
-		passwordAuthentication = new PasswordAuthentication(sender_mail_address, gmail_app_password);
+//		passwordAuthentication = new PasswordAuthentication(sender_mail_address, gmail_app_password);
+		passwordAuthentication = new PasswordAuthentication("paighkdlxld2@gmail.com", "fhotnojirxjwxanc");
 		return passwordAuthentication;
 	}
 	
 }
-

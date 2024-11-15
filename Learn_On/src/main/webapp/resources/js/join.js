@@ -1,3 +1,4 @@
+
 //****************생년월일****************
 $(document).ready(function() {
 		for (let i = 2000; i > 1980; i--) {
@@ -42,19 +43,22 @@ function checkNameLength(){
 		$("#checkName").text("이름을 입력해주세요.");	
 		$("#checkName").css("color","red");	
 		checkName=false;	
+	}else {
+		$("#checkName").text("");
+		checkName=true;	
 	}
 }
 
 // ************* 아이디 중복체크/길이검사**************
 function checkId(){
 	let id = $("#mem_id").val();
-	let regex = /^[\d\w][\d\w_]{4,8}$/;
+	let regex = /^[\d\w][\d\w_]{4,12}$/;
 	if(regex.exec(id)){
 		$.ajax({
 			type : "get" ,
 		   	 url : "MemberCheckId" ,
 		   	data : {
-			MEM_ID:id
+			mem_id:id
 		} ,
 			success : function(result){
 				
@@ -62,7 +66,7 @@ function checkId(){
 					$("#checkIdResult").text("사용가능한 아이디 입니다.").css("color","GREEN");
 					checkIdResult = true;
 				}else{
-					$("#checkIdResult").text("이미 있는 아이디 입니다.").css("color","RED");
+					$("#checkIdResult").text("이미 존재하는 아이디 입니다.").css("color","RED");
 					checkIdResult = false;
 				}
 			} ,
@@ -71,11 +75,43 @@ function checkId(){
 			}
 		});
 	}else{
-		$("#checkIdResult").text("4~8글자만 사용가능");
+		$("#checkIdResult").text("4~12글자만 사용가능");
 		$("#checkIdResult").css("color", "red");
 		checkIdResult = false;
 	}
 }
+ 		
+/**************닉네임 중복검사************* */
+
+function ckNick(){
+	let nick = $("#mem_nick").val();
+	let regex = /^[\w가-힣]{2,8}$/;
+		if(regex.exec(nick)){
+			$.ajax({
+				type : "get",
+				url : "MemberCheckNick",
+				data : {
+					mem_nick : nick
+				},
+				success : function(result){
+					if(result.trim() == "false" ){
+						$("#checkNic").text("사용가능한 닉네임 입니다").css("color","green");
+						checkNic = true;
+					}else {
+						$("#checkNic").text("이미 사용중인 닉네임 입니다").css("color","red");
+						checkNic = false;
+					}
+				}
+				
+		
+			});
+		}else {
+			$("#checkNic").text("2~8글자만 사용가능").css("color","red");
+			checkNic = false;
+			
+		}
+	}
+
 
 //function checkIdLength (){
 //	let id = $("#MEM_ID").val();

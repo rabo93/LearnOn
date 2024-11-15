@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MailAuthInfo {
-	private String email;
+	private String mem_email;
 	private String auth_code;
 	}

@@ -28,8 +28,7 @@
 			<div id="form-inner-container">
 				<!-- Sign up form -->
 				<div id="sign-up-container">
-					<form action="MemberJoin" name="joinForm" method="post"
-						enctype="multipart/form-data">
+					<form action="MemberJoin" name="joinForm" method="post" enctype="multipart/form-data">
 						<label for="mem_name">이름</label>
 						<div id="checkName"></div>
 						<input type="text" name="mem_name" id="mem_name" placeholder="이름"
@@ -49,7 +48,7 @@
 							placeholder="비밀번호 확인" onkeyup="checkPasswdResult()"> 
 						<label for="mem_nick">닉네임</label>
 						<div id="checkNic"></div>
-						<input type="text" name="mem_nick" id="mem_nick" placeholder="닉네임">
+						<input type="text" name="mem_nick" id="mem_nick" placeholder="닉네임" onblur="ckNick()">
 	
 						<label>성별</label>
 						<div id="gender-container">
@@ -93,7 +92,7 @@
 						<label for="mem_email1">이메일</label>
 						<div id="checkMail"></div>
 						<div class="email_form">
-							<input type="text" name="mem_email1" id="mem_email1" placeholder="Email">
+							<input type="text" name="mem_email1" id="mem_email1" placeholder="Email" required>
 							@
 							<input type="text" size="10" id="mem_email2" name="mem_email2">
 							<select id="emaildmain">
@@ -103,13 +102,17 @@
 								<option value="daum.net">daum.net</option>
 							</select> 
 						</div>
-						<div class="email-auth-bx">
-							<input type="button" value="인증코드 발송" name="mail_auth">
-<!-- 							<input type="text" placeholder="인증코드를 입력해주세요" name="mail_auth"><br> -->
-<!-- 							<input type="button" value="인증코드 확인" name="mail_auth_status" -->
-<!-- 								id="mail_auth_status"><br> -->
+
+<!-- 						<div class="email-auth-bx"> -->
+<!-- 							<input type="button" value="인증코드 번호" name="mail_auth" > -->
+<!-- 						<input type="text" placeholder="인증코드를 입력해주세요" name="mail_auth"><br> -->
+<!-- 						<button type="button" id="sendBtn" name="sendBtn" onclick="sendNumber()">인증번호 발송</button>  -->
+<!-- 						<input type="text" name="number" placeholder="인증번호입력"> -->
+<!-- 						<button type="button" id="confirmBtn" name="confirmBtn" onclick="confirmNumber()">인증번호 확인</button>  -->
 <!-- 							<div id="checkCode"></div> -->
-						</div>
+<!-- 						</div> -->
+						
+						
 						<div class="mem-grade">
 							<label for="mem_grade">
 								<input type="checkbox" id="mem_grade">
@@ -228,5 +231,6 @@
 			}).open();
 		}
 	</script>
+
 </body>
 </html>

@@ -24,4 +24,9 @@ public interface MemberMapper {
 	MailAuthInfo selectMailAuthInfo(MailAuthInfo mailauthInfo);
 
 	
+	void updateMailAuthStatus(MailAuthInfo mailAuthInfo);
+
+	void deleteMailAuthInfo(MailAuthInfo mailAuthInfo);
+
+	
 }

@@ -12,7 +12,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/reset.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
-
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 
 <!-- page 개별 CSS -->
@@ -29,7 +28,7 @@
 	
 	<!----------------------------- page 영역 --------------------------- -->
 	<main id="cart">
-	<form action="Payment" method="post">
+	<form action="Payment" method="post" id="cartForm">
 		<div class="wrapper">
 			<!-- cart-wrap start  -->
 			<div class="cart-wrap">
@@ -60,7 +59,7 @@
 												<div class="item-btns">
 													<input type="checkbox" class="chk" name="checkitem" value="${cart.cartitem_idx}" 
 														data-class-title="${cart.class_title}" data-teacher-name="${cart.mem_name}" data-price="${cart.class_price}" >
-													<%-- 체크 후 서버 넘길때 checkitem=${cart.cartitem_idx}로 넘어감 --%>
+<%-- 														data-selected="${cart.isSelected ? 'true' : 'false'}" ${cart.isSelected ? 'checked' : ''}> --%>
 														
 												     <!-- X버튼 클릭시 해당상품 삭제(1개) -->
 												     <a href="javascript:void(0)" class="btn-del" data-cartitem="${cart.cartitem_idx}">
@@ -113,14 +112,14 @@
 						
 						<!-- ----------------- 주문 버튼 ---------------->
 						<div class="btns-box">
-							<!-- !!!!!!!!!!!!!지금 구현해야하는거!!!!!!!!!!!!!!!!! -->
-							<input type="submit" value="주문하기" class="btnSubmit" onclick="orderCart()">
+<!-- 							<input type="submit" value="주문하기" class="btnSubmit" onclick="orderCart()"> -->
+							<input type="submit" value="주문하기" class="btnSubmit">
 							<input type="button" value="돌아가기" class="btnHome" onclick="location.href='./'">
 						</div>
 						<!-- ----------------- 장바구니 약관 ---------------->
 						<div class="notice-box">
-			<!-- 					아래의 내용은 확인 후 적용 예정 -->
-			<!-- 					* 장바구니 상품은 30일동안 보관되며, 최대 10개까지 담을 수 있습니다.<br> -->
+						<!-- 아래의 내용은 추후 시간이 남으면 적용 예정(장바구니 상품 기한 및 갯수 제한) -->
+						<!-- * 장바구니 상품은 30일동안 보관되며, 최대 10개까지 담을 수 있습니다.<br> -->
 							* 보유하신 쿠폰은 주문서에서 적용 가능합니다.
 						</div>
 					</div>

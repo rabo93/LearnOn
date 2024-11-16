@@ -16,9 +16,9 @@ public class CartVO {
 	
 	private String class_pic1; //썸네일사진 - string 타입 멤버변수는 실제 파일이 아닌 파일명을 저장하는 용도로 사용
 	
-	
-	//장바구니는 상품정보를 갖고 있음
-//	private ClassVO classvo;
-	
-	
+//	private boolean isSelected;     // 사용자가 선택한 상품 여부(pay로 넘기기위해 만듦)
+//	
+//	public void setIsSelected(boolean isSelected) {
+//        this.isSelected = isSelected;
+//    }
 }

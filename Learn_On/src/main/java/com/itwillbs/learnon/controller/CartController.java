@@ -1,5 +1,6 @@
 package com.itwillbs.learnon.controller;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -13,11 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.learnon.service.CartService;
 import com.itwillbs.learnon.vo.CartVO;
+import com.itwillbs.learnon.vo.PurchaseVO;
 
 @Controller
 public class CartController {
@@ -46,7 +49,6 @@ public class CartController {
 			return "redirect:/MemberLogin"; //로그인 페이지로 리다이렉트
 		}
 		//------------------------------------------------------
-		
 		// CartService - getCartList() 메서드 호출하여 장바구니 목록 조회 요청
 	    List<CartVO> cartList = cartService.getCartList(sId);
 	    
@@ -111,42 +113,51 @@ public class CartController {
 	@ResponseBody
 	@GetMapping("CartCount")
 	public String cartCount(HttpSession session, Model model) {
-		//------------------------------------------------------
 		// 로그인 정보 가져오기 (세션 아이디값 확인)
 		String sId = (String) session.getAttribute("sId");
 		System.out.println("로그인 아이디: " + sId);
 		
-		// sId가 null인지 확인 (로그인하지 않은 경우)
-		if(sId == null) {
-			model.addAttribute("msg", "로그인 후 진행해주세요.");
-			return "redirect:/MemberLogin"; //로그인 페이지로 리다이렉트
-		}
-		//------------------------------------------------------
+		//JSON 형식으로 응답하기 위해 Map에 담아서 반환(일단 미리 생성)
+		Map<String, Object> data = new HashMap<String, Object>();
+		System.out.println(data); //지금은 {} 이렇게 뜰꺼임
 		
-		//해당 로그인아이디로 담긴 장바구니 갯수 조회 요청
-//		int cartCount = cartService.getCartCount(sId);
-		
-		//JSON 형식으로 응답하기 위해 Map에 담아서 반환
-		Map<String, Object> result = new HashMap<String, Object>();
-		
-		
-		//추가 작업
-		if(sId == "") {
-			result.put("isLogin", false);
-			result.put("cartCount", 0);
+		if(sId == null) { // 로그인하지 않은 경우
+			data.put("isLogin", false);
 		} else {
+			//해당 로그인아이디로 담긴 장바구니 갯수 조회 요청 => 리턴받은 갯수를 cartCount에 저장
 			int cartCount = cartService.getCartCount(sId);
-			result.put("isLogin", true);
-			result.put("cartCount", cartCount);
+			
+			data.put("isLogin", true);
+			data.put("cartCount", cartCount);
+			// { isLogin : true, cartCount : 4 }
 		}
-		
-		
 		
 		//Map으로 담은 JSON을 화면에 표출하기 위해서는 JSONObject으로 생성
-		JSONObject jo = new JSONObject(result);
+		JSONObject jo = new JSONObject(data);
 		
 		return jo.toString(); //문자열로 변환하여 리턴
 	}
 	
+	
 	//=================================================================================
+	// form 태그 cartOrder 매핑
+	// 장바구니에서 선택된 상품만 필터링(Pay로 넘기기 위해)
+//	@PostMapping("cartOrder")
+//	public String cartOrder(@RequestParam("selectedItems") List<String> selectedItems, HttpSession session) {
+//		 // 선택된 장바구니 상품 정보를 세션에 저장
+////        List<CartVO> selectedCartList = cartService.getSelectedCartItems(selectedItems);
+////        session.setAttribute("selectedCartList", selectedCartList);
+//        
+//        // Payment 페이지로 리다이렉트
+//        return "redirect:/Payment";
+//	}
+	
+
+	
+	
+	
+	
+	
+	
+	
 }

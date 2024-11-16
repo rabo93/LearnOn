@@ -7,6 +7,8 @@
 	-(V) 선택 삭제 => 장바구니(CART) 테이블에서 딜리트
 	-(V) 헤더부분 장바구니 갯수 표시 => top.js에서 작성함
 	-() 선택 구매 => 선택한 상품 결제페이지로 데이터 넘기기
+	-() 썸네일사진 표출 : 클래스 등록 완료되면 구현
+	-() 상품 클릭시 상품 상세 페이지 이동() : CourseDetail?CLASS_ID=240108 형식으로 보냈음. 나중에 주미언니랑 같이 구현
  */
 $(document).ready(function() {
 	//-------------------------------------------------------------------------
@@ -69,9 +71,29 @@ $(document).ready(function() {
 		itemTotal.textContent = selectTotal.toLocaleString(); // 금액에 세자리 콤마 추가
 	}
 	
-	// 페이지 로드 시 초기화
+	// 페이지 로드시 초기화
     updateSelect();
+    
 });
+    
+    //-----------------------------------
+//    checkboxes.forEach(checkbox => {
+//	    checkbox.addEventListener('click', function () {
+//	        let parentItem = checkbox.closest('.cart-item');
+//	        if (checkbox.checked) {
+//	            parentItem.dataset.selected = "true";
+//	            parentItem.querySelector('.status').textContent = "선택됨";
+//	        } else {
+//	            parentItem.dataset.selected = "false";
+//	            parentItem.querySelector('.status').textContent = "선택 안됨";
+//	        }
+//	
+//	        checkAll.checked = checkboxes.length === document.querySelectorAll('.chk:checked').length;
+//	        updateSelect();
+//	    });
+//	});
+
+
 
 
 //================================================================================
@@ -115,13 +137,12 @@ function chkDelete() {
    	
 	//AJAX 요청을 통해 삭제 처리    
     $.ajax({
-		type : "GET", //삭제같은 경우 POST를 이용해야할 수도..
+		type : "GET",
 		url : "DeleteItems",
 		data : { //넘겨줄 데이터들 작성
 			cartitem_idx : cartItemsParam }, //요청 파라미터
 		
-		success : function(result) {
-			console.log(result);
+		success : function(response) {
 			alert("선택한 상품이 삭제되었습니다.");
 			location.reload();// 삭제 후 페이지 새로 고침
 		},
@@ -135,68 +156,77 @@ function chkDelete() {
 }
 
 
+
+
 //================================================================================
 // "주문하기(btnSubmit)" 클릭시 선택한 상품을 가지고 결제페이지(payment.jsp)로 이동
 // '선택한 상품 구매'는 주문(Purchase) 테이블에 인서트하고, 장바구니(Cart) 테이블에서 삭제가 이루어져야함 (-> 결제완료시 결과값을 결제페이지에 payment에 삽입)
-function orderCart() {
-	//주문할 상품 있는지 판별 여부 팝업창
-	const checkedCnt = document.querySelectorAll('.chk:Checked').length;
-	if(checkedCnt == 0) {
-		alert('주문할 상품이 없습니다.\n상품을 선택해 주세요.');
-		return;
-	}
-	//--------------------------------------------------------
-	// 선택한 상품을 결제 페이지로 넘겨야하는 데이터
-	// : 체크한 장바구니 번호/클래스명/강사명/클래스가격, itemCount(주문갯수), totalAmount(주문금액)
-	let selectedChk = []; //주문 정보
-	let itemCount = 0; //주문 갯수
-	let totalAmount = 0; //주문 금액
-	
-	//선택된 상품들 반복하여 처리
-	document.querySelectorAll('.chk:checked').forEach(checkbox => {
-		let classIdx = checkbox.value; //체크박스 idx
-		let classTitle = checkbox.dataset.classTitle; //클래스명
-		let teacherName = checkbox.dataset.teacherName; //강사명
-		let classPrice = parseInt(checkbox.dataset.price,10); //클래스가격(10진법)
-		 
-		//선택된 상품 정보들 배열에 추가
-		selectedChk.push({
-			classIdx : classIdx,
-			classTitle : classTitle,
-			teacherName : teacherName,
-			classPrice : classPrice
-		});
-		 
-		//주문 총합 계산
-		totalAmount += classPrice;
-		itemCount++;
-	});
-	console.log("주문 상품정보 : " + selectedChk); //주문 상품정보 : [object Object],[object Object]
-	console.log("주문 금액 : " + totalAmount);
-	console.log("주문 갯수 : " + itemCount);
-	
-	
-	//AJAX 요청 보내기
-	$.ajax({
-		type: "POST",
-		url: "Payment",
-		data: JSON.stringify({ //전송할 데이터들
-			purchaseItems : selectedChk,
-			totalAmount : totalAmount,
-			itemCount : itemCount
-		}),
-		contentType: "application/json; charset=UTF-8",
-		
-		success: function(response) {
-			window.location.href = 'Payment'; //Payment 매핑주소 포워딩 해야함 (controller)
-		},
-		error: function(jqXHR) {
-			console.log("삭제 요청중 오류 발생 : "+ jqXHR);
-			alert("주문에 실패하였습니다. 다시 시도해주세요.");
-		}
-	});
-	
-}
+//function orderCart() {
+//	//주문할 상품 있는지 판별 여부 팝업창
+//	const checkedCnt = document.querySelectorAll('.chk:Checked').length;
+//	if(checkedCnt == 0) {
+//		alert('주문할 상품이 없습니다.\n상품을 선택해 주세요.');
+//		return;
+//	}
+//	//--------------------------------------------------------
+//	// 선택한 상품을 결제 페이지로 넘겨야하는 데이터
+//	// : 체크한 장바구니 번호/클래스명/강사명/클래스가격, itemCount(주문갯수), totalAmount(주문금액)
+//	let selectedChk = []; //주문 정보
+//	let itemCount = 0; //주문 갯수
+//	let totalAmount = 0; //주문 금액
+//	
+//	//선택된 상품들 반복하여 처리
+//	document.querySelectorAll('.chk:checked').forEach(checkbox => {
+//		let classIdx = checkbox.value; //체크박스 idx
+//		let classTitle = checkbox.dataset.classTitle; //클래스명
+//		let teacherName = checkbox.dataset.teacherName; //강사명
+//		let classPrice = parseInt(checkbox.dataset.price,10); //클래스가격(10진법)
+//		 
+//		//선택된 상품 정보들 배열에 추가
+//		selectedChk.push({
+//			classIdx : classIdx,
+//			classTitle : classTitle,
+//			teacherName : teacherName,
+//			classPrice : classPrice
+//		});
+//		 
+//		//주문 총합 계산
+//		totalAmount += classPrice;
+//		itemCount++;
+//	});
+//	console.log("주문 상품정보 : " + selectedChk); //주문 상품정보 : [object Object],[object Object]
+//	console.log("주문 금액 : " + totalAmount);
+//	console.log("주문 갯수 : " + itemCount);
+//	
+//	
+//	//AJAX 요청 보내기
+//	$.ajax({
+//		type: "POST",
+//		url: "Payment",
+//		data: JSON.stringify({ //전송할 데이터들
+//			purchaseItems : selectedChk,
+//			totalAmount : totalAmount,
+//			itemCount : itemCount
+//		}),
+//		contentType: "application/json; charset=UTF-8",
+//		
+//		success: function(response) {
+//			window.location.href = 'Payment'; //Payment 매핑주소 포워딩 해야함 (controller)
+//		},
+//		error: function(jqXHR, textStatus, errorThrown) {
+//		// jqXHR: 서버로부터 받은 응답 객체
+//        // textStatus: 상태 메시지
+//        // errorThrown: 발생한 예외 메시지
+//        console.log("Error occurred: ", textStatus, errorThrown); // 오류 메시지 확인
+//        console.log("jqXHR responseText: ", jqXHR.responseText); // 응답 텍스트 확인
+//        console.log("jqXHR status: ", jqXHR.status); // 상태 코드 확인
+//        console.log("jqXHR responseJSON: ", jqXHR.responseJSON); // JSON 응답 확인 (만약 서버에서 JSON을 보냈다면)
+//
+//        alert("주문 처리 중 오류가 발생했습니다. 콘솔을 확인해주세요.");
+//		}
+//	});
+//	
+//}
 
 
 

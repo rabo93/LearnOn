@@ -27,16 +27,12 @@ s : 초(ss : 초 2자리)
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/reset.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
-
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/slick.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/index.js"></script>
 
 <!-- page 개별 CSS -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/payment.css">
-    
 <!-- page 개별 JS -->
-<script src="${pageContext.request.contextPath}/resources/js/payment.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/cart_payment/payment.js"></script>
 <!-- 포트원 결제api sdk 추가 -->
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 
@@ -48,115 +44,126 @@ s : 초(ss : 초 2자리)
 	
 	<!----------------------------- page 영역 --------------------------- -->
 	<main id="pay">
-		<div class="wrapper">
+		<form action="Portone" method="post" id="payForm">
 		
-			<!-- pay-wrap start  -->
-			<div class="pay-wrap">
-				<h2 class="pay-ttl">
-					<i class="fa-solid fa-circle-right"></i>
-				  	 결제하기
-				  </h2>
-				<!-- -----------------결제 상품 목록 ---------------->
-				<div class="frame">
-					
-					<!----------------- 결제 상품 내역 ----------------->
-					<section class="pay-list">
-						<div class="pay-item">
-							<h5 class="box-ttl">주문상품</h5>
-							<div class="class-box">
-								<div class="class-pic">
-									<img alt="클래스썸네일" src="/resources/images/thumb_01.webp">
-								</div>
-								<div class="item-info">
-									<!-- AJAX로 불러와보자 -->
-									<p id="classTitle">(CLASS_TITLE)</p>
-									<p id="teacherName">(T_ID - MEM_NAME)</p>
-								</div>
-							</div>
-							<!-- 상품 금액부분 -->
-							<div class="item-result">
-								<span class="price">100,000(CLASS_PRICE)</span>원
-							</div>
-						</div>
-					</section>
-					
-					<!-- ----------------- 쿠폰 ---------------->
-					<section class="pay-right">
-						<div class="pay-item">
-							<h5 class="box-ttl">쿠폰</h5>
-							<div class="coupon">
-								<div class="coupon-select">
-									<div class="coupon-select-info">
-										<p>쿠폰 할인 금액</p>
-										<span class="coupon-price">0원</span>
-									</div>
-									
-									<input type="button" value="쿠폰선택" class="coupon-btn" onclick="couponSelect()">
-								</div>
-								<div class="coupon-input">
-									<input type="text" placeholder="쿠폰 코드를 입력해주세요." class="coupon-inputbox" name="couponCode">
-									<input type="button" value="쿠폰발급" class="coupon-btn" onclick="couponCreate()">
-								</div>
-							</div>
-						</div>
-					</section>
-					
-					
-					<!-- ----------------- 결제 금액 ---------------->
-					<section class="pay-right">
-						<div class="price-box">
-							<h5 class="box-ttl">결제 금액</h5>
-							<dl>
-								<dt>결제 상품 금액</dt>
-								<dd>￦ 269,000</dd>
-							</dl>
-							<dl>
-								<dt>할인 금액</dt>
-								<dd>￦ 0</dd>
-							</dl>
-							<dl class="total">
-								<dt>결제 금액</dt>
-								<dd>￦ 269,000</dd>
-							</dl>
-						</div>
-					</section>
-					
-					<!-- ----------------- 결제수단 ---------------->
-					<section class="pay-right">
-						<div class="pay-item">
-							<h5 class="box-ttl">결제수단</h5>
-							<label class="pay-method">
-								<input type="radio" name="pay-method" value="card">
-								<span>신용카드</span>
-							</label>
-							<label class="pay-method">
-								<input type="radio" name="pay-method" value="bank">
-								<span>무통장입금(가상계좌)</span>
-							</label>
-						</div>
-					</section>
+			<div class="wrapper">
+			
+				<!-- pay-wrap start  -->
+				<div class="pay-wrap">
+					<h2 class="pay-ttl">
+						<i class="fa-solid fa-circle-right"></i>
+					  	 결제하기
+					  </h2>
+					<!-- -----------------결제 상품 목록 ---------------->
+					<div class="frame">
 						
-					<!-- ----------------- 이용약관 동의(필수) ---------------->
-					<section class="pay-right">
-						<div class="pay-item">
-							<div class="notice-box">
-								<label class="notice-check">
-									<input type="checkbox" id="notice" name="cart1" value="cart1">	
-					 				<span>이용약관 동의(필수)</span>
-								</label>
-				 				<a href="Terms">내용보기</a>
+						<!----------------- 결제 상품 내역 ----------------->
+						<section class="pay-list">
+							<div class="pay-item">
+								<h5 class="box-ttl">주문상품</h5>
+								
+								<c:forEach var="item" items="${selectedCartList}">
+									<div class="class-box">
+										<div class="class-pic">
+											<img alt="클래스썸네일" src="/resources/images/thumb_01.webp">
+										</div>
+										<div class="item-info">
+											<!-- AJAX로 불러와보자 -->
+											<p id="classTitle">${item.classTitle}</p>
+											<p id="teacherName">${item.teacherName}</p>
+										</div>
+									</div>
+									<!-- 상품 금액부분 -->
+									<div class="item-result">
+										<span class="price">${item.classPrice}</span>원
+									</div>
+								</c:forEach>
 							</div>
+						</section>
+						
+						<!-- ----------------- 쿠폰 ---------------->
+						<section class="pay-right">
+							<div class="pay-item">
+								<h5 class="box-ttl">쿠폰</h5>
+								<div class="coupon">
+									<div class="coupon-select">
+										<div class="coupon-select-info">
+											<p>쿠폰 할인 금액</p>
+											<span class="coupon-price">0원</span>
+										</div>
+										
+										<input type="button" value="쿠폰선택" class="coupon-btn" onclick="couponSelect()">
+									</div>
+									<div class="coupon-input">
+										<input type="text" placeholder="쿠폰 코드를 입력해주세요." class="coupon-inputbox" name="couponCode">
+										<input type="button" value="쿠폰발급" class="coupon-btn" onclick="couponCreate()">
+									</div>
+								</div>
+							</div>
+						</section>
+						
+						
+						<!-- ----------------- 결제 금액 ---------------->
+						<section class="pay-right">
+							<div class="price-box">
+								<h5 class="box-ttl">결제 금액</h5>
+								<dl>
+									<dt>결제 상품 금액</dt>
+									<c:set var="totalAmount" value="0" />
+									<c:forEach var="cart" items="${selectedCartList}">
+									    <c:set var="totalAmount" value="${totalAmount + cart.classPrice}" />
+									</c:forEach>
+									<dd>￦ ${totalAmount}</dd>
+								</dl>
+								<dl>
+									<dt>할인 금액</dt>
+									<dd>￦ ${discountAmount}</dd>
+								</dl>
+								<dl class="total">
+									<dt>결제 금액</dt>
+									<c:set var="payAmount" value="${totalAmount - discountAmount}" />
+									<dd>￦ ${payAmount}</dd>
+								</dl>
+							</div>
+						</section>
+						
+						<!-- ----------------- 결제수단 ---------------->
+						<section class="pay-right">
+							<div class="pay-item">
+								<h5 class="box-ttl">결제수단</h5>
+								<label class="pay-method">
+									<input type="radio" name="pay-method" value="card">
+									<span>신용카드</span>
+								</label>
+								<label class="pay-method">
+									<input type="radio" name="pay-method" value="bank">
+									<span>무통장입금(가상계좌)</span>
+								</label>
+							</div>
+						</section>
+							
+						<!-- ----------------- 이용약관 동의(필수) ---------------->
+						<section class="pay-right">
+							<div class="pay-item">
+								<div class="notice-box">
+									<label class="notice-check">
+										<input type="checkbox" id="notice" name="cart1" value="cart1">	
+						 				<span>이용약관 동의(필수)</span>
+									</label>
+					 				<a href="Terms">내용보기</a>
+								</div>
+							</div>
+						</section>	
+						<!-- ----------------- 결제하기 버튼 ---------------->
+						<div class="btns-box">
+							<input type="submit" value="결제하기" class="btnSubmit" onclick="requestPay()">
 						</div>
-					</section>	
-					<!-- ----------------- 결제하기 버튼 ---------------->
-					<div class="btns-box">
-						<input type="submit" value="결제하기" class="btnSubmit" onclick="requestPay()">
 					</div>
 				</div>
+				<!-- // pay-wrap end  -->
+				
 			</div>
-			<!-- // pay-wrap end  -->
-			
-		</div>
+		</form>
 	</main>
 
 	

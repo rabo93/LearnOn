@@ -29,6 +29,7 @@
 	
 	<!----------------------------- page 영역 --------------------------- -->
 	<main id="cart">
+	<form action="Payment" method="post">
 		<div class="wrapper">
 			<!-- cart-wrap start  -->
 			<div class="cart-wrap">
@@ -47,7 +48,7 @@
 						<c:choose>
 							<%--장바구니에 아무것도 담겨져 있지 않은 경우 --%>
 							<c:when test="${empty cartList}">
-								<p>장바구니에 담은 상품이 없습니다.</p>
+								<p class="cart-item">장바구니에 담은 상품이 없습니다.</p>
 							</c:when>
 							
 							<c:otherwise>
@@ -57,7 +58,8 @@
 										<div class="cart-item">
 												<!-- 상품별 체크박스 -->
 												<div class="item-btns">
-													<input type="checkbox" class="chk" name="checkitem" value="${cart.cartitem_idx}" data-price="${cart.class_price}" >
+													<input type="checkbox" class="chk" name="checkitem" value="${cart.cartitem_idx}" 
+														data-class-title="${cart.class_title}" data-teacher-name="${cart.mem_name}" data-price="${cart.class_price}" >
 													<%-- 체크 후 서버 넘길때 checkitem=${cart.cartitem_idx}로 넘어감 --%>
 														
 												     <!-- X버튼 클릭시 해당상품 삭제(1개) -->
@@ -90,10 +92,9 @@
 						</c:choose>
 						
 					</section>
-					
 					<!-- ----------------- 장바구니 주문 금액 ---------------->
 					<section class="cart-right">
-						<form action="Payment" method="get" class="price-box">
+						<div class="price-box">
 							<dl>
 								<dt>총 상품 금액</dt>
 								<fmt:formatNumber var="total" value="${total}" type="number"/>
@@ -109,7 +110,7 @@
 								<dt>주문 금액</dt>
 								<dd><span id="totalAmount"></span>원</dd>
 							</dl>
-						</form>
+						
 						<!-- ----------------- 주문 버튼 ---------------->
 						<div class="btns-box">
 							<!-- !!!!!!!!!!!!!지금 구현해야하는거!!!!!!!!!!!!!!!!! -->
@@ -122,12 +123,13 @@
 			<!-- 					* 장바구니 상품은 30일동안 보관되며, 최대 10개까지 담을 수 있습니다.<br> -->
 							* 보유하신 쿠폰은 주문서에서 적용 가능합니다.
 						</div>
+					</div>
 					</section>
 				</div>
 			</div>
 			<!-- // cart-wrap end  -->
-			
 		</div>
+	</form>
 	</main>
 	<!----------------------------- page 영역 --------------------------- -->
 	

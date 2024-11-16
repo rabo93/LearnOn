@@ -4,19 +4,15 @@
 	-(V) 전체선택 체크 기능 : checkAll, chk(각각의 클래스id)
 	-(V) 삭제버튼 기능 : CARTITEM_IDX
 	-(V) 체크한 상품에 대한 총계 표출 
-	-() 선택 구매 => 구매(PURCHASE) 테이블에 인서트
 	-(V) 선택 삭제 => 장바구니(CART) 테이블에서 딜리트
 	-(V) 헤더부분 장바구니 갯수 표시 => top.js에서 작성함
+	-() 선택 구매 => 선택한 상품 결제페이지로 데이터 넘기기
  */
- 
-document.addEventListener("DOMContentLoaded", function() {
-// 페이지가 완전히 로드되면 다음 코드를 실행(이거 안하니까 초기 페이지 로딩시 전체선택 이벤트가 안되어있음)
+$(document).ready(function() {
 	//-------------------------------------------------------------------------
 	// "전체선택(checkAll)" 버튼 클릭시 전체 항목 선택/해제 이벤트
 	const checkAll = document.querySelector('#checkAll'); //id 속성 가져와서 변수에 저장
-//	console.log(checkAll); //<input type="checkbox" id="checkAll" checked="checked">
 	const checkboxes = document.querySelectorAll('.chk'); //name 속성 전체 가져와서 변수에 저장
-//	console.log(checkboxes); //NodeList(5) [input.chk, input.chk, input.chk, input.chk, input.chk]
 	//-------------
 	const itemCnt = document.querySelector('#itemCount'); //선택상품 갯수 
 	const itemTotal = document.querySelector('#totalAmount') //선택상품 금액
@@ -68,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	            selectTotal += parseInt(checkbox.dataset.price); // 체크된 항목 금액 누적
 	        }
    		});
-
+		
 		itemCnt.textContent = selectCnt;
 		itemTotal.textContent = selectTotal.toLocaleString(); // 금액에 세자리 콤마 추가
 	}
@@ -144,51 +140,53 @@ function chkDelete() {
 // '선택한 상품 구매'는 주문(Purchase) 테이블에 인서트하고, 장바구니(Cart) 테이블에서 삭제가 이루어져야함 (-> 결제완료시 결과값을 결제페이지에 payment에 삽입)
 function orderCart() {
 	//주문할 상품 있는지 판별 여부 팝업창
-	let checkedCnt = document.querySelectorAll('.chk:Checked').length;
+	const checkedCnt = document.querySelectorAll('.chk:Checked').length;
 	if(checkedCnt == 0) {
 		alert('주문할 상품이 없습니다.\n상품을 선택해 주세요.');
 		return;
 	}
 	//--------------------------------------------------------
 	// 선택한 상품을 결제 페이지로 넘겨야하는 데이터
-	// : CartVO => 체크한 장바구니번호(class_id,mem_idx), itemCount, totalAmount(금액)
-	// name속성으로 checkitem=${cart.cartitem_idx}
-	// 주문번호
-	
-	//선택된 상품들의 class_id, 갯수, 가격 등 필요한 데이터 배열에 담기
-	let selectedChk = []; 
-	let itemCount = 0;
-	let totalAmount = 0; 
+	// : 체크한 장바구니 번호/클래스명/강사명/클래스가격, itemCount(주문갯수), totalAmount(주문금액)
+	let selectedChk = []; //주문 정보
+	let itemCount = 0; //주문 갯수
+	let totalAmount = 0; //주문 금액
 	
 	//선택된 상품들 반복하여 처리
 	document.querySelectorAll('.chk:checked').forEach(checkbox => {
-		let purchaseitemId = checkbox.value; //체크박스 idx
-		let purchaseitemPrice = parseInt(checkbox.dataset.price); //체크박스 가격
+		let classIdx = checkbox.value; //체크박스 idx
+		let classTitle = checkbox.dataset.classTitle; //클래스명
+		let teacherName = checkbox.dataset.teacherName; //강사명
+		let classPrice = parseInt(checkbox.dataset.price,10); //클래스가격(10진법)
 		 
-		//선택된 상품들 배열에 추가
+		//선택된 상품 정보들 배열에 추가
 		selectedChk.push({
-			purchase_idx : purchaseitemId,
-			purchase_price : purchaseitemPrice
+			classIdx : classIdx,
+			classTitle : classTitle,
+			teacherName : teacherName,
+			classPrice : classPrice
 		});
 		 
-		//총합 계산
-		totalAmount += purchaseitemPrice;
+		//주문 총합 계산
+		totalAmount += classPrice;
 		itemCount++;
 	});
-	console.log("selectedChk : " + selectedChk);
-	console.log("totalAmount : " + totalAmount);
-	console.log("itemCount : " + itemCount);
+	console.log("주문 상품정보 : " + selectedChk); //주문 상품정보 : [object Object],[object Object]
+	console.log("주문 금액 : " + totalAmount);
+	console.log("주문 갯수 : " + itemCount);
 	
 	
 	//AJAX 요청 보내기
 	$.ajax({
 		type: "POST",
 		url: "Payment",
-		data: Json.stringify({ //전송할 데이터들
-			purchasItems : selectedChk,
+		data: JSON.stringify({ //전송할 데이터들
+			purchaseItems : selectedChk,
 			totalAmount : totalAmount,
 			itemCount : itemCount
 		}),
+		contentType: "application/json; charset=UTF-8",
+		
 		success: function(response) {
 			window.location.href = 'Payment'; //Payment 매핑주소 포워딩 해야함 (controller)
 		},
@@ -197,22 +195,6 @@ function orderCart() {
 			alert("주문에 실패하였습니다. 다시 시도해주세요.");
 		}
 	});
-	
-	
-	
-	
-	
-	
-	
-	
-	/*
-	주문번호 생성 로직 (포맷 : yyyyMMddxxxxx) ======> service에서?
-	xxxxx: 5자리 정수 생성, 후에 해당 주문번호가 이미 존재하는지 확인을 반복
-	
-	*/
-	
-	
-	
 	
 }
 

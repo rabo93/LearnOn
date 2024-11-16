@@ -54,7 +54,6 @@ public class CartController {
 		//--------------------------------------------------------------
 		// CartService - getCartList() 메서드 호출하여 장바구니 목록 조회 요청
 	    List<CartVO> cartList = cartService.getCartList(sId);
-//		System.out.println(cartList);// [CartVO(CARTITEM_IDX=7, CLASS_ID=240107, MEM_ID=teacher01, CLASS_TITLE=자바 초급 강의 4편, MEM_NAME=이선생, CLASS_PRICE=70000, CLASS_PIC1=, cnt=0), CartVO(CARTITEM_IDX=6, CLASS_ID=240106...
 	    
 	    // Model 객체에 cartList 객체 결과값 저장하고 jsp뷰페이지로 객체 전달
 		model.addAttribute("cartList", cartList); 

@@ -41,7 +41,7 @@
 	
 	<!-- 장바구니 갯수 조회 -->
 	<select id="countCart" resultType="int">
-		SELECT count(*)
+		SELECT count(*) AS '장바구니갯수'
 		FROM CART
 		WHERE MEM_ID = #{sId}
 	</select>

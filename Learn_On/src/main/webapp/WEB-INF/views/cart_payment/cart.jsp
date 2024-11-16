@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>장바구니</title>
+<title>장바구니 - LearOn</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/reset.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
@@ -59,7 +59,6 @@
 												<div class="item-btns">
 													<input type="checkbox" class="chk" name="checkitem" value="${cart.cartitem_idx}" 
 														data-class-title="${cart.class_title}" data-teacher-name="${cart.mem_name}" data-price="${cart.class_price}" >
-<%-- 														data-selected="${cart.isSelected ? 'true' : 'false'}" ${cart.isSelected ? 'checked' : ''}> --%>
 														
 												     <!-- X버튼 클릭시 해당상품 삭제(1개) -->
 												     <a href="javascript:void(0)" class="btn-del" data-cartitem="${cart.cartitem_idx}">
@@ -112,7 +111,6 @@
 						
 						<!-- ----------------- 주문 버튼 ---------------->
 						<div class="btns-box">
-<!-- 							<input type="submit" value="주문하기" class="btnSubmit" onclick="orderCart()"> -->
 							<input type="submit" value="주문하기" class="btnSubmit">
 							<input type="button" value="돌아가기" class="btnHome" onclick="location.href='./'">
 						</div>

@@ -5,7 +5,6 @@ import lombok.Data;
 //멤버변수 camelCase 형식으로 선언해야하는지 확인
 @Data
 public class CartVO {
-	//CART 테이블에 있는 컬럼
 	private int cartitem_idx; 	//장바구니번호(pk)
 	private int class_id;		//클래스id
 	private String mem_id;		//회원id
@@ -16,9 +15,4 @@ public class CartVO {
 	
 	private String class_pic1; //썸네일사진 - string 타입 멤버변수는 실제 파일이 아닌 파일명을 저장하는 용도로 사용
 	
-//	private boolean isSelected;     // 사용자가 선택한 상품 여부(pay로 넘기기위해 만듦)
-//	
-//	public void setIsSelected(boolean isSelected) {
-//        this.isSelected = isSelected;
-//    }
 }

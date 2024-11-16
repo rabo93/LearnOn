@@ -1,6 +1,5 @@
 package com.itwillbs.learnon.controller;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -14,13 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.learnon.service.CartService;
 import com.itwillbs.learnon.vo.CartVO;
-import com.itwillbs.learnon.vo.PurchaseVO;
 
 @Controller
 public class CartController {
@@ -109,7 +106,7 @@ public class CartController {
 	}
 	
 	//=================================================================================
-	// Top.jsp 페이지 헤더부분 장바구니 아이콘에 장바구니 갯수 표시 => AJAX로 요청받음(비동기)
+	// top.jsp 페이지 헤더부분 장바구니 아이콘에 장바구니 갯수 표시 => AJAX로 요청받음(비동기)
 	@ResponseBody
 	@GetMapping("CartCount")
 	public String cartCount(HttpSession session, Model model) {
@@ -137,27 +134,6 @@ public class CartController {
 		
 		return jo.toString(); //문자열로 변환하여 리턴
 	}
-	
-	
-	//=================================================================================
-	// form 태그 cartOrder 매핑
-	// 장바구니에서 선택된 상품만 필터링(Pay로 넘기기 위해)
-//	@PostMapping("cartOrder")
-//	public String cartOrder(@RequestParam("selectedItems") List<String> selectedItems, HttpSession session) {
-//		 // 선택된 장바구니 상품 정보를 세션에 저장
-////        List<CartVO> selectedCartList = cartService.getSelectedCartItems(selectedItems);
-////        session.setAttribute("selectedCartList", selectedCartList);
-//        
-//        // Payment 페이지로 리다이렉트
-//        return "redirect:/Payment";
-//	}
-	
-
-	
-	
-	
-	
-	
 	
 	
 }

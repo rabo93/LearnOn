@@ -2,7 +2,6 @@ package com.itwillbs.learnon.mapper;
 
 import java.util.List;
 
-import com.itwillbs.learnon.vo.CartVO;
 import com.itwillbs.learnon.vo.PurchaseVO;
 
 public interface PayMapper {

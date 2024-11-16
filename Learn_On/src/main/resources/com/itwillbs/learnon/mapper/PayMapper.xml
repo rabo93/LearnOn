@@ -16,7 +16,6 @@
 
 
 	<!-- 선택된 장바구니 상품 조회 -->
-<!--     <select id="selectedCart" parameterType="list" > -->
     <select id="selectedCart" parameterType="list" resultType="purchase" resultMap="CartToPurchaseMap">
         SELECT
 	        ca.CARTITEM_IDX, 
@@ -35,4 +34,6 @@
 	        #{item}
 	    </foreach>
     </select>
+    
+    
 </mapper>

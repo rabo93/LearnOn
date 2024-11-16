@@ -6,9 +6,9 @@
 	-(V) 체크한 상품에 대한 총계 표출 
 	-(V) 선택 삭제 => 장바구니(CART) 테이블에서 딜리트
 	-(V) 헤더부분 장바구니 갯수 표시 => top.js에서 작성함
-	-() 선택 구매 => 선택한 상품 결제페이지로 데이터 넘기기
+	-(V) 선택 구매 => 선택한 상품 결제페이지로 데이터 넘기기
 	-() 썸네일사진 표출 : 클래스 등록 완료되면 구현
-	-() 상품 클릭시 상품 상세 페이지 이동() : CourseDetail?CLASS_ID=240108 형식으로 보냈음. 나중에 주미언니랑 같이 구현
+	-() 상품 클릭시 상품 상세 페이지 이동() : CourseDetail?CLASS_ID=240108 형식으로 보냈음. 나중에 주미언니 강의 상세 페이지 다되면 구현.
  */
 $(document).ready(function() {
 	//-------------------------------------------------------------------------
@@ -43,9 +43,7 @@ $(document).ready(function() {
 	checkboxes.forEach(checkbox => {
 		checkbox.addEventListener('click', function() {
 			let totalCnt = checkboxes.length; //총 체크박스 갯수
-//			console.log("totalCnt: " + totalCnt); 
 			let checkedCnt = document.querySelectorAll('.chk:checked').length; //체크한 갯수
-//			console.log("checkedCnt: "+ checkedCnt);
 			
 			// 모든 체크박스가 선택되었는지 확인 후 전체선택 상태 업데이트
 			checkAll.checked = totalCnt === checkedCnt;
@@ -75,25 +73,6 @@ $(document).ready(function() {
     updateSelect();
     
 });
-    
-    //-----------------------------------
-//    checkboxes.forEach(checkbox => {
-//	    checkbox.addEventListener('click', function () {
-//	        let parentItem = checkbox.closest('.cart-item');
-//	        if (checkbox.checked) {
-//	            parentItem.dataset.selected = "true";
-//	            parentItem.querySelector('.status').textContent = "선택됨";
-//	        } else {
-//	            parentItem.dataset.selected = "false";
-//	            parentItem.querySelector('.status').textContent = "선택 안됨";
-//	        }
-//	
-//	        checkAll.checked = checkboxes.length === document.querySelectorAll('.chk:checked').length;
-//	        updateSelect();
-//	    });
-//	});
-
-
 
 
 //================================================================================
@@ -157,9 +136,9 @@ function chkDelete() {
 
 
 
-
+// 아래 코드는 AJAX JACSON 설정 어쩌고저쩌고때메 안돼서 그냥 form 태그로 구현함
 //================================================================================
-// "주문하기(btnSubmit)" 클릭시 선택한 상품을 가지고 결제페이지(payment.jsp)로 이동
+// "주문하기(btnSubmit)" 클릭시 선택한 상품을 가지고 결제페이지(payment.jsp)로 이동 
 // '선택한 상품 구매'는 주문(Purchase) 테이블에 인서트하고, 장바구니(Cart) 테이블에서 삭제가 이루어져야함 (-> 결제완료시 결과값을 결제페이지에 payment에 삽입)
 //function orderCart() {
 //	//주문할 상품 있는지 판별 여부 팝업창
@@ -199,7 +178,7 @@ function chkDelete() {
 //	console.log("주문 갯수 : " + itemCount);
 //	
 //	
-//	//AJAX 요청 보내기
+//	//AJAX 요청 보내기 
 //	$.ajax({
 //		type: "POST",
 //		url: "Payment",

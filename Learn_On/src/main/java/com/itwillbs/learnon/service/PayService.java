@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.learnon.mapper.PayMapper;
-import com.itwillbs.learnon.vo.CartVO;
 import com.itwillbs.learnon.vo.PurchaseVO;
 
 @Service
@@ -17,10 +16,6 @@ public class PayService {
 	//결제 상품 목록 조회
 	public List<PurchaseVO> getSelectedCart(List<String> checkItems) {
 		System.out.println("Service checkItems: " + checkItems);  // checkItems 값 확인
-	    
-//		List<PurchaseVO> items = mapper.selectedCart(checkItems);  // DB에서 가져온 데이터 확인
-//	    System.out.println("Selected items from DB: " + items);  // DB에서 가져온 값 확인
-//	    return items;
 		return mapper.selectedCart(checkItems);
 	}
 	

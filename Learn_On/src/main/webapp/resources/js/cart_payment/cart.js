@@ -19,7 +19,7 @@ $(document).ready(function() {
 	const itemCnt = document.querySelector('#itemCount'); //선택상품 갯수 
 	const itemTotal = document.querySelector('#totalAmount') //선택상품 금액
 	
-	//-------------------------------------------------------------------------
+	
 	// 1. 초기 동기화 : 페이지가 처음 로드될 때 'checkAll'의 상태에 따라 다른 체크박스들의 상태를 설정
 	const isChecked = checkAll.checked; // checkAll이 체크되어 있는지 확인
 	// 각 체크박스의 상태를 전체선택 상태와 동일하게 설정하는 for문
@@ -53,7 +53,8 @@ $(document).ready(function() {
 		
 	});	
 	
-	// 4. 체크한 체크박스의 갯수/금액 계산 업데이트 함수
+	//-------------------------------------------------------------------------
+	// 체크한 체크박스의 갯수/금액 계산 업데이트 함수
 	function updateSelect() {
 		let selectCnt = 0; 
 		let selectTotal = 0;
@@ -68,10 +69,28 @@ $(document).ready(function() {
 		itemCnt.textContent = selectCnt;
 		itemTotal.textContent = selectTotal.toLocaleString(); // 금액에 세자리 콤마 추가
 	}
+    
+		
+	//-----------------------------------------------------------------------------------
+	// "주문하기" 버튼 클릭 시 체크 여부 확인 함수
+	window.orderCart = function (event) {
+	    event.preventDefault(); // 기본 폼 제출 방지
 	
+	    // 체크된 체크박스 확인
+	    const checkedItems = document.querySelectorAll('.chk:checked');
+	    if (checkedItems.length === 0) {
+	        // 체크된 항목이 없으면 알림창 띄우기
+	        alert("주문할 상품을 선택해주세요.");
+	    } else {
+	        // 체크된 항목이 있으면 폼 제출
+	        document.getElementById('cartForm').submit();
+	    }
+    };
+	
+	//-----------------------------------------------------------------------------------
 	// 페이지 로드시 초기화
     updateSelect();
-    
+	
 });
 
 

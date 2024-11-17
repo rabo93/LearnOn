@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PurchaseVO { //체크한 장바구니 상품을 주문할 때 멤버변수 => PayVO
+public class PurchaseVO { //체크한 장바구니 상품을 주문할 때 결제페이지에서 조회될 멤버변수
 	private int cartItemIdx;        // 장바구니ID
 	private int classId;          	// 클래스ID
     private String classTitle;    	// 클래스명

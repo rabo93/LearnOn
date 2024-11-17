@@ -22,15 +22,8 @@ public class PayController {
 	// 결제 목록 조회 비즈니스 로직
 	@PostMapping("Payment")
 	public String payment(@RequestParam(value = "checkitem", required = false) List<String> checkItems, Model model) {
-		// 선택된 상품이 없다면 처리
-		if (checkItems == null || checkItems.isEmpty()) {
-			model.addAttribute("msg", "상품을 선택해주세요.");
-			return "redirect:/Cart";
-		}
-		
 		// checkItems가 제대로 전달되었는지 확인
-//	    System.out.println("(Payment)선택한 장바구니 번호: " + checkItems);
-		//(Payment)선택한 장바구니 번호: [4, 3, 2, 1]
+//	    System.out.println("(Payment)선택한 장바구니 번호: " + checkItems); //[4, 3, 2, 1]
 	    
 	    // List<String>으로 전달하여 getSelectedCarts 호출
 	    List<PurchaseVO> selectedItems = payService.getSelectedCart(checkItems);
@@ -43,6 +36,7 @@ public class PayController {
 	    return "cart_payment/payment";
 	}
 	
+	//=================================================================================
 	
 	
 	

@@ -111,7 +111,7 @@
 						
 						<!-- ----------------- 주문 버튼 ---------------->
 						<div class="btns-box">
-							<input type="submit" value="주문하기" class="btnSubmit">
+							<input type="submit" value="주문하기" class="btnSubmit" onclick="orderCart(event)">
 							<input type="button" value="돌아가기" class="btnHome" onclick="location.href='./'">
 						</div>
 						<!-- ----------------- 장바구니 약관 ---------------->

@@ -35,7 +35,7 @@
 				<!-- pay-wrap start  -->
 				<div class="pay-wrap">
 					<h2 class="pay-ttl">
-						<i class="fa-solid fa-circle-right"></i>
+						<i class="fa-solid fa-circle-right" ></i>
 					  	 결제하기
 					  </h2>
 					<div class="frame">

@@ -77,7 +77,7 @@
 										<input type="button" value="쿠폰선택" class="coupon-btn" onclick="couponSelect()">
 									</div>
 									<div class="coupon-input">
-										<input type="text" placeholder="쿠폰 코드를 입력해주세요." class="coupon-inputbox" name="couponCode">
+										<input type="text" placeholder="쿠폰 코드를 입력해주세요." class="coupon-inputbox" name="couponCode" id="couponCode">
 										<input type="button" value="쿠폰발급" class="coupon-btn" onclick="couponCreate()">
 									</div>
 								</div>

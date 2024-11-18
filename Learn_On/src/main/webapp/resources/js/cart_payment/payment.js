@@ -33,11 +33,26 @@ function couponSelect() {
 
 //=============================================================================
 // "쿠폰발급" 클릭 시 입력된 쿠폰번호 코드 확인 후 생성
-function couponCreate() {
-	
-	
-	
-}
+//function couponCreate() {
+//	var couponCode = $("#couponCode").val(); // 쿠폰 코드 입력 값 가져오기
+//	var memId = "bborara";
+//	
+//	if (!couponCode) {
+//        alert("쿠폰 코드를 입력해 주세요.");
+//        return;
+//    }
+//    
+//    $.ajax({
+//		method: 'get',
+//		url: 
+//	
+//	
+//		
+//	});
+//    
+//	
+//	
+//}
 
 //=============================================================================
 //https://developers.portone.io/opi/ko/integration/start/v1/auth?v=v1

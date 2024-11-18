@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class AdminVO {
+	
+	// 클래스
 	private int class_id;
 	private String class_title;
 	private String mem_id;
@@ -22,11 +24,19 @@ public class AdminVO {
 	
 	// 카테고리
 	//=======================================
-	private String codeid_maincate;
+	// 대분류
 	private String codetype_maincate;
+	private String codeid_maincate;
 	private String codename_maincate;
 	private String description_maincate;
 	
+	private String old_codetype_maincate;
+	private String old_codeid_maincate;
+	private String old_codename_maincate;
+	private String old_description_maincate;
+	
+	
+	// 소분류
 	private String codetype_subcate;
 	private String codetype_id_subcate;
 	private String name_subcate;
@@ -38,7 +48,6 @@ public class AdminVO {
 	private String old_name_subcate;
 	private String old_description_subcate;
 	private String old_order_subcate;
-	
 	
 	//=======================================
 	

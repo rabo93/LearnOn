@@ -52,8 +52,12 @@ public class AdminService {
 	public int deleteSubCate(String old_codetype_subcate) {
 		return mapper.deleteSubCate(old_codetype_subcate);
 	}
-	public int updateCate(AdminVO updateVO) {
-		return mapper.updateCate(updateVO);
+	public int updateMainCate(AdminVO updateVO) {
+		return mapper.updateMainCate(updateVO);
+	}
+	public int updateSubCate(AdminVO updateVO) {
+		return mapper.updateSubCate(updateVO);
+		
 	}
 
 

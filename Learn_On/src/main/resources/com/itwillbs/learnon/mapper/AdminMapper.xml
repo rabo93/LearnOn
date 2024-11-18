@@ -33,7 +33,7 @@
 		        , T.CODETYPE_ID
 		        , T.NAME
 		FROM COMMONCODE C
-		JOIN COMMONCODETYPE T
+		JOIN COMMONCODETYPE_TEST T
 		ON C.CODEID = T.CODETYPE;
 	</select>
 	
@@ -44,7 +44,7 @@
 	
 	<select id="getSubCate" resultType="map">
 		SELECT *
-		FROM COMMONCODETYPE;
+		FROM COMMONCODETYPE_TEST;
 	</select>
 	
 	<select id="getClassList">
@@ -82,7 +82,7 @@
 	
 	<insert id="insertSubCate">
 		INSERT
-		INTO COMMONCODETYPE
+		INTO COMMONCODETYPE_TEST
 		VALUES (
 			#{codetype_subcate}
 			, #{codetype_id_subcate}
@@ -99,18 +99,29 @@
 	
 	<delete id="deleteSubCate">
 		DELETE
-		FROM COMMONCODETYPE
+		FROM COMMONCODETYPE_TEST
 		WHERE CODETYPE_ID = #{old_codetype_subcate};
 	</delete>
 	
-<!-- 	<update id="updateCate"> -->
-<!-- 		UPDATE COMMONCODETYPE -->
-<!-- 		SET -->
-<!-- 			CODETYPE = #{old_codetype_subcate} -->
-<!-- 			, CODETYPE_ID = #{old_codetype_id_subcate} -->
-<!-- 			, NAME = #{old_name_subcate} -->
-<!-- 			, DESCRIPTION = #{old_description_subcate} -->
-<!-- 	</update> -->
-
+	<update id="updateMainCate">
+		UPDATE COMMONCODE
+		SET
+			CODETYPE = #{old_codetype_maincate}
+			, CODEID = #{old_codeid_maincate}
+			, CODENAME = #{old_codename_maincate}
+			, DESCRIPTION = #{old_description_maincate}
+		WHERE CODEID = #{old_codeid_maincate};
+	</update>
+	
+	<update id="updateSubCate">
+		UPDATE COMMONCODETYPE_TEST
+		SET
+			CODETYPE = #{old_codetype_subcate}
+			, CODETYPE_ID = #{old_codetype_id_subcate}
+			, NAME = #{old_name_subcate}
+			, DESCRIPTION = #{old_description_subcate}
+			, ORDER = #{old_order_subcate}
+		WHERE CODETYPE_ID = #{old_codetype_id_subcate};
+	</update>
 
 </mapper>

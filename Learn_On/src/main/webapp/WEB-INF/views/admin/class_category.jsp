@@ -70,10 +70,10 @@
 							<c:forEach items="${getMainCate}" var="mainCate">
 								<tr>
 									<td><input class="form-check-input" type="checkbox" id="gridCheck1" name="mainCateRowCheck"></td>
-									<td><input id="CODETYPE" class="form-control " type="text" placeholder="타입" value="${mainCate.CODETYPE}"></td>
-									<td><input id="CODEID" class="form-control " type="text" placeholder="아이디" value="${mainCate.CODEID}"></td>
-									<td><input id="CODENAME" class="form-control " type="text" placeholder="이름" value="${mainCate.CODENAME}"></td>
-									<td><input id="DESCRIPTION" class="form-control " type="text" placeholder="설명" value="${mainCate.DESCRIPTION}"></td>
+									<td><input name="old_codetype_maincate" id="CODETYPE" class="form-control " type="text" placeholder="타입" value="${mainCate.CODETYPE}"></td>
+									<td><input name="old_codeid_maincate" id="CODEID" class="form-control " type="text" placeholder="아이디" value="${mainCate.CODEID}"></td>
+									<td><input name="old_codename_maincate" id="CODENAME" class="form-control " type="text" placeholder="이름" value="${mainCate.CODENAME}"></td>
+									<td><input name="old_description_maincate" id="DESCRIPTION" class="form-control " type="text" placeholder="설명" value="${mainCate.DESCRIPTION}"></td>
 	                           	</tr>
 							</c:forEach>
 						</tbody>
@@ -87,7 +87,6 @@
 						<h5 class="me-auto tableSubject">소분류</h5>
 						<button type="button" class="btn btn-lg btn-primary ms-3" onClick="deleteSubCateRow();">삭제</button>
 						<button type="button" class="btn btn-lg btn-primary ms-3" onClick="addSubCateRow();">추가</button>
-						<input type="hidden" id="aaaaaatest" value="${getMainCate}"/>
 					</div>
 					<table class="table table-striped" id="subCateTable">
 						<thead>
@@ -107,7 +106,9 @@
 <%-- 									<td><input name="old_codetype_subcate" class="form-control" type="text" placeholder="타입" value="${subCate.CODETYPE}"></td> --%>
 									<td><select class="form-select" id="floatingSelect" name="old_codetype_subcate">
 											<c:forEach items="${getMainCate}" var="cate">
-												<option>${cate.CODEID}</option>
+												<option <c:if test="${cate.CODEID eq subCate.CODETYPE}">selected="selected"</c:if>>
+														${cate.CODEID}
+												</option>
 											</c:forEach>
 									</select></td>
 									<td><input name="old_codetype_id_subcate" class="form-control" type="text" placeholder="아이디" value="${subCate.CODETYPE_ID}"></td>
@@ -133,7 +134,7 @@
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="resources/admin/lib/chart/chart.min.js"></script>
+<!--     <script src="resources/admin/lib/chart/chart.min.js"></script> -->
     <script src="resources/admin/lib/easing/easing.min.js"></script>
     <script src="resources/admin/lib/waypoints/waypoints.min.js"></script>
     <script src="resources/admin/lib/owlcarousel/owl.carousel.min.js"></script>
@@ -160,8 +161,6 @@
 			var cell4 = newRow.insertCell();
 			var cell5 = newRow.insertCell();
 			var cell6 = newRow.insertCell();
-			
-			console.log(document.getElementById('aaaaaatest').value);
 			
 			cell1.innerHTML = '<td><input class="form-check-input" type="checkbox" id="gridCheck1" name="subCateRowCheck"></td>';
 			cell2.innerHTML = '<td><select class="form-select" id="floatingSelect" name="codetype_subcate">'

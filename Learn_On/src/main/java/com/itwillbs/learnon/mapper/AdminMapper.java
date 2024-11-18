@@ -33,8 +33,10 @@ public interface AdminMapper {
 
 	int deleteMainCate(String CODEID);
 
-	int updateCate(AdminVO updateVO);
-
 	int deleteSubCate(String old_codetype_subcate);
+
+	int updateMainCate(AdminVO updateVO);
+
+	int updateSubCate(AdminVO updateVO);
 
 }

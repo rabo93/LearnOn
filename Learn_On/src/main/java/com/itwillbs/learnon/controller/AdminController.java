@@ -56,25 +56,42 @@ public class AdminController {
 	// 어드민 카테고리 편집 저장
 	@PostMapping("AdmClassCategory")
 	public String admin_class_categorySubmit(AdminVO VO, Model model) {
-//		String[] oldArrSubCodetype = VO.getOld_codetype_subcate().split(",");
-//		String[] oldArrSubCodeTypeId = VO.getOld_codetype_id_subcate().split(",");
-//		String[] oldArrSubName = VO.getOld_name_subcate().split(",");
-//		String[] oldArrSubDescription = VO.getOld_description_subcate().split(",");
-//		String[] oldArrSubOrder = VO.getOld_order_subcate().split(",");
-//		
-//		AdminVO UpdateVO = new AdminVO();
-//		int updateRowCnt = oldArrSubCodetype.length;
-//		
-//		for (int i = 0; i < updateRowCnt; i++) {
-//			UpdateVO.setOld_codetype_subcate(oldArrSubCodetype[i]);
-//			UpdateVO.setOld_codetype_id_subcate(oldArrSubCodeTypeId[i]);
-//			UpdateVO.setOld_name_subcate(oldArrSubName[i]);
-//			UpdateVO.setOld_description_subcate(oldArrSubDescription[i]);
-//			UpdateVO.setOld_order_subcate(oldArrSubOrder[i]);
-//			
-//			adminService.updateCate(UpdateVO);
-//		}
 		
+		// 업데이트 로직
+		String[] oldSubCodetype = VO.getOld_codetype_subcate().split(",");
+		String[] oldSubCodeTypeId = VO.getOld_codetype_id_subcate().split(",");
+		String[] oldSubName = VO.getOld_name_subcate().split(",");
+		String[] oldSubDescription = VO.getOld_description_subcate().split(",");
+		String[] oldSubOrder = VO.getOld_order_subcate().split(",");
+		String[] oldMainCodeId = VO.getOld_codeid_maincate().split(",");
+		String[] oldMainCodeType = VO.getOld_codetype_maincate().split(",");
+		String[] oldMainCodeName = VO.getOld_codename_maincate().split(",");
+		String[] oldMainDescription = VO.getOld_description_maincate().split(",");
+		
+		AdminVO UpdateVO = new AdminVO();
+		int updateMainRowCnt = oldMainCodeId.length;
+		int updateSubRowCnt = oldSubCodetype.length;
+		
+		for (int i = 0; i < updateMainRowCnt; i++) {
+			UpdateVO.setOld_codeid_maincate(oldMainCodeId[i]);
+			UpdateVO.setOld_codetype_maincate(oldMainCodeType[i]);;
+			UpdateVO.setOld_codename_maincate(oldMainCodeName[i]);;
+			UpdateVO.setOld_description_maincate(oldMainDescription[i]);
+			
+			adminService.updateMainCate(UpdateVO);
+		}
+		
+		for (int i = 0; i < updateSubRowCnt; i++) {
+			UpdateVO.setOld_codetype_subcate(oldSubCodetype[i]);
+			UpdateVO.setOld_codetype_id_subcate(oldSubCodeTypeId[i]);
+			UpdateVO.setOld_name_subcate(oldSubName[i]);
+			UpdateVO.setOld_description_subcate(oldSubDescription[i]);
+			UpdateVO.setOld_order_subcate(oldSubOrder[i]);
+			
+			adminService.updateSubCate(UpdateVO);
+		}
+		
+		// 행 추가 로직
 		AdminVO insertVO = new AdminVO();
 		
 		if (VO.getCodeid_maincate() != null) {

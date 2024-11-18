@@ -75,18 +75,16 @@
 								</div>
 								<div class="d-flex">
 									<div class="form-floating flex-fill me-3">
-										<select class="form-select" id="floatingSelect" name="class_maincate">
+										<select class="form-select" id="floatingSelect" name="class_maincate" onchange="selectMainCate()">
 											<c:forEach items="${getMainCate}" var="cate">
-												<option>${cate.CODEID}</option>
+												<option value="${cate.CODEID}">${cate.CODEID}</option>
 											</c:forEach>
 										</select>
 										<label for="floatingSelect">대분류</label>
 									</div>
 									<div class="form-floating flex-fill me-3">
 										<select class="form-select" id="floatingSelect2" name="class_subcate">
-											<c:forEach items="${getMainCate}" var="cate">
-												<option>${cate.CODEID}</option>
-											</c:forEach>
+											
 										</select>
 										<label for="floatingSelect2">소분류</label>
 									</div>
@@ -166,6 +164,7 @@
     <script src="resources/admin/lib/tempusdominus/js/moment.min.js"></script>
     <script src="resources/admin/lib/tempusdominus/js/moment-timezone.min.js"></script>
     <script src="resources/admin/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 
     <!-- Template Javascript -->
     <script src="resources/admin/js/main.js"></script>

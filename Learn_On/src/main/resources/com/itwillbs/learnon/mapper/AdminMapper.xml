@@ -22,35 +22,37 @@
 			, #{CLASS_RUNTIME}
 			, #{CLASS_PIC1}
 			, #{CLASS_CONTENTS}
-			, #{CLASS_STATUS});
+			, #{CLASS_STATUS})
 	</insert>
 	
-	<select id="getCategory" resultType="map">
+	<select id="selectSubCate" resultType="admin">
 		SELECT 
-				C.CODEID
-		        , C.CODETYPE
-		        , C.CODENAME
-		        , T.CODETYPE_ID
-		        , T.NAME
+				C.CODEID AS CODEID_MAINCATE
+		        , C.CODENAME AS CODENAME_MAINCATE
+		        , T.CODETYPE_ID AS CODETYPE_ID_SUBCATE
+		        , T.NAME AS NAME_SUBCATE
 		FROM COMMONCODE C
-		JOIN COMMONCODETYPE_TEST T
-		ON C.CODEID = T.CODETYPE;
+		JOIN COMMONCODETYPE T
+		ON C.CODEID = T.CODETYPE
+		WHERE 
+			C.CODEID = #{codeid_maincate}
 	</select>
 	
 	<select id="getMainCate" resultType="map">
 		SELECT *
-		FROM COMMONCODE;
+		FROM COMMONCODE
 	</select>
 	
 	<select id="getSubCate" resultType="map">
 		SELECT *
-		FROM COMMONCODETYPE_TEST;
+		FROM COMMONCODETYPE
 	</select>
 	
 	<select id="getClassList">
 		SELECT *
-		FROM CLASS;
+		FROM CLASS
 	</select>
+	
 	<select id="getClass" resultType="int">
 		SELECT CLA.CLASS_ID, CLA.CLASS_TITLE, CLA.MEM_ID
 		   , CLA.CLASS_INTRO, CLA.CLASS_PRICE, CLA.CLASS_CATEGORY
@@ -62,12 +64,12 @@
 		ON CLA.CLASS_CATEGORY = COMTY.NAME
 		JOIN COMMONCODE COM
 		ON  COM.CODEID = COMTY.CODETYPE
-		WHERE CLA.CLASS_ID = #{CLASS_ID};
+		WHERE CLA.CLASS_ID = #{CLASS_ID}
 	</select>
 	
 	<select id="getMemberList"> 
 		SELECT *
-		FROM MEMBER;
+		FROM MEMBER
 	</select>
 	
 	<insert id="insertMainCate">
@@ -77,30 +79,30 @@
 			#{codeid_maincate}
 			, #{codetype_maincate}
 			, #{codename_maincate}
-			, #{description_maincate});
+			, #{description_maincate})
 	</insert>
 	
 	<insert id="insertSubCate">
 		INSERT
-		INTO COMMONCODETYPE_TEST
+		INTO COMMONCODETYPE
 		VALUES (
 			#{codetype_subcate}
 			, #{codetype_id_subcate}
 			, #{name_subcate}
 			, #{description_subcate}
-			, #{order_subcate});
+			, #{order_subcate})
 	</insert>
 	
 	<delete id="deleteMainCate">
 		DELETE
 		FROM COMMONCODE
-		WHERE CODEID = #{codeid};
+		WHERE CODEID = #{codeid}
 	</delete>
 	
 	<delete id="deleteSubCate">
 		DELETE
-		FROM COMMONCODETYPE_TEST
-		WHERE CODETYPE_ID = #{old_codetype_subcate};
+		FROM COMMONCODETYPE
+		WHERE CODETYPE_ID = #{old_codetype_subcate}
 	</delete>
 	
 	<update id="updateMainCate">
@@ -110,18 +112,18 @@
 			, CODEID = #{old_codeid_maincate}
 			, CODENAME = #{old_codename_maincate}
 			, DESCRIPTION = #{old_description_maincate}
-		WHERE CODEID = #{old_codeid_maincate};
+		WHERE CODEID = #{main_checkCodeid}
 	</update>
 	
 	<update id="updateSubCate">
-		UPDATE COMMONCODETYPE_TEST
+		UPDATE COMMONCODETYPE
 		SET
 			CODETYPE = #{old_codetype_subcate}
 			, CODETYPE_ID = #{old_codetype_id_subcate}
 			, NAME = #{old_name_subcate}
 			, DESCRIPTION = #{old_description_subcate}
-			, ORDER = #{old_order_subcate}
-		WHERE CODETYPE_ID = #{old_codetype_id_subcate};
+			, `ORDER` = #{old_order_subcate}
+		WHERE CODETYPE_ID = #{sub_checkCodeid}
 	</update>
 
 </mapper>

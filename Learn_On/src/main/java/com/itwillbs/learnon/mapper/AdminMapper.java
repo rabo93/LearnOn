@@ -28,8 +28,10 @@ public interface AdminMapper {
 	List<AdminVO> getClass(int class_id);
 
 	List<Map<String, String>> getMainCate();
-
 	List<Map<String, String>> getSubCate();
+
+	List<AdminVO> selectSubCate(AdminVO admin);
+//	List<Map<String, String>> getSubCate();
 
 	int deleteMainCate(String CODEID);
 
@@ -38,5 +40,7 @@ public interface AdminMapper {
 	int updateMainCate(AdminVO updateVO);
 
 	int updateSubCate(AdminVO updateVO);
+
+
 
 }

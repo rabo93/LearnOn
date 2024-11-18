@@ -74,6 +74,7 @@
 									<td><input name="old_codeid_maincate" id="CODEID" class="form-control " type="text" placeholder="아이디" value="${mainCate.CODEID}"></td>
 									<td><input name="old_codename_maincate" id="CODENAME" class="form-control " type="text" placeholder="이름" value="${mainCate.CODENAME}"></td>
 									<td><input name="old_description_maincate" id="DESCRIPTION" class="form-control " type="text" placeholder="설명" value="${mainCate.DESCRIPTION}"></td>
+									<td><input name="main_checkCodeid" type="hidden" value="${mainCate.CODEID}"></td>
 	                           	</tr>
 							</c:forEach>
 						</tbody>
@@ -115,6 +116,7 @@
 									<td><input name="old_name_subcate" class="form-control" type="text" placeholder="이름" value="${subCate.NAME}"></td>
 									<td><input name="old_description_subcate" class="form-control" type="text" placeholder="설명" value="${subCate.DESCRIPTION}"></td>
 									<td><input name="old_order_subcate" class="form-control" type="text" placeholder="오더" value="${subCate.ORDER}"></td>
+									<td><input name="sub_checkCodeid" type="hidden" value="${subCate.CODETYPE_ID}"></td>
 	                           	</tr>
 							</c:forEach>
 						</tbody>

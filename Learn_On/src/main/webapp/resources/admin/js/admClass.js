@@ -75,3 +75,27 @@ function deleteSubCateRow() {
 		}
 	}
 }
+
+function selectMainCate() {
+	let mainCateId = document.querySelector("select[name=class_maincate]").value;
+	
+	$.ajax({
+		type: "GET",
+		url: "SelectCategory",
+		data: {
+			codeid_maincate : mainCateId
+		},
+		dataType : "json"
+	}).done(function(data){
+		$("#floatingSelect2").empty();
+		for(let item of data) {
+			$("#floatingSelect2").append(
+				'<option>' + item.name_subcate + '</option>'
+			);
+		}
+	}).fail(function(){
+		console.log("에러");
+	})
+	
+	;	
+}

@@ -34,6 +34,7 @@ public class AdminVO {
 	private String old_codeid_maincate;
 	private String old_codename_maincate;
 	private String old_description_maincate;
+	private String main_checkCodeid;
 	
 	
 	// 소분류
@@ -48,6 +49,7 @@ public class AdminVO {
 	private String old_name_subcate;
 	private String old_description_subcate;
 	private String old_order_subcate;
+	private String sub_checkCodeid;
 	
 	//=======================================
 	

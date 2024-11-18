@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -74,10 +77,13 @@ public class AdminController {
 		String[] oldSubName = VO.getOld_name_subcate().split(",");
 		String[] oldSubDescription = VO.getOld_description_subcate().split(",");
 		String[] oldSubOrder = VO.getOld_order_subcate().split(",");
+		String[] sub_checkCodeid = VO.getSub_checkCodeid().split(",");
+		
 		String[] oldMainCodeId = VO.getOld_codeid_maincate().split(",");
 		String[] oldMainCodeType = VO.getOld_codetype_maincate().split(",");
 		String[] oldMainCodeName = VO.getOld_codename_maincate().split(",");
 		String[] oldMainDescription = VO.getOld_description_maincate().split(",");
+		String[] mainCheckCodeId = VO.getMain_checkCodeid().split(",");
 		
 		AdminVO UpdateVO = new AdminVO();
 		int updateMainRowCnt = oldMainCodeId.length;
@@ -88,6 +94,7 @@ public class AdminController {
 			UpdateVO.setOld_codetype_maincate(oldMainCodeType[i]);;
 			UpdateVO.setOld_codename_maincate(oldMainCodeName[i]);;
 			UpdateVO.setOld_description_maincate(oldMainDescription[i]);
+			UpdateVO.setMain_checkCodeid(mainCheckCodeId[i]);
 			
 			adminService.updateMainCate(UpdateVO);
 		}
@@ -98,6 +105,7 @@ public class AdminController {
 			UpdateVO.setOld_name_subcate(oldSubName[i]);
 			UpdateVO.setOld_description_subcate(oldSubDescription[i]);
 			UpdateVO.setOld_order_subcate(oldSubOrder[i]);
+			UpdateVO.setSub_checkCodeid(sub_checkCodeid[i]);
 			
 			adminService.updateSubCate(UpdateVO);
 		}
@@ -173,11 +181,8 @@ public class AdminController {
 	// 어드민 클래스 등록 페이지 매핑
 	@GetMapping("AdmClassAdd")
 	public String admin_class_add(Model model) {
-		model.addAttribute("getCategory", adminService.getCategory());
-		
-		
+		model.addAttribute("getMainCate", adminService.getMainCate());
 		return "admin/class_add";
-		
 	}
 	
 	@PostMapping("AdmClassAdd")
@@ -190,6 +195,18 @@ public class AdminController {
 		}
 		
 		return "admin/class_add";
+	}
+	
+	@ResponseBody
+	@GetMapping("SelectCategory")
+	public String selectCategory(AdminVO admin) {
+		System.out.println("메인 담은 admin " + admin);
+		List<AdminVO> adminArr = adminService.selectSubCate(admin);
+		System.out.println("admin : " + adminArr);
+		
+		JSONArray joArr = new JSONArray(adminArr);
+		
+		return joArr.toString();
 	}
 	
 	// 어드민 클래스 목록 페이지 매핑

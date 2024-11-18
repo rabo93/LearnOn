@@ -16,35 +16,24 @@ public class AdminService {
 	@Autowired
 	private AdminMapper mapper;
 	
+	// 카테고리
 	public List<Map<String, String>> getCategory() {
 		return mapper.getCategory();
-	}
-	public int registClass() {
-		return mapper.insertClass();
-	}
-	public int insertMainCate(AdminVO VO) {
-		return mapper.insertMainCate(VO);
-	}
-	public int insertSubCate(AdminVO VO) {
-		return mapper.insertSubCate(VO);
-	}
-	public List<AdminVO> getClassList() {
-		return mapper.getClassList();
-	}
-	public List<MemberVO> getMemberList() {
-		return mapper.getMemberList();
-	}
-	public int updateClass(String class_id) {
-		return mapper.updateClass(class_id);
-	}
-	public List<AdminVO> getClass(int class_id) {
-		return mapper.getClass(class_id);
 	}
 	public List<Map<String, String>> getMainCate() {
 		return mapper.getMainCate();
 	}
 	public List<Map<String, String>> getSubCate() {
 		return mapper.getSubCate();
+	}
+	public List<AdminVO> selectSubCate(AdminVO admin) {
+		return mapper.selectSubCate(admin);
+	}
+	public int insertMainCate(AdminVO VO) {
+		return mapper.insertMainCate(VO);
+	}
+	public int insertSubCate(AdminVO VO) {
+		return mapper.insertSubCate(VO);
 	}
 	public int deleteMainCate(String CODEID) {
 		return mapper.deleteMainCate(CODEID);
@@ -57,7 +46,25 @@ public class AdminService {
 	}
 	public int updateSubCate(AdminVO updateVO) {
 		return mapper.updateSubCate(updateVO);
-		
+	}
+	
+	// 클래스
+	public int registClass() {
+		return mapper.insertClass();
+	}
+	public List<AdminVO> getClassList() {
+		return mapper.getClassList();
+	}
+	public int updateClass(String class_id) {
+		return mapper.updateClass(class_id);
+	}
+	public List<AdminVO> getClass(int class_id) {
+		return mapper.getClass(class_id);
+	}
+	
+	// 멤버
+	public List<MemberVO> getMemberList() {
+		return mapper.getMemberList();
 	}
 
 

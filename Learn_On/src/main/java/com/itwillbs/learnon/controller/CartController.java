@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
@@ -41,9 +42,12 @@ public class CartController {
 		System.out.println("로그인 아이디: " + sId);
 		
 		// sId가 null인지 확인 (로그인하지 않은 경우)
+		// sId가 null인지 확인 (로그인하지 않은 경우)
 		if(sId == null) {
-			model.addAttribute("msg", "로그인 후 진행해주세요.");
-			return "redirect:/MemberLogin"; //로그인 페이지로 리다이렉트
+			model.addAttribute("msg", "로그인 필수!\\n 로그인 페이지로 이동합니다!");
+			model.addAttribute("targetURL", "MemberLogin");
+			
+			return "result/fail";
 		}
 		//------------------------------------------------------
 		// CartService - getCartList() 메서드 호출하여 장바구니 목록 조회 요청
@@ -56,7 +60,7 @@ public class CartController {
 		return "cart_payment/cart";
 	
 	}
-	
+
 	//=================================================================================
 	// DeleteItem 서블릿 주소 로드시 비즈니스 로직
 	// 1) X 버튼 클릭시 cartitem_idx 확인 후 장바구니 상품 삭제 

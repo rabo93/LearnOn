@@ -12,14 +12,12 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/reset.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
-
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/index.js"></script>
 
 <!-- page 개별 CSS -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/coupon.css">
 <!-- page 개별 JS -->
-<script src="${pageContext.request.contextPath}/resources/js/coupon.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/payment.js"></script>
 
 </head>
 <body>
@@ -30,74 +28,66 @@
 	<!----------------------------- page 영역 --------------------------- -->
 	<!-- -----------------쿠폰선택 버튼시 모달창 영역------------------ -->
 	<section class="modal">
-		<div class="coupon-modal">
-			<div class="coupon">
-				<div class="coupon-header">
-					<p>쿠폰 선택</p>
+		<div class="my-container">
+				<div class="contents-ttl">보유한 쿠폰</div>
+				<div class="contents">
+					<!-- contents -->
+					<section class="coupon-wrap">
+						<div class="coupon-total">
+					        <div class="coupon-title">사용가능한 쿠폰</div>
+					        <div class="coupon-count">${couponCount}</div>
+					        <div class="coupon-unit">개</div>
+						</div>
+						<div class="coupon-list">
+					    	<ul class="myCoupon">
+					    		<c:choose>
+					    			<c:when test="${empty coupon}">
+					    				<li class="empty">발급받은 쿠폰이 없습니다.</li>
+					    			</c:when>
+					    			<c:otherwise>
+						    			<c:forEach var="coupon" items="${coupon}">
+							    			<li class="<c:if test='${coupon.COUPON_STATUS >= 2}'>end</c:if>">
+								    			<p class="c-name">${coupon.COUPON_NAME}</p>
+								    			<p class="c-exp-date">
+								    				사용기한 : ~ 
+								    				<fmt:parseDate value="${coupon.C_EXPIRY_DATE}" var="couponDate" pattern="yyyyMMdd" />
+								    				<fmt:formatDate value="${couponDate}" pattern="yyyy년 MM월 dd일" /> 까지
+								    			</p>
+								    						
+								    			<p class="c-dis">
+								    				<c:choose>
+								    					<c:when test="${not empty coupon.DISCOUNT_PERCENT}">
+								    						${coupon.DISCOUNT_PERCENT} %
+								    					</c:when>
+								    					<c:when test="${not empty coupon.DISCOUNT_AMOUNT}">
+								    						${coupon.DISCOUNT_AMOUNT} 원
+								    					</c:when>
+								    				</c:choose>
+								    			</p>
+								    		</li>
+							    		</c:forEach>
+					    			</c:otherwise>
+					    		</c:choose>
+					    		
+					    	</ul>
+						</div>
+					</section>
+					<!-- // contents -->
 				</div>
-				
-				
-				<c:forEach var="coupon" items="${coupon}">
-					<div class="coupon-view">
-						<p>${coupon.MEM_ID}쿠폰 사용 가능 상품</p>
-						
-						<ul class="coupon-list">
-							
-							<!-- li 쿠폰 목록 반복 -->
-							<li class="coupon-list-item">
-								<!-- 클래스정보 -->
-<%-- 								<span class="item-info">프로그래머${coupon.CLASS_TITLE}</span> --%>
-								<!-- 쿠폰선택상자 -->
-								<div class="selectbox">
-									<button type="button" class="select-btn">
-<%-- 										<span>사용가능 쿠폰 <i>${coupon.CNT}</i>장</span> --%>
-										<i class="fa-solid fa-chevron-down"></i>
-									</button>
-									
-									<!-- 쿠폰내역 -->
-									<div class="select-list">
-										<div class="select-list-item">
-											<input type="radio" id="coupon-default" class="coupon-group"  value="None" name="coupon-group">
-											<label for="coupon-default" class="coupon-select__label">선택 안함</label>
-										</div>
-										
-										<div class="select-list-item">
-											<input type="radio" id="coupon" class="coupon-group" 
-												 value="${coupon.COUPON_CODE}" name="coupon-group">
-											<label for="coupon" class="coupon-seleect__label">
-												<span class="coupon-select__title">${coupon.COUPON_NAME}</span>
-												<span class="coupon-select__desc">
-													<small>
-													<c:choose>
-														<c:when test="${coupon.DISCOUNT_AMOUNT} eq '0'">
-														${coupon.DISCOUNT_PERCENT}원 할인
-														</c:when>
-														<c:when test="${coupon.DISCOUNT_PERCENT} eq '0'">
-														${coupon.DISCOUNT_AMOUNT}원 할인
-														</c:when>
-													</c:choose>
-													</small>
-												</span>
-											</label>
-										</div>
-										
-									</div>
-								</div>
 								
-								<div class="price">
-<%-- 									<div class="price-view">판매가 <span>${coupon.CLASS_PRICE}원</span></div> --%>
-<%-- 									<div class="price-view-discount">할인 금액<span>${coupon.TOTAL_DISCOUNT}원</span></div> --%>
-<%-- 									<div class="price-view-total">쿠폰할인가<span>${coupon.CLASS_PRICE-coupon.TOTAL_DISCOUNT}원</span></div> --%>
-								</div>
-							</li>
-						
-						</ul>
-						
+								
+				<!-- 쿠폰 총 할인 금액 표출 -->				
+				<div class="price">
+					<div class="price-view">판매가
+						<span id="">원</span>
 					</div>
-					
-<%-- 					<c:set var="total" value="${total + coupon.TOTAL_DISCOUNT}" /> --%>
-				</c:forEach>
-				
+					<div class="price-view-discount">할인 금액
+						<span id="">원</span>
+					</div>
+					<div class="price-view-total">쿠폰할인가
+						<span id="">원</span>
+					</div>
+				</div>
 				
 				<!-- 쿠폰 적용 버튼 -->
 				<div class="coupon-apply">
@@ -107,7 +97,6 @@
 				</button>
 				</div>
 		
-			</div>
 		</div>
 	</section>
 	

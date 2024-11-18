@@ -56,7 +56,9 @@
 									</div>
 									<!-- 상품 금액부분 -->
 									<div class="item-result">
-										<span class="price"><fmt:formatNumber value="${item.classPrice}" type="number" />  </span>원
+										<span class="price">
+											<fmt:formatNumber value="${item.classPrice}" type="number" />
+										</span>원
 									</div>
 								</c:forEach>
 							</div>
@@ -70,9 +72,8 @@
 									<div class="coupon-select">
 										<div class="coupon-select-info">
 											<p>쿠폰 할인 금액</p>
-											<span class="coupon-price">${discountAmount}원</span>
+											<span class="coupon-price">${coupon.totalDiscount}원</span>
 										</div>
-										
 										<input type="button" value="쿠폰선택" class="coupon-btn" onclick="couponSelect()">
 									</div>
 									<div class="coupon-input">

@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/reset.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/index.js"></script>
+<%-- <script src="${pageContext.request.contextPath}/resources/js/index.js"></script> --%>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/success.css">
 
 </head>
@@ -21,9 +21,10 @@
 	
 	<div class="success-container">
 		<h1>안녕하세요 ${sessionScope.sId}님🥳</h1><br>
-		<h1>지금 바로 강의를 시작 해보세요!</h1><br>
+		<h1>이메일 인증 후 강의를 시작 해보세요!</h1><br>
 		
 		<div id="controls">
+			<input type="button" value="이메일 인증 다시 하기" onclick="location.href ='ReSendAuthMail'"><br>
 			<input type="button" id="btn_ai" value="AI 추천 바로가기"><br>
 			<input type="button" id="myclass" value="나의 강의실">
 		</div>
@@ -32,5 +33,6 @@
 	<footer id="ft">
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
 	</footer>
+	
 </body>
 </html>

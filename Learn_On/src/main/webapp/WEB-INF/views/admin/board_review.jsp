@@ -43,46 +43,38 @@
 			<div class="container-fluid pt-4 px-4">
 				<div class="bg-light rounded p-4">
 					<div class="d-flex mb-5">
-						<h5 class="me-auto tableSubject">결제 내역 관리</h5>
-						<button type="button" class="btn btn-lg btn-primary ms-3 col-auto">결제 내역 삭제</button>
+						<h5 class="me-auto tableSubject">수강 후기 관리</h5>
+						<button type="button" class="btn btn-lg btn-primary ms-3">답변 등록</button>
+						<button type="button" class="btn btn-lg btn-primary ms-3">리뷰 삭제</button>
 					</div>
 					<div class="d-flex input-group mb-3">
-						<input type="text" class="form-control" placeholder="구매자 이름 검색" aria-label="Recipient's username" aria-describedby="button-addon2">
+						<input type="text" class="form-control" placeholder="FAQ 검색" aria-label="Recipient's username" aria-describedby="button-addon2">
 						<button class="btn btn-primary" type="button" id="button-addon2">검색</button>
 					</div>
 						<table class="table table-striped">
 							<thead>
 								<tr>
 									<th scope="col">#</th>
-									<th scope="col">구매 일시</th>
-									<th scope="col">구매 코드</th>
-									<th scope="col">구매자</th>
-									<th scope="col">금액</th>
-									<th scope="col">결제 수단</th>
-									<th scope="col">상태</th>
-									<th scope="col"></th>
+									<th scope="col">리뷰 번호</th>
+									<th scope="col">리뷰 제목</th>
+									<th scope="col">작성 일자</th>
+									<th scope="col">클래스 ID</th>
+									<th scope="col">답변 상태</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr>
 									<th><input class="form-check-input" type="checkbox" id="gridCheck1"></th>
+									<td><h6 class="form-control" aria-label="default input example">001</h6></td>
+									<td><h6 class="form-control" aria-label="default input example">자바 클래스 후기에요!</h6></td>
 									<td><h6 class="form-control" aria-label="default input example">2024-11-01</h6></td>
-									<td><h6 class="form-control" aria-label="default input example">INV-0123</h6></td>
-									<td><h6 class="form-control" aria-label="default input example">홍길동</h6></td>
-									<td><h6 class="form-control" aria-label="default input example">￦ 80,000</h6></td>
-									<td><h6 class="form-control" aria-label="default input example">카드 결제</h6></td>
-									<td><h6 class="form-control" aria-label="default input example">결제 완료</h6></td>
-									<td><button type="button" class="btn btn-lg btn-primary col-auto">상세 정보</button></td>
-                             	</tr>
-								<tr>
-									<th><input class="form-check-input" type="checkbox" id="gridCheck1"></th>
-									<td><h6 class="form-control" aria-label="default input example">2024-11-01</h6></td>
-									<td><h6 class="form-control" aria-label="default input example">INV-0124</h6></td>
-									<td><h6 class="form-control" aria-label="default input example">강감찬</h6></td>
-									<td><h6 class="form-control" aria-label="default input example">￦ 120,000</h6></td>
-									<td><h6 class="form-control" aria-label="default input example">무통장 결제</h6></td>
-									<td><h6 class="form-control" aria-label="default input example">결제 대기중</h6></td>
-									<td><button type="button" class="btn btn-lg btn-primary col-auto">상세 정보</button></td>
+									<td><h6 class="form-control" aria-label="default input example">JAVA-001</h6></td>
+									<td>
+										<select class="form-select" aria-label="Default select example">
+											<option value="1">답변 대기중</option>
+											<option value="2">답변 완료</option>
+										</select>
+									</td>
                              	</tr>
 							</tbody>
 						</table>
@@ -111,9 +103,9 @@
     <script src="resources/admin/js/main.js"></script>
     <script type="text/javascript">
     		var link = document.location.href;
-	    	if (link.includes("payment")) {
-	    		document.getElementById("payment").classList.toggle("active");
-	    		document.getElementById("paymentList").classList.toggle("active");
+	    	if (link.includes("AdmReview")) {
+	    		document.getElementById("support").classList.toggle("active");
+	    		document.getElementById("AdmReview").classList.toggle("active");
 	    	};
     </script>
 </body>

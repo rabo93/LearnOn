@@ -33,7 +33,7 @@
 .btn {
     transition: .5s;
     font-size: 16px;
-    height: auto;
+/*     height: auto; */
 }
 
 .btn.btn-primary {
@@ -304,7 +304,7 @@
     text-align: left;
 }
 button {
-    width: 126px;
+	width: 120px;
     height: 45px;
     font-size: 15px;
     border: 0;
@@ -323,3 +323,119 @@ button:active {
     padding-left: 10px;
     background-color: rgb(68, 136, 244);
 }
+
+.wrap{
+	margin: 0 auto;
+	width: 100%;
+	height: 100%;
+}
+
+.modal_content{
+	width: 80%;
+	height: 150px;
+	margin: 20px auto;
+}
+
+.modal_content button{
+	border: none;
+	width: 100px;
+	height: 30px;
+	margin-top: 20px;
+	float: right;
+	cursor: pointer;
+}
+
+/* 모달창 */
+.modal_box{
+	width: 70%;
+	height: 150px;
+	margin: 0 auto;
+	padding: 20px;
+	text-align: center;
+	background-color: azure;
+	display: none;
+	flex-flow: column;
+	position: absolute;
+	top:50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 999;
+}
+
+.modal_box button{
+	width: 100px;
+	height: 30px;
+	border: none;
+	margin-top: 10px;
+	align-self: center;
+	cursor: pointer;
+}
+
+.modal_bg{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.5);
+	z-index: 99;		
+	display: none;
+}
+
+/*=================== AdmNotice ==================*/
+.AdmNoticeDetail {
+	display: none;
+}
+
+/*=================== 페이징 처리 ==================*/
+#nt_pagingArea {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    margin: 1rem auto;
+}
+
+#nt_pagingArea button {
+    font-size: 13px;
+    font-weight: 700;
+    background: var(--white);
+    border: 1px solid var(--dark);
+    border-radius: 4px;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    color: var(--dark);
+}
+
+#nt_pagingArea button:disabled {
+	background:#eee;
+	border-color:#ddd;
+	color:#c999;
+}
+
+#nt_pagingArea button:hover {
+    background: var(--primary);
+    color: var(--white);
+    border-color: var(--primary);
+}
+
+#nt_pagingArea strong {
+    width: 20px;
+    display: inline-block;
+    text-align: center;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#nt_pagingArea a {
+    display: inline-block;
+    width: 20px;
+    text-align: center;
+}
+
+#nt_pagingArea a:hover {
+    color: var(--primary);
+    font-weight: 600;
+}
+

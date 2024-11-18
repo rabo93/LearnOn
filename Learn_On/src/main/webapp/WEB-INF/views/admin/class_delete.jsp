@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -43,58 +44,60 @@
 			<div class="container-fluid pt-4 px-4">
 				<div class="bg-light rounded p-4">
 					<div class="d-flex mb-5">
-						<h5 class="me-auto tableSubject">쿠폰 관리</h5>
-						<button type="button" class="btn btn-lg btn-primary ms-3">쿠폰 등록</button>
-						<button type="button" class="btn btn-lg btn-primary ms-3">쿠폰 삭제</button>
+						<h5 class="me-auto tableSubject">삭제된 클래스 목록</h5>
+						<button type="button" class="btn btn-lg btn-primary ms-3">클래스 수정</button>
+						<button type="button" class="btn btn-lg btn-primary ms-3">클래스 삭제</button>
 					</div>
 					<div class="d-flex input-group mb-3">
-						<input type="text" class="form-control" placeholder="쿠폰 제목 검색" aria-label="Recipient's username" aria-describedby="button-addon2">
+						<input type="text" class="form-control" placeholder="클래스 제목 검색" aria-label="Recipient's username" aria-describedby="button-addon2">
 						<button class="btn btn-primary" type="button" id="button-addon2">검색</button>
 					</div>
 						<table class="table table-striped">
 							<thead>
 								<tr>
 									<th scope="col">#</th>
-									<th scope="col">쿠폰 고유번호</th>
-									<th scope="col">쿠폰 이름</th>
-									<th scope="col">쿠폰 코드</th>
-									<th scope="col">쿠폰 할인률</th>
-									<th scope="col">쿠폰 할인금액</th>
-									<th scope="col">쿠폰 유효기간</th>
-									<th scope="col">쿠폰 상태</th>
+									<th scope="col">제목</th>
+									<th scope="col">대분류</th>
+									<th scope="col">소분류</th>
+									<th scope="col">공개상태</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<th class="col-auto"><input class="form-check-input" type="checkbox" id="gridCheck1"></th>
-									<td class="col-1"><input class="form-control" type="text" placeholder="쿠폰 고유번호" aria-label="default input example" value="001"></td>
-									<td><input class="form-control" type="text" placeholder="쿠폰 이름" aria-label="default input example" value="100일 출석 쿠폰"></td>
-									<td><input class="form-control" type="text" placeholder="쿠폰 코드" aria-label="default input example" value="1234-5678-2345"></td>
-									<td class="col-auto"><input class="form-control" type="text" placeholder="쿠폰 할인률" aria-label="default input example" value="% 10"></td>
-									<td><input class="form-control" type="text" placeholder="쿠폰 할인금액" aria-label="default input example" value=" "></td>
-									<td><input class="form-control" type="text" placeholder="쿠폰 유효기간" aria-label="default input example" value="2024-11-07 ~ 2025-11-01"></td>
-									<td>
+								<c:forEach items="${getClassList}" var="li">
+								<c:if test="${li.class_status eq 3}">
+									<tr>
+										<th><input class="form-check-input" type="checkbox" id="gridCheck1"></th>
+										<td><input class="form-control" type="text" placeholder="Default input" aria-label="default input example" value="${li.class_title}"></td>
+										<td>
 										<select class="form-select" aria-label="Default select example">
-											<option value="1" selected>정상</option>
-											<option value="2">만료</option>
+											<option>대분류</option>
+											<option value="1">IT/개발</option>
+											<option value="2">외국어</option>
+											<option value="3">운동/건강</option>
+											<option value="4">라이프스타일</option>
+											<option value="5">요리/음료</option>
 										</select>
 									</td>
-                             	</tr>
-								<tr>
-									<th class="col-auto"><input class="form-check-input" type="checkbox" id="gridCheck1"></th>
-									<td class="col-1"><input class="form-control" type="text" placeholder="쿠폰 고유번호" aria-label="default input example" value="002"></td>
-									<td><input class="form-control" type="text" placeholder="쿠폰 이름" aria-label="default input example" value="생일 기념 쿠폰"></td>
-									<td><input class="form-control" type="text" placeholder="쿠폰 코드" aria-label="default input example" value="1111-2222-3333"></td>
-									<td class="col-auto"><input class="form-control" type="text" placeholder="쿠폰 할인률" aria-label="default input example" value=" "></td>
-									<td><input class="form-control" type="text" placeholder="쿠폰 할인금액" aria-label="default input example" value="- 30000"></td>
-									<td><input class="form-control" type="text" placeholder="쿠폰 유효기간" aria-label="default input example" value="2024-11-01 ~ 2024-12-01"></td>
 									<td>
 										<select class="form-select" aria-label="Default select example">
-											<option value="1">정상</option>
-											<option value="2" selected>만료</option>
+											<option>소분류</option>
+											<option value="1">IT/개발</option>
+											<option value="2">외국어</option>
+											<option value="3">운동/건강</option>
+											<option value="4">라이프스타일</option>
+											<option value="5">요리/음료</option>
 										</select>
 									</td>
-                             	</tr>
+									<td>
+										<select class="form-select" aria-label="Default select example" id="classStat">
+											<option value="1" <c:if test="${li.class_status == 1}">selected</c:if>>공개</option>
+											<option value="2" <c:if test="${li.class_status == 2}">selected</c:if>>비공개</option>
+											<option value="3" <c:if test="${li.class_status == 3}">selected</c:if>>폐강</option>
+										</select>
+                                 	</td>
+									</tr>
+								</c:if>
+								</c:forEach>
 							</tbody>
 						</table>
 					</div>
@@ -122,9 +125,9 @@
     <script src="resources/admin/js/main.js"></script>
     <script type="text/javascript">
     		var link = document.location.href;
-	    	if (link.includes("payment")) {
-	    		document.getElementById("payment").classList.toggle("active");
-	    		document.getElementById("paymentCoupon").classList.toggle("active");
+	    	if (link.includes("Adm")) {
+	    		document.getElementById("classDelete").classList.toggle("active");
+	    		document.getElementById("classManage").classList.toggle("active");
 	    	};
     </script>
 </body>

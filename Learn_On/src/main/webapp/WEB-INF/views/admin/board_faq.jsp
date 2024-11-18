@@ -43,9 +43,9 @@
 			<div class="container-fluid pt-4 px-4">
 				<div class="bg-light rounded p-4">
 					<div class="d-flex mb-5">
-						<h5 class="me-auto tableSubject">수강 후기 관리</h5>
-						<button type="button" class="btn btn-lg btn-primary ms-3">답변 등록</button>
-						<button type="button" class="btn btn-lg btn-primary ms-3">리뷰 삭제</button>
+						<h5 class="me-auto tableSubject">FAQ 관리</h5>
+						<button type="button" class="btn btn-lg btn-primary ms-3">FAQ 등록</button>
+						<button type="button" class="btn btn-lg btn-primary ms-3">FAQ 삭제</button>
 					</div>
 					<div class="d-flex input-group mb-3">
 						<input type="text" class="form-control" placeholder="FAQ 검색" aria-label="Recipient's username" aria-describedby="button-addon2">
@@ -55,24 +55,33 @@
 							<thead>
 								<tr>
 									<th scope="col">#</th>
-									<th scope="col">리뷰 번호</th>
-									<th scope="col">리뷰 제목</th>
-									<th scope="col">작성 일자</th>
-									<th scope="col">클래스 ID</th>
-									<th scope="col">답변 상태</th>
+									<th scope="col">FAQ 번호</th>
+									<th scope="col">FAQ 제목</th>
+									<th scope="col">FAQ 카테고리</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr>
 									<th><input class="form-check-input" type="checkbox" id="gridCheck1"></th>
-									<td><h6 class="form-control" aria-label="default input example">001</h6></td>
-									<td><h6 class="form-control" aria-label="default input example">자바 클래스 후기에요!</h6></td>
-									<td><h6 class="form-control" aria-label="default input example">2024-11-01</h6></td>
-									<td><h6 class="form-control" aria-label="default input example">JAVA-001</h6></td>
+									<td><input class="form-control" type="text" placeholder="FAQ 번호" aria-label="default input example" value="001"></td>
+									<td><input class="form-control" type="text" placeholder="FAQ 제목" aria-label="default input example" value="홈페이지에 버그가 있어요"></td>
 									<td>
 										<select class="form-select" aria-label="Default select example">
-											<option value="1">답변 대기중</option>
-											<option value="2">답변 완료</option>
+											<option value="1">페이지 이용 문의</option>
+											<option value="2">클래스 이용 문의</option>
+											<option value="3">결제 및 환불</option>
+										</select>
+									</td>
+                             	</tr>
+								<tr>
+									<th><input class="form-check-input" type="checkbox" id="gridCheck1"></th>
+									<td><input class="form-control" type="text" placeholder="FAQ 번호" aria-label="default input example" value="002"></td>
+									<td><input class="form-control" type="text" placeholder="FAQ 제목" aria-label="default input example" value="환불은 어디서 해야하나요?"></td>
+									<td>
+										<select class="form-select" aria-label="Default select example">
+											<option value="1">페이지 이용 문의</option>
+											<option value="2">클래스 이용 문의</option>
+											<option value="3" selected>결제 및 환불</option>
 										</select>
 									</td>
                              	</tr>
@@ -103,9 +112,9 @@
     <script src="resources/admin/js/main.js"></script>
     <script type="text/javascript">
     		var link = document.location.href;
-	    	if (link.includes("board")) {
-	    		document.getElementById("board").classList.toggle("active");
-	    		document.getElementById("boardReview").classList.toggle("active");
+	    	if (link.includes("AdmFaq")) {
+	    		document.getElementById("support").classList.toggle("active");
+	    		document.getElementById("AdmFaq").classList.toggle("active");
 	    	};
     </script>
 </body>

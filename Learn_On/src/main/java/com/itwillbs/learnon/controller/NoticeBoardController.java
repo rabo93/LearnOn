@@ -116,7 +116,7 @@ public class NoticeBoardController {
 //		System.out.println("검색어 : " + searchKeyword);
 //		System.out.println("검색타입 : " + searchType);
 		
-		int listLimit = 5;	//	페이지당 게시물 수
+		int listLimit = 10;	//	페이지당 게시물 수
 		int startRow = (pageNum - 1) * listLimit;
 		
 		int listCount = noticeService.getBoardListCount(searchKeyword, searchType);
@@ -264,8 +264,8 @@ public class NoticeBoardController {
 //		System.out.println("board : " + board);
 		
 		String[] fileSplit = board.getNotice_file().split(",");
-		List<String> fileList = new ArrayList<String>();
 		
+		List<String> fileList = new ArrayList<String>();
 		for (String file : fileSplit) {
 			fileList.add(file);
 		}

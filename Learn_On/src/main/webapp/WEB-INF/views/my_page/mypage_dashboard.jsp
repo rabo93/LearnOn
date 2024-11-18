@@ -34,7 +34,7 @@
 				<a href="MyReview">작성한 수강평</a>
 				<a href="MyPayment">결제내역</a>
 				<a href="MyCoupon">보유한 쿠폰</a>
-				<a href="MyInquiry">문의내역</a>
+				<a href="MySupport">문의내역</a>
 				<a href="MyAttendance">출석체크</a>
 			</aside>
 			<div class="my-container">
@@ -88,7 +88,7 @@
 																수강평 작성 <i class="fa-regular fa-pen-to-square"></i>
 															</button>
 														</c:when>
-														<c:when test="${course.is_reviewed}">
+														<c:when test="${course.is_reviewed eq true}">
 															<button class="btn-review" onclick="showUpdateModal(${course.class_id})">
 																<i class="fa-solid fa-star"></i> 작성한 수강평
 															</button>

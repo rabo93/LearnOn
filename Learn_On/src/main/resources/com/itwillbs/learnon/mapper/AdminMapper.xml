@@ -9,32 +9,108 @@
 			SELECT IFNULL(MAX(CLASS_ID), 0)
 			FROM CLASS;
 		</selectKey>
-	INSERT
-	INTO CLASS
-	VALUES (
-		#{CLASS_ID} + 1
-		, #{CLASS_TITLE}
-		, #{MEM_ID}
-		, #{CLASS_INTRO}
-		, #{CLASS_PRICE}
-		, #{CLASS_CATEGORY}
-		, curdate()
-		, #{CLASS_RUNTIME}
-		, #{CLASS_PIC1}
-		, #{CLASS_CONTENTS}
-		, #{CLASS_STATUS});
+		INSERT
+		INTO CLASS
+		VALUES (
+			#{CLASS_ID} + 1
+			, #{CLASS_TITLE}
+			, #{MEM_ID}
+			, #{CLASS_INTRO}
+			, #{CLASS_PRICE}
+			, #{CLASS_CATEGORY}
+			, CURDATE()
+			, #{CLASS_RUNTIME}
+			, #{CLASS_PIC1}
+			, #{CLASS_CONTENTS}
+			, #{CLASS_STATUS});
 	</insert>
 	
-	<select id="getCategory">
-	SELECT *
-	FROM COMMONCODE;
+	<select id="getCategory" resultType="map">
+		SELECT 
+				C.CODEID
+		        , C.CODETYPE
+		        , C.CODENAME
+		        , T.CODETYPE_ID
+		        , T.NAME
+		FROM COMMONCODE C
+		JOIN COMMONCODETYPE T
+		ON C.CODEID = T.CODETYPE;
 	</select>
 	
-	<select id="getSubCategory">
-	SELECT *
-	FROM COMMONCODETYPE;
+	<select id="getMainCate" resultType="map">
+		SELECT *
+		FROM COMMONCODE;
 	</select>
-
+	
+	<select id="getSubCate" resultType="map">
+		SELECT *
+		FROM COMMONCODETYPE;
+	</select>
+	
+	<select id="getClassList">
+		SELECT *
+		FROM CLASS;
+	</select>
+	<select id="getClass" resultType="int">
+		SELECT CLA.CLASS_ID, CLA.CLASS_TITLE, CLA.MEM_ID
+		   , CLA.CLASS_INTRO, CLA.CLASS_PRICE, CLA.CLASS_CATEGORY
+	       , CLA.CLASS_REG_DATE, CLA.CLASS_RUNTIME, CLA.CLASS_PIC1
+	       , CLA.CLASS_CONTENTS, CLA.CLASS_STATUS, COMTY.CODETYPE
+	       , COMTY.CODETYPE_ID, COM.CODEID, COM.CODENAME
+	       , NAME
+		FROM CLASS CLA JOIN COMMONCODETYPE COMTY
+		ON CLA.CLASS_CATEGORY = COMTY.NAME
+		JOIN COMMONCODE COM
+		ON  COM.CODEID = COMTY.CODETYPE
+		WHERE CLA.CLASS_ID = #{CLASS_ID};
+	</select>
+	
+	<select id="getMemberList"> 
+		SELECT *
+		FROM MEMBER;
+	</select>
+	
+	<insert id="insertMainCate">
+		INSERT
+		INTO COMMONCODE
+		VALUES (
+			#{codeid_maincate}
+			, #{codetype_maincate}
+			, #{codename_maincate}
+			, #{description_maincate});
+	</insert>
+	
+	<insert id="insertSubCate">
+		INSERT
+		INTO COMMONCODETYPE
+		VALUES (
+			#{codetype_subcate}
+			, #{codetype_id_subcate}
+			, #{name_subcate}
+			, #{description_subcate}
+			, #{order_subcate});
+	</insert>
+	
+	<delete id="deleteMainCate">
+		DELETE
+		FROM COMMONCODE
+		WHERE CODEID = #{codeid};
+	</delete>
+	
+	<delete id="deleteSubCate">
+		DELETE
+		FROM COMMONCODETYPE
+		WHERE CODETYPE_ID = #{old_codetype_subcate};
+	</delete>
+	
+<!-- 	<update id="updateCate"> -->
+<!-- 		UPDATE COMMONCODETYPE -->
+<!-- 		SET -->
+<!-- 			CODETYPE = #{old_codetype_subcate} -->
+<!-- 			, CODETYPE_ID = #{old_codetype_id_subcate} -->
+<!-- 			, NAME = #{old_name_subcate} -->
+<!-- 			, DESCRIPTION = #{old_description_subcate} -->
+<!-- 	</update> -->
 
 
 </mapper>

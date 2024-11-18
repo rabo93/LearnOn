@@ -39,8 +39,8 @@
 .course-card.row-1 {grid-template-columns: 1fr}
 .course-card .card-thumb { display: block; object-fit: fill; border: 1px solid var(--light-gray); border-radius:1rem;} 
 .course-card .thumb-area {position:relative;}
-.course-card .thumb-area .fav-on {position:absolute;top: -1px;left: 26px;color: var(--secondary);font-size: 1.6rem;text-shadow: 1px 2px 3px rgba(0,0,0,0.2);background: transparent;}
-
+.course-card .thumb-area .fav-on {transition:all 0.25s;position:absolute;top: -1px;left: 26px;color: var(--secondary);font-size: 1.6rem;text-shadow: 1px 2px 3px rgba(0,0,0,0.2);background: transparent;}
+.course-card .thumb-area .fav-on:hover {color:var(--danger);font-size:2rem;}
 
 .course-card .card-info {padding: 0.8rem 0.4rem;}
 .course-card .card-info .category span {border-radius:50px;background:var(--light-gray);color:var(--dark);display:inline-block;padding: 0.1rem 0.8rem;border:1px solid var(--gray);font-size: 0.75rem;font-weight: 700;}
@@ -162,10 +162,11 @@
 .coupon-list {background: var(--white);border: 1px solid #ddd;border-radius: 8px;padding: 1rem;flex: 1 0 0;}
 .coupon-list ul {display:flex;gap:1rem;flex-direction:column;}
 .coupon-list ul li {border-radius: 8px;background: #ffe8ef;padding: 10px 1rem;}
-.coupon-list .c-name {font-weight: 700;color: var(--dark);}
-.coupon-list .c-exp-date {font-size: 0.875rem;font-weight: 500;color: var(--gray);padding: 6px 0;}
-.coupon-list .c-dis {text-align: right;font-weight: 700;color: var(--primary);}
+.coupon-list ul li .c-name {font-weight: 700;color: var(--dark);}
+.coupon-list ul li .c-exp-date {font-size: 0.875rem;font-weight: 500;color: var(--gray);padding: 6px 0;}
+.coupon-list ul li .c-dis {text-align: right;font-weight: 700;color: var(--primary);}
 .coupon-list ul li.end {text-decoration: line-through;text-decoration-color: var(--dark);background: #eee;}
+.coupon-list ul li.empty {background:url('/resources/images/no_data.svg') no-repeat center top;padding-top: 13rem;text-align:center;font-weight: 600;color: #434f61;margin-bottom: 2rem;background-size: auto 200px;}
 
 /* 1:1 문의내역 */
 .inq-wrap {}
@@ -202,6 +203,7 @@
 /* 페이징 */
 #pageList {display: flex;justify-content: center;align-items: center;gap: 6px;margin: 1rem auto;}
 #pageList button {font-size: 13px;font-weight: 700;background: var(--white);border: 1px solid var(--dark);border-radius: 4px;cursor:pointer;width: 30px;height: 30px;}
+#pageList button:disabled {background:#eee;border-color:#ddd;color:#c999;}
 #pageList button:hover {background:var(--primary);color:var(--white);border-color:var(--primary);}
 #pageList strong {width: 20px;display: inline-block;text-align: center;text-decoration: underline;cursor:pointer;}
 #pageList a {display: inline-block;width: 20px;text-align: center;}
@@ -215,3 +217,19 @@
 #pageList strong {width: 20px;display: inline-block;text-align: center;text-decoration: underline;cursor:pointer;}
 #pageList a {display: inline-block;width: 20px;text-align: center;}
 #pageList a:hover {color:var(--primary);font-weight:600;}
+
+/* 수강 화면 */
+#myCourseDashboard {background: var(--dark);color: var(--white);width: 100vw;height: 100vh;display: flex;align-items: stretch;justify-content: space-between;}
+#myCourseDashboard .contents {width: calc(100% - 440px);background: var(--dark);height: 100%;}
+#myCourseDashboard .contents .hd {background: #363f5f;width: 100%;display: flex;align-items: center;gap: 1rem;padding: 1rem;}
+#myCourseDashboard .contents .hd .back-btn {display: inline-block;padding: 13px 24px;background: #ecedf1;border-radius: 6px;font-weight: 700;font-size: 0.875rem;color: var(--dark);border: 1px solid var(--light-blue);}
+#myCourseDashboard .contents .hd .ttl {font-size: 1.3rem;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
+#myCourseDashboard .contents .video {width:100%;display:flex; align-items: center; justify-content: center;}
+#myCourseDashboard .contents .video video {object-fit: fill;width:100%;}
+#myCourseDashboard .cur-wrap {max-width: 440px;width: 100%;background: #e6e8f3;color: var(--dark);overflow-y: auto;overflow-x: hidden;}
+#myCourseDashboard .cur-wrap .cur-li {width: 100%;}
+#myCourseDashboard .cur-wrap .cur-li li {cursor: pointer;width: 100%;margin: 8px 0;background: var(--white);padding: 1rem;}
+#myCourseDashboard .cur-wrap .cur-li li.selected {background: #a7aec9;border: 1px solid #363f5f;border-left: 0;border-right: 0;}
+#myCourseDashboard .cur-wrap .cur-li li.selected .ttl {font-weight:700;}
+#myCourseDashboard .cur-wrap .cur-li li .ttl {font-size: 16px;font-weight: 600;}
+#myCourseDashboard .cur-wrap .cur-li li .runtime {font-size: 12px;background: #4f5877;color: var(--white);padding: 4px 8px;border-radius: 50px;font-weight: 700;display: inline-block;margin-bottom: 6px;}

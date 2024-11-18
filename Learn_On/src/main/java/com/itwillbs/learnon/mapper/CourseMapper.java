@@ -26,8 +26,11 @@ public interface CourseMapper {
 
 	List<MyReviewVO> selectReviewList(int class_id);
 
+//	int insertCourseSupport(@Param("cSupport") CourseSupportVO cSupport,@Param("class_id") int class_id);
 	int insertCourseSupport(CourseSupportVO cSupport);
 
-	List<CourseSupportVO> selectCourseSupportList();
+	List<CourseSupportVO> selectCourseSupportList(int class_id);
+
+	List<CommonCodeTypeVO> selectCommonCodeTypeAll();
 
 }

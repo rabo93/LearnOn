@@ -3,42 +3,111 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itwillbs.learnon.mapper.MemberMapper">
-
-	<select id="selectMember" resultType="member">
+	
+	
+	<select id="selectMember" resultType="com.itwillbs.learnon.vo.MemberVO">
 		SELECT *
 		  FROM MEMBER
-		 WHERE MEM_ID = #{MEM_ID}
+		 WHERE mem_id = #{mem_id}
 	</select>
 	
 	<select id="selectMemberPasswd" resultType="String">
-	SELECT MEM_PASSWD
-	FROM MEMBER
-	WHERE MEM_ID = #{MEM_ID} 
+	SELECT mem_passwd
+	  FROM MEMBER
+	 WHERE mem_id = #{mem_id} 
 	</select>
 
 	
 	<insert id="insertMember">
-	INSERT INTO MEMBER
+INSERT INTO MEMBER (
+    mem_idx,
+    mem_id,
+    mem_passwd,
+    mem_name,
+    mem_nick,
+    mem_birthday,
+    mem_email,
+    mem_gender,
+    mem_phone,
+    mem_post_code,
+    mem_address1,
+    mem_address2,
+    mem_grade,
+    mem_status,
+    mem_reg_date,
+    mem_withdraw_date,
+    mem_like1_class,
+    mem_like2_class,
+    file_pp,
+    mail_auth_status
+) VALUES (
+    null,
+    #{mem_id},
+    #{mem_passwd},
+    #{mem_name},
+    #{mem_nick},
+    #{mem_birthday},
+    CONCAT(#{mem_email1}, '@', #{mem_email2}),
+    #{mem_gender},
+    #{mem_phone},
+    #{mem_post_code},
+    #{mem_address1},
+    #{mem_address2},
+    'MEM01',
+    1,
+    now(),
+    null,
+    #{mem_like1_class},
+    #{mem_like2_class},
+    SUBSTR(#{file_pp}, INSTR(#{file_pp}, '_') + 1),
+    'N'
+)
+</insert>
+	
+	<update id="updateMember">
+	UPDATE MEMBER
+	   SET
+	 mem_nick = #{mem_nick}
+<!-- 		<if test="!mem_passwd.equals('')">  -->
+		<if test="mem_passwd != null and mem_passwd != ''">
+			,mem_passwd = #{mem_passwd}
+		</if>
+	, mem_post_code = #{mem_post_code}
+	, mem_address1 = #{mem_address1}
+	, mem_address2 = #{mem_address2}
+	, mem_phone = #{mem_phone}
+	WHERE mem_id = #{mem_id}
+	</update>
+	
+	<update id="updateMailAuthStatus">
+		UPDATE MEMBER
+		   SET mail_auth_status = 'Y'
+		 WHERE mem_email = #{mem_email}
+	</update>
+	
+	<delete id="deleteMailAuthInfo">
+	DELETE FROM MAIL_AUTH_INFO
+	WHERE mem_email = #{mem_email}
+	</delete>
+	
+	<insert id="insertMailAuthInfo">
+	INSERT INTO MAIL_AUTH_INFO (mem_email,auth_code)
 	VALUES(
-	null
-	,#{MEM_ID}
-	,#{MEM_PASSWD}
-	,#{MEM_NAME}
-	,#{MEM_NICK}
-	,#{MEM_BIRTHDAY}
-	,CONCAT(#{MEM_EMAIL1},'@',#{MEM_EMAIL2})
-	,#{MEM_GENDER}
-	,#{MEM_PHONE}
-	,#{MEM_POST_CODE}
-	,#{MEM_ADDRESS1}
-	,#{MEM_ADDRESS2}
-	,'MEM01'
-	,1
-	,NOW()
-	,NULL
-	,#{MEM_LIKE1_CLASS}
-	,#{MEM_LIKE2_CLASS}
- 	,SUBSTR(#{FILE_PP}, INSTR(#{FILE_PP}, '_') + 1)
+		#{mem_email}
+		, #{auth_code}
 	)
 	</insert>
+	
+	<update id="updateMailAuthInfo">
+	UPDATE MAIL_AUTH_INFO
+	   SET auth_code = #{auth_code}
+	 WHERE mem_email = #{mem_email}
+	</update>
+
+<!-- 	이메일 인증정보 조회  -->
+	<select id="selectMailAuthInfo" resultType="mailAuthInfo">
+	SELECT *
+	  FROM MAIL_AUTH_INFO
+	 WHERE mem_email = #{mem_email}
+	</select>
 </mapper>

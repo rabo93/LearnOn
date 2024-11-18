@@ -9,4 +9,8 @@ public class CommonCodeTypeVO {
 	private String description;
 	private String codetype_id;
 	private String order;
+	
+	private String codename;
+	private String cc_codetype;
+
 }

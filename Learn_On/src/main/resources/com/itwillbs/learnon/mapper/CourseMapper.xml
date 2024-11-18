@@ -49,6 +49,21 @@
 		 WHERE CODETYPE = #{codetype}
 	</select>
 	
+	<select id="selectCommonCodeTypeAll" resultType="codeType">
+		SELECT CT.CODETYPE
+			 , CT.NAME
+			 , CT.DESCRIPTION
+			 , CT.CODETYPE_ID
+			 , CC.CODENAME
+			 , CC.CODETYPE AS CC_CODETYPE
+		  FROM COMMONCODETYPE CT
+		  JOIN COMMONCODE CC ON CC.CODEID = CT.CODETYPE
+		  WHERE CT.CODETYPE LIKE 'CATE%'
+		  ORDER BY CT.CODETYPE, CT.ORDER
+		  
+	</select>
+	
+	
 	<select id="selectCourse" resultType="course" parameterType="int">
 		 SELECT 
 			     C.CLASS_TITLE
@@ -86,7 +101,8 @@
 		  JOIN MEMBER M ON M.MEM_ID = R.MEM_ID
 		 WHERE R.CLASS_ID = #{class_id}
 	</select>
-	<select id="selectCourseSupportList" resultType="cSupport">
+<!-- 	<select id="selectCourseSupportList" resultType="cSupport" parameterType="int"> -->
+	<select id="selectCourseSupportList" resultType="cSupport" parameterType="int">
 		SELECT *
 		  FROM CLASS_SUPPORT
  	 	 WHERE C_CLASS_ID = #{class_id}

@@ -33,23 +33,17 @@
 		DELETE 
 		FROM CART		
 		WHERE CARTITEM_IDX IN
-		   <foreach collection="list" index='index' item="item" open="(" separator="," close=")">
+		   <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+<!-- 		   여러개일땐 collection="list" 필수! -->
 		       #{item}
 		   </foreach>
 	</delete>
 	
-	
 	<!-- 장바구니 갯수 조회 -->
 	<select id="countCart" resultType="int">
-		SELECT count(*)
+		SELECT count(*) AS '장바구니갯수'
 		FROM CART
 		WHERE MEM_ID = #{sId}
 	</select>
 	
-	<!-- 주문할 장바구니 목록 주문 테이블에 삽입 -->
-<!-- 	<insert id=""> -->
-	
-	
-	
-<!-- 	</insert> -->
 </mapper>

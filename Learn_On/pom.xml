@@ -188,7 +188,13 @@
 		    <version>20240303</version>
 		</dependency>
 				
-
+		<!-- Spring 에서 JSON을 처리할 수 있는 설정 추가(챗GPT가 알려줬는데.. 안되네) -->
+<!-- 		<dependency> -->
+<!-- 		    <groupId>com.fasterxml.jackson.core</groupId> -->
+<!-- 		    <artifactId>jackson-databind</artifactId> -->
+<!-- 		</dependency> -->
+		
+		
 		<!-- ===================================================================== -->
 				
 		<!-- AspectJ -->

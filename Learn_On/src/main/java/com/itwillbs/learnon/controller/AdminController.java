@@ -1,18 +1,29 @@
 package com.itwillbs.learnon.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.learnon.service.AdminService;
+import com.itwillbs.learnon.service.NoticeBoardService;
 import com.itwillbs.learnon.vo.AdminVO;
+import com.itwillbs.learnon.vo.NoticeBoardVO;
+import com.itwillbs.learnon.vo.PageInfo;
 
 @Controller
 public class AdminController {
 	@Autowired
 	private AdminService adminService;
+	@Autowired
+	private NoticeBoardService noticeService;
 	
 	// 어드민 메인페이지 매핑
 	@GetMapping("AdmIndex")
@@ -251,8 +262,60 @@ public class AdminController {
 	
 	// 어드민 공지사항 관리 페이지 매핑
 	@GetMapping("AdmNotice")
-	public String admin_notice_management() {
+	public String admin_notice_management(@RequestParam(defaultValue = "1") int pageNum,
+										  @RequestParam(defaultValue = "latest") String sort,
+										  @RequestParam(defaultValue = "") String searchKeyword,
+										  @RequestParam(defaultValue = "") String searchType,
+										  Model model) {
+		
+		int listLimit = 5;
+		int startRow = (pageNum - 1) * listLimit;
+		
+		int listCount = noticeService.getBoardListCount(searchKeyword, searchType);
+		
+		int pageListLimit = 5;
+		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+		
+		if (maxPage == 0) {
+			maxPage = 1;
+		}
+		
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		int endPage = startPage + pageListLimit - 1;
+		
+		if (endPage > maxPage) {
+			endPage = maxPage;
+		}
+		
+		if(pageNum < 1 || pageNum > maxPage) {
+			model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+			model.addAttribute("targetURL", "AdmNotice?pageNum=1");
+			return "result/fail";
+		}
+		
+		
+		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
+		List<NoticeBoardVO> noticeList = noticeService.getBoardList(startRow, listLimit, sort, searchKeyword, searchType);
+		model.addAttribute("pageNum", pageNum);
+		model.addAttribute("pageInfo", pageInfo);
+		model.addAttribute("noticeList", noticeList);
+		model.addAttribute("sort", sort);
+		
 		return "admin/notice_management";
+	}
+	
+	@PostMapping("AdmNoitce/getFileList")
+	@ResponseBody
+	public List<String> getFileList(int notice_idx) {
+		NoticeBoardVO board = noticeService.getNoticeBoard(notice_idx, false);
+		String[] fileSplit = board.getNotice_file().split(",");
+		
+		List<String> fileList = new ArrayList<String>();
+		for (String file : fileSplit) {
+			fileList.add(file);
+		}
+		
+		return fileList;
 	}
 	
 	// 어드민 1:1 문의 관리 페이지 매핑

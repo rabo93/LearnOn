@@ -33,26 +33,29 @@ function couponSelect() {
 
 //=============================================================================
 // "쿠폰발급" 클릭 시 입력된 쿠폰번호 코드 확인 후 생성
-//function couponCreate() {
-//	var couponCode = $("#couponCode").val(); // 쿠폰 코드 입력 값 가져오기
-//	var memId = "bborara";
-//	
-//	if (!couponCode) {
-//        alert("쿠폰 코드를 입력해 주세요.");
-//        return;
-//    }
-//    
-//    $.ajax({
-//		method: 'get',
-//		url: 
-//	
-//	
-//		
-//	});
-//    
-//	
-//	
-//}
+function couponCreate() {
+	const couponCode = $("#couponCode").val().trim(); // 쿠폰 코드 입력 값 가져오기(양쪽 공백 제거)
+	
+	if (!couponCode) {
+        alert("쿠폰 코드를 입력해 주세요.");
+        return;
+    }
+    
+    $.ajax({
+		method: 'GET',
+		url: 'CouponCreate',
+		data: {couponCode : couponCode},
+		success: function(response) {
+			alert("쿠폰이 발급되었습니다.\n지금 바로 사용해보세요!"); // 메시지 우선 표시
+			location.reload();//페이지 새로 고침
+		},
+		error: function(jqXHR) {
+		    console.log("jqXHR 오류:", jqXHR); 
+			alert("쿠폰이 발급되지 않았습니다. \n쿠폰코드를 다시 확인해주세요");
+		}
+	});
+	
+}
 
 //=============================================================================
 //https://developers.portone.io/opi/ko/integration/start/v1/auth?v=v1

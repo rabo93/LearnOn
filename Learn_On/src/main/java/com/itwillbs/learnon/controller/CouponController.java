@@ -1,5 +1,6 @@
 package com.itwillbs.learnon.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.learnon.service.CouponService;
 
@@ -52,7 +56,45 @@ public class CouponController {
 	
 	//=================================================================================
 	// 쿠폰 발급 클릭시 입력한 쿠폰코드 확인 후 등록
-	
+	@GetMapping("CouponCreate")
+	public String couponCreate(@RequestParam String couponCode, HttpSession session, Model model) {
+		System.out.println("여기까진 왔지? 입력한 쿠폰 코드: " + couponCode);
+		//------------------------------------------------------
+		// 로그인 정보 가져오기 (세션 아이디값 확인)
+		String sId = (String) session.getAttribute("sId");
+		System.out.println("로그인 아이디: " + sId);
+		//------------------------------------------------------
+		//JSON 형식으로 응답하기 위해 Map에 담아서 반환(일단 미리 생성)
+//		Map<String, Object> response = new HashMap<String, Object>();
+		
+		//CouponService - createCoupon() 메서드 호출하여 쿠폰 발급 요청 (발급여부 리턴)
+		boolean isIssued = couponService.createCoupon(sId, couponCode);
+		System.out.println("발급 됐나요?:"+ isIssued); //true
+		
+		if(isIssued) { //발급 성공시
+			model.addAttribute("msg", "발급 성공");
+//			response.put("result", true);
+//			response.put("msg", "쿠폰 발급 성공! 지금 바로 사용해보세요.");
+		} else { //발급 실패시
+			model.addAttribute("msg", "발급 실패");
+//			response.put("result", false);
+//			response.put("msg", "해당 쿠폰은 발급 조건을 충족하지 않습니다.");
+		}
+//		
+//		return response; // Map이 JSON으로 변환되어 반환
+		//-------------------------------------------
+//		// 발급 성공 여부를 모델에 담기
+//	    if (isIssued) {
+//	        redirectAttributes.addFlashAttribute("result", true);
+//	        redirectAttributes.addFlashAttribute("msg", "쿠폰 발급 성공! 지금 바로 사용해보세요.");
+//	    } else {
+//	        redirectAttributes.addFlashAttribute("result", false);
+//	        redirectAttributes.addFlashAttribute("msg", "해당 쿠폰은 발급 조건을 충족하지 않습니다.");
+//	    }
+	    
+	    return "redirect:/Payment";
+		
+	}
 	
 	
 	

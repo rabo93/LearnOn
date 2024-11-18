@@ -129,7 +129,7 @@
 							<div class="pay-item">
 								<div class="notice-box">
 									<label class="notice-check">
-										<input type="checkbox" id="notice" name="" value="">	
+										<input type="checkbox" id="notice" name="notice" value="">	
 						 				<span>이용약관 동의(필수)</span>
 									</label>
 					 				<a href="Terms">내용보기</a>
@@ -138,7 +138,7 @@
 						</section>	
 						<!-- ----------------- 결제하기 버튼 ---------------->
 						<div class="btns-box">
-							<input type="submit" value="결제하기" class="btnSubmit" onclick="requestPay()">
+							<input type="submit" value="결제하기" class="btnSubmit">
 						</div>
 					</div>
 				</div>

@@ -120,7 +120,6 @@ public class CartController {
 		
 		//JSON 형식으로 응답하기 위해 Map에 담아서 반환(일단 미리 생성)
 		Map<String, Object> data = new HashMap<String, Object>();
-		System.out.println(data); //지금은 {} 이렇게 뜰꺼임
 		
 		if(sId == null) { // 로그인하지 않은 경우
 			data.put("isLogin", false);

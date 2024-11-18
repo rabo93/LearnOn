@@ -17,7 +17,7 @@
 <!-- page 개별 CSS -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/coupon.css">
 <!-- page 개별 JS -->
-<script src="${pageContext.request.contextPath}/resources/js/payment.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/cart_payment/payment.js"></script>
 
 </head>
 <body>
@@ -29,7 +29,7 @@
 	<!-- -----------------쿠폰선택 버튼시 모달창 영역------------------ -->
 	<section class="modal">
 		<div class="my-container">
-				<div class="contents-ttl">보유한 쿠폰</div>
+				<h2 class="contents-ttl">보유한 쿠폰</h2>
 				<div class="contents">
 					<!-- contents -->
 					<section class="coupon-wrap">
@@ -38,15 +38,17 @@
 					        <div class="coupon-count">${couponCount}</div>
 					        <div class="coupon-unit">개</div>
 						</div>
+						
 						<div class="coupon-list">
 					    	<ul class="myCoupon">
 					    		<c:choose>
 					    			<c:when test="${empty coupon}">
 					    				<li class="empty">발급받은 쿠폰이 없습니다.</li>
 					    			</c:when>
+					    			
 					    			<c:otherwise>
 						    			<c:forEach var="coupon" items="${coupon}">
-							    			<li class="<c:if test='${coupon.COUPON_STATUS >= 2}'>end</c:if>">
+							    			<li class="<c:if test='${coupon.COUPON_STATUS == 2}'>end</c:if>"> 
 								    			<p class="c-name">${coupon.COUPON_NAME}</p>
 								    			<p class="c-exp-date">
 								    				사용기한 : ~ 
@@ -77,24 +79,23 @@
 								
 								
 				<!-- 쿠폰 총 할인 금액 표출 -->				
-				<div class="price">
-					<div class="price-view">판매가
-						<span id="">원</span>
+				<div class="priceForm">
+					<div class="price-view">결제 상품 금액
+						<span id="totalAmount">원</span>
 					</div>
 					<div class="price-view-discount">할인 금액
 						<span id="">원</span>
 					</div>
-					<div class="price-view-total">쿠폰할인가
+					<div class="price-view-total">쿠폰 적용 금액
 						<span id="">원</span>
 					</div>
 				</div>
 				
 				<!-- 쿠폰 적용 버튼 -->
 				<div class="coupon-apply">
-				<button type="button" class="btn-close" onclick="history.back()">취소</button>
-				<button type="button" class="btn-apply">
-					<c:out value="${total}원 할인 적용"></c:out>
-				</button>
+					<input type="button" class="btn-close" onclick="history.back()" value="취소">
+					<input type="button" class="btn-apply" onclick="location.href='couponSelect?couponAmount='" 
+							value="<c:out value='${total}원 할인 적용'/>">
 				</div>
 		
 		</div>

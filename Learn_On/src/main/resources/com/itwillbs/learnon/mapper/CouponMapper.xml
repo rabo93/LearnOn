@@ -27,12 +27,12 @@
   	<select id="selectCouponCount" resultType="int">
   		SELECT COUNT(*) AS '쿠폰갯수'
 		FROM MYCOUPON
-		WHERE MEM_ID = #{mem_id}
+		WHERE MEM_ID = #{sId}
 		AND COUPON_ISUSED = 1
   	</select>
   
   	<!-- 쿠폰 코드 입력시 조회 후 인서트 -->
-  	<insert id="insertCoupon">
+  	<insert id="insertCoupon" parameterType="map">
 	  	INSERT INTO MYCOUPON (MEM_ID, COUPON_ID, ISSUE_DATE, COUPON_STATUS, COUPON_ISUSED)
 			SELECT	#{mem_id}
 			        , ci.COUPON_ID
@@ -45,8 +45,9 @@
 		AND NOT EXISTS (	-- 이미 보유한 쿠폰이면 삽입불가 조건
 			SELECT 1
 		    FROM MYCOUPON mc
-			WHERE mc.COUPON_ID = ci.COUPON_ID AND mc.MEM_ID = #{mem_id}
-		);
+			WHERE mc.COUPON_ID = ci.COUPON_ID 
+			AND mc.MEM_ID = #{mem_id}
+		)
   	</insert>
   	
   	  

@@ -10,37 +10,31 @@ import com.itwillbs.learnon.vo.MemberVO;
 
 @Mapper
 public interface AdminMapper {
-
-	int insertMainCate(AdminVO vO);
 	
-	int insertSubCate(AdminVO vO);
-
-	int insertClass();
-
+	// 카테고리
 	List<Map<String, String>> getCategory();
-
-	List<AdminVO> getClassList();
-
-	List<MemberVO> getMemberList();
-
-	int updateClass(String class_id);
-
-	List<AdminVO> getClass(int class_id);
-
 	List<Map<String, String>> getMainCate();
 	List<Map<String, String>> getSubCate();
-
 	List<AdminVO> selectSubCate(AdminVO admin);
-//	List<Map<String, String>> getSubCate();
-
 	int deleteMainCate(String CODEID);
-
 	int deleteSubCate(String old_codetype_subcate);
-
 	int updateMainCate(AdminVO updateVO);
-
 	int updateSubCate(AdminVO updateVO);
+	int insertMainCate(AdminVO vO);
+	int insertSubCate(AdminVO vO);
 
+	// 클래스
+	List<AdminVO> getClass(int class_id);
+	List<AdminVO> getClassList();
+	int curriculum(AdminVO insertCur);
+	int insertClass(AdminVO vO);
+	int updateClass(String class_id);
+	
+	// 멤버
+	List<MemberVO> getMemberList();
+	
+	int insertClassPic(AdminVO vO);
+	int insertCurVideo(AdminVO vO);
 
 
 }

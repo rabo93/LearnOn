@@ -1,5 +1,9 @@
 package com.itwillbs.learnon.vo;
 
+import java.sql.Timestamp;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,10 +21,19 @@ public class AdminVO {
 	private String class_reg_date;
 	private int class_runtime;
 	private String class_pic1;
+	private MultipartFile class_pic1_get;
 	private String class_contents;
 	private int class_status;
 	private String codetype_id;
 	private String name;
+	
+	// 커리큘럼
+	private int cur_id;
+	private String cur_title;
+	private String cur_video;
+	private MultipartFile cur_video_get;
+	private String cur_runtime;
+	private MultipartFile cur_video_file;
 	
 	// 카테고리
 	//=======================================
@@ -49,8 +62,7 @@ public class AdminVO {
 	private String old_name_subcate;
 	private String old_description_subcate;
 	private String old_order_subcate;
-	private String sub_checkCodeid;
-	
+	private String sub_checkCodeid;	
 	//=======================================
 	
 }

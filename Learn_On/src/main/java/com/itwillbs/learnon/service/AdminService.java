@@ -16,6 +16,8 @@ public class AdminService {
 	@Autowired
 	private AdminMapper mapper;
 	
+	
+	
 	// 카테고리
 	public List<Map<String, String>> getCategory() {
 		return mapper.getCategory();
@@ -49,8 +51,12 @@ public class AdminService {
 	}
 	
 	// 클래스
-	public int registClass() {
-		return mapper.insertClass();
+	public int registClass(AdminVO vO) {
+		return mapper.insertClass(vO);
+	}
+	public int curriculum(AdminVO insertCur) {
+		System.out.println("==================서비스 작동함");
+		return mapper.curriculum(insertCur);
 	}
 	public List<AdminVO> getClassList() {
 		return mapper.getClassList();
@@ -65,6 +71,13 @@ public class AdminService {
 	// 멤버
 	public List<MemberVO> getMemberList() {
 		return mapper.getMemberList();
+	}
+	public int insertClassPic(AdminVO vO) {
+		return mapper.insertClassPic(vO);
+		
+	}
+	public int insertCurVideo(AdminVO vO) {
+		return mapper.insertCurVideo(vO);
 	}
 
 

@@ -1,8 +1,16 @@
 package com.itwillbs.learnon.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
+
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -14,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.learnon.service.AdminService;
 import com.itwillbs.learnon.service.NoticeBoardService;
@@ -27,6 +36,8 @@ public class AdminController {
 	private AdminService adminService;
 	@Autowired
 	private NoticeBoardService noticeService;
+	
+	private String uploadPath = "/resources/upload";
 	
 	// 어드민 메인페이지 매핑
 	@GetMapping("AdmIndex")
@@ -186,21 +197,117 @@ public class AdminController {
 	}
 	
 	@PostMapping("AdmClassAdd")
-	public String admin_class_add1(Model model) {
-		int insertCount = adminService.registClass();
+	public String admin_class_add1(AdminVO VO, HttpSession session, Model model) {
 		
-		if (insertCount < 0) {
+		AdminVO insertCur = new AdminVO();
+		
+		String[] arrCurTitle = VO.getCur_title().split(",");
+		String[] arrCurRunTime = VO.getCur_runtime().split(",");
+		int totalRunTime = VO.getClass_runtime();
+		
+		for (int i = 0; i < arrCurTitle.length; i++) {
+			insertCur.setCur_title(arrCurTitle[i]);
+			insertCur.setCur_runtime(arrCurRunTime[i]);
+			totalRunTime += Integer.parseInt(arrCurRunTime[i]);
+			
+			adminService.curriculum(insertCur);
+		}
+		VO.setClass_runtime(totalRunTime);
+		
+		int insertCountCla = adminService.registClass(VO);
+		
+		// 실제 경로
+		String realPath = getRealPath(session);
+		//	서브 디렉토리 생성
+		String subDir = createDirectories(insertCur, realPath);
+		realPath += "/" + subDir;
+		//	첨부파일 업로드
+		String fileName = addFileProcess(VO, realPath, subDir);
+		for (int i = 0; i < arrCurTitle.length; i++) {
+			String videoName = addVideoProcess(VO, realPath, subDir);
+			VO.setCur_video(videoName);
+			adminService.insertCurVideo(VO);
+		}
+		
+		VO.setClass_pic1(fileName);
+		
+		adminService.insertClassPic(VO);
+		
+		if (insertCountCla < 0) {
 			model.addAttribute("msg", "클래스 등록 실패!");
 			return "admin/fail";
 		}
 		
-		return "admin/class_add";
+		return "redirect:/AdmClassList";
+	}
+	
+	//	실제 업로드 경로 메서드
+	public String getRealPath(HttpSession session) {
+		String realPath = session.getServletContext().getRealPath(uploadPath);
+		return realPath;
+	}
+	// 서브 디렉토리 생성
+	public String createDirectories(AdminVO VO, String realPath) {
+		
+		//	기존 실제 업로드 경로
+		realPath += "/" + VO.getClass_id()+1;
+		//	실제 경로 전달
+		Path path = Paths.get(realPath);
+		
+		return Integer.toString(VO.getClass_id()+1);
+	}
+	
+	public String addFileProcess(AdminVO VO, String realPath, String subDir) {
+		MultipartFile multis = VO.getClass_pic1_get();
+		
+		VO.setClass_pic1("");
+		String fileName = "";
+		
+		try {
+			String origin = multis.getOriginalFilename();
+			if (!origin.equals("")) {
+				String temp = UUID.randomUUID().toString().substring(0, 8) + "_" + origin;
+				multis.transferTo(new File(realPath, temp));
+				fileName += subDir + "/" + temp + ",";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		
+		if (!fileName.equals("")) {
+			fileName = fileName.substring(0, fileName.length() - 1);
+		}
+		
+		return fileName;
+	}
+	
+	public String addVideoProcess(AdminVO VO, String realPath, String subDir) {
+		MultipartFile multis = VO.getCur_video_get();
+		
+		VO.setCur_video("");
+		String fileName = "";
+		
+		try {
+			String origin = multis.getOriginalFilename();
+			if (!origin.equals("")) {
+				String temp = UUID.randomUUID().toString().substring(0, 8) + "_" + origin;
+				multis.transferTo(new File(realPath, temp));
+				fileName += subDir + "/" + temp + ",";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		
+		if (!fileName.equals("")) {
+			fileName = fileName.substring(0, fileName.length() - 1);
+		}
+		
+		return fileName;
 	}
 	
 	@ResponseBody
 	@GetMapping("SelectCategory")
 	public String selectCategory(AdminVO admin) {
-		System.out.println("메인 담은 admin " + admin);
 		List<AdminVO> adminArr = adminService.selectSubCate(admin);
 		System.out.println("admin : " + adminArr);
 		
@@ -229,14 +336,6 @@ public class AdminController {
 		
 		return "admin/class_list_modify";
 	}
-	
-	// 어드민 삭제된 클래스 목록 페이지 매핑
-//	@GetMapping("admin_class_delete")
-//	public String admin_class_delete(Model model) {
-//		model.addAttribute("getClassList", adminService.getClassList());
-//		
-//		return "admin/class_delete";
-//	}
 	
 	// =======================================================================
 	

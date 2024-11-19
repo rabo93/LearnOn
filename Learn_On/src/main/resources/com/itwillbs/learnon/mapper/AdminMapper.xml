@@ -4,26 +4,58 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itwillbs.learnon.mapper.AdminMapper">
 
+	<!--  클래스 -->
 	<insert id="insertClass">
-		<selectKey keyProperty="CLASS_ID" resultType="int" order="BEFORE">
-			SELECT IFNULL(MAX(CLASS_ID), 0)
-			FROM CLASS;
+		<selectKey keyProperty="class_id" resultType="int" order="BEFORE">
+			SELECT IFNULL(MAX(CLASS_ID), 0)+1
+			FROM CLASS
 		</selectKey>
 		INSERT
 		INTO CLASS
 		VALUES (
-			#{CLASS_ID} + 1
-			, #{CLASS_TITLE}
-			, #{MEM_ID}
-			, #{CLASS_INTRO}
-			, #{CLASS_PRICE}
-			, #{CLASS_CATEGORY}
-			, CURDATE()
-			, #{CLASS_RUNTIME}
-			, #{CLASS_PIC1}
-			, #{CLASS_CONTENTS}
-			, #{CLASS_STATUS})
+			#{class_id}
+			, #{class_title}
+			, #{mem_id}
+			, #{class_intro}
+			, #{class_price}
+			, #{class_category}
+			, curdate()
+			, #{class_runtime}
+			, #{class_pic1}
+			, #{class_contents}
+			, #{class_status})
 	</insert>
+	
+	<update id="insertClassPic">
+		UPDATE CLASS
+		SET class_pic1 = #{class_pic1}
+		WHERE  class_id = #{class_id}
+	</update>
+	
+	<insert id="curriculum">
+		<selectKey keyProperty="class_id" resultType="int" order="BEFORE">
+			SELECT IFNULL(MAX(CLASS_ID), 0)
+			FROM CLASS
+		</selectKey>
+		INSERT
+		INTO CURRICULUM
+		VALUES (
+			#{class_id} + 1
+			, #{cur_id}
+			, #{cur_title}
+			, #{cur_video}
+			, ${cur_runtime})
+	</insert>
+	
+	<update id="insertCurVideo">
+		<selectKey keyProperty="cur_id" resultType="int" order="BEFORE">
+			SELECT MAX(CUR_ID)
+			FROM CURRICULUM
+		</selectKey>
+		UPDATE CURRICULUM
+		SET cur_video = #{cur_video}
+		WHERE cur_id = #{cur_id}
+	</update>
 	
 	<select id="selectSubCate" resultType="admin">
 		SELECT 

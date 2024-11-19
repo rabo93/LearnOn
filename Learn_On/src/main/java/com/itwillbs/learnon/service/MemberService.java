@@ -18,14 +18,7 @@ public class MemberService {
 		return mapper.insertMember(member);
 	}
 
-	public MemberVO getMember(MemberVO member) {
-		return mapper.selectMember(member);
 
-	}
-
-	public int modifyMember(Map<String, String> map) {
-		return mapper.updateMember(map);
-	}
 
 	public void registMemberAuthInfo(MailAuthInfo mailauthInfo) {
 		MailAuthInfo dbMailAuthInfo = mapper.selectMailAuthInfo(mailauthInfo);
@@ -40,7 +33,6 @@ public class MemberService {
 	public boolean requestEmailAuth(MailAuthInfo mailAuthInfo) {
 		boolean isAuthsuccess = false;
 
-		// MamnerMapper- select .. () 호출하려 인증정보 조회 수행
 
 		MailAuthInfo dbMailAuthInfo = mapper.selectMailAuthInfo(mailAuthInfo);
 		System.out.println("조회된 인증 정보" + dbMailAuthInfo);
@@ -61,4 +53,35 @@ public class MemberService {
 	public String getMemberPasswd(String id) {
 		return mapper.selectMemberPasswd(id);
 	}
+
+//	public int modifyMember(Map<String, String> map) {
+//		// TODO Auto-generated method stub
+//		return mapper.updateMember(map,mem_id);
+//	}
+//}
+
+	public MemberVO getMember(MemberVO member) {
+		return mapper.selectMember(member);
+		
+	}
+	
+	public MemberVO getMemberNick(MemberVO member) {
+		return mapper.selectMemberNick(member);
+		
+	}
+
+
+
+	public int modifyMember(Map<String, String> map) {
+		System.out.println("@@@mem_passwd: " + map.get("mem_passwd"));
+		System.out.println("@@@mem_name: " + map.get("mem_name"));
+
+		return mapper.updateMember(map);
+	}
+
 }
+
+//	public int modifyMember(Map<String, String> map, MemberVO member) {
+//		// TODO Auto-generated method stub
+//		return mapper.updateMember(map,member);
+//	}

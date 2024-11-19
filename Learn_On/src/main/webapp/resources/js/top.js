@@ -30,4 +30,18 @@ $(document).ready(function() {
 			$('.cart-btn').hide(); // 오류 발생 시 아이콘 숨김
 		}
 	});
+	$.ajax({
+		type: "get",
+		url: "TopMenu",
+		dataType: "json",
+		success : function(data) {
+			console.log(data);
+		},
+		error: function(){
+			alert("메뉴 불러오기 실패");
+		}
+	});	
+	
 });
+
+

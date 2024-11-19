@@ -29,12 +29,12 @@ $(document).ready(function() {
 let checkName = false;
 let checkPasswd1 = false;
 let checkPasswd2 = false;
-let checkNic = false;
 let checkNumber = false;
 let checkAddr = false;
 let checkMail = false;
 let checkCode = false;
 let checkIdResult = false;
+let checkNic = false;
 
 // ************* 이름 null 검사**************
 function checkNameLength(){
@@ -52,7 +52,7 @@ function checkNameLength(){
 // ************* 아이디 중복체크/길이검사**************
 function checkId(){
 	let id = $("#mem_id").val();
-	let regex = /^[\d\w][\d\w_]{4,12}$/;
+	let regex = /^[\d\w][\d\w_]{3,12}$/;
 	if(regex.exec(id)){
 		$.ajax({
 			type : "get" ,
@@ -95,22 +95,20 @@ function ckNick(){
 				},
 				success : function(result){
 					if(result.trim() == "false" ){
-						$("#checkNic").text("사용가능한 닉네임 입니다").css("color","green");
+						$("#checkNic").text("사용가능한 닉네임 입니다").css("color","GREEN");
 						checkNic = true;
 					}else {
-						$("#checkNic").text("이미 사용중인 닉네임 입니다").css("color","red");
+						$("#checkNic").text("이미 사용중인 닉네임 입니다").css("color","RED");
 						checkNic = false;
 					}
 				}
-				
-		
-			});
-		}else {
-			$("#checkNic").text("2~8글자만 사용가능").css("color","red");
-			checkNic = false;
+		});
+	}else {
+		$("#checkNic").text("2~8글자만 사용가능").css("color","RED");
+		checkNic = false;
 			
-		}
 	}
+}
 
 
 //function checkIdLength (){
@@ -185,13 +183,16 @@ $("#terms_all").click(function() {
 		
 	});
 });
-//
-//	document.querySelector("#terms_all").onclick = function() {
-//	    let isChecked = document.querySelector("#terms_all").checked;
-//	    let termsCheckboxes = document.querySelectorAll("input[name='terms']");
-//	    
-//	    for (let checkbox of termsCheckboxes) {
-//	console.log("join.js 파일이 로드되었습니다.");
-//	        checkbox.checked = isChecked;
-//	    }
-//	};
+// **************프로필 미리보기*************
+$("#profile_img").change(function (event){
+	let file = event.target.files[0];
+	let reader = new FileReader();
+	
+	reader.onload = function(event2){
+		console.log("파일 : " + event2.target.result);
+		$("#preview_profile").attr("src",event2.target.result);
+		reader.readAsDataURL(file);
+	};
+	
+});
+

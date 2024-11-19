@@ -3,6 +3,7 @@ package com.itwillbs.learnon.mapper;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.itwillbs.learnon.vo.MailAuthInfo;
 import com.itwillbs.learnon.vo.MemberVO;
@@ -16,7 +17,7 @@ public interface MemberMapper {
 	int insertMember(MemberVO member);
 
 	int updateMember(Map<String, String> map);
-
+	
 	void insertMailAuthInfo(MailAuthInfo mailauthInfo);
 
 	void updateMailAuthInfo(MailAuthInfo mailauthInfo);
@@ -29,6 +30,10 @@ public interface MemberMapper {
 	void deleteMailAuthInfo(MailAuthInfo mailAuthInfo);
 
 	String selectMemberPasswd(String id);
+
+	MemberVO selectMemberNick(MemberVO member);
+
+
 
 	
 }

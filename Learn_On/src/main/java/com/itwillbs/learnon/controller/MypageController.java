@@ -5,10 +5,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -27,7 +25,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.learnon.service.MypageService;
+import com.itwillbs.learnon.vo.AttendanceVO;
 import com.itwillbs.learnon.vo.MyCourseVO;
+import com.itwillbs.learnon.vo.MyCurriculumVO;
+import com.itwillbs.learnon.vo.MyDashboardVO;
 import com.itwillbs.learnon.vo.MyReviewVO;
 import com.itwillbs.learnon.vo.SupportBoardVO;
 import com.itwillbs.learnon.vo.WishlistVO;
@@ -240,11 +241,53 @@ public class MypageController {
 		}
 	}
 	
-	// 강의 시청 페이지
+	// 나의강의실 - 강의 시청 
 	@GetMapping("MyCourseBoard")
-	public String myCourseBoard() {
+	public String myCourseBoard(MyDashboardVO myDashboard, HttpServletRequest request, HttpSession session, Model model) {
+		String id = (String)session.getAttribute("sId");
+		if(id == null) {
+			model.addAttribute("msg", "로그인 필수!\\n 로그인 페이지로 이동합니다!");
+			model.addAttribute("targetURL", "MemberLogin");
+			savePreviousUrl(request, session);
+			
+			return "result/fail";
+		}
+		myDashboard.setMem_id(id);
+		System.out.println(myDashboard);
+		
+		myDashboard = myService.getMyDashboard(myDashboard);
+		List<MyCurriculumVO> myCurList = myService.getMyCurList(myDashboard);
+		
+		model.addAttribute("myDashboard", myDashboard);
+		model.addAttribute("myCurList", myCurList);
 		
 		return "my_page/mypage_course";
+	}
+	
+	// 강의 
+	@GetMapping("CompletedVideo")
+	public String completedVideo(MyCurriculumVO myCurriculum, HttpServletRequest request, HttpSession session, Model model) {
+		System.out.println(myCurriculum);
+		String id = (String)session.getAttribute("sId");
+		if(id == null) {
+			model.addAttribute("msg", "로그인 필수!\\n 로그인 페이지로 이동합니다!");
+			model.addAttribute("targetURL", "MemberLogin");
+			savePreviousUrl(request, session);
+			
+			return "result/fail";
+		}
+		myCurriculum.setMem_id(id);
+		int updateCount = myService.completedVideo(myCurriculum);
+		
+		if(updateCount > 0) {
+			model.addAttribute("class_id", myCurriculum.getClass_id());
+			model.addAttribute("cur_id", myCurriculum.getCur_id());
+			return "redirect:/MyCourseBoard";
+		} else {
+			model.addAttribute("msg", "선택 실패!");
+			return "result/fail";
+		}
+		
 	}
 	
 		
@@ -257,7 +300,7 @@ public class MypageController {
 	// 보유한 쿠폰
 	@GetMapping("MyCoupon")
 	public String myCoupon(HttpServletRequest request, HttpSession session, Model model) {
-		
+		// 세션아이디 체크
 		String id = (String)session.getAttribute("sId");
 		if(id == null) {
 			model.addAttribute("msg", "로그인 필수!\\n 로그인 페이지로 이동합니다!");
@@ -291,6 +334,7 @@ public class MypageController {
 		return "my_page/mypage_inquiry_write";
 	}
 	
+	// 문의내역 글쓰기
 	@PostMapping("MySupportWrite")
 	public String mySupportWrite(SupportBoardVO support, HttpServletRequest request, HttpSession session, Model model) {
 		System.out.println("1:1 문의글 쓰기 : " + support);
@@ -311,21 +355,24 @@ public class MypageController {
 		// 디렉토리 생성
 		String subDir = createDirectories(realPath);
 		
+		realPath += "/" + subDir;
+		
 		// 실제 파일 처리
 		MultipartFile mFile1 = support.getFile1();
-//		System.out.println("원본파일명: " + mFile1);
+		System.out.println("원본파일명: " + mFile1);
 		support.setSupport_file1("");
 		
 		String fileName = processDuplicateFileName(support, subDir);
 		
-		System.out.println("DB 저장파일" + support.getSupport_file1());
-		System.out.println("1:1문의 글 작성 최종내용: " + support);
+		System.out.println("------- DB 저장파일" + support.getSupport_file1());
+		System.out.println("-------- 1:1문의 글 작성 최종내용: " + support);
 		
 		// 글쓰기 서비스 요청
 		int insertCount = myService.registSupport(support);
 		
 		if (insertCount > 0) {
 			completeUpload(support, realPath, fileName);
+			System.out.println();
 			
 			return "redirect:/MySupport";
 		} else {
@@ -397,7 +444,7 @@ public class MypageController {
 	@GetMapping("MySupportModify")
 	public String mySupportModifyForm(int support_idx, HttpSession session, HttpServletRequest request, Model model) {
 		
-		/// 세션아이디 체크
+		// 세션아이디 체크
 		String id = (String)session.getAttribute("sId");
 		if(id == null) {
 			model.addAttribute("msg", "로그인 필수!\\n 로그인 페이지로 이동합니다!");
@@ -445,15 +492,78 @@ public class MypageController {
 	
 	
 	// 문의내역 삭제
+	@GetMapping("MySupportDelete")
+	public String mySupportDelete(SupportBoardVO support, @RequestParam(defaultValue = "1") int pageNum, HttpServletRequest request, HttpSession session, Model model) {
+		
+		// 세션아이디 체크
+		String id = (String)session.getAttribute("sId");
+		if(id == null) {
+			model.addAttribute("msg", "로그인 필수!\\n 로그인 페이지로 이동합니다!");
+			model.addAttribute("targetURL", "MemberLogin");
+			savePreviousUrl(request, session);
+			
+			return "result/fail";
+		}
+		
+		support = myService.getSupportDetail(support.getSupport_idx());
+		System.out.println("삭제할 1:1 문의글 : " + support);
+		
+		if(support == null || !id.equals(support.getMem_id())) {
+			model.addAttribute("msg", "잘못된 접근입니다.");
+			return "result/fail";
+		}
+		
+		int deleteCount = myService.removeSupport(support.getSupport_idx());
+		
+		if(deleteCount > 0) {
+			String realPath = getRealPath(session);
+			
+			String fileName = support.getSupport_file1();
+			System.out.println("삭제할 파일 : " + fileName);
+			
+			if(!fileName.equals("")) {
+				Path path = Paths.get(realPath, fileName);
+				
+				try {
+					Files.deleteIfExists(path);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			System.out.println("삭제완료!");
+			return "redirect:/MySupport?pageNum=" + pageNum;
+		} else {
+			model.addAttribute("msg", "삭제 실패");
+			return "result/fail";
+		}
+	}
+	
+	// 문의내역 수정 - 첨부파일 삭제
 	
 	
 	
 	
 	// 출석체크
 	@GetMapping("MyAttendance")
-	public String myAttendance() {
+	public String myAttendanceForm(HttpServletRequest request, HttpSession session, Model model) {
+		String id = (String)session.getAttribute("sId");
+		if(id == null) {
+			model.addAttribute("msg", "로그인 필수!\\n 로그인 페이지로 이동합니다!");
+			model.addAttribute("targetURL", "MemberLogin");
+			savePreviousUrl(request, session);
+			
+			return "result/fail";
+		}
+		
+		AttendanceVO attendance = myService.getAttendance(id);
+		
+		model.addAttribute("attendance", attendance);
+		
 		return "my_page/mypage_attendance";
 	}
+	
+	// 출석체크
+	
 	
 	
 	// ===========================================================================================
@@ -506,7 +616,7 @@ public class MypageController {
 		
 		subDir = today.format(dtf);
 		realPath += "/" + subDir;
-//		System.out.println("실제 파일 업로드 경로: " + realPath);
+		System.out.println("실제 파일 업로드 경로: " + realPath);
 		
 		try {
 			Path path = Paths.get(realPath);
@@ -541,6 +651,7 @@ public class MypageController {
 		try {
 			if(!mFile1.getOriginalFilename().equals("")) {
 				mFile1.transferTo(new File(realPath, fileName));
+				System.out.println("----------- 업로드 실제 처리: " + mFile1);
 			}
 		} catch (IllegalStateException e) {
 			e.printStackTrace();

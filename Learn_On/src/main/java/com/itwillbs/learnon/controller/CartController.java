@@ -124,6 +124,7 @@ public class CartController {
 		if(sId == null) { // 로그인하지 않은 경우
 			data.put("isLogin", false);
 		} else {
+			
 			//해당 로그인아이디로 담긴 장바구니 갯수 조회 요청 => 리턴받은 갯수를 cartCount에 저장
 			int cartCount = cartService.getCartCount(sId);
 			

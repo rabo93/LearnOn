@@ -26,20 +26,14 @@ public class CouponService {
 		return mapper.selectCouponCount(sId);
 	}
 	
-	//쿠폰 발급
+	// 쿠폰 발급
 	public boolean createCoupon(String memId, String couponCode) {
-		System.out.println("서비스에서 받은 memId: " + memId);
-		//서비스에서 받은 memId: bborara
-		
+		// 매퍼로 전달할 파라미터 Map으로 담기
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("mem_id", memId);
 		params.put("coupon_code", couponCode);
 		
-		// 확인: 제대로 설정된 값을 출력
-	    System.out.println("param.mem_id: " + params.get("mem_id"));
-		
-		
-		//매퍼 호출
+		//인서트 매퍼 호출(결과 int로 받기)
 		int result = mapper.insertCoupon(params); 
 		
 		return result > 0; //결과 성공시 true 리턴

@@ -13,7 +13,7 @@ public interface CouponMapper {
 	// 보유한 쿠폰 갯수 조회 (갯수 리턴)
 	int selectCouponCount(String sId);
 	
-	// 쿠폰 발급 (성공여부 리턴)
+	// 쿠폰 발급 (성공여부 갯수 리턴)
 	int insertCoupon(Map<String, String> params);
 	
 }

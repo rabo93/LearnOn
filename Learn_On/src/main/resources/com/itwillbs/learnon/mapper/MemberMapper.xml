@@ -12,7 +12,7 @@
 	</select>
 	
 	<select id="selectMemberNick" resultType="com.itwillbs.learnon.vo.MemberVO">
-		SELECT mem_id,mem_nick
+		SELECT *
 		  FROM MEMBER
 		 WHERE mem_nick = #{mem_nick}
 	</select>
@@ -83,7 +83,7 @@ INSERT INTO MEMBER (
 		, mem_address2 = #{mem_address2}
 		, mem_phone = #{mem_phone}
 		, mem_email = CONCAT(#{mem_email1}, '@', #{mem_email2})
-	WHERE 
+	WHERE
 		mem_id = #{mem_id}
 </update>
 	
@@ -118,4 +118,13 @@ INSERT INTO MEMBER (
 	  FROM MAIL_AUTH_INFO
 	 WHERE mem_email = #{mem_email}
 	</select>
+	
+<!-- 	비번변경 -->
+
+	<update id="updatePasswd">
+	UPDATE MEMBER
+	   SET mem_passwd = #{mem_passwd}
+	WHERE mem_id = #{mem_id} 
+	
+	</update>
 </mapper>

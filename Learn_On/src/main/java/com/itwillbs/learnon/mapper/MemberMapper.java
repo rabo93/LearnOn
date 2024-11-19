@@ -1,5 +1,6 @@
 package com.itwillbs.learnon.mapper;
 
+import java.lang.reflect.Member;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -13,6 +14,8 @@ import com.itwillbs.learnon.vo.MemberVO;
 public interface MemberMapper {
 
 	MemberVO selectMember(MemberVO member);
+
+	MemberVO selectMemberNick(MemberVO member);
 
 	int insertMember(MemberVO member);
 
@@ -30,10 +33,10 @@ public interface MemberMapper {
 	void deleteMailAuthInfo(MailAuthInfo mailAuthInfo);
 
 	String selectMemberPasswd(String id);
+//비번찾기
+	MemberVO selectMember(Member member);
 
-	MemberVO selectMemberNick(MemberVO member);
-
-
+	Member updatePasswd(Member member);
 
 	
 }

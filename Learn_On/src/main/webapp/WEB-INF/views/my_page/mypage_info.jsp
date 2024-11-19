@@ -97,7 +97,7 @@
 							<div class="set">
 								<label>이메일 </label>
 								<div>
-									<input type="text" size="15" name="mem_email1" id="mem_email1" value="${member.mem_email1}">@<input type="text" size="10"  value="${member.mem_email2}" id=mem_email2" name="mem_email2">
+									<input type="text" size="15" name="mem_email1" id="mem_email1" placeholder="${member.email}">@<input type="text" size="10"  value="${member.mem_email2}" id=mem_email2" name="mem_email2">
 <!-- 									<select id="emailDomain" class="sel-frm"> -->
 <!-- 										<option value="">직접입력</option> -->
 <!-- 										<option value="naver.com">naver.com</option> -->

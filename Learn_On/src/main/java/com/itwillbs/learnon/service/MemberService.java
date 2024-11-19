@@ -1,5 +1,6 @@
 package com.itwillbs.learnon.service;
 
+import java.lang.reflect.Member;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +78,20 @@ public class MemberService {
 		System.out.println("@@@mem_name: " + map.get("mem_name"));
 
 		return mapper.updateMember(map);
+	}
+
+
+//비번찾기
+	public MemberVO getMemberPasswdFinder(Member member) {
+		// TODO Auto-generated method stub
+		return mapper.selectMember(member);
+	}
+
+
+
+	public Member passwdFinder(Member member) {
+		// TODO Auto-generated method stub
+		return mapper.updatePasswd(member);
 	}
 
 }

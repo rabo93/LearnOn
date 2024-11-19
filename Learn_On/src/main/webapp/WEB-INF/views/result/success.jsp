@@ -21,12 +21,12 @@
 	
 	<div class="success-container">
 		<h1>안녕하세요 ${sessionScope.sId}님🥳</h1><br>
-		<h1>이메일 인증 후 강의를 시작 해보세요!</h1><br>
+		<h1>📩지금 바로 이메일 인증 후 강의를 시작 해보세요!</h1><br>
 		
 		<div id="controls">
-			<input type="button" value="이메일 인증 다시 하기" onclick="location.href ='ReSendAuthMail'"><br>
 			<input type="button" id="btn_ai" value="AI 추천 바로가기"><br>
-			<input type="button" id="myclass" value="나의 강의실">
+			<input type="button" id="myclass" value="나의 강의실"onclick="location.href ='MyDashboard'"><br>
+			<input type="button" value="이메일 인증 다시 하기📩" onclick="location.href ='ReSendAuthMail'">
 		</div>
 	
 	</div>

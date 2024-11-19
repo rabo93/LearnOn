@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,8 +14,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mypage.css">
     
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/modal.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/rating.js"></script>
 
 </head>
 <body>
@@ -31,7 +31,7 @@
 				<a href="MyReview">작성한 수강평</a>
 				<a href="MyPayment">결제내역</a>
 				<a href="MyCoupon">보유한 쿠폰</a>
-				<a href="MyInquiry">문의내역</a>
+				<a href="MySupport">문의내역</a>
 				<a href="MyAttendance" class="active">출석체크</a>
 			</aside>
 			<div class="my-container">
@@ -39,11 +39,24 @@
 				<div class="contents">
 					<!-- contents -->
 					<div class="attendance-wrap">
-						<button class="btn-att"><i class="fa-solid fa-check"></i> 출석하기</button>
-						<button class="btn-att checked"><i class="fa-solid fa-check"></i> 출석하기</button>
+						<c:set var="today"><fmt:formatDate value="<%=new java.util.Date()%>" pattern="yyyy-MM-dd" /></c:set> 
+						<c:choose>
+							<c:when test="${empty attendance.check_in_date || attendance.check_in_date != today}">
+								<button class="btn-att checked"><i class="fa-solid fa-check"></i> 출석하기</button>
+							</c:when>
+							<c:otherwise>
+								<button class="btn-att"><i class="fa-solid fa-check"></i> 출석완료</button>
+							</c:otherwise>
+						</c:choose>
+						
 						<div class="att-box">
 							<i class="fa-solid fa-calendar-check"></i>
-							<p><span>10</span>일 연속 출석하셨습니다.</p>
+							<p><span>
+								<c:choose>
+									<c:when test="${empty attendance.streak_days}">0</c:when>
+									<c:otherwise>${attendance.streak_days}</c:otherwise>
+								</c:choose>
+							</span>일 연속 출석하셨습니다.</p>
 						</div>
 					</div>
 					<!-- // contents -->

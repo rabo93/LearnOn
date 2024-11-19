@@ -50,7 +50,7 @@
 			<section class="tb-btns">
 				<button class="btn-02" onclick="noticeDelete()">삭제</button>
 				<button class="btn-03" onclick="noticeModify()">수정</button>
-				<button class="btn-03"onclick="location.href='NoticeList'">목록</button>
+				<button class="btn-03" onclick="location.href='NoticeList'">목록</button>
 			</section>
 			<!-- 목록, 수정, 삭제 버튼 추가하기! -->
 		</div>

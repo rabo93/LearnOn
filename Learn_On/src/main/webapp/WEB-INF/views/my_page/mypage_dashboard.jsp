@@ -34,7 +34,7 @@
 				<a href="MyReview">작성한 수강평</a>
 				<a href="MyPayment">결제내역</a>
 				<a href="MyCoupon">보유한 쿠폰</a>
-				<a href="MyInquiry">문의내역</a>
+				<a href="MySupport">문의내역</a>
 				<a href="MyAttendance">출석체크</a>
 			</aside>
 			<div class="my-container">
@@ -67,10 +67,10 @@
 									<ul class="course-card row-3">
 										<c:forEach var="course" items="${myCourse}">
 											<li>
-												<div class="thumb-area">
+												<div class="thumb-area" onclick="location.href='MyCourseBoard?class_id=${course.class_id}'">
 													<img src="${pageContext.request.contextPath}/resources/images/thumb_01.webp" class="card-thumb" alt="thumbnail" />
 												</div>
-												<div class="card-info">
+												<div class="card-info" onclick="location.href='MyCourseBoard?class_id=${course.class_id}'">
 													<div class="category">
 														<span>${course.class_category}</span>
 													</div>

@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,8 +12,9 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/reset.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mypage.css">
-    
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/join.js"></script>
+    
 
 </head>
 <body>
@@ -29,7 +32,7 @@
 				<a href="MyReview">작성한 수강평</a>
 				<a href="MyPayment">결제내역</a>
 				<a href="MyCoupon">보유한 쿠폰</a>
-				<a href="MyInquiry">문의내역</a>
+				<a href="MySupport">문의내역</a>
 				<a href="MyAttendance">출석체크</a>
 			</aside>
 			<div class="my-container">
@@ -37,12 +40,12 @@
 				<div class="contents">
 					<!-- contents -->
 					<section class="info-set-wrap">
-						<form action="" class="my-frm" method="post">
+						<form action="MemberModify" name="MemberInfo"class="my-frm" method="post" enctype="multipart/form-data">
 							<div class="set">
-								<label>프로필</label>
+								<label>프로필 변경</label>
 								<div>
-									<img src="${pageContext.request.contextPath}/resources/images/profile_thumb.svg" class="profile-thumb" alt="profile">
-									<input type="button" value="프로필 변경" class="btn-frm">
+									<img src="${pageContext.request.contextPath}/resources/images/profile_thumb.svg" class="profile-thumb" alt="profile" id="preview_profile" height="100px">
+									<input type="file"class="btn-frm" value="프로필변경" id="profile_img" name="profile_img">
 								</div>
 							</div>
 							<div class="set">
@@ -50,13 +53,14 @@
 									아이디
 								</label>
 								<div>
-									<input type="text" name="id" id="id" value="" value="홍길동" disabled>
+									<input type="text" name="mem_id" id="id" value="${member.mem_id}" readonly>
 								</div>
 							</div>
 							<div class="set">
 								<label>닉네임</label>
+								<div id="checkNic"></div>
 								<div>
-									<input type="text" name="nickname" value="#{SessionScope.sId}">
+									<input type="text" name="mem_nick" id="mem_nick" value="${member.mem_nick }" onblur="ckNick()">
 								</div>
 							</div>
 							<div class="set">
@@ -68,7 +72,7 @@
 							<div class="set">
 								<label>변경할 비밀번호</label>
 								<div>
-									<input type="password" id="passwd" name="passwd" placeholder="8 ~ 16글자 사이 입력">
+									<input type="password" id="passwd" name="mem_passwd" placeholder="8 ~ 16글자 사이 입력">
 								</div>
 								<div class="ip-tips" id="checkPasswd1Result">비밀번호는 최소 8글자 이상입니다</div>
 							</div>
@@ -82,30 +86,30 @@
 							<div class="set">
 								<label>주소</label>
 								<div>
-									<input type="text" id="postcode" name="post_code" value="" size="6" readonly placeholder="우편번호">
-									<input type="button" value="주소검색" onclick="" class="btn-frm"><br>
+									<input type="text" id="mem_address1" name="mem_address1" size="25" value="${member.mem_address1 }"readonly>
+									<input type="button" value="주소검색" onclick="search_address()" class="btn-frm"><br>
 								</div>
 								<div>
-									<input type="text" id="address1" name="address1" value="" size="25" readonly placeholder="기본주소"><br>
-									<input type="text" id="address2" name="address2" value="" size="25" placeholder="상세주소">
+									<input type="text" id="mem_address2" name="mem_address2" value="${member.mem_address2 }" size="25" placeholder="상세주소" >
+									<input type="text" id="mem_post_code" name="mem_post_code" size="6" value="${member.mem_post_code }" readonly><br>
 								</div>
 							</div>
 							<div class="set">
 								<label>이메일 </label>
 								<div>
-									<input type="text" size="10" id="email1" value="" name="email1">@<input type="text" size="10"  value="" id="email2" name="email2">
-									<select id="emailDomain" class="sel-frm">
-										<option value="">직접입력</option>
-										<option value="naver.com">naver.com</option>
-										<option value="nate.com">nate.com</option>
-										<option value="gmail.com">gmail.com</option>
-									</select>
+									<input type="text" size="15" name="mem_email1" id="mem_email1" placeholder="${member.email}">@<input type="text" size="10"  value="${member.mem_email2}" id=mem_email2" name="mem_email2">
+<!-- 									<select id="emailDomain" class="sel-frm"> -->
+<!-- 										<option value="">직접입력</option> -->
+<!-- 										<option value="naver.com">naver.com</option> -->
+<!-- 										<option value="nate.com">nate.com</option> -->
+<!-- 										<option value="gmail.com">gmail.com</option> -->
+<!-- 									</select> -->
 								</div>
 							</div>
 							<div class="set">
 								<label>전화번호</label>
 								<div>
-									<input type="text" size="10" id="phone" value="" name="phone">
+									<input type="text" size="10" id="phone" value="${member.mem_phone}" name="mem_phone" placeholder="'-'제외 후 입력해주세요">
 								</div>
 								<div id="checkPhoneResult" class="ip-tips">전화번호를 올바르게 입력해주세요</div>
 							</div>
@@ -123,5 +127,42 @@
 	<footer>
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
 	</footer>
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<script type="text/javascript">
+		function search_address() {
+			new daum.Postcode({
+				oncomplete : function(data) {
+					console.log(data);
+					document.MemberInfo.mem_post_code.value = data.zonecode;
+
+					let address = data.address;
+					if (data.buildingName != "") {
+						address += " (" + data.buildingName + ")";
+					}
+
+					document.MemberInfo.mem_address1.value = address;
+
+					document.MemberInfo.mem_address2.focus();
+
+				}
+			}).open();
+		}
+	</script>
+	
+	<script type="text/javascript">
+	$("#profile_img").change(function (event){
+		let file = event.target.files[0];
+		let reader = new FileReader();
+		
+		reader.onload = function(event2){
+			console.log("파일 : " + event2.target.result);
+			$("#preview_profile").attr("src",event2.target.result);
+			reader.readAsDataURL(file);
+		};
+		
+	});
+	
+	</script>
+	
 </body>
 </html>

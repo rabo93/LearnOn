@@ -4,53 +4,87 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itwillbs.learnon.mapper.AdminMapper">
 
+	<!--  클래스 -->
 	<insert id="insertClass">
-		<selectKey keyProperty="CLASS_ID" resultType="int" order="BEFORE">
-			SELECT IFNULL(MAX(CLASS_ID), 0)
-			FROM CLASS;
+		<selectKey keyProperty="class_id" resultType="int" order="BEFORE">
+			SELECT IFNULL(MAX(CLASS_ID), 0)+1
+			FROM CLASS
 		</selectKey>
 		INSERT
 		INTO CLASS
 		VALUES (
-			#{CLASS_ID} + 1
-			, #{CLASS_TITLE}
-			, #{MEM_ID}
-			, #{CLASS_INTRO}
-			, #{CLASS_PRICE}
-			, #{CLASS_CATEGORY}
-			, CURDATE()
-			, #{CLASS_RUNTIME}
-			, #{CLASS_PIC1}
-			, #{CLASS_CONTENTS}
-			, #{CLASS_STATUS});
+			#{class_id}
+			, #{class_title}
+			, #{mem_id}
+			, #{class_intro}
+			, #{class_price}
+			, #{class_category}
+			, curdate()
+			, #{class_runtime}
+			, #{class_pic1}
+			, #{class_contents}
+			, #{class_status})
 	</insert>
 	
-	<select id="getCategory" resultType="map">
+	<update id="insertClassPic">
+		UPDATE CLASS
+		SET class_pic1 = #{class_pic1}
+		WHERE  class_id = #{class_id}
+	</update>
+	
+	<insert id="curriculum">
+		<selectKey keyProperty="class_id" resultType="int" order="BEFORE">
+			SELECT IFNULL(MAX(CLASS_ID), 0)
+			FROM CLASS
+		</selectKey>
+		INSERT
+		INTO CURRICULUM
+		VALUES (
+			#{class_id} + 1
+			, #{cur_id}
+			, #{cur_title}
+			, #{cur_video}
+			, ${cur_runtime})
+	</insert>
+	
+	<update id="insertCurVideo">
+		<selectKey keyProperty="cur_id" resultType="int" order="BEFORE">
+			SELECT MAX(CUR_ID)
+			FROM CURRICULUM
+		</selectKey>
+		UPDATE CURRICULUM
+		SET cur_video = #{cur_video}
+		WHERE cur_id = #{cur_id}
+	</update>
+	
+	<select id="selectSubCate" resultType="admin">
 		SELECT 
-				C.CODEID
-		        , C.CODETYPE
-		        , C.CODENAME
-		        , T.CODETYPE_ID
-		        , T.NAME
+				C.CODEID AS CODEID_MAINCATE
+		        , C.CODENAME AS CODENAME_MAINCATE
+		        , T.CODETYPE_ID AS CODETYPE_ID_SUBCATE
+		        , T.NAME AS NAME_SUBCATE
 		FROM COMMONCODE C
 		JOIN COMMONCODETYPE T
-		ON C.CODEID = T.CODETYPE;
+		ON C.CODEID = T.CODETYPE
+		WHERE 
+			C.CODEID = #{codeid_maincate}
 	</select>
 	
 	<select id="getMainCate" resultType="map">
 		SELECT *
-		FROM COMMONCODE;
+		FROM COMMONCODE
 	</select>
 	
 	<select id="getSubCate" resultType="map">
 		SELECT *
-		FROM COMMONCODETYPE;
+		FROM COMMONCODETYPE
 	</select>
 	
 	<select id="getClassList">
 		SELECT *
-		FROM CLASS;
+		FROM CLASS
 	</select>
+	
 	<select id="getClass" resultType="int">
 		SELECT CLA.CLASS_ID, CLA.CLASS_TITLE, CLA.MEM_ID
 		   , CLA.CLASS_INTRO, CLA.CLASS_PRICE, CLA.CLASS_CATEGORY
@@ -62,12 +96,12 @@
 		ON CLA.CLASS_CATEGORY = COMTY.NAME
 		JOIN COMMONCODE COM
 		ON  COM.CODEID = COMTY.CODETYPE
-		WHERE CLA.CLASS_ID = #{CLASS_ID};
+		WHERE CLA.CLASS_ID = #{CLASS_ID}
 	</select>
 	
 	<select id="getMemberList"> 
 		SELECT *
-		FROM MEMBER;
+		FROM MEMBER
 	</select>
 	
 	<insert id="insertMainCate">
@@ -77,7 +111,7 @@
 			#{codeid_maincate}
 			, #{codetype_maincate}
 			, #{codename_maincate}
-			, #{description_maincate});
+			, #{description_maincate})
 	</insert>
 	
 	<insert id="insertSubCate">
@@ -88,29 +122,40 @@
 			, #{codetype_id_subcate}
 			, #{name_subcate}
 			, #{description_subcate}
-			, #{order_subcate});
+			, #{order_subcate})
 	</insert>
 	
 	<delete id="deleteMainCate">
 		DELETE
 		FROM COMMONCODE
-		WHERE CODEID = #{codeid};
+		WHERE CODEID = #{codeid}
 	</delete>
 	
 	<delete id="deleteSubCate">
 		DELETE
 		FROM COMMONCODETYPE
-		WHERE CODETYPE = #{old_codetype_subcate};
+		WHERE CODETYPE_ID = #{old_codetype_subcate}
 	</delete>
 	
-<!-- 	<update id="updateCate"> -->
-<!-- 		UPDATE COMMONCODETYPE -->
-<!-- 		SET -->
-<!-- 			CODETYPE = #{old_codetype_subcate} -->
-<!-- 			, CODETYPE_ID = #{old_codetype_id_subcate} -->
-<!-- 			, NAME = #{old_name_subcate} -->
-<!-- 			, DESCRIPTION = #{old_description_subcate} -->
-<!-- 	</update> -->
-
+	<update id="updateMainCate">
+		UPDATE COMMONCODE
+		SET
+			CODETYPE = #{old_codetype_maincate}
+			, CODEID = #{old_codeid_maincate}
+			, CODENAME = #{old_codename_maincate}
+			, DESCRIPTION = #{old_description_maincate}
+		WHERE CODEID = #{main_checkCodeid}
+	</update>
+	
+	<update id="updateSubCate">
+		UPDATE COMMONCODETYPE
+		SET
+			CODETYPE = #{old_codetype_subcate}
+			, CODETYPE_ID = #{old_codetype_id_subcate}
+			, NAME = #{old_name_subcate}
+			, DESCRIPTION = #{old_description_subcate}
+			, `ORDER` = #{old_order_subcate}
+		WHERE CODETYPE_ID = #{sub_checkCodeid}
+	</update>
 
 </mapper>

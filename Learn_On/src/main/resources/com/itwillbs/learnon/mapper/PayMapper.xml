@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itwillbs.learnon.mapper.PayMapper">
+	<!-- resultMap을 사용한 MyBatis 자동 매핑 -->
+	<resultMap id="CartToPurchaseMap" type="purchase">
+		<result property="cartItemIdx" column="CARTITEM_IDX"/>
+	   <result property="classId" column="CLASS_ID"/>
+	    <result property="memId" column="MEM_ID"/>
+	    <result property="classTitle" column="CLASS_TITLE"/>
+	    <result property="teacherName" column="MEM_NAME"/>
+	    <result property="classPrice" column="CLASS_PRICE"/>
+	    <result property="classPic1" column="CLASS_PIC1"/>
+	</resultMap>
+
+
+	<!-- 선택된 장바구니 상품 조회 -->
+    <select id="selectedCart" parameterType="list" resultType="purchase" resultMap="CartToPurchaseMap">
+        SELECT
+	        ca.CARTITEM_IDX, 
+	        cl.CLASS_ID, 
+	        cl.CLASS_TITLE, 
+	        m.MEM_ID, 
+	        m.MEM_NAME, 
+	        cl.CLASS_PRICE, 
+	        cl.CLASS_PIC1
+	    FROM CLASS cl
+	    LEFT JOIN MEMBER m ON cl.MEM_ID = m.MEM_ID
+	    JOIN CART ca ON cl.CLASS_ID = ca.CLASS_ID
+	    WHERE ca.CARTITEM_IDX IN
+	    <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+<!-- 	   foreach [arg0, collection, list]에러시.. collection="list" 이걸로 해야됨!!!!!!!!!!!!!! 이거때메 하루종일 삽질했네...-->
+	        #{item}
+	    </foreach>
+    </select>
+    
+    
+</mapper>

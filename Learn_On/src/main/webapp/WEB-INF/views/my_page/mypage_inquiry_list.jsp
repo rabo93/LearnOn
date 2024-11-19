@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,8 +14,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mypage.css">
     
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/modal.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/rating.js"></script>
 
 </head>
 <body>
@@ -31,7 +31,7 @@
 				<a href="MyReview">작성한 수강평</a>
 				<a href="MyPayment">결제내역</a>
 				<a href="MyCoupon">보유한 쿠폰</a>
-				<a href="MyInquiry" class="active">문의내역</a>
+				<a href="MySupport" class="active">문의내역</a>
 				<a href="MyAttendance">출석체크</a>
 			</aside>
 			<div class="my-container">
@@ -40,7 +40,7 @@
 					<!-- contents -->
 					<section class="inq-wrap">
 						<div class="inq-tops">
-							<button class="btn-inq" onclick="">문의 남기기</button>
+							<button class="btn-inq" onclick="location.href='/MySupportWrite'">문의 남기기</button>
 						</div>
 						<div class="tb-wrap">
 							<table class="tb-01 tb-inq">
@@ -61,53 +61,76 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr>
-										<td>1</td>
-										<td>이용문의</td>
-										<td class="subject">클래스 상세내용을 알고싶습니다.</td>
-										<td>홍길동</td>
-										<td>2024-11-05</td>
-									</tr>
-									<tr>
-										<td>2</td>
-										<td>결제문의</td>
-										<td class="subject">결제가 되지않습니다. 확인해주세요</td>
-										<td>홍길동</td>
-										<td>2024-11-05</td>
-									</tr>
-									<tr class="reply">
-										<td>└</td>
-										<td>답변</td>
-										<td class="subject">안녕하세요. 런온 입니다.</td>
-										<td>관리자</td>
-										<td>2024-11-06</td>
-									</tr>
-									<tr>
-										<td>3</td>
-										<td>기타</td>
-										<td class="subject">이메일 변경이 되지 않아요</td>
-										<td>홍길동</td>
-										<td>2024-11-05</td>
-									</tr>
+									<c:set var="pageNum" value="1" />
+									<c:if test="${not empty param.pageNum}">
+										<c:set var="pageNum" value="${param.pageNum}" />
+									</c:if>
+									<c:choose>
+										<c:when test="${empty supportList}">
+											<tr>
+												<td class="empty" colspan="5">작성한 게시물이 없습니다.</td>
+											</tr>
+										</c:when>
+										<c:otherwise>
+											<c:forEach var="support" items="${supportList}">
+												<tr>
+													<td class="board_num">${support.support_idx}</td>
+													<td>
+														<c:if test="${support.support_category == 1}">
+															이용문의
+														</c:if>
+														<c:if test="${support.support_category == 2}">
+															결제문의
+														</c:if>
+														<c:if test="${support.support_category == 3}">
+															기타
+														</c:if>
+													</td>
+													<td class="subject">${support.support_subject}</td>
+													<td>${support.mem_name}</td>
+													<td><fmt:formatDate value="${support.support_date}" pattern="yy-MM-dd HH:mm" /></td>
+												</tr>
+											</c:forEach>
+										</c:otherwise>
+									</c:choose>
+<!-- 									<tr class="reply"> -->
+<!-- 										<td>└</td> -->
+<!-- 										<td>답변</td> -->
+<!-- 										<td class="subject">안녕하세요. 런온 입니다.</td> -->
+<!-- 										<td>관리자</td> -->
+<!-- 										<td>2024-11-06</td> -->
+<!-- 									</tr> -->
 								</tbody>
 							</table>
 							<div class="no-data" style="display:none;">데이터가 존재하지 않습니다.</div>
 						</div>
 						<section id="pageList">
-							<button onclick=""><i class="fa-solid fa-angles-left"></i></button>
-							<button onclick=""><i class="fa-solid fa-angle-left"></i></button>
-							<strong>1</strong>
-							<a href="">2</a>
-							<a href="">3</a>
-							<a href="">4</a>
-							<a href="">5</a>
-							<a href="">6</a>
-							<a href="">7</a>
-							<a href="">8</a>
-							<a href="">9</a>
-							<a href="">10</a>	
-							<button onclick=""><i class="fa-solid fa-angle-right"></i></button>
-							<button onclick=""><i class="fa-solid fa-angles-right"></i></button>
+							<button 
+								onclick="location.href='MySupport?pageNum=${pageInfo.startPage - pageInfo.pageListLimit}'"
+								<c:if test="${pageInfo.startPage == 1}">disabled</c:if>
+							><i class="fa-solid fa-angles-left"></i></button>
+							<button 
+								onclick="location.href='MySupport?pageNum=${pageNum - 1}'"
+								<c:if test="${pageNum == 1}">disabled</c:if>
+							><i class="fa-solid fa-angle-left"></i></button>
+							<c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
+								<c:choose>
+									<c:when test="${i eq pageNum}">
+										<strong>${i}</strong>
+									</c:when>
+									<c:otherwise>
+										<a href="MySupport?pageNum=${i}">${i}</a>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+							<button 
+								onclick="location.href='MySupport?pageNum=${pageNum + 1}'"
+								<c:if test="${pageNum == pageInfo.maxPage}">disabled</c:if>
+							><i class="fa-solid fa-angle-right"></i></button>
+							<button
+								onclick="location.href='MySupport?pageNum=${pageInfo.startPage + pageInfo.pageListLimit}'"
+								<c:if test="${pageInfo.endPage == pageInfo.maxPage}">disabled</c:if>
+							><i class="fa-solid fa-angles-right"></i></button>
 						</section>
 					</section>
 					<!-- // contents -->
@@ -118,5 +141,13 @@
 	<footer>
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
 	</footer>
+	<script type="text/javascript">
+		$(".subject").on("click", function(event) {
+			let parent = $(event.target).parent();
+			let board_num = $(parent).find(".board_num");
+			console.log(board_num.text());
+			location.href = "MySupportDetail?support_idx=" + board_num.text() +  "&pageNum=" + ${pageNum};
+		});
+	</script>
 </body>
 </html>

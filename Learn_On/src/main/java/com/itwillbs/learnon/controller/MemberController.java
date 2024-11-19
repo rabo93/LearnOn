@@ -2,6 +2,7 @@ package com.itwillbs.learnon.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Member;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -11,15 +12,21 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.mail.Session;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.taglibs.standard.lang.jstl.test.beans.PublicBean1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,6 +36,7 @@ import com.itwillbs.learnon.service.MailService;
 import com.itwillbs.learnon.service.MemberService;
 import com.itwillbs.learnon.vo.MailAuthInfo;
 import com.itwillbs.learnon.vo.MemberVO;
+import com.mysql.cj.protocol.x.SyncFlushDeflaterOutputStream;
 
 @Controller
 public class MemberController {
@@ -49,9 +57,21 @@ public class MemberController {
 	
 	
 	@PostMapping("MemberLogin")
-	public String login(MemberVO member,Model model,HttpSession session,BCryptPasswordEncoder passwordEncoder) {
+	public String login(MemberVO member,Model model,HttpSession session
+			,BCryptPasswordEncoder passwordEncoder,@CookieValue(value="userId",required=false)String userId2,HttpServletResponse response) {
+		
+		System.out.println("가져온 쿠키아이디@@"+userId2); //on
+		Cookie cookie = new Cookie("userId",member.getMem_id()); //쿠키설정
+		if(userId2 != null) { //체크
+			cookie.setMaxAge(60*60*24*30);
+		} else {
+			cookie.setMaxAge(0);
+		}
+		response.addCookie(cookie);
+		
 		MemberVO dbMember = memberService.getMember(member);
 		System.out.println(dbMember);
+		
 		
 		if(dbMember == null || !passwordEncoder.matches(member.getMem_passwd(), dbMember.getMem_passwd())) {		
 			model.addAttribute("msg", "로그인 실패!\\n아이디와 패스워드를 다시 확인해주세요");
@@ -215,7 +235,7 @@ public class MemberController {
 	@ResponseBody
 	@GetMapping("MemberCheckId")
 	public String memberCheckId(String mem_id,MemberVO member) {
-		System.out.println(mem_id);
+		System.out.println("mem_id : "+mem_id);
 		member = memberService.getMember(member);
 		boolean isDuplicate = false;
 		if(member != null) { //아이디 중복
@@ -227,20 +247,99 @@ public class MemberController {
 	@ResponseBody
 	@GetMapping("MemberCheckNick")
 	public String memberCheckNick(String mem_nick,MemberVO member) {
-		System.out.println(mem_nick);
-		member = memberService.getMember(member);
+		System.out.println("mem_nick : "+mem_nick);
+		member = memberService.getMemberNick(member);
+		System.out.println("가져온 member(get_nick) : "+member.getMem_nick());
 		boolean isDuplicate = false;
-		if(member != null) { //아이디 중복
+		if(member != null) { //닉네임 중복
 			isDuplicate= true;
 		}
 		return isDuplicate+"";
 	}
 	
+	//*************로그아웃***************
 	@GetMapping("MemberLogout")
 	public String logout(HttpSession session) {
 		session.invalidate();
 		
 		return "redirect:/";
 	}
+		
+	//*************회원정보 수정***************
+	@GetMapping("MemberModify")
+	public String memberModify(MemberVO member, HttpSession session,Model model) {
+		String id = (String)session.getAttribute("sId");
+		if(id == null) {
+			model.addAttribute("msg", "로그인 후 이용해주세요");
+			model.addAttribute("targetURL", "MemberLogin");
+			
+			return "member/fail";
+		}
+		
+		member.setMem_id(id);
+		member = memberService.getMember(member);
+		model.addAttribute("member", member);
+		
+		
+		return "my_page/mypage_info";
+		
+	}
+	
+	@PostMapping("MemberModify")
+	public String memberModifyForm(MemberVO member,Model model , BCryptPasswordEncoder passwordEncoder ,@RequestParam Map<String, String>map,HttpSession session ) {
+		System.out.println("MAP : "+map);
+		System.out.println("member : "+member);
+		System.out.println("member id @@ : "+member.getMem_id());
+		System.out.println("member nick@@ : "+member.getMem_nick());
+		System.out.println("member phone@@ : "+member.getMem_phone());
+		System.out.println("member Email@@ : "+member.getEmail());
+		System.out.println("member Email1@@ : "+member.getMem_email1());
+		System.out.println("member Email2@@ : "+member.getMem_email2());
+		
+		String id = (String)session.getAttribute("sId");
+		map.put("id", id);
 
+		String dbpasswd = memberService.getMemberPasswd(id);
+		if(dbpasswd == null || !passwordEncoder.matches(map.get("oldPasswd"),dbpasswd)) {
+			model.addAttribute("msg", "비밀번호가 일치하지 않습니다.");
+			return "result/fail";
+		}
+		if(!map.get("mem_passwd").equals("")) {
+			map.put("mem_passwd",passwordEncoder.encode(map.get("mem_passwd"))); //암호화된 새로운 비밀번호
+		}
+		
+		int updateCount = memberService.modifyMember(map);
+		
+		if(updateCount > 0) {
+			model.addAttribute("msg", "회원정보 수정성공");
+			
+			return"result/fail";
+		}else {
+			model.addAttribute("msg", "회원정보 수정실패\\n다시 확인해주세요 ");
+			return"result/fail";
+		}
+	}
+	
+	/*******비밀번호 변경********/
+	@GetMapping("PasswdFinder")
+	public String passwdFinderForm() {
+		return "member/passwd_fineder";
+	}
+	
+	@PostMapping("PasswdFinder")
+	public String passwdFinder(Member member,Model model,BCryptPasswordEncoder passwordEncoder) {
+		MemberVO DBmember = memberService.getMemberPasswdFinder(member);
+		System.out.println(member);
+		if(DBmember == null) {
+			model.addAttribute("msg", "권한이 없습니다");
+			return "result/fail";
+		}else {
+			
+			member = memberService.passwdFinder(member);
+			model.addAttribute("msg", "비밀번호가 변경되었습니다.");
+			
+		}
+		
+		return "";
+	}
 }

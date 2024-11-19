@@ -4,24 +4,22 @@
 	-(V) 전체선택 체크 기능 : checkAll, chk(각각의 클래스id)
 	-(V) 삭제버튼 기능 : CARTITEM_IDX
 	-(V) 체크한 상품에 대한 총계 표출 
-	-() 선택 구매 => 구매(PURCHASE) 테이블에 인서트
 	-(V) 선택 삭제 => 장바구니(CART) 테이블에서 딜리트
 	-(V) 헤더부분 장바구니 갯수 표시 => top.js에서 작성함
+	-(V) 선택 구매 => 선택한 상품 결제페이지로 데이터 넘기기
+	-() 썸네일사진 표출 : 클래스 등록 완료되면 구현
+	-() 상품 클릭시 상품 상세 페이지 이동() : CourseDetail?CLASS_ID=240108 형식으로 보냈음. 나중에 주미언니 강의 상세 페이지 다되면 구현.
  */
- 
-document.addEventListener("DOMContentLoaded", function() {
-// 페이지가 완전히 로드되면 다음 코드를 실행(이거 안하니까 초기 페이지 로딩시 전체선택 이벤트가 안되어있음)
+$(document).ready(function() {
 	//-------------------------------------------------------------------------
 	// "전체선택(checkAll)" 버튼 클릭시 전체 항목 선택/해제 이벤트
 	const checkAll = document.querySelector('#checkAll'); //id 속성 가져와서 변수에 저장
-//	console.log(checkAll); //<input type="checkbox" id="checkAll" checked="checked">
 	const checkboxes = document.querySelectorAll('.chk'); //name 속성 전체 가져와서 변수에 저장
-//	console.log(checkboxes); //NodeList(5) [input.chk, input.chk, input.chk, input.chk, input.chk]
 	//-------------
 	const itemCnt = document.querySelector('#itemCount'); //선택상품 갯수 
 	const itemTotal = document.querySelector('#totalAmount') //선택상품 금액
 	
-	//-------------------------------------------------------------------------
+	
 	// 1. 초기 동기화 : 페이지가 처음 로드될 때 'checkAll'의 상태에 따라 다른 체크박스들의 상태를 설정
 	const isChecked = checkAll.checked; // checkAll이 체크되어 있는지 확인
 	// 각 체크박스의 상태를 전체선택 상태와 동일하게 설정하는 for문
@@ -45,9 +43,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	checkboxes.forEach(checkbox => {
 		checkbox.addEventListener('click', function() {
 			let totalCnt = checkboxes.length; //총 체크박스 갯수
-//			console.log("totalCnt: " + totalCnt); 
 			let checkedCnt = document.querySelectorAll('.chk:checked').length; //체크한 갯수
-//			console.log("checkedCnt: "+ checkedCnt);
 			
 			// 모든 체크박스가 선택되었는지 확인 후 전체선택 상태 업데이트
 			checkAll.checked = totalCnt === checkedCnt;
@@ -57,7 +53,8 @@ document.addEventListener("DOMContentLoaded", function() {
 		
 	});	
 	
-	// 4. 체크한 체크박스의 갯수/금액 계산 업데이트 함수
+	//-------------------------------------------------------------------------
+	// 체크한 체크박스의 갯수/금액 계산 업데이트 함수
 	function updateSelect() {
 		let selectCnt = 0; 
 		let selectTotal = 0;
@@ -68,13 +65,32 @@ document.addEventListener("DOMContentLoaded", function() {
 	            selectTotal += parseInt(checkbox.dataset.price); // 체크된 항목 금액 누적
 	        }
    		});
-
+		
 		itemCnt.textContent = selectCnt;
 		itemTotal.textContent = selectTotal.toLocaleString(); // 금액에 세자리 콤마 추가
 	}
+    
+		
+	//-----------------------------------------------------------------------------------
+	// "주문하기" 버튼 클릭 시 체크 여부 확인 함수
+	window.orderCart = function (event) {
+	    event.preventDefault(); // 기본 폼 제출 방지
 	
-	// 페이지 로드 시 초기화
+	    // 체크된 체크박스 확인
+	    const checkedItems = document.querySelectorAll('.chk:checked');
+	    if (checkedItems.length === 0) {
+	        // 체크된 항목이 없으면 알림창 띄우기
+	        alert("주문할 상품을 선택해주세요.");
+	    } else {
+	        // 체크된 항목이 있으면 폼 제출
+	        document.getElementById('cartForm').submit();
+	    }
+    };
+	
+	//-----------------------------------------------------------------------------------
+	// 페이지 로드시 초기화
     updateSelect();
+	
 });
 
 
@@ -119,13 +135,12 @@ function chkDelete() {
    	
 	//AJAX 요청을 통해 삭제 처리    
     $.ajax({
-		type : "GET", //삭제같은 경우 POST를 이용해야할 수도..
+		type : "GET",
 		url : "DeleteItems",
 		data : { //넘겨줄 데이터들 작성
 			cartitem_idx : cartItemsParam }, //요청 파라미터
 		
-		success : function(result) {
-			console.log(result);
+		success : function(response) {
 			alert("선택한 상품이 삭제되었습니다.");
 			location.reload();// 삭제 후 페이지 새로 고침
 		},
@@ -139,82 +154,77 @@ function chkDelete() {
 }
 
 
+
+// 아래 코드는 AJAX JACSON 설정 어쩌고저쩌고때메 안돼서 그냥 form 태그로 구현함
 //================================================================================
-// "주문하기(btnSubmit)" 클릭시 선택한 상품을 가지고 결제페이지(payment.jsp)로 이동
+// "주문하기(btnSubmit)" 클릭시 선택한 상품을 가지고 결제페이지(payment.jsp)로 이동 
 // '선택한 상품 구매'는 주문(Purchase) 테이블에 인서트하고, 장바구니(Cart) 테이블에서 삭제가 이루어져야함 (-> 결제완료시 결과값을 결제페이지에 payment에 삽입)
-function orderCart() {
-	//주문할 상품 있는지 판별 여부 팝업창
-	let checkedCnt = document.querySelectorAll('.chk:Checked').length;
-	if(checkedCnt == 0) {
-		alert('주문할 상품이 없습니다.\n상품을 선택해 주세요.');
-		return;
-	}
-	//--------------------------------------------------------
-	// 선택한 상품을 결제 페이지로 넘겨야하는 데이터
-	// : CartVO => 체크한 장바구니번호(class_id,mem_idx), itemCount, totalAmount(금액)
-	// name속성으로 checkitem=${cart.cartitem_idx}
-	// 주문번호
-	
-	//선택된 상품들의 class_id, 갯수, 가격 등 필요한 데이터 배열에 담기
-	let selectedChk = []; 
-	let itemCount = 0;
-	let totalAmount = 0; 
-	
-	//선택된 상품들 반복하여 처리
-	document.querySelectorAll('.chk:checked').forEach(checkbox => {
-		let purchaseitemId = checkbox.value; //체크박스 idx
-		let purchaseitemPrice = parseInt(checkbox.dataset.price); //체크박스 가격
-		 
-		//선택된 상품들 배열에 추가
-		selectedChk.push({
-			purchase_idx : purchaseitemId,
-			purchase_price : purchaseitemPrice
-		});
-		 
-		//총합 계산
-		totalAmount += purchaseitemPrice;
-		itemCount++;
-	});
-	console.log("selectedChk : " + selectedChk);
-	console.log("totalAmount : " + totalAmount);
-	console.log("itemCount : " + itemCount);
-	
-	
-	//AJAX 요청 보내기
-	$.ajax({
-		type: "POST",
-		url: "Payment",
-		data: Json.stringify({ //전송할 데이터들
-			purchasItems : selectedChk,
-			totalAmount : totalAmount,
-			itemCount : itemCount
-		}),
-		success: function(response) {
-			window.location.href = 'Payment'; //Payment 매핑주소 포워딩 해야함 (controller)
-		},
-		error: function(jqXHR) {
-			console.log("삭제 요청중 오류 발생 : "+ jqXHR);
-			alert("주문에 실패하였습니다. 다시 시도해주세요.");
-		}
-	});
-	
-	
-	
-	
-	
-	
-	
-	
-	/*
-	주문번호 생성 로직 (포맷 : yyyyMMddxxxxx) ======> service에서?
-	xxxxx: 5자리 정수 생성, 후에 해당 주문번호가 이미 존재하는지 확인을 반복
-	
-	*/
-	
-	
-	
-	
-}
+//function orderCart() {
+//	//주문할 상품 있는지 판별 여부 팝업창
+//	const checkedCnt = document.querySelectorAll('.chk:Checked').length;
+//	if(checkedCnt == 0) {
+//		alert('주문할 상품이 없습니다.\n상품을 선택해 주세요.');
+//		return;
+//	}
+//	//--------------------------------------------------------
+//	// 선택한 상품을 결제 페이지로 넘겨야하는 데이터
+//	// : 체크한 장바구니 번호/클래스명/강사명/클래스가격, itemCount(주문갯수), totalAmount(주문금액)
+//	let selectedChk = []; //주문 정보
+//	let itemCount = 0; //주문 갯수
+//	let totalAmount = 0; //주문 금액
+//	
+//	//선택된 상품들 반복하여 처리
+//	document.querySelectorAll('.chk:checked').forEach(checkbox => {
+//		let classIdx = checkbox.value; //체크박스 idx
+//		let classTitle = checkbox.dataset.classTitle; //클래스명
+//		let teacherName = checkbox.dataset.teacherName; //강사명
+//		let classPrice = parseInt(checkbox.dataset.price,10); //클래스가격(10진법)
+//		 
+//		//선택된 상품 정보들 배열에 추가
+//		selectedChk.push({
+//			classIdx : classIdx,
+//			classTitle : classTitle,
+//			teacherName : teacherName,
+//			classPrice : classPrice
+//		});
+//		 
+//		//주문 총합 계산
+//		totalAmount += classPrice;
+//		itemCount++;
+//	});
+//	console.log("주문 상품정보 : " + selectedChk); //주문 상품정보 : [object Object],[object Object]
+//	console.log("주문 금액 : " + totalAmount);
+//	console.log("주문 갯수 : " + itemCount);
+//	
+//	
+//	//AJAX 요청 보내기 
+//	$.ajax({
+//		type: "POST",
+//		url: "Payment",
+//		data: JSON.stringify({ //전송할 데이터들
+//			purchaseItems : selectedChk,
+//			totalAmount : totalAmount,
+//			itemCount : itemCount
+//		}),
+//		contentType: "application/json; charset=UTF-8",
+//		
+//		success: function(response) {
+//			window.location.href = 'Payment'; //Payment 매핑주소 포워딩 해야함 (controller)
+//		},
+//		error: function(jqXHR, textStatus, errorThrown) {
+//		// jqXHR: 서버로부터 받은 응답 객체
+//        // textStatus: 상태 메시지
+//        // errorThrown: 발생한 예외 메시지
+//        console.log("Error occurred: ", textStatus, errorThrown); // 오류 메시지 확인
+//        console.log("jqXHR responseText: ", jqXHR.responseText); // 응답 텍스트 확인
+//        console.log("jqXHR status: ", jqXHR.status); // 상태 코드 확인
+//        console.log("jqXHR responseJSON: ", jqXHR.responseJSON); // JSON 응답 확인 (만약 서버에서 JSON을 보냈다면)
+//
+//        alert("주문 처리 중 오류가 발생했습니다. 콘솔을 확인해주세요.");
+//		}
+//	});
+//	
+//}
 
 
 

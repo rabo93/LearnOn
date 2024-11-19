@@ -10,16 +10,13 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/reset.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
-
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/slick.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/index.js"></script>
 
 <!-- page 개별 CSS -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/payment.css">
     
 <!-- page 개별 JS -->
-<script src="${pageContext.request.contextPath}/resources/js/payment.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/pay_result.js"></script>
 
 </head>
 <body>
@@ -28,7 +25,9 @@
 	</header>
 	
 	<!----------------------------- page 영역 --------------------------- -->
-	결제 성공 페이지
+	결제 결과 페이지
+	
+	
 	
 	
 	<input type="button" value="홈으로" onclick="location.href='./'">

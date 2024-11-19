@@ -42,7 +42,6 @@ public class SendMailClient {
             Session mailSession = Session.getDefaultInstance(props, authenticator);
             Message message = new MimeMessage(mailSession);
             Address senderAddress = new InternetAddress(SENDER_ADDRESS, "런온");
-//            String receiver = receiver1 + "@" + receiver2;
             
             
             Address receiverAddress = new InternetAddress(receiver);

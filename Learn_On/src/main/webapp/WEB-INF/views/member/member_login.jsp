@@ -46,7 +46,7 @@
                <h3>userId쿠키값 : ${cookie.userId.value}</h3>
                </div>
                <div class="passwd_find">
-					<label for="passwd_find"><a href="#">비밀번호 찾기</a></label>
+					<label for="passwd_find"><a href="PasswdFinder">비밀번호 찾기</a></label>
                </div>
                <div id="form-controls">
 					<button type="submit">로그인</button>

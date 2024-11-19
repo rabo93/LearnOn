@@ -2,6 +2,7 @@ package com.itwillbs.learnon.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Member;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -317,5 +318,28 @@ public class MemberController {
 			model.addAttribute("msg", "회원정보 수정실패\\n다시 확인해주세요 ");
 			return"result/fail";
 		}
+	}
+	
+	/*******비밀번호 변경********/
+	@GetMapping("PasswdFinder")
+	public String passwdFinderForm() {
+		return "member/passwd_fineder";
+	}
+	
+	@PostMapping("PasswdFinder")
+	public String passwdFinder(Member member,Model model,BCryptPasswordEncoder passwordEncoder) {
+		MemberVO DBmember = memberService.getMemberPasswdFinder(member);
+		System.out.println(member);
+		if(DBmember == null) {
+			model.addAttribute("msg", "권한이 없습니다");
+			return "result/fail";
+		}else {
+			
+			member = memberService.passwdFinder(member);
+			model.addAttribute("msg", "비밀번호가 변경되었습니다.");
+			
+		}
+		
+		return "";
 	}
 }

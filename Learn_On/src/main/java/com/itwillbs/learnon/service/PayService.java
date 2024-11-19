@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.learnon.mapper.PayMapper;
+import com.itwillbs.learnon.vo.CouponVO;
 import com.itwillbs.learnon.vo.PurchaseVO;
 
 @Service

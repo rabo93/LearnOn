@@ -5,22 +5,50 @@
   
   <mapper namespace="com.itwillbs.learnon.mapper.CouponMapper">
 	<!-- 쿠폰 조회 -->
-  	<select id="selectCoupon" resultType="coupon">
-  		SELECT 
-			m.MEM_ID
-			, my.COUPON_ID
-			, ci.COUPON_CODE
-			, ci.COUPON_NAME
-		    , ci.DISCOUNT_AMOUNT
-		    , ci.DISCOUNT_PERCENT
-		FROM MEMBER m JOIN MYCOUPON my 
-		ON m.MEM_ID = my.MEM_ID
-		JOIN COUPONINFO ci
-		ON my.COUPON_ID = ci.COUPON_ID
-		WHERE m.MEM_ID = ${memId}
-  	
+  	<select id="selectCoupon" resultType="map">
+	  	SELECT 
+			mc.MEM_ID
+		    , mc.COUPON_ID 
+		    , c.COUPON_CODE -- 쿠폰코드
+		    , c.COUPON_NAME
+		    , c.DISCOUNT_PERCENT
+			, c.DISCOUNT_AMOUNT 
+		    , mc.ISSUE_DATE -- 발급날짜
+		    , c.C_EXPIRY_DATE -- 유효기간
+		    , c.COUPON_STATUS -- 쿠폰상태(1:사용가능,2:사용불가)
+		    , mc.COUPON_ISUSED -- 쿠폰사용여부(1:미사용,2:사용완료)
+		FROM MYCOUPON mc JOIN COUPONINFO c
+		ON c.COUPON_ID = mc.COUPON_ID
+		WHERE mc.MEM_ID = #{sId}
+		AND c.COUPON_STATUS = 1
+		AND mc.COUPON_ISUSED = 1
+  	</select>
+  	<!-- 쿠폰 개수 조회 -->
+  	<select id="selectCouponCount" resultType="int">
+  		SELECT COUNT(*) AS '쿠폰갯수'
+		FROM MYCOUPON
+		WHERE MEM_ID = #{sId}
+		AND COUPON_ISUSED = 1
   	</select>
   
-  
-  
+  	<!-- 쿠폰 코드 입력시 조회 후 인서트 -->
+  	<insert id="insertCoupon" parameterType="map">
+	  	INSERT INTO MYCOUPON (MEM_ID, COUPON_ID, ISSUE_DATE, COUPON_STATUS, COUPON_ISUSED)
+			SELECT	#{mem_id}
+			        , ci.COUPON_ID
+					, sysdate()
+			        , ci.COUPON_STATUS
+			        , 1		-- 조회한 쿠폰코드가 있을경우 1로 지정
+			FROM COUPONINFO ci
+		WHERE ci.COUPON_CODE = #{coupon_code} -- 입력한 쿠폰코드
+		AND ci.COUPON_STATUS != 2	-- 쿠폰상태가 2이면 삽입불가 조건
+		AND NOT EXISTS (	-- 이미 보유한 쿠폰이면 삽입불가 조건
+			SELECT 1
+		    FROM MYCOUPON mc
+			WHERE mc.COUPON_ID = ci.COUPON_ID 
+			AND mc.MEM_ID = #{mem_id}
+		)
+  	</insert>
+  	
+  	  
   </mapper>

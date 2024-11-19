@@ -5,10 +5,16 @@
 <mapper namespace="com.itwillbs.learnon.mapper.MemberMapper">
 	
 	
-	<select id="selectMember" resultType="com.itwillbs.learnon.vo.MemberVO">
+	<select id="selectMember" resultType="member">
 		SELECT *
 		  FROM MEMBER
 		 WHERE mem_id = #{mem_id}
+	</select>
+	
+	<select id="selectMemberNick" resultType="com.itwillbs.learnon.vo.MemberVO">
+		SELECT *
+		  FROM MEMBER
+		 WHERE mem_nick = #{mem_nick}
 	</select>
 	
 	<select id="selectMemberPasswd" resultType="String">
@@ -64,20 +70,22 @@ INSERT INTO MEMBER (
 )
 </insert>
 	
-	<update id="updateMember">
+	<update id="updateMember" >
 	UPDATE MEMBER
-	   SET
-	 mem_nick = #{mem_nick}
-<!-- 		<if test="!mem_passwd.equals('')">  -->
-		<if test="mem_passwd != null and mem_passwd != ''">
+	SET
+		mem_nick = #{mem_nick}
+		, mem_post_code = #{mem_post_code}
+		<if test="!mem_passwd.equals('')"> 
+<!-- 		<if test="mem_passwd != null and mem_passwd != ''"> -->
 			,mem_passwd = #{mem_passwd}
 		</if>
-	, mem_post_code = #{mem_post_code}
-	, mem_address1 = #{mem_address1}
-	, mem_address2 = #{mem_address2}
-	, mem_phone = #{mem_phone}
-	WHERE mem_id = #{mem_id}
-	</update>
+		, mem_address1 = #{mem_address1}
+		, mem_address2 = #{mem_address2}
+		, mem_phone = #{mem_phone}
+		, mem_email = CONCAT(#{mem_email1}, '@', #{mem_email2})
+	WHERE
+		mem_id = #{mem_id}
+</update>
 	
 	<update id="updateMailAuthStatus">
 		UPDATE MEMBER
@@ -110,4 +118,13 @@ INSERT INTO MEMBER (
 	  FROM MAIL_AUTH_INFO
 	 WHERE mem_email = #{mem_email}
 	</select>
+	
+<!-- 	비번변경 -->
+
+	<update id="updatePasswd">
+	UPDATE MEMBER
+	   SET mem_passwd = #{mem_passwd}
+	WHERE mem_id = #{mem_id} 
+	
+	</update>
 </mapper>

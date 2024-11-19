@@ -28,7 +28,7 @@
 	
 	<!----------------------------- page 영역 --------------------------- -->
 	<main id="cart">
-	<form action="Payment" method="post" id="cartForm">
+	<form action="Payment" method="get" id="cartForm">
 		<div class="wrapper">
 			<!-- cart-wrap start  -->
 			<div class="cart-wrap">

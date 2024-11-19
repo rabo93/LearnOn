@@ -118,18 +118,19 @@
     gap: .2rem;
 }
  
-.coupon-select-info .coupon-price {
+.coupon-select .coupon-price {
 	font-weight: 700;
 }
 
-.coupon-select-info .coupon-btn {
-/* 	이부분 다시할것!!!!!!! */
+.coupon .coupon-btn  {
+	cursor: pointer;
+	overflow: hidden;
 	height: 3rem;
 	width: 6rem;
-/* 	padding: 0; */
-	border-color: grey;
-	background-color: grey;
+	border-color: var(--info);
+	background-color: var(--info);
 	color: #fff;
+	border-width: 0px;
 	border-radius: .5rem;
 	font-size: 1rem;
 	font-weight: 900;
@@ -145,7 +146,7 @@
 
 .coupon-input .coupon-inputbox {
 	box-sizing: border-box;
-	width: 100%;
+	width: 500px;
 	height: 10px;
 	padding: 1.1rem 1.6rem 1.3rem 1.1rem;
 	border: .1rem solid #e0e0e0;
@@ -156,6 +157,7 @@
 	color: #4d4d4d;
 	margin-right: 10px;
 }
+
 /* 결제금액 */
 .pay-right dl {
     display: flex;
@@ -209,6 +211,7 @@
 .pay-right .notice-box .notice-check span{
 	padding-left: .8rem;
 }
+
 /* ------------- 결제하기 버튼 -------------------- */
 .btns-box {
     /* margin-top: 10px; */

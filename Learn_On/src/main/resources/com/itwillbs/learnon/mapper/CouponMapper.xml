@@ -25,7 +25,7 @@
   	</select>
   	<!-- 쿠폰 개수 조회 -->
   	<select id="selectCouponCount" resultType="int">
-  		SELECT COUNT(*) AS '쿠폰갯수'
+  		SELECT COUNT(*) AS '사용가능쿠폰갯수'
 		FROM MYCOUPON
 		WHERE MEM_ID = #{sId}
 		AND COUPON_ISUSED = 1
@@ -49,6 +49,8 @@
 			AND mc.MEM_ID = #{mem_id}
 		)
   	</insert>
-  	
+ 	
+ 	<!-- 쿠폰 사용 후 사용여부 업데이트 (COUPON_ISUSED = 2)-->
+ 	 	
   	  
   </mapper>

@@ -1,16 +1,28 @@
 package com.itwillbs.learnon.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
+import javax.servlet.http.HttpSession;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.learnon.service.AdminService;
 import com.itwillbs.learnon.service.FaqService;
@@ -28,6 +40,8 @@ public class AdminController {
 	private NoticeBoardService noticeService;
 	@Autowired
 	private FaqService faqService;
+	
+	private String uploadPath = "/resources/upload";
 	
 	// 어드민 메인페이지 매핑
 	@GetMapping("AdmIndex")
@@ -71,25 +85,47 @@ public class AdminController {
 	// 어드민 카테고리 편집 저장
 	@PostMapping("AdmClassCategory")
 	public String admin_class_categorySubmit(AdminVO VO, Model model) {
-//		String[] oldArrSubCodetype = VO.getOld_codetype_subcate().split(",");
-//		String[] oldArrSubCodeTypeId = VO.getOld_codetype_id_subcate().split(",");
-//		String[] oldArrSubName = VO.getOld_name_subcate().split(",");
-//		String[] oldArrSubDescription = VO.getOld_description_subcate().split(",");
-//		String[] oldArrSubOrder = VO.getOld_order_subcate().split(",");
-//		
-//		AdminVO UpdateVO = new AdminVO();
-//		int updateRowCnt = oldArrSubCodetype.length;
-//		
-//		for (int i = 0; i < updateRowCnt; i++) {
-//			UpdateVO.setOld_codetype_subcate(oldArrSubCodetype[i]);
-//			UpdateVO.setOld_codetype_id_subcate(oldArrSubCodeTypeId[i]);
-//			UpdateVO.setOld_name_subcate(oldArrSubName[i]);
-//			UpdateVO.setOld_description_subcate(oldArrSubDescription[i]);
-//			UpdateVO.setOld_order_subcate(oldArrSubOrder[i]);
-//			
-//			adminService.updateCate(UpdateVO);
-//		}
 		
+		// 업데이트 로직
+		String[] oldSubCodetype = VO.getOld_codetype_subcate().split(",");
+		String[] oldSubCodeTypeId = VO.getOld_codetype_id_subcate().split(",");
+		String[] oldSubName = VO.getOld_name_subcate().split(",");
+		String[] oldSubDescription = VO.getOld_description_subcate().split(",");
+		String[] oldSubOrder = VO.getOld_order_subcate().split(",");
+		String[] sub_checkCodeid = VO.getSub_checkCodeid().split(",");
+		
+		String[] oldMainCodeId = VO.getOld_codeid_maincate().split(",");
+		String[] oldMainCodeType = VO.getOld_codetype_maincate().split(",");
+		String[] oldMainCodeName = VO.getOld_codename_maincate().split(",");
+		String[] oldMainDescription = VO.getOld_description_maincate().split(",");
+		String[] mainCheckCodeId = VO.getMain_checkCodeid().split(",");
+		
+		AdminVO UpdateVO = new AdminVO();
+		int updateMainRowCnt = oldMainCodeId.length;
+		int updateSubRowCnt = oldSubCodetype.length;
+		
+		for (int i = 0; i < updateMainRowCnt; i++) {
+			UpdateVO.setOld_codeid_maincate(oldMainCodeId[i]);
+			UpdateVO.setOld_codetype_maincate(oldMainCodeType[i]);;
+			UpdateVO.setOld_codename_maincate(oldMainCodeName[i]);;
+			UpdateVO.setOld_description_maincate(oldMainDescription[i]);
+			UpdateVO.setMain_checkCodeid(mainCheckCodeId[i]);
+			
+			adminService.updateMainCate(UpdateVO);
+		}
+		
+		for (int i = 0; i < updateSubRowCnt; i++) {
+			UpdateVO.setOld_codetype_subcate(oldSubCodetype[i]);
+			UpdateVO.setOld_codetype_id_subcate(oldSubCodeTypeId[i]);
+			UpdateVO.setOld_name_subcate(oldSubName[i]);
+			UpdateVO.setOld_description_subcate(oldSubDescription[i]);
+			UpdateVO.setOld_order_subcate(oldSubOrder[i]);
+			UpdateVO.setSub_checkCodeid(sub_checkCodeid[i]);
+			
+			adminService.updateSubCate(UpdateVO);
+		}
+		
+		// 행 추가 로직
 		AdminVO insertVO = new AdminVO();
 		
 		if (VO.getCodeid_maincate() != null) {
@@ -160,23 +196,128 @@ public class AdminController {
 	// 어드민 클래스 등록 페이지 매핑
 	@GetMapping("AdmClassAdd")
 	public String admin_class_add(Model model) {
-		model.addAttribute("getCategory", adminService.getCategory());
-		
-		
+		model.addAttribute("getMainCate", adminService.getMainCate());
 		return "admin/class_add";
-		
 	}
 	
 	@PostMapping("AdmClassAdd")
-	public String admin_class_add1(Model model) {
-		int insertCount = adminService.registClass();
+	public String admin_class_add1(AdminVO VO, HttpSession session, Model model) {
 		
-		if (insertCount < 0) {
+		AdminVO insertCur = new AdminVO();
+		
+		String[] arrCurTitle = VO.getCur_title().split(",");
+		String[] arrCurRunTime = VO.getCur_runtime().split(",");
+		int totalRunTime = VO.getClass_runtime();
+		
+		for (int i = 0; i < arrCurTitle.length; i++) {
+			insertCur.setCur_title(arrCurTitle[i]);
+			insertCur.setCur_runtime(arrCurRunTime[i]);
+			totalRunTime += Integer.parseInt(arrCurRunTime[i]);
+			
+			adminService.curriculum(insertCur);
+		}
+		VO.setClass_runtime(totalRunTime);
+		
+		int insertCountCla = adminService.registClass(VO);
+		
+		// 실제 경로
+		String realPath = getRealPath(session);
+		//	서브 디렉토리 생성
+		String subDir = createDirectories(insertCur, realPath);
+		realPath += "/" + subDir;
+		//	첨부파일 업로드
+		String fileName = addFileProcess(VO, realPath, subDir);
+		for (int i = 0; i < arrCurTitle.length; i++) {
+			String videoName = addVideoProcess(VO, realPath, subDir);
+			VO.setCur_video(videoName);
+			adminService.insertCurVideo(VO);
+		}
+		
+		VO.setClass_pic1(fileName);
+		
+		adminService.insertClassPic(VO);
+		
+		if (insertCountCla < 0) {
 			model.addAttribute("msg", "클래스 등록 실패!");
 			return "admin/fail";
 		}
 		
-		return "admin/class_add";
+		return "redirect:/AdmClassList";
+	}
+	
+	//	실제 업로드 경로 메서드
+	public String getRealPath(HttpSession session) {
+		String realPath = session.getServletContext().getRealPath(uploadPath);
+		return realPath;
+	}
+	// 서브 디렉토리 생성
+	public String createDirectories(AdminVO VO, String realPath) {
+		
+		//	기존 실제 업로드 경로
+		realPath += "/" + VO.getClass_id()+1;
+		//	실제 경로 전달
+		Path path = Paths.get(realPath);
+		
+		return Integer.toString(VO.getClass_id()+1);
+	}
+	
+	public String addFileProcess(AdminVO VO, String realPath, String subDir) {
+		MultipartFile multis = VO.getClass_pic1_get();
+		
+		VO.setClass_pic1("");
+		String fileName = "";
+		
+		try {
+			String origin = multis.getOriginalFilename();
+			if (!origin.equals("")) {
+				String temp = UUID.randomUUID().toString().substring(0, 8) + "_" + origin;
+				multis.transferTo(new File(realPath, temp));
+				fileName += subDir + "/" + temp + ",";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		
+		if (!fileName.equals("")) {
+			fileName = fileName.substring(0, fileName.length() - 1);
+		}
+		
+		return fileName;
+	}
+	
+	public String addVideoProcess(AdminVO VO, String realPath, String subDir) {
+		MultipartFile multis = VO.getCur_video_get();
+		
+		VO.setCur_video("");
+		String fileName = "";
+		
+		try {
+			String origin = multis.getOriginalFilename();
+			if (!origin.equals("")) {
+				String temp = UUID.randomUUID().toString().substring(0, 8) + "_" + origin;
+				multis.transferTo(new File(realPath, temp));
+				fileName += subDir + "/" + temp + ",";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		
+		if (!fileName.equals("")) {
+			fileName = fileName.substring(0, fileName.length() - 1);
+		}
+		
+		return fileName;
+	}
+	
+	@ResponseBody
+	@GetMapping("SelectCategory")
+	public String selectCategory(AdminVO admin) {
+		List<AdminVO> adminArr = adminService.selectSubCate(admin);
+		System.out.println("admin : " + adminArr);
+		
+		JSONArray joArr = new JSONArray(adminArr);
+		
+		return joArr.toString();
 	}
 	
 	// 어드민 클래스 목록 페이지 매핑
@@ -199,14 +340,6 @@ public class AdminController {
 		
 		return "admin/class_list_modify";
 	}
-	
-	// 어드민 삭제된 클래스 목록 페이지 매핑
-//	@GetMapping("admin_class_delete")
-//	public String admin_class_delete(Model model) {
-//		model.addAttribute("getClassList", adminService.getClassList());
-//		
-//		return "admin/class_delete";
-//	}
 	
 	// =======================================================================
 	

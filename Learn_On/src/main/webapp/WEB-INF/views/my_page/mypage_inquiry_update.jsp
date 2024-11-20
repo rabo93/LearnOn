@@ -57,14 +57,15 @@
 		                    	<textarea name="support_content" rows="15" cols="40" required="required" placeholder="문의할 내용을 입력하세요">${support.support_content}</textarea>
 		                    </div>
 		                    <!-- 파일 첨부 -->
-		                    <div class="row">
+		                    <div class="row attach">
 								<c:choose>
 									<c:when test="${not empty support.support_file1}">
+										<i class="fa-solid fa-paperclip"></i>
 										${originalFileName}
-		 								<a href="${pageContext.request.contextPath}/resources/upload/${fileName}" download="${originalFileName}">
+		 								<a href="${pageContext.request.contextPath}/resources/upload/${fileName}" download="${originalFileName}" class="dw">
 		 									<i class="fa-solid fa-download"></i>
 		 								</a>
-		 								<a href="javascript:deleteFile(${support.support_idx}, '${fileName}')">
+		 								<a href="javascript:deleteFile(${support.support_idx}, '${fileName}')" class="del">
 		 									<i class="fa-solid fa-trash-can"></i>
 		 								</a>
 										<input type="file" name="file1" hidden>
@@ -116,6 +117,7 @@
 		
 		function deleteFile(support_idx, file) {
 			console.log(support_idx + ", " + file);
+			
 		}
 	</script>
 </body>

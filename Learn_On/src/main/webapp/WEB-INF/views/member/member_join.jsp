@@ -199,7 +199,7 @@
 							</div>
 						</section>
 						<div id="form-controls">
-							<button type="submit" id="btnSubmit">회원가입</button>
+							<input type="submit" id="submit" value="회원가입" />
 						</div>
 					</form>
 				</div>

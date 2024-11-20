@@ -190,16 +190,19 @@
 .inq-frm .row input[type="text"] {width: 100%;padding: 8px 10px;font-size: 15px;border: 1px solid #ddd;border-radius: 4px;}
 .inq-frm .row textarea {width: 100%;padding: 8px 10px;font-size: 15px;border: 1px solid #ddd;border-radius: 4px;}
 .inq-frm .row input[type="file"] {padding: 8px 10px;font-size: 15px;border: 1px solid #ddd;border-radius: 4px;background: var(--white);width: 100%;}
-.inq-wrap .com {display: flex;align-items: flex-start;margin-bottom: 0.4rem;}
-.inq-wrap .com label {flex:0 0 100px;font-weight:700;color:var(--dark);background: #cbddf9;display:block;padding: 0.7rem 1rem;text-align: center;border-radius: 4px 0 0 4px;}
-.inq-wrap .com span {display: block;flex: 1 1 auto;background: var(--white);padding: 0.7rem 1rem;}
-.inq-wrap .com span.contents {min-height:400px;padding: 1rem;}
+.inq-wrap .com {display: flex;align-items: stretch;margin-bottom: 0.4rem;}
+.inq-wrap .com label {flex:0 0 90px;font-weight:700;color:var(--dark);background: #d3dded;display:inline-flex;align-items:center;justify-content:center;padding: 0.9rem;text-align: center; font-size: 0.875rem;}
+.inq-wrap .com span {display: block;flex: 1 1 auto;background: var(--white);padding:0.9rem; font-weight:500;color:var(--dark);font-size:15px;}
+.inq-wrap .com span.contents {min-height:280px;padding: 1rem;}
 .inq-wrap .com a:hover {text-decoration:underline;}
 .inq-wrap .com a input[type="button"] {cursor:pointer;background: var(--primary);color: var(--white);border: 0;padding: 6px 10px;border-radius: 4px;font-size: 14px;font-weight: 700;margin-left: 10px;}
 .inq-wrap .com.attach {justify-content: center;margin-top: 14px;margin-bottom: 0;}
 .inq-wrap .btns {display:flex;align-items: center;gap: 4px;justify-content: center;margin-top: 20px;}
 .inq-wrap .btns button {padding: 10px 1rem;background: var(--dark);font-size: 0.875rem;font-weight: 600;color: var(--white);border: 0;border-radius: 6px;margin-bottom: 10px;}
-
+.inq-frm .row.attach {background:var(--white);padding: 1rem;border: 1px solid #ddd;border-radius: 4px;display: flex;align-items: center;gap: 0.8rem;}
+.inq-frm .row.attach > i {font-size:1.2rem;color:var(--secondary);margin-right: 6px;}
+.inq-frm .row.attach a.dw {font-size:1.2rem;color:var(--primary);}
+.inq-frm .row.attach a.del {font-size:1.2rem;color:var(--danger);}
 /* 페이징 */
 #pageList {display: flex;justify-content: center;align-items: center;gap: 6px;margin: 1rem auto;}
 #pageList button {font-size: 13px;font-weight: 700;background: var(--white);border: 1px solid var(--dark);border-radius: 4px;cursor:pointer;width: 30px;height: 30px;}
@@ -224,12 +227,21 @@
 #myCourseDashboard .contents .hd {background: #363f5f;width: 100%;display: flex;align-items: center;gap: 1rem;padding: 1rem;}
 #myCourseDashboard .contents .hd .back-btn {display: inline-block;padding: 13px 24px;background: #ecedf1;border-radius: 6px;font-weight: 700;font-size: 0.875rem;color: var(--dark);border: 1px solid var(--light-blue);}
 #myCourseDashboard .contents .hd .ttl {font-size: 1.3rem;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
-#myCourseDashboard .contents .video {width:100%;display:flex; align-items: center; justify-content: center;}
+#myCourseDashboard .contents .video {width:100%;display:flex;height:calc(100% - 74px); align-items: center; justify-content: center;}
 #myCourseDashboard .contents .video video {object-fit: fill;width:100%;}
 #myCourseDashboard .cur-wrap {max-width: 440px;width: 100%;background: #e6e8f3;color: var(--dark);overflow-y: auto;overflow-x: hidden;}
 #myCourseDashboard .cur-wrap .cur-li {width: 100%;}
 #myCourseDashboard .cur-wrap .cur-li li {cursor: pointer;width: 100%;margin: 8px 0;background: var(--white);padding: 1rem;}
-#myCourseDashboard .cur-wrap .cur-li li.selected {background: #a7aec9;border: 1px solid #363f5f;border-left: 0;border-right: 0;}
+#myCourseDashboard .cur-wrap .cur-li li.selected {background: #a7aec9;border: 1px solid #363f5f;border-left: 0;border-right: 0;display:flex;align-items:center;justify-content:space-between;}
 #myCourseDashboard .cur-wrap .cur-li li.selected .ttl {font-weight:700;}
 #myCourseDashboard .cur-wrap .cur-li li .ttl {font-size: 16px;font-weight: 600;}
 #myCourseDashboard .cur-wrap .cur-li li .runtime {font-size: 12px;background: #4f5877;color: var(--white);padding: 4px 8px;border-radius: 50px;font-weight: 700;display: inline-block;margin-bottom: 6px;}
+#myCourseDashboard .cur-wrap .cur-li li.empty {background:url('/resources/images/no_data.svg') no-repeat center top;padding-top: 13rem;text-align:center;font-weight: 600;color: #434f61;margin-bottom: 2rem;background-size: auto 200px;cursor:default;}
+#myCourseDashboard .contents .video .empty {text-align:center;}
+#myCourseDashboard .contents .video .empty i {font-size:2rem;margin-bottom:1rem;}
+
+
+
+
+
+

@@ -37,16 +37,16 @@
                </label>
            </div>
            <form action="MemberLogin" method="post">
-               <label for="mem_id">아이디</label>
-               <input type="text" name="mem_id" id="mem_id" placeholder="아이디">
+               <label for="mem_id" >아이디</label>
+               <input type="text" name="mem_id" id="mem_id" placeholder="아이디" value="${cookie.userId.value }">
                <label for="mem_passwd">비밀번호</label>
                <input type="password" name="mem_passwd" id="mem_passwd" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;">
                <div class="checkbox-container">
-                   <input type="checkbox" name="terms" id="terms">
-                   <label for="terms">아이디 기억하기</label>
+               <label for="rememberId"><input type="checkbox" name="rememberId" id="rememberId"<c:if test="${not empty cookie.rememberId}">checked</c:if>>아이디 기억하기</label>
+               <h3>userId쿠키값 : ${cookie.userId.value}</h3>
                </div>
                <div class="passwd_find">
-					<label for="passwd_find"><a href="#">비밀번호 찾기</a></label>
+					<label for="passwd_find"><a href="PasswdFinder">비밀번호 찾기</a></label>
                </div>
                <div id="form-controls">
 					<button type="submit">로그인</button>

@@ -1,6 +1,7 @@
 
 //****************생년월일****************
 $(document).ready(function() {
+	
 		for (let i = 2000; i > 1980; i--) {
 			$('#year').append('<option value="' + i + '">' + i + '</option>');
 		}
@@ -15,6 +16,7 @@ $(document).ready(function() {
 
 // 이메일 구현중...
 $(document).ready(function() {
+//	$("#submit").click(submit);
 	$("#emaildmain").change(function() {
 		$("#mem_email2").val($("#emaildmain").val());
 	});
@@ -29,12 +31,12 @@ $(document).ready(function() {
 let checkName = false;
 let checkPasswd1 = false;
 let checkPasswd2 = false;
-let checkNic = false;
 let checkNumber = false;
 let checkAddr = false;
 let checkMail = false;
 let checkCode = false;
 let checkIdResult = false;
+let checkNic = false;
 
 // ************* 이름 null 검사**************
 function checkNameLength(){
@@ -52,7 +54,7 @@ function checkNameLength(){
 // ************* 아이디 중복체크/길이검사**************
 function checkId(){
 	let id = $("#mem_id").val();
-	let regex = /^[\d\w][\d\w_]{4,12}$/;
+	let regex = /^[\d\w][\d\w_]{3,12}$/;
 	if(regex.exec(id)){
 		$.ajax({
 			type : "get" ,
@@ -61,7 +63,7 @@ function checkId(){
 			mem_id:id
 		} ,
 			success : function(result){
-				
+//				debugger;
 				if(result.trim() == "false"){
 					$("#checkIdResult").text("사용가능한 아이디 입니다.").css("color","GREEN");
 					checkIdResult = true;
@@ -71,7 +73,7 @@ function checkId(){
 				}
 			} ,
 			error : function(){
-				alert("일시적인 서비스 장애로\n아이디 중복검사 불가")
+				alert("이미 사용중인 아이디 입니다\n다시 입력해주세요")
 			}
 		});
 	}else{
@@ -95,22 +97,23 @@ function ckNick(){
 				},
 				success : function(result){
 					if(result.trim() == "false" ){
-						$("#checkNic").text("사용가능한 닉네임 입니다").css("color","green");
+						$("#checkNic").text("사용가능한 닉네임 입니다").css("color","GREEN");
 						checkNic = true;
 					}else {
-						$("#checkNic").text("이미 사용중인 닉네임 입니다").css("color","red");
+						$("#checkNic").text("이미 사용중인 닉네임 입니다").css("color","RED");
 						checkNic = false;
 					}
-				}
-				
-		
-			});
-		}else {
-			$("#checkNic").text("2~8글자만 사용가능").css("color","red");
-			checkNic = false;
-			
-		}
+				} ,
+			error : function(){
+//				alert("이미 사용중인 닉네임 입니다\n다시 입력해주세요")
+			}
+		});
+	}else{
+		$("#checkNic").text("4~12글자만 사용가능");
+		$("#checkNic").css("color", "red");
+		checkIdResult = false;
 	}
+}
 
 
 //function checkIdLength (){
@@ -185,13 +188,44 @@ $("#terms_all").click(function() {
 		
 	});
 });
-//
-//	document.querySelector("#terms_all").onclick = function() {
-//	    let isChecked = document.querySelector("#terms_all").checked;
-//	    let termsCheckboxes = document.querySelectorAll("input[name='terms']");
-//	    
-//	    for (let checkbox of termsCheckboxes) {
-//	console.log("join.js 파일이 로드되었습니다.");
-//	        checkbox.checked = isChecked;
-//	    }
-//	};
+// **************프로필 미리보기*************
+$("#profile_img").change(function (event) {
+    let file = event.target.files[0];
+    let reader = new FileReader();
+
+    reader.onload = function (event2) {
+        console.log("파일: " + event2.target.result);
+        $("#preview_profile").attr("src", event2.target.result);
+    };
+
+    if (file) {
+        reader.readAsDataURL(file);
+    }
+});
+
+/******************* */
+function submit() {
+    if (!checkIdResult) {
+        alert("아이디를 다시 입력해주세요.");
+        $("#mem_id").focus();
+        return false;
+    } else if (!checkNic) {
+        alert("닉네임을 다시 입력해주세요.");
+        $("#mem_nick").focus();
+        return false;
+    } else if (!checkPasswd1 || !checkPasswd2) {
+        alert("비밀번호를 확인해주세요.");
+        $("#mem_passwd1").focus();
+        return false;
+    } else if (!checkName) {
+        alert("이름을 입력해주세요.");
+        $("#mem_name").focus();
+        return false;
+    } else if (!checkMail) {
+        alert("이메일을 확인해주세요.");
+        $("#mem_email1").focus();
+        return false;
+    }
+    return true;
+    
+}

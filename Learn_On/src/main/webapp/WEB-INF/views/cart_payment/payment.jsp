@@ -13,7 +13,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
-
 <!-- page 개별 CSS -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/payment.css">
 <!-- page 개별 JS -->
@@ -26,7 +25,6 @@
 	<header>
 		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>
 	</header>
-	
 	<!----------------------------- page 영역 --------------------------- -->
 	<main id="pay">
 		<form action="Portone" method="post" id="payForm">
@@ -56,7 +54,9 @@
 									</div>
 									<!-- 상품 금액부분 -->
 									<div class="item-result">
-										<span class="price"><fmt:formatNumber value="${item.classPrice}" type="number" />  </span>원
+										<span class="price">
+											<fmt:formatNumber value="${item.classPrice}" type="number" />
+										</span>원
 									</div>
 								</c:forEach>
 							</div>
@@ -70,13 +70,15 @@
 									<div class="coupon-select">
 										<div class="coupon-select-info">
 											<p>쿠폰 할인 금액</p>
-											<span class="coupon-price">${discountAmount}원</span>
+											<!-- 선택한 할인 쿠폰 금액 표출 -->
+											<span class="coupon-price">${coupon.totalDiscount}원</span>
 										</div>
-										
-										<input type="button" value="쿠폰선택" class="coupon-btn" onclick="couponSelect()">
+										<!-- 버튼 클릭시 쿠폰 모달창 생성 -->
+										<input type="button" value="쿠폰선택" class="coupon-btn" id="couponSelect">
 									</div>
+									<!-- 쿠폰 코드 등록 -->
 									<div class="coupon-input">
-										<input type="text" placeholder="쿠폰 코드를 입력해주세요." class="coupon-inputbox" name="couponCode">
+										<input type="text" placeholder="쿠폰 코드를 입력해주세요." class="coupon-inputbox" name="couponCode" id="couponCode">
 										<input type="button" value="쿠폰발급" class="coupon-btn" onclick="couponCreate()">
 									</div>
 								</div>
@@ -99,10 +101,18 @@
 								<dl>
 									<dt>할인 금액</dt>
 									<dd><fmt:formatNumber value="${discountAmount}" type="number" /> 원</dd>
+									<dd><fmt:formatNumber value="${discountPercent}" type="number" /> %</dd>
 								</dl>
 								<dl class="total">
 									<dt>결제 금액</dt>
-									<c:set var="payAmount" value="${totalAmount - discountAmount}" />
+									<c:choose>
+										<c:when test=""> <!-- 금액인 경우 -->
+											<c:set var="payAmount" value="${totalAmount - discountAmount}" />
+										</c:when>
+										<c:otherwise> <!-- 퍼센트인 경우 -->
+											<c:set var="payAmount" value="${totalAmount - (totalAmount * discountAmount / 100)}" />
+										</c:otherwise>
+									</c:choose>
 									<dd><fmt:formatNumber value="${payAmount}" type="number" /> 원</dd>
 								</dl>
 							</div>
@@ -128,7 +138,7 @@
 							<div class="pay-item">
 								<div class="notice-box">
 									<label class="notice-check">
-										<input type="checkbox" id="notice" name="" value="">	
+										<input type="checkbox" id="notice" name="notice" value="">	
 						 				<span>이용약관 동의(필수)</span>
 									</label>
 					 				<a href="Terms">내용보기</a>
@@ -137,7 +147,7 @@
 						</section>	
 						<!-- ----------------- 결제하기 버튼 ---------------->
 						<div class="btns-box">
-							<input type="submit" value="결제하기" class="btnSubmit" onclick="requestPay()">
+							<input type="submit" value="결제하기" class="btnSubmit">
 						</div>
 					</div>
 				</div>
@@ -146,13 +156,10 @@
 			</div>
 		</form>
 	</main>
-
 	
 	<!----------------------------- page 영역 --------------------------- -->
 	<footer>
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
 	</footer>
-
-
 </body>
 </html>

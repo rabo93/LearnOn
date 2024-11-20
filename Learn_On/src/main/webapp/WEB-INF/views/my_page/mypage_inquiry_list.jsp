@@ -14,8 +14,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mypage.css">
     
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/modal.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/rating.js"></script>
 
 </head>
 <body>
@@ -33,7 +31,7 @@
 				<a href="MyReview">작성한 수강평</a>
 				<a href="MyPayment">결제내역</a>
 				<a href="MyCoupon">보유한 쿠폰</a>
-				<a href="MyInquiry" class="active">문의내역</a>
+				<a href="MySupport" class="active">문의내역</a>
 				<a href="MyAttendance">출석체크</a>
 			</aside>
 			<div class="my-container">

@@ -1,35 +1,86 @@
 /*
 	결제 기능 구현
 	- (V) 결제 목록 불러오기 : 장바구니에서 넘겨받은 선택된 상품들의 클래스제목, 강사이름, 클래스가격, 총 주문금액/갯수
-	- () 쿠폰선택 클릭시 목록 불러오기(mypage_coupon 참고하기)
+	- (V) 쿠폰선택 클릭시 목록 불러오기(mypage_coupon 참고하기) => 쿠폰선택창 열기 
 	- () 선택한 쿠폰 금액 표출 : 
-	- () 쿠폰 코드 입력시 MYCOUPON 테이블에 인서트
+	- (V) 쿠폰 코드 입력시 MYCOUPON 테이블에 인서트
 	- () 주문금액 - 할인금액 = 결제 금액 표출
 	- () 결제하기 클릭시 이용약관 동의(필수) 체크 확인 : 클릭 안되어있으면 진행X
 	- () 결제하기 클릭시 결제 API에 데이터 넘겨주기 : 넘겨줄 데이터 (주문번호, 결제금액, 결제수단, 회원id, 회원연락처)
 	- () 결제 완료시 결제 테이블에 인서트 => 주문테이블에 같이 넣어야할지 고민해보자
 */
 
-//=============================================================================
 $(document).ready(function() {
+	//=============================================================================
+	// "쿠폰선택" 클릭 시 쿠폰창 생성 이벤트
+	$("#couponSelect").click(function() {
+		var couponWindow = window.open("myCouponList", "_blank", "width=600,height=600,scrollbars=yes"); // 새 창으로 열기
+		
+		//새창에 있는 쿠폰정보를 설정
+		window.setCoupon = function(coupon) {
+			// 선택한 쿠폰의 금액을 결제 페이지에 반영
+			if(coupon.discountPercent == null){
+				$(".coupon-price").text(coupon.discountAmount + "원");
+			} else if(coupon.discountAmount == null) {
+				$(".coupon-price").text(coupon.discountPercent + "%");
+			}
+		}
 	
+	});
 	
-	
-	
+
 });
 
+
+
+
 //=============================================================================
-// "쿠폰선택" 클릭 시 쿠폰 모달창 생성 이벤트(지금은 쿠폰 페이지로 이동)
-function couponSelect() {
-	location.href = "Coupon"; //Coupon 매핑주소 포워딩 해야함
+// "쿠폰발급" 클릭 시 couponCreate() 함수 실행
+// 입력된 쿠폰코드 서버로 확인/생성 후 응답 => AJAX
+function couponCreate() {
+	const couponCode = $("#couponCode").val().trim(); // 쿠폰 코드 입력 값 가져오기(양쪽 공백 제거)
+	
+	if (!couponCode) {
+        alert("쿠폰 코드를 입력해 주세요.");
+        return;
+    }
+    
+    $.ajax({
+		method: 'GET',
+		url: 'CouponCreate',
+		dataType : "json",
+		data: {couponCode : couponCode},
+		success: function(response) {
+			console.log("서버응답:", response); //{success: true}
+			if(response.success) {
+				alert("쿠폰이 발급되었습니다.\n지금 바로 사용해보세요!");
+			} else {
+				alert("쿠폰이 발급되지 않았습니다.\n쿠폰코드를 다시 확인해주세요.");
+			}
+			location.reload();//페이지 새로 고침
+		},
+		error: function(jqXHR) {
+		    console.log("jqXHR 오류:", jqXHR); 
+		}
+	});
 }
 
-// "쿠폰발급" 클릭 시 입력된 쿠폰번호 코드 확인 후 생성
-function couponCreate() {
-	
-	
-	
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //=============================================================================
 //https://developers.portone.io/opi/ko/integration/start/v1/auth?v=v1

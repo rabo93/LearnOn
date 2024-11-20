@@ -15,8 +15,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mypage.css">
     
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/modal.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/rating.js"></script>
 
 </head>
 <body>
@@ -55,6 +53,12 @@
 							<span>${support.support_subject}</span>
 	                    </div>
 	                    <div class="com">
+	                    	<label>작성일자</label>
+							<span>
+								<fmt:formatDate value="${support.support_date}" pattern="yyyy-MM-dd" />
+							</span>
+	                    </div>
+	                    <div class="com">
 	                    	<label>내용</label>
 							<span class="contents">
 								${support.support_content}
@@ -65,17 +69,19 @@
 		                    <div class="com attach">
 		                    	<label>첨부파일</label>
 		                    	<span>
-										<div>${support.support_file1}
-			 								<a href="${pageContext.request.contextPath}/resources/upload/${fileName}" download="${originalFileName}">
-			 									<input type="button" value="다운로드">
-			 								</a>
-		 								</div>
+									<div>${support.support_file1}
+		 								<a href="${pageContext.request.contextPath}/resources/upload/${fileName}" download="${originalFileName}">
+		 									<input type="button" value="다운로드">
+		 								</a>
+	 								</div>
 		                    	</span>
 		                    </div>
 						</c:if>
 	                    <div class="btns">
 		                    <c:if test="${not empty sessionScope.sId}">
-								<button type="button">답글</button>
+		                    	<c:if test="${sessionScole.sId eq 'admin'}">
+									<button type="button">답글</button>
+		                    	</c:if>
 								<c:if test="${sessionScope.sId eq support.mem_id or sessionScope.sId eq 'admin'}">
 									<button onclick="requestModify()">수정</button>
 									<button onclick="confirmDelete()">삭제</button>

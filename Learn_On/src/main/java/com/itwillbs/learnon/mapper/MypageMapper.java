@@ -59,12 +59,13 @@ public interface MypageMapper {
 	int insertSupport(SupportBoardVO support);
 
 	// 1:1 문의글 전체 게시물 수 조회
-	int selectSupportListCount();
+	int selectSupportListCount(String id);
 
 	// 1:1 문의글 전체 게시물 조회
 	List<SupportBoardVO> selectSupportList(
 				@Param("startRow") int startRow, 
-				@Param("listLimit") int listLimit);
+				@Param("listLimit") int listLimit,
+				@Param("id") String id);
 
 	// 1:1 문의글 게시글 상세내용 조회
 	SupportBoardVO selectSupportDetail(int support_idx);
@@ -76,8 +77,7 @@ public interface MypageMapper {
 	int deleteSupport(int support_idx);
 
 	// 1:1 문의글 수정 - 첨부파일 삭제
-	int updateSupportFile(@Param("support_idx") int support_idx, 
-						  @Param("file") String file);
+	int deleteSupportFile(Map<String, String> map);
 
 	// 출석체크 가져오기
 	AttendanceVO selectAttendance(String id);

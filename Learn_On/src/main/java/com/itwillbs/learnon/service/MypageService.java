@@ -81,13 +81,13 @@ public class MypageService {
 	}
 
 	// 1:1문의 전체 게시물 수
-	public int getSupportListCount() {
-		return myMapper.selectSupportListCount();
+	public int getSupportListCount(String id) {
+		return myMapper.selectSupportListCount(id);
 	}
 
 	// 1:1문의 전체 게시물 목록
-	public List<SupportBoardVO> getSupportList(int startRow, int listLimit) {
-		return myMapper.selectSupportList(startRow, listLimit);
+	public List<SupportBoardVO> getSupportList(int startRow, int listLimit, String id) {
+		return myMapper.selectSupportList(startRow, listLimit, id);
 	}
 
 	// 1:1문의 게시물 상세내용
@@ -106,8 +106,8 @@ public class MypageService {
 	}
 
 	// 1:1 문의 게시물 수정 - 첨부파일 삭제 및 업데이트
-	public int getSupportFileUpdate(int support_idx, String file) {
-		return myMapper.updateSupportFile(support_idx, file);
+	public int removeSupportFile(Map<String, String> map) {
+		return myMapper.deleteSupportFile(map);
 	}
 
 	// 출석체크 가져오기
@@ -132,5 +132,6 @@ public class MypageService {
 		myMapper.updateStudyTime(myCurriculum);
 		return myMapper.updateCourseStatus(myCurriculum);
 	}
+
 
 }

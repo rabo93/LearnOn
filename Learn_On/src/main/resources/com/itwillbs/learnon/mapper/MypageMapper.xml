@@ -300,6 +300,7 @@
 		-- 1:1문의 전체 게시글수
 		SELECT COUNT(*)
 		  FROM SUPPORT
+		 WHERE MEM_ID = #{id}
 	</select>
 	<select id="selectSupportList" resultType="mysupport">
 		-- 1:1문의 전체 목록
@@ -314,6 +315,7 @@
 		  FROM SUPPORT S
 		  JOIN MEMBER M 
 		    ON M.MEM_ID = S.MEM_ID
+		 WHERE S.MEM_ID = #{id}
 		 ORDER BY
 		 	SUPPORT_IDX DESC
 		 LIMIT
@@ -349,10 +351,10 @@
 		DELETE FROM SUPPORT
 		 WHERE SUPPORT_IDX = #{support_idx}
 	</delete>
-	<update id="updateSupportFile">
+	<update id="deleteSupportFile">
 		-- 1:1 문의 수정 - 첨부파일 삭제
 		UPDATE SUPPORT
-		SET SUPPORT_FILE = #{file}
+		SET SUPPORT_FILE = CASE WHEN SUPPORT_FILE = #{file} THEN '' ELSE SUPPORT_FILE END
 		WHERE
 			SUPPORT_IDX = #{support_idx}
 	</update>

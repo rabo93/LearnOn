@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,80 +25,81 @@
 		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>
 	</header>
 	<main>
-		<section>
-			<div class="faq-container">
-				<h2 class="faq-title">FAQ</h2>
-				<div class="faq-buttons">
-					<button class="faq-button" onclick="showFAQ('course')">강의수강</button>
-					<button class="faq-button" onclick="showFAQ('account')">계정관리</button>
-					<button class="faq-button" onclick="showFAQ('payment')">결제/환불</button>
-					<button class="faq-button" onclick="showFAQ('evidence')">증빙서류</button>
+		<div id="faq_commandArea">
+			<section>
+				<div class="faq-container">
+					<div class="faq-head">
+						<h2>FAQ</h2>
+					</div>
+					<div class="faq-buttons">
+						<button class="faq-button" onclick="showFAQ('course')">강의수강</button>
+						<button class="faq-button" onclick="showFAQ('account')">계정관리</button>
+						<button class="faq-button" onclick="showFAQ('payment')">결제/환불</button>
+						<button class="faq-button" onclick="showFAQ('evidence')">증빙서류</button>
+					</div>
+					<div class="faq-list" id="course">
+						<ul>
+							<c:forEach items="${faqList}" var="faqBoard">
+								<c:if test="${faqBoard.faq_cate eq 1}">
+									<li>
+										<button class="faq-item" onclick="toggleAnswer(this)">${faqBoard.faq_subject}</button>
+										<div class="answer">${fn:replace(faqBoard.faq_content, '\\n', '<br>')}</div>
+									</li>
+								</c:if>
+							</c:forEach>
+						</ul>
+					</div>
+					<div class="faq-list" id="account">
+						<ul>
+							<c:forEach items="${faqList}" var="faqBoard">
+								<c:if test="${faqBoard.faq_cate eq 2}">
+									<li>
+										<button class="faq-item" onclick="toggleAnswer(this)">${faqBoard.faq_subject}</button>
+										<div class="answer">
+											${faqBoard.faq_content}
+										</div>
+									</li>
+								</c:if>
+							</c:forEach>
+						</ul>
+					</div>
+					<div class="faq-list" id="payment">
+						<ul>
+							<c:forEach items="${faqList}" var="faqBoard">
+								<c:if test="${faqBoard.faq_cate eq 3}">
+									<li>
+										<button class="faq-item" onclick="toggleAnswer(this)">${faqBoard.faq_subject}</button>
+										<div class="answer">
+											${faqBoard.faq_content}
+										</div>
+									</li>
+								</c:if>
+							</c:forEach>
+						</ul>
+					</div>
+					<div class="faq-list" id="evidence">
+						<ul>
+							<c:forEach items="${faqList}" var="faqBoard">
+								<c:if test="${faqBoard.faq_cate eq 4}">
+										<li>
+											<button class="faq-item" onclick="toggleAnswer(this)">${faqBoard.faq_subject}</button>
+											<div class="answer">
+												${faqBoard.faq_content}
+											</div>
+										</li>
+								</c:if>
+							</c:forEach>
+						</ul>
+					</div>
 				</div>
-				<div class="faq-list" id="course">
-					<ul>
-						<li>
-							<button class="faq-item" onclick="toggleAnswer(this)">수강은 어디서 하나요?</button>
-							<div class="answer">
-								로그인 이후 우측 상단 [나의 강의장] 클릭 시 결제하신 강의 목록을 보실 수 있습니다.<br>
-								시청 원하시는 강의의 [수강하기] 버튼을 누르시면 강의 시청이 가능합니다.
-							</div>
-						</li>
-						<li>
-							<button class="faq-item" onclick="toggleAnswer(this)">영상이 재생되지 않습니다</button>
-							<div class="answer">
-								영상 재생시, 오류가 발생하는 경우 1:1문의로 문의 주세요.<br>
-								자세한 오류 내용 확인 후 안내드리겠습니다.
-							</div>
-						</li>
-					</ul>
+			</section>
+				<c:if test="${not empty sessionScope.sId}">
+				<%-- 관리자용 아이디가 추가되었을때 관리자만 보이게 설정 추가 --%>
+				<div class="faq-writebtn">
+					<input type="button" value="글쓰기" onclick="location.href='FaqWrite'">
 				</div>
-				<div class="faq-list" id="account">
-					<ul>
-						<li>
-							<button class="faq-item" onclick="toggleAnswer(this)">로그인은 어디서 하나요?</button>
-							<div class="answer">
-								우측 상단[로그인] 클릭 시 나오는 로그인 창에서 가능합니다.
-							</div>
-						</li>
-						<li>
-							<button class="faq-item" onclick="toggleAnswer(this)">이메일주소/휴대폰번호를 변경하고싶어요</button>
-							<div class="answer">
-								로그인 하신 상태에서 우측 상단[마이페이지] 클릭 후 [계정정보]에서 변경 가능합니다.
-							</div>
-						</li>
-					</ul>
-				</div>
-				<div class="faq-list" id="payment">
-					<ul>
-						<li>
-							<button class="faq-item" onclick="toggleAnswer(this)">결제 방법은 어떤 것이 있나요?</button>
-							<div class="answer">
-								1. 카드결제<br>
-								2. 무통장입금(가상계좌)
-							</div>
-						</li>
-						<li>
-							<button class="faq-item" onclick="toggleAnswer(this)">결제내역은 어디서 보나요?</button>
-							<div class="answer">
-								로그인 하신 상태에서 우측 상단[마이페이지] 클릭 후 [결제내역]에서 확인 가능합니다.
-							</div>
-						</li>
-					</ul>
-				</div>
-				<div class="faq-list" id="evidence">
-					<ul>
-						<li>
-							<button class="faq-item" onclick="toggleAnswer(this)">현금 영수증은 어떻게 신청하나요?</button>
-							<div class="answer">
-								현금 영수증은 가상 계좌로 결제시, 결제창에서 직접 발급 신청 가능하며,<br>
-								소득공제용(개인), 지출증빙용(사업자) 중 선택 하실 수 있습니다.
-							</div>
-						</li>
-					</ul>
-				</div>
-				
-			</div>
-		</section>
+				</c:if>
+		</div>
 	</main>
 	<footer>
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>

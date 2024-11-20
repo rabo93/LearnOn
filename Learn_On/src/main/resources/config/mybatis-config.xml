@@ -28,5 +28,6 @@
 		<typeAlias type="com.itwillbs.learnon.vo.CouponVO" alias="coupon" />
 		<typeAlias type="com.itwillbs.learnon.vo.SupportBoardVO" alias="mysupport" />
 		<typeAlias type="com.itwillbs.learnon.vo.PurchaseVO" alias="purchase" />
+		<typeAlias type="com.itwillbs.learnon.vo.FaqVO" alias="faq" />
 	</typeAliases>
 </configuration>

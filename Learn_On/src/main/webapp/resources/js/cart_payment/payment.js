@@ -4,32 +4,60 @@
 	- (V) 쿠폰선택 클릭시 목록 불러오기(mypage_coupon 참고하기) => 쿠폰선택창 열기 
 	- () 선택한 쿠폰 금액 표출 : 
 	- (V) 쿠폰 코드 입력시 MYCOUPON 테이블에 인서트
-	- () 주문금액 - 할인금액 = 결제 금액 표출
+	- (V) 주문금액 - 할인금액 = 결제 금액 표출
+	---------------------------------------------------------------------------
 	- () 결제하기 클릭시 이용약관 동의(필수) 체크 확인 : 클릭 안되어있으면 진행X
 	- () 결제하기 클릭시 결제 API에 데이터 넘겨주기 : 넘겨줄 데이터 (주문번호, 결제금액, 결제수단, 회원id, 회원연락처)
 	- () 결제 완료시 결제 테이블에 인서트 => 주문테이블에 같이 넣어야할지 고민해보자
 */
-
 $(document).ready(function() {
 	//=============================================================================
 	// "쿠폰선택" 클릭 시 쿠폰창 생성 이벤트
 	$("#couponSelect").click(function() {
-		var couponWindow = window.open("myCouponList", "_blank", "width=600,height=600,scrollbars=yes"); // 새 창으로 열기
+		// 새 창으로 열기
+    	window.open("myCouponList", "_blank", "width=600,height=600,scrollbars=yes");
 		
 		//새창에 있는 쿠폰정보를 설정
 		window.setCoupon = function(coupon) {
-			// 선택한 쿠폰의 금액을 결제 페이지에 반영
-			if(coupon.discountPercent == null){
-				$(".coupon-price").text(coupon.discountAmount + "원");
-			} else if(coupon.discountAmount == null) {
-				$(".coupon-price").text(coupon.discountPercent + "%");
-			}
+//		    console.log("쿠폰창에서 선택한 쿠폰정보 받은거:", coupon);
+		    //{COUPON_ID: 1, DISCOUNT_STATUS: 2, DISCOUNT_PERCENT: '', DISCOUNT_AMOUNT: 5000}
+		    
+			//결제 상품 금액 가져오기
+			let totalAmount = parseInt($("#totalAmount").data("value"), 10); //10진수 정수형으로 변환
+//			console.log("결제상품금액: "+ totalAmount);
+			//초기화
+			let discountAmount = 0;
+			let payAmount = totalAmount;
+			
+			// 선택한 쿠폰의할인 금액 또는 할인률에 따른 계산
+			// 계산한 할인 금액을 결제 페이지에 반영
+			if(coupon.DISCOUNT_STATUS == 1) { //퍼센트 할인
+				let discountPercent = parseInt(coupon.DISCOUNT_PERCENT, 10);
+				discountAmount = Math.floor(totalAmount * (discountPercent / 100));
+				payAmount = totalAmount - discountAmount;
+				
+				$(".coupon-price").text(discountPercent +  " %");
+				
+			} else if(coupon.DISCOUNT_STATUS == 2){ //금액할인
+				discountAmount = parseInt(coupon.DISCOUNT_AMOUNT, 10);
+				payAmount = totalAmount - discountAmount;
+				
+				$(".coupon-price").text(discountAmount + " 원");
+			} 
+			
+			// 할인 금액 및 최종 결제 금액 결제 페이지에 반영
+			$(".discount-amount").text("- " + discountAmount.toLocaleString() + " 원"); 
+			$(".total-pay-amount").text(payAmount.toLocaleString() + " 원"); 
 		}
 	
 	});
 	
-
+	
+	
+	
 });
+
+
 
 
 

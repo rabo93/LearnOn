@@ -69,11 +69,11 @@
 								<div class="coupon">
 									<div class="coupon-select">
 										<div class="coupon-select-info">
-											<p>쿠폰 할인 금액</p>
+											<p>쿠폰 할인</p>
 											<!-- 선택한 할인 쿠폰 금액 표출 -->
-											<span class="coupon-price">${coupon.totalDiscount}원</span>
+											<span class="coupon-price">선택된 쿠폰 없음</span>
 										</div>
-										<!-- 버튼 클릭시 쿠폰 모달창 생성 -->
+										<!-- 버튼 클릭시 쿠폰창 생성 -->
 										<input type="button" value="쿠폰선택" class="coupon-btn" id="couponSelect">
 									</div>
 									<!-- 쿠폰 코드 등록 -->
@@ -96,25 +96,40 @@
 									<c:forEach var="cart" items="${selectedCartList}">
 									    <c:set var="totalAmount" value="${totalAmount + cart.classPrice}" />
 									</c:forEach>
-									<dd><fmt:formatNumber value="${totalAmount}" type="number" /> 원</dd>
+									<dd id="totalAmount" data-value="${totalAmount}">
+										<fmt:formatNumber value="${totalAmount}" type="number" /> 원
+									</dd>
 								</dl>
+<!-- 								<dl> -->
+<!-- 									<dt>할인 금액</dt> -->
+<!-- 									class="coupon-price"가 할인금액일 경우  -->
+<%-- 									<dd><fmt:formatNumber value="${discountAmount}" type="number" /> 원</dd> --%>
+<%-- 									<dd><fmt:formatNumber value="${discountPercent}" type="number" /> %</dd> --%>
+<!-- 								</dl> -->
+<!-- 								<dl class="total"> -->
+<!-- 									<dt>결제 금액</dt> -->
+<%-- 									<c:choose> --%>
+<%-- 										<c:when test=""> <!-- 금액인 경우 --> --%>
+<%-- 											<c:set var="payAmount" value="${totalAmount - discountAmount}" /> --%>
+<%-- 										</c:when> --%>
+<%-- 										<c:otherwise> <!-- 퍼센트인 경우 --> --%>
+<%-- 											<c:set var="payAmount" value="${totalAmount - (totalAmount * discountAmount / 100)}" /> --%>
+<%-- 										</c:otherwise> --%>
+<%-- 									</c:choose> --%>
+<%-- 									<dd><fmt:formatNumber value="${payAmount}" type="number" /> 원</dd> --%>
+<!-- 								</dl> -->
 								<dl>
 									<dt>할인 금액</dt>
-									<dd><fmt:formatNumber value="${discountAmount}" type="number" /> 원</dd>
-									<dd><fmt:formatNumber value="${discountPercent}" type="number" /> %</dd>
+									 <dd class="discount-amount">0 원</dd>
 								</dl>
 								<dl class="total">
 									<dt>결제 금액</dt>
-									<c:choose>
-										<c:when test=""> <!-- 금액인 경우 -->
-											<c:set var="payAmount" value="${totalAmount - discountAmount}" />
-										</c:when>
-										<c:otherwise> <!-- 퍼센트인 경우 -->
-											<c:set var="payAmount" value="${totalAmount - (totalAmount * discountAmount / 100)}" />
-										</c:otherwise>
-									</c:choose>
-									<dd><fmt:formatNumber value="${payAmount}" type="number" /> 원</dd>
+									<dd class="total-pay-amount">
+										<!-- 초기 결제 금액 => 쿠폰선택시 게산되어 금액 바뀜 -->
+										<fmt:formatNumber value="${totalAmount}" type="number" /> 원
+									</dd>
 								</dl>
+
 							</div>
 						</section>
 						

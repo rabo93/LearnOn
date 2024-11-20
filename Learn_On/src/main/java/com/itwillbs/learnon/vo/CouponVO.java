@@ -8,11 +8,15 @@ public class CouponVO {
 	private int coupon_id;			//쿠폰ID
 	private String coupon_code;		//쿠폰코드
 	private String coupon_name;		//쿠폰명
-	private int discount_amount;	//할인금액
-	private int discount_percent;	//할인비율
+	
+	private int discount_status;	//할인유형(1:퍼센트,2:금액)
+	private int discount_percent;	//할인비율(유형1)
+	private int discount_amount;	//할인금액(유형2)
+	
 	private String issue_date; 		//발급날짜
 	private String expiry_date;		//유효기간
-	private int coupon_status; 		//쿠폰상태(1:사용가능,2:사용불가)
-	private int coupon_isUsed;		//쿠폰 사용여부(1:미사용,2:사용완료)
+	
+	private int coupon_status; 		//쿠폰상태(1:사용가능,2:사용불가) //관리자에 의해
+	private int coupon_isUsed;		//쿠폰 사용여부(1:미사용,2:사용완료) //사용자에 의해
 	
 }

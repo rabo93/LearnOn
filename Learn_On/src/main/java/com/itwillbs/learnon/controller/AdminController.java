@@ -25,8 +25,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.learnon.service.AdminService;
+import com.itwillbs.learnon.service.FaqService;
 import com.itwillbs.learnon.service.NoticeBoardService;
 import com.itwillbs.learnon.vo.AdminVO;
+import com.itwillbs.learnon.vo.FaqVO;
 import com.itwillbs.learnon.vo.NoticeBoardVO;
 import com.itwillbs.learnon.vo.PageInfo;
 
@@ -36,6 +38,8 @@ public class AdminController {
 	private AdminService adminService;
 	@Autowired
 	private NoticeBoardService noticeService;
+	@Autowired
+	private FaqService faqService;
 	
 	private String uploadPath = "/resources/upload";
 	
@@ -420,29 +424,51 @@ public class AdminController {
 		return "admin/notice_management";
 	}
 	
-	@PostMapping("AdmNoitce/getFileList")
-	@ResponseBody
-	public List<String> getFileList(int notice_idx) {
-		NoticeBoardVO board = noticeService.getNoticeBoard(notice_idx, false);
-		String[] fileSplit = board.getNotice_file().split(",");
-		
-		List<String> fileList = new ArrayList<String>();
-		for (String file : fileSplit) {
-			fileList.add(file);
-		}
-		
-		return fileList;
-	}
-	
 	// 어드민 1:1 문의 관리 페이지 매핑
 	@GetMapping("AdmSupport")
 	public String admin_support_management2() {
 		return "admin/support_management2";
 	}
 	
+	
+	
+	
 	// 어드민 FAQ 관리 페이지 매핑
 	@GetMapping("AdmFaq")
-	public String admin_board_faq() {
+	public String admin_board_faq(@RequestParam(defaultValue = "1") int pageNum,
+			  					  @RequestParam(defaultValue = "") String searchKeyword,
+			  					  @RequestParam(defaultValue = "") String searchType,
+			  					  Model model) {
+		int listLimit = 5;
+		int startRow = (pageNum - 1) * listLimit;
+		
+		int listCount = faqService.getBoardListCount(searchKeyword, searchType);
+		
+		int pageListLimit = 5;
+		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+		
+		if (maxPage == 0) {
+			maxPage = 1;
+		}
+		
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		int endPage = startPage + pageListLimit - 1;
+		
+		if (endPage > maxPage) {
+			endPage = maxPage;
+		}
+		
+		if(pageNum < 1 || pageNum > maxPage) {
+			model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+			model.addAttribute("targetURL", "AdmFaq?pageNum=1");
+			return "result/fail";
+		}
+		
+		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
+		List<FaqVO> faqList = faqService.getAdmBoardList(startRow, listLimit, searchKeyword, searchType);
+		model.addAttribute("pageNum", pageNum);
+		model.addAttribute("pageInfo", pageInfo);
+		model.addAttribute("faqList", faqList);
 		return "admin/board_faq";
 	}
 	

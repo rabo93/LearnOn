@@ -28,24 +28,24 @@
 			<h2>글 수정하기</h2>
 		</div>
 		<section class="tb-wrap">
-			<form action="NoticeModify" method="post" enctype="multipart/form-data">
+			<form action="AdminNoticeModify" method="post" enctype="multipart/form-data">
 				<input type="hidden" name="notice_idx" value="${param.notice_idx}">
-				<input type="hidden" name="pageNum" value="${param.pageNum}">
+<%-- 				<input type="hidden" name="pageNum" value="${param.pageNum}"> --%>
 				<table class="nt-table tb-02">
 					<colgroup>
-						<col width="20%">
-						<col width="80%">
+							<col width="20%">
+							<col width="80%">
 					</colgroup>
-					<tr>
-						<td>작성자</td>
-						<td>
-							<input type="text" name="mem_id" value="${sessionScope.sId}" readonly required />
-						</td>
-					</tr>
+	<!-- 				<tr> -->
+	<!-- 					<td class="write_td_left"><label for="board_name">작성자</label></td> -->
+	<!-- 					<td class="write_td_right"> -->
+	<%-- 						<input type="text" id="mem_id" name="mem_id" value="${sessionScope.sId}" readonly required /> --%>
+	<!-- 					</td> -->
+	<!-- 				</tr> -->
 					<tr>
 						<td>제목</td>
 						<td>
-							<input name="notice_subject" value="${notice.notice_subject}" required />
+							<input type="text" name="notice_subject" value="${notice.notice_subject}" required />
 						</td>
 					</tr>
 					<tr>
@@ -57,6 +57,7 @@
 					<tr>
 						<td>첨부파일</td>
 						<td>
+						
 							<c:forEach var="file" items="${fileList}" varStatus="status">
 								<div class="board_file" id="file_${status.count}">
 									<c:choose>

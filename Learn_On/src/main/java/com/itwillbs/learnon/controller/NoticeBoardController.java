@@ -10,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.annotation.RequestScope;
@@ -206,6 +208,8 @@ public class NoticeBoardController {
 			
 			return "result/fail";
 		}
+			
+		board = noticeService.getNoticeBoard(board.getNotice_idx() , false);
 		//	게시물이 존재하지 않을 때
 		if(board == null) {
 			model.addAttribute("msg", "잘못된 접근입니다!");
@@ -214,20 +218,20 @@ public class NoticeBoardController {
 		
 //		System.out.println("board : " + board.getNotice_idx());
 //		System.out.println("pageNum : " + pageNum);
-		board = noticeService.getNoticeBoard(board.getNotice_idx(), false);
 		
 		
 		int deleteCount = noticeService.removeNotice(board.getNotice_idx());
 		
 		if (deleteCount > 0) {
 			String realPath = getRealPath(session);
-			String file = board.getNotice_file();
-			Path path = Paths.get(realPath, file);
-			
-			try {
-				Files.delete(path);
-			} catch (IOException e) {
-				e.printStackTrace();
+			String[] files = board.getNotice_file().split(",");
+			for (String file : files) {
+				Path path = Paths.get(realPath, file);
+				try {
+					Files.delete(path);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 			return "redirect:/NoticeList?pageNum=" + pageNum;
 		} else {
@@ -305,6 +309,214 @@ public class NoticeBoardController {
 		}
 		
 	}
+	
+	//	========================== 관리자모드 ==================================
+	@GetMapping("AdminNoticeWrite")
+	public String AdminNoticeWriteForm (Model model, HttpSession session, HttpServletRequest request) {
+		String id = (String)session.getAttribute("sId");
+		//	미 로그인 시
+		if (id == null) {
+			model.addAttribute("msg", "로그인이 필요합니다\\n로그인 페이지로 이동합니다.");
+			model.addAttribute("targetURL", "MemberLogin");
+			
+			String prevURL = request.getServletPath();
+			String queryString = request.getQueryString();
+			System.out.println("prevURL : " + prevURL);
+			System.out.println("queryString : " + queryString);
+			
+			if (queryString != null) {
+				prevURL += "?" + queryString;
+			}
+			
+			session.setAttribute("prevURL", prevURL);
+			
+			return "result/fail";
+		}
+		
+		
+		return "admin/notice_write_form";
+	}
+	
+	@PostMapping("AdminNoticeWrite")
+	public String AdminNoticeWrite(NoticeBoardVO board, Model model, HttpSession session) {
+		
+		//	실제 경로
+		String realPath = getRealPath(session);
+		//	서브 디렉토리 생성
+		String subDir = createDirectories(realPath);
+		realPath += "/" + subDir;
+		//	첨부파일 업로드
+		String fileName = addFileProcess(board, realPath, subDir);
+		board.setNotice_file(fileName);
+		
+		System.out.println("split : " + Arrays.toString(fileName.split(",")));
+		
+		//	INSERT 작업
+		int insertCount = noticeService.registBoard(board);
+		
+		if (insertCount > 0) {
+			return "redirect:/AdmNotice";
+		} else {
+			model.addAttribute("msg", "글쓰기에 실패했습니다");
+			return "result/fail";
+		}
+		
+	}
+	
+	@GetMapping("AdminNoticeModify")
+	public String adminNoticeModifyForm (int notice_idx, Model model) {
+		System.out.println(notice_idx);
+		NoticeBoardVO board = noticeService.getNoticeBoard(notice_idx, false);
+		String[] fileSplit = board.getNotice_file().split(",");
+		
+		List<String> fileList = new ArrayList<String>();
+		for (String file : fileSplit) {
+			fileList.add(file);
+		}
+		
+		List<String> originalFileList = new ArrayList<String>();
+		for (String file : fileList) {
+			originalFileList.add(file.substring(file.indexOf("_") + 1));
+		}
+		
+		model.addAttribute("notice" , board);
+		model.addAttribute("fileList", fileList);
+		model.addAttribute("originalFileList", originalFileList);
+		
+		return "admin/notice_modify_form";
+	}
+	
+	@PostMapping("AdminNoticeModify")
+	public String adminNoticeModify(NoticeBoardVO board, Model model ,HttpSession session) {
+		int notice_idx = board.getNotice_idx();
+		//	실제 경로
+		String realPath = getRealPath(session);
+		//	서브 디렉토리 생성
+		String subDir = createDirectories(realPath);
+		realPath += "/" + subDir;
+		//	------------------------------------------------------
+		String fileName = addFileProcess(board, realPath, subDir);
+		noticeService.addNoitceFile(notice_idx, fileName);
+		int updateCount = noticeService.modifyNoticeBoard(board);
+		
+		if (updateCount > 0) {
+			return "redirect:/AdmNotice";
+		} else {
+			model.addAttribute("msg", "글 수정에 실패했습니다");
+			return "result/fail";
+		}
+		
+	}
+	
+	@GetMapping("AdminNoticeDelete")
+	public String adminNoticeDelete(int[] notice_idxs, Model model, HttpSession session) {
+		System.out.println("notice_idxs :" + Arrays.toString(notice_idxs));
+		for (int notice_idx : notice_idxs) {
+			NoticeBoardVO board = noticeService.getNoticeBoard(notice_idx , false);
+			System.out.println(board);
+			
+			//	게시물이 존재하지 않을 때
+			if(board == null) {
+				model.addAttribute("msg", "잘못된 접근입니다!");
+				return "result/fail";
+			}
+			
+			int deleteCount = noticeService.removeNotice(board.getNotice_idx());
+			
+			if (deleteCount > 0) {
+				String realPath = getRealPath(session);
+				String[] files = board.getNotice_file().split(",");
+				for (String file : files) {
+					Path path = Paths.get(realPath, file);
+					try {
+						Files.delete(path);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			} else {
+				model.addAttribute("msg", "삭제 실패!");
+				return "result/fail";
+			}
+		}
+		return "redirect:/AdmNotice";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+//	@ResponseBody
+//	@PostMapping("AdminNoticeDelete")
+//	public String AdminNoticeDelete(@RequestBody Map<String, Object> param, Model model, HttpSession session) {
+//		
+//		System.out.println(param.get("notice_idxs"));
+//		List<Integer> notice_idxs = (List<Integer>)param.get("notice_idxs");
+//		System.out.println(notice_idxs);
+//		
+//		for (int notice_idx : notice_idxs) {
+//			NoticeBoardVO board = noticeService.getNoticeBoard(notice_idx , false);
+//			//	게시물이 존재하지 않을 때
+//			if(board == null) {
+//				model.addAttribute("msg", "잘못된 접근입니다!");
+//				return "result/fail";
+//			}
+//			int deleteCount = noticeService.removeNotice(notice_idx);
+//			
+//			if (deleteCount > 0) {
+//				String realPath = getRealPath(session);
+//				String file = board.getNotice_file();
+//				Path path = Paths.get(realPath, file);
+//				
+//				try {
+//					Files.delete(path);
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//			} else {
+//				model.addAttribute("msg", "삭제 실패!");
+//				return "result/fail";
+//			}
+//		}
+//		
+//		return "redirect:/AdmNotice";
+//		
+//	}
+		
+		
+		
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	@PostMapping("/notice/deleteFile")
 	@ResponseBody

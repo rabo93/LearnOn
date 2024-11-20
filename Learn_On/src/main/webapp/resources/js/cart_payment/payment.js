@@ -1,7 +1,7 @@
 /*
 	결제 기능 구현
 	- (V) 결제 목록 불러오기 : 장바구니에서 넘겨받은 선택된 상품들의 클래스제목, 강사이름, 클래스가격, 총 주문금액/갯수
-	- (V) 쿠폰선택 클릭시 목록 불러오기(mypage_coupon 참고하기) => 쿠폰 모달창 CSS 나중에 하기!!!!!!!!!
+	- (V) 쿠폰선택 클릭시 목록 불러오기(mypage_coupon 참고하기) => 쿠폰선택창 열기 
 	- () 선택한 쿠폰 금액 표출 : 
 	- (V) 쿠폰 코드 입력시 MYCOUPON 테이블에 인서트
 	- () 주문금액 - 할인금액 = 결제 금액 표출
@@ -10,22 +10,33 @@
 	- () 결제 완료시 결제 테이블에 인서트 => 주문테이블에 같이 넣어야할지 고민해보자
 */
 
-//=============================================================================
 $(document).ready(function() {
+	//=============================================================================
+	// "쿠폰선택" 클릭 시 쿠폰창 생성 이벤트
+	$("#couponSelect").click(function() {
+		var couponWindow = window.open("myCouponList", "_blank", "width=600,height=600,scrollbars=yes"); // 새 창으로 열기
+		
+		//새창에 있는 쿠폰정보를 설정
+		window.setCoupon = function(coupon) {
+			// 선택한 쿠폰의 금액을 결제 페이지에 반영
+			if(coupon.discountPercent == null){
+				$(".coupon-price").text(coupon.discountAmount + "원");
+			} else if(coupon.discountAmount == null) {
+				$(".coupon-price").text(coupon.discountPercent + "%");
+			}
+		}
 	
+	});
 	
-	
-	
+
 });
 
-//=============================================================================
-// "쿠폰선택" 클릭 시 쿠폰 모달창 생성 이벤트(지금은 쿠폰 페이지로 이동)
-function couponSelect() {
-	location.href = "myCouponList"; //Coupon 매핑주소 포워딩 해야함
-}
+
+
 
 //=============================================================================
-// "쿠폰발급" 클릭 시 입력된 쿠폰번호 코드 확인 후 생성
+// "쿠폰발급" 클릭 시 couponCreate() 함수 실행
+// 입력된 쿠폰코드 서버로 확인/생성 후 응답 => AJAX
 function couponCreate() {
 	const couponCode = $("#couponCode").val().trim(); // 쿠폰 코드 입력 값 가져오기(양쪽 공백 제거)
 	
@@ -53,6 +64,23 @@ function couponCreate() {
 		}
 	});
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //=============================================================================
 //https://developers.portone.io/opi/ko/integration/start/v1/auth?v=v1

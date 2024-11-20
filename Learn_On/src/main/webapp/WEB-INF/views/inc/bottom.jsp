@@ -19,7 +19,7 @@
 			<a href="NoticeList">공지사항</a>
 			<a href="#">이용약관</a>
 			<a href="#">개인정보처리방침</a>
-			<a href="FAQ">FAQ</a>
+			<a href="FaqList">FAQ</a>
 			<a href="#">환불규정</a>
 		</div>
 		<div class="info2">

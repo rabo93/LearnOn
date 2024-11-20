@@ -78,6 +78,7 @@ function logout() {
 						<a href="#">카테고리</a>
 						<ul class="mgnb-dep-01">
 							<li><a href="Category?codetype=CATE01">IT/개발</a></li>
+							<li><a href="Category?codetype=CATE01">IT/개발</a></li>
 							<li><a href="Category?codetype=CATE02">외국어</a></li>
 							<li><a href="Category?codetype=CATE03">운동/건강</a></li>
 							<li><a href="Category?codetype=CATE04">라이프스타일</a></li>

@@ -87,7 +87,7 @@
 									<button onclick="confirmDelete()">삭제</button>
 								</c:if>
 							</c:if>
-							<button onclick="history.back()">목록으로</button>
+							<button onclick="location.href='MySupport?pageNum=${param.pageNum}'">목록으로</button>
 	                    </div>
 					</section>
 					<!-- // contents -->

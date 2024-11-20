@@ -25,9 +25,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.learnon.service.AdminService;
+import com.itwillbs.learnon.service.CouponService;
 import com.itwillbs.learnon.service.FaqService;
 import com.itwillbs.learnon.service.NoticeBoardService;
 import com.itwillbs.learnon.vo.AdminVO;
+import com.itwillbs.learnon.vo.CouponVO;
 import com.itwillbs.learnon.vo.FaqVO;
 import com.itwillbs.learnon.vo.NoticeBoardVO;
 import com.itwillbs.learnon.vo.PageInfo;
@@ -40,6 +42,9 @@ public class AdminController {
 	private NoticeBoardService noticeService;
 	@Autowired
 	private FaqService faqService;
+	@Autowired
+	private CouponService couponService;
+	
 	
 	private String uploadPath = "/resources/upload";
 	
@@ -374,7 +379,42 @@ public class AdminController {
 	
 	// 어드민 쿠폰 관리 페이지 매핑
 	@GetMapping("AdmPayListCoupon")
-	public String admin_payment_list_coupon() {
+	public String admin_payment_list_coupon(@RequestParam(defaultValue = "1") int pageNum,
+			  								@RequestParam(defaultValue = "latest") String sort,
+			  								@RequestParam(defaultValue = "") String searchKeyword,
+			  								@RequestParam(defaultValue = "") String searchType,
+			  								Model model) {
+		
+		int listLimit = 5;
+		int startRow = (pageNum - 1) * listLimit;
+		
+		int listCount = couponService.getCouponListCount(searchKeyword, searchType);
+		
+		int pageListLimit = 5;
+		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+		
+		if (maxPage == 0) {
+			maxPage = 1;
+		}
+		
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		int endPage = startPage + pageListLimit - 1;
+		
+		if (endPage > maxPage) {
+			endPage = maxPage;
+		}
+		
+		if(pageNum < 1 || pageNum > maxPage) {
+			model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+			model.addAttribute("targetURL", "AdmNotice?pageNum=1");
+			return "result/fail";
+		}
+		
+		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
+		List<CouponVO> couponList = couponService.getAdmCoupon(startRow, listLimit, searchKeyword, searchType);
+		model.addAttribute("pageNum", pageNum);
+		model.addAttribute("pageInfo", pageInfo);
+		model.addAttribute("couponList", couponList);
 		return "admin/payment_list_coupon";
 	}
 	

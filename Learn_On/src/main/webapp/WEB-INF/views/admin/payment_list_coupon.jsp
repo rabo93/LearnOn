@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,7 +19,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
@@ -52,6 +53,16 @@
 						<button class="btn btn-primary" type="button" id="button-addon2">검색</button>
 					</div>
 						<table class="table table-striped">
+							<colgroup>
+								<col width="10%">
+								<col width="20%">
+								<col width="10%">
+								<col width="10%">
+								<col width="10%">
+								<col width="10%">
+								<col width="15%">
+								<col width="15%">
+							</colgroup>
 							<thead>
 								<tr>
 									<th scope="col">#</th>
@@ -65,38 +76,79 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<th class="col-auto"><input class="form-check-input" type="checkbox" id="gridCheck1"></th>
-									<td class="col-1"><input class="form-control" type="text" placeholder="쿠폰 고유번호" aria-label="default input example" value="001"></td>
-									<td><input class="form-control" type="text" placeholder="쿠폰 이름" aria-label="default input example" value="100일 출석 쿠폰"></td>
-									<td><input class="form-control" type="text" placeholder="쿠폰 코드" aria-label="default input example" value="1234-5678-2345"></td>
-									<td class="col-auto"><input class="form-control" type="text" placeholder="쿠폰 할인률" aria-label="default input example" value="% 10"></td>
-									<td><input class="form-control" type="text" placeholder="쿠폰 할인금액" aria-label="default input example" value=" "></td>
-									<td><input class="form-control" type="text" placeholder="쿠폰 유효기간" aria-label="default input example" value="2024-11-07 ~ 2025-11-01"></td>
-									<td>
-										<select class="form-select" aria-label="Default select example">
-											<option value="1" selected>정상</option>
-											<option value="2">만료</option>
-										</select>
-									</td>
-                             	</tr>
-								<tr>
-									<th class="col-auto"><input class="form-check-input" type="checkbox" id="gridCheck1"></th>
-									<td class="col-1"><input class="form-control" type="text" placeholder="쿠폰 고유번호" aria-label="default input example" value="002"></td>
-									<td><input class="form-control" type="text" placeholder="쿠폰 이름" aria-label="default input example" value="생일 기념 쿠폰"></td>
-									<td><input class="form-control" type="text" placeholder="쿠폰 코드" aria-label="default input example" value="1111-2222-3333"></td>
-									<td class="col-auto"><input class="form-control" type="text" placeholder="쿠폰 할인률" aria-label="default input example" value=" "></td>
-									<td><input class="form-control" type="text" placeholder="쿠폰 할인금액" aria-label="default input example" value="- 30000"></td>
-									<td><input class="form-control" type="text" placeholder="쿠폰 유효기간" aria-label="default input example" value="2024-11-01 ~ 2024-12-01"></td>
-									<td>
-										<select class="form-select" aria-label="Default select example">
-											<option value="1">정상</option>
-											<option value="2" selected>만료</option>
-										</select>
-									</td>
-                             	</tr>
+								<c:forEach items="${couponList}" var="couponBoard" varStatus="status">
+									<tr>
+										<th><input class="form-check-input" type="checkbox" id="gridCheck1" name="faq_idx" value="${couponBoard.coupon_id}"></th>
+										<td><input class="form-control" type="text" aria-label="default input example" value="${couponBoard.coupon_id}" onclick="showFaq(${status.index})"></td>
+										<td><input class="form-control" type="text" aria-label="default input example" value="${couponBoard.coupon_name}" onclick="showFaq(${status.index})"></td>
+										<td><input class="form-control" type="text" aria-label="default input example" value="${couponBoard.coupon_code}" onclick="showFaq(${status.index})"></td>
+										<td><input class="form-control" type="text" aria-label="default input example" value="${couponBoard.discount_percent}" onclick="showFaq(${status.index})"></td>
+										<td><input class="form-control" type="text" aria-label="default input example" value="${couponBoard.discount_amount}" onclick="showFaq(${status.index})"></td>
+										<td><input class="form-control" type="text" aria-label="default input example" value="${couponBoard.expiry_date}" onclick="showFaq(${status.index})"></td>
+										<td><input class="form-control" type="text" aria-label="default input example"
+											<c:choose>
+												<c:when test="${couponBoard.coupon_status eq 1}">value="사용가능"</c:when>
+												<c:when test="${couponBoard.coupon_status eq 2}">value="사용불가"</c:when>
+											</c:choose> readonly></td>
+                             		</tr>
+<!--                              		<tr class="AdmfaqDetail"> -->
+<!-- 	                                 	<td colspan="3"> -->
+<!-- 		                             		<div> -->
+<%-- 												<textarea class="form-control" aria-label="default input example" rows="10" readonly>${couponBoard.faq_content}</textarea> --%>
+<!-- 											</div> -->
+<!-- 	                                 	</td> -->
+<%-- 	                                 	<td><button class="btn btn-primary" onclick="faqModify(${faqBoard.faq_idx})">수정하기</button></td> --%>
+<!--                              		</tr> -->
+                               	</c:forEach>
+<!-- 								<tr> -->
+<!-- 									<th class="col-auto"><input class="form-check-input" type="checkbox" id="gridCheck1"></th> -->
+<!-- 									<td class="col-1"><input class="form-control" type="text" placeholder="쿠폰 고유번호" aria-label="default input example" value="001"></td> -->
+<!-- 									<td><input class="form-control" type="text" placeholder="쿠폰 이름" aria-label="default input example" value="100일 출석 쿠폰"></td> -->
+<!-- 									<td><input class="form-control" type="text" placeholder="쿠폰 코드" aria-label="default input example" value="1234-5678-2345"></td> -->
+<!-- 									<td class="col-auto"><input class="form-control" type="text" placeholder="쿠폰 할인률" aria-label="default input example" value="% 10"></td> -->
+<!-- 									<td><input class="form-control" type="text" placeholder="쿠폰 할인금액" aria-label="default input example" value=" "></td> -->
+<!-- 									<td><input class="form-control" type="text" placeholder="쿠폰 유효기간" aria-label="default input example" value="2024-11-07 ~ 2025-11-01"></td> -->
+<!-- 									<td> -->
+<!-- 										<select class="form-select" aria-label="Default select example"> -->
+<!-- 											<option value="1" selected>정상</option> -->
+<!-- 											<option value="2">만료</option> -->
+<!-- 										</select> -->
+<!-- 									</td> -->
+<!--                              	</tr> -->
 							</tbody>
 						</table>
+						<section id="pagingArea">
+							<button
+							onclick="location.href='AdmFaq?pageNum=${pageInfo.startPage - pageInfo.pageListLimit}&searchType=${searchType}&searchKeyword=${searchKeyword}'"
+							<c:if test="${pageInfo.startPage eq 1}">disabled</c:if>>
+								<i class="fa-solid fa-angles-left"></i>
+							</button>
+							<button
+							onclick="location.href='AdmFaq?pageNum=${pageNum - 1}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}'"
+							<c:if test="${pageNum eq 1}">disabled</c:if>>
+								<i class="fa-solid fa-angle-left"></i>
+							</button>
+							<c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
+								<c:choose>
+									<c:when test="${i eq pageNum}">
+										<strong>${i}</strong>
+									</c:when>
+									<c:otherwise>
+										<a href="AdmFaq?pageNum=${i}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">${i}</a>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+							<button
+							onclick="location.href='AdmFaq?pageNum=${pageNum + 1}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}'"
+							<c:if test="${pageNum eq pageInfo.maxPage}">disabled</c:if>>
+								<i class="fa-solid fa-angle-right"></i>
+							</button>
+						   	<button
+						   	onclick="location.href='AdmFaq?pageNum=${pageInfo.startPage + pageInfo.pageListLimit}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}'"
+							<c:if test="${pageInfo.endPage eq pageInfo.maxPage}">disabled</c:if>>
+						   		<i class="fa-solid fa-angles-right"></i>
+						   	</button>
+					   	</section>
 					</div>
 				</div>
             <!-- Blank End -->

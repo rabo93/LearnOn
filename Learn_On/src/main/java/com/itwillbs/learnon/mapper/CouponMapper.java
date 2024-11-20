@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import com.itwillbs.learnon.vo.CouponVO;
 
 @Mapper
 public interface CouponMapper {
@@ -15,5 +18,15 @@ public interface CouponMapper {
 	
 	// 쿠폰 발급 (성공여부 갯수 리턴)
 	int insertCoupon(Map<String, String> params);
+	
+	//	========= 관리자용 쿠폰 ===========================
+	//	쿠폰 총 개수 조회
+	List<CouponVO> selectAdmCoupon(@Param("startRow") int startRow,
+								   @Param("listLimit") int listLimit,
+								   @Param("searchKeyword") String searchKeyword,
+								   @Param("searchType") String searchType);
+
+	int selectAdmCouponCount(@Param("searchKeyword") String searchKeyword,
+							 @Param("searchType") String searchType);
 	
 }

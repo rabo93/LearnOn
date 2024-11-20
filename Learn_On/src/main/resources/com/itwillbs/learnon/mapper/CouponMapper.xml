@@ -52,5 +52,53 @@
  	
  	<!-- 쿠폰 사용 후 사용여부 업데이트 (COUPON_ISUSED = 2)-->
  	 	
-  	  
+  	<!-- ===================== 관리자용 쿠폰 ======================= -->
+  	<select id="selectAdmCoupon" resultType="coupon">
+  		SELECT
+  			COUPON_ID
+  			, COUPON_NAME
+  			, COUPON_CODE
+  			, DISCOUNT_STATUS
+  			, DISCOUNT_PERCENT
+  			, DISCOUNT_AMOUNT
+  			, C_EXPIRY_DATE
+  			, COUPON_STATUS
+  		FROM	COUPONINFO
+  		<if test="!searchKeyword.equals('')">
+		WHERE
+			<choose>
+				<when test="searchType.equals('subject')">
+					COUPON_NAME LIKE CONCAT('%', #{searchKeyword}, '%')
+				</when>
+<!-- 				<when test="searchType.equals('content')"> -->
+<!-- 					FAQ_CONTENT LIKE CONCAT('%', #{searchKeyword}, '%') -->
+<!-- 				</when> -->
+<!-- 				<when test="searchType.equals('subject_content')"> -->
+<!-- 					FAQ_SUBJECT LIKE CONCAT('%', #{searchKeyword}, '%') -->
+<!-- 					OR FAQ_CONTENT LIKE CONCAT('%', #{searchKeyword}, '%') -->
+<!-- 				</when> -->
+				<otherwise>
+					WHERE	1 = 1
+				</otherwise>
+			</choose>
+		</if>
+		LIMIT	#{startRow}
+				, #{listLimit}
+  	</select>
+  	<select id="selectAdmCouponCount" resultType="int">
+  		SELECT	COUNT(*)
+  		FROM	COUPONINFO
+  		<if test="!searchKeyword.equals('')">
+		WHERE
+			<choose>
+				<when test="searchType.equals('subject')">
+					COUPON_NAME LIKE CONCAT('%', #{searchKeyword}, '%')
+				</when>
+				<otherwise>
+					WHERE	1 = 1
+				</otherwise>
+  			</choose>
+ 		</if>
+  	</select>
+  	
   </mapper>

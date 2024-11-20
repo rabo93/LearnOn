@@ -6,8 +6,7 @@
 <head>
 	<meta charset="utf-8">
     <title>LearnOn - 관리자 페이지</title>
-    <script src="https://code.jquery.com/jquery-3.7.1.js">
-    </script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">

@@ -28,7 +28,6 @@
 	<!----------------------------- page 영역 --------------------------- -->
 	<main id="pay">
 		<form action="Portone" method="post" id="payForm">
-		
 			<div class="wrapper">
 				<!-- pay-wrap start  -->
 				<div class="pay-wrap">
@@ -78,8 +77,8 @@
 									</div>
 									<!-- 쿠폰 코드 등록 -->
 									<div class="coupon-input">
-										<input type="text" placeholder="쿠폰 코드를 입력해주세요." class="coupon-inputbox" name="couponCode" id="couponCode">
-										<input type="button" value="쿠폰발급" class="coupon-btn" onclick="couponCreate()">
+										<input type="text" placeholder="쿠폰 코드를 입력해주세요." class="coupon-inputbox" id="couponCode" name="couponCode">
+										<input type="button" value="쿠폰발급" class="coupon-btn" id="couponRegist">
 									</div>
 								</div>
 							</div>
@@ -100,24 +99,6 @@
 										<fmt:formatNumber value="${totalAmount}" type="number" /> 원
 									</dd>
 								</dl>
-<!-- 								<dl> -->
-<!-- 									<dt>할인 금액</dt> -->
-<!-- 									class="coupon-price"가 할인금액일 경우  -->
-<%-- 									<dd><fmt:formatNumber value="${discountAmount}" type="number" /> 원</dd> --%>
-<%-- 									<dd><fmt:formatNumber value="${discountPercent}" type="number" /> %</dd> --%>
-<!-- 								</dl> -->
-<!-- 								<dl class="total"> -->
-<!-- 									<dt>결제 금액</dt> -->
-<%-- 									<c:choose> --%>
-<%-- 										<c:when test=""> <!-- 금액인 경우 --> --%>
-<%-- 											<c:set var="payAmount" value="${totalAmount - discountAmount}" /> --%>
-<%-- 										</c:when> --%>
-<%-- 										<c:otherwise> <!-- 퍼센트인 경우 --> --%>
-<%-- 											<c:set var="payAmount" value="${totalAmount - (totalAmount * discountAmount / 100)}" /> --%>
-<%-- 										</c:otherwise> --%>
-<%-- 									</c:choose> --%>
-<%-- 									<dd><fmt:formatNumber value="${payAmount}" type="number" /> 원</dd> --%>
-<!-- 								</dl> -->
 								<dl>
 									<dt>할인 금액</dt>
 									 <dd class="discount-amount">0 원</dd>
@@ -138,7 +119,7 @@
 							<div class="pay-item">
 								<h5 class="box-ttl">결제수단</h5>
 								<label class="pay-method">
-									<input type="radio" name="pay-method" value="card">
+									<input type="radio" name="pay-method" value="card" checked>
 									<span>신용카드</span>
 								</label>
 								<label class="pay-method">
@@ -162,7 +143,7 @@
 						</section>	
 						<!-- ----------------- 결제하기 버튼 ---------------->
 						<div class="btns-box">
-							<input type="submit" value="결제하기" class="btnSubmit">
+							<input type="submit" value="결제하기" class="btnSubmit" id="btnSubmit" onclick="requestPay()">
 						</div>
 					</div>
 				</div>

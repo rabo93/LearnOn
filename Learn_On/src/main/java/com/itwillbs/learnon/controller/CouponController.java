@@ -29,7 +29,7 @@ public class CouponController {
 		//------------------------------------------------------
 		// 로그인 정보 가져오기 (세션 아이디값 확인)
 		String sId = (String) session.getAttribute("sId");
-		System.out.println("마이쿠폰 로그인 아이디: " + sId);
+//		System.out.println("마이쿠폰 로그인 아이디: " + sId);
 		//------------------------------------------------------
 		//CouponService - getCoupon() 메서드 호출하여 쿠폰 조회 요청
 		List<Map<String, Object>> coupon = couponService.getCoupon(sId);
@@ -37,8 +37,8 @@ public class CouponController {
 		//CouponService - getCouponCount() 메서드 호출하여 쿠폰 갯수 조회 요청
 		int couponCount = couponService.getCouponCount(sId);
 		
-		System.out.println(coupon); // [{MEM_ID=bborara, COUPON_STATUS=1, COUPON_ISUSED=1, COUPON_NAME=전회원 5000원 할인 쿠폰, C_EXPIRY_DATE=20251231, DISCOUNT_AMOUNT=5000, ISSUE_DATE=2024-11-19 11:02:51, COUPON_CODE=DISC5000, COUPON_ID=1},]
-		System.out.println(couponCount); //3
+//		System.out.println(coupon); // [{MEM_ID=bborara, COUPON_STATUS=1, COUPON_ISUSED=1, COUPON_NAME=전회원 5000원 할인 쿠폰, C_EXPIRY_DATE=20251231, DISCOUNT_AMOUNT=5000, ISSUE_DATE=2024-11-19 11:02:51, COUPON_CODE=DISC5000, COUPON_ID=1},]
+//		System.out.println(couponCount); //3
 		
 		//------------------------------------------
 		// 리턴받은 쿠폰 데이터 뷰페이지로 전달하기 위해 model에 저장
@@ -48,8 +48,6 @@ public class CouponController {
         // 쿠폰 페이지(coupon.jsp)로 포워딩
         return "cart_payment/mycoupon";
 	}
-	//=================================================================================
-	
 	
 	
 	//=================================================================================
@@ -62,7 +60,7 @@ public class CouponController {
 		//------------------------------------------------------
 		// 로그인 정보 가져오기 (세션 아이디값 확인)
 		String sId = (String) session.getAttribute("sId");
-		System.out.println("로그인 아이디: " + sId);
+//		System.out.println("로그인 아이디: " + sId);
 		//------------------------------------------------------
 		//CouponService - createCoupon() 메서드 호출하여 쿠폰 발급 요청 (발급여부 리턴)
 		boolean isIssued = couponService.createCoupon(sId, couponCode);

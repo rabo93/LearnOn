@@ -23,6 +23,7 @@
 		WHERE mc.MEM_ID = #{sId}
 		AND c.COUPON_STATUS = 1
 		AND mc.COUPON_ISUSED = 1
+		ORDER BY c.C_EXPIRY_DATE; -- 유효기간 임박한 순으로
   	</select>
   	
   	
@@ -33,7 +34,6 @@
 		WHERE MEM_ID = #{sId}
 		AND COUPON_ISUSED = 1
   	</select>
-  
   
   
   	<!-- 쿠폰 코드 입력시 조회 후 인서트 -->
@@ -55,7 +55,7 @@
 		)
   	</insert>
  	
- 	<!-- 쿠폰 사용 후 사용여부 업데이트 (COUPON_ISUSED = 2)-->
+ 	<!-- 쿠폰 사용 후 사용여부 업데이트 -> 결제 성공 후 (COUPON_ISUSED = 2)-->
  	 	
   	  
   </mapper>

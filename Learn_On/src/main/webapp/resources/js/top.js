@@ -30,5 +30,16 @@ $(document).ready(function(){
 			console.log("장바구니 개수 불러오기 오류 : "+ jqXHR);
 		}
 	});
+	$.ajax({
+		type: "get",
+		url: "TopMenu",
+		dataType: "json",
+		success : function(data) {
+			console.log(data);
+		},
+		error: function(){
+			alert("메뉴 불러오기 실패");
+		}
+	});	
+	
 });
-

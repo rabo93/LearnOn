@@ -6,16 +6,20 @@ function addRow() {
 	var cell1 = newRow.insertCell();
 	var cell2 = newRow.insertCell();
 	var cell3 = newRow.insertCell();
+	var cell4 = newRow.insertCell();
+	var cell5 = newRow.insertCell();
 	  
 	cell1.innerHTML = '<input type="checkbox" name="checkboxObj"/>';
-	cell2.innerHTML = '<input type="text" class="form-control" id="floatingInput" placeholder="커리큘럼 제목">';
-	cell3.innerHTML = '<input type="file" class="file form-control" id="inputGroupFile02" placeholder="커리큘럼 영상">';
+	cell2.innerHTML = '<input type="text" name="cur_title" class="form-control" id="floatingInput" placeholder="커리큘럼 제목">';
+	cell3.innerHTML = '<input type="number" name="cur_runtime" class="form-control" id="floatingInput" placeholder="커리큘럼 영상길이">';
+	cell4.innerHTML = '<input type="file" name="cur_video_get" class="file form-control" id="inputGroupFile02" placeholder="커리큘럼 영상">';
+	cell5.innerHTML = '<input type="hidden" value="" name="cur_video">';
+	
 }
 
 function deleteRow() {
 	var table = document.getElementById('dynamic_table');
 	var checkboxArray = document.getElementsByName('checkboxObj');
-	  
 	for (var i = checkboxArray.length-1; i>=0; i--) {
 		var check = checkboxArray[i].checked;
 	   
@@ -54,36 +58,13 @@ function deleteMainCateRow() {
 		if (checkboxArray[i].checked) {
 			if (confirm('삭제하시겠습니까?')) {
 				location.href="mainCateDelete?CODEID="
-				+ checkboxArray[i].parentElement.parentElement.getElementsByClassName("form-control")[0].value;
+				+ checkboxArray[i].parentElement.parentElement.getElementsByClassName("form-control")[1].value;
 			} else {
 				return;	
 			}
 		}
 	}
 }
-
-//function addSubCateRow() {
-//	var subCateTable = document.getElementById('subCateTable');
-//	var newRow = subCateTable.insertRow();
-//	var cell1 = newRow.insertCell();
-//	var cell2 = newRow.insertCell();
-//	var cell3 = newRow.insertCell();
-//	var cell4 = newRow.insertCell();
-//	var cell5 = newRow.insertCell();
-//	var cell6 = newRow.insertCell();
-//	
-//	console.log(document.getElementById('aaaaaatest').value);
-//	
-//	cell1.innerHTML = '<td><input class="form-check-input" type="checkbox" id="gridCheck1" name="subCateRowCheck"></td>';
-////	cell2.innerHTML = '<td><input name="codetype_subcate" class="form-control" type="text" placeholder="타입"></td>';
-//	cell2.innerHTML = '<td><select class="form-select" id="floatingSelect" name="codetype_subcate">'
-//									+ '<option>"${getMainCate}"</option>'
-//									+ '</select></td>';
-//	cell3.innerHTML = '<td><input name="codetype_id_subcate" class="form-control" type="text" placeholder="아이디"></td>';
-//	cell4.innerHTML = '<td><input name="name_subcate" class="form-control" type="text" placeholder="이름"></td>';
-//	cell5.innerHTML = '<td><input name="description_subcate" class="form-control" type="text" placeholder="설명"></td>';
-//	cell6.innerHTML = '<td><input name="order_subcate" class="form-control" type="text" placeholder="오더"></td>';
-//}
 
 function deleteSubCateRow() {
 	var checkboxArray = document.getElementsByName('subCateRowCheck');
@@ -97,4 +78,28 @@ function deleteSubCateRow() {
 			}
 		}
 	}
+}
+
+function selectMainCate() {
+	let mainCateId = document.querySelector("select[name=class_maincate]").value;
+	
+	$.ajax({
+		type: "GET",
+		url: "SelectCategory",
+		data: {
+			codeid_maincate : mainCateId
+		},
+		dataType : "json"
+	}).done(function(data){
+		$("#floatingSelect2").empty();
+		for(let item of data) {
+			$("#floatingSelect2").append(
+				'<option>' + item.name_subcate + '</option>'
+			);
+		}
+	}).fail(function(){
+		console.log("에러");
+	})
+	
+	;	
 }

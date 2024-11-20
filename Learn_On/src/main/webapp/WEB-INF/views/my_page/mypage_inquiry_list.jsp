@@ -45,15 +45,15 @@
 						<div class="tb-wrap">
 							<table class="tb-01 tb-inq">
 								<colgroup>
-									<col width="10%">
+<%-- 									<col width="10%"> --%>
 									<col width="15%">
-									<col width="40%">
+									<col width="50%">
 									<col width="15%">
 									<col width="20%">
 								</colgroup>
 								<thead>
 									<tr>
-										<th>번호</th>
+<!-- 										<th>번호</th> -->
 										<th>분류</th>
 										<th>제목</th>
 										<th>작성자</th>
@@ -68,13 +68,13 @@
 									<c:choose>
 										<c:when test="${empty supportList}">
 											<tr>
-												<td class="empty" colspan="5">작성한 게시물이 없습니다.</td>
+												<td class="empty" colspan="4">작성한 게시물이 없습니다.</td>
 											</tr>
 										</c:when>
 										<c:otherwise>
 											<c:forEach var="support" items="${supportList}">
 												<tr>
-													<td class="board_num">${support.support_idx}</td>
+													<td class="board_num" style="display:none;">${support.support_idx}</td>
 													<td>
 														<c:if test="${support.support_category == 1}">
 															이용문의

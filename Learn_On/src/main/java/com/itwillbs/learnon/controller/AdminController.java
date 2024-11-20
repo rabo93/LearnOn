@@ -329,6 +329,7 @@ public class AdminController {
 	@GetMapping("AdmClassList")
 	public String admin_class_list(Model model) {
 		model.addAttribute("getClassList", adminService.getClassList());
+		model.addAttribute("getMainCate", adminService.getMainCate());
 		
 		return "admin/class_list";
 	}

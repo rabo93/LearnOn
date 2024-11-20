@@ -349,6 +349,8 @@ public class MypageController {
 			return "result/fail";
 		}
 		
+		support.setMem_id(id);
+		
 		// 파일 첨부 업로드 경로 처리
 		String realPath = getRealPath(session);
 		
@@ -386,11 +388,20 @@ public class MypageController {
 	@GetMapping("MySupport")
 	public String mySupportList(@RequestParam(defaultValue = "1") int pageNum,HttpServletRequest request, HttpSession session, Model model) {
 		System.out.println("페이지번호: " + pageNum);
+		// 세션아이디 체크
+		String id = (String)session.getAttribute("sId");
+		if(id == null) {
+			model.addAttribute("msg", "로그인 필수!\\n 로그인 페이지로 이동합니다!");
+			model.addAttribute("targetURL", "MemberLogin");
+			savePreviousUrl(request, session);
+			
+			return "result/fail";
+		}
 		
 		// 페이징 설정
-		int listLimit = 6; // 한 페이지당 게시물 수
+		int listLimit = 10; // 한 페이지당 게시물 수
 		int startRow = (pageNum - 1) * listLimit;
-		int listCount = myService.getSupportListCount();
+		int listCount = myService.getSupportListCount(id);
 		
 		int pageListLimit = 5; // 페이징 개수 
 		int maxPage = (listCount / listLimit) + (listCount % listLimit > 0 ? 1 : 0);
@@ -417,7 +428,7 @@ public class MypageController {
 		model.addAttribute("pageInfo", pageInfo);
 		
 		// 게시물 목록 조회
-		List<SupportBoardVO> supportList = myService.getSupportList(startRow, listLimit);
+		List<SupportBoardVO> supportList = myService.getSupportList(startRow, listLimit, id);
 		
 		model.addAttribute("supportList", supportList);
 		
@@ -488,6 +499,29 @@ public class MypageController {
  			model.addAttribute("msg", "글 수정 실패!");
  			return "result/fail";
  		}
+	}
+	
+	// 문의내역 수정 시 첨부파일 삭제
+	@ResponseBody
+	@PostMapping("MySupportDeleteFile")
+	public String mySupportDeleteFile(@RequestParam Map<String, String> map, HttpSession session) {
+		
+		int deleteCount = myService.removeSupportFile(map);
+		
+		if(deleteCount > 0) {
+			String realPath = session.getServletContext().getRealPath(uploadPath);
+			
+			if(!map.get("file").equals("")) {
+				Path path = Paths.get(realPath, map.get("file"));
+				try {
+					Files.deleteIfExists(path);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		return "true";
 	}
 	
 	

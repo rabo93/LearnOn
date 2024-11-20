@@ -193,7 +193,7 @@
 .inq-wrap .com {display: flex;align-items: stretch;margin-bottom: 0.4rem;}
 .inq-wrap .com label {flex:0 0 90px;font-weight:700;color:var(--dark);background: #d3dded;display:inline-flex;align-items:center;justify-content:center;padding: 0.9rem;text-align: center; font-size: 0.875rem;}
 .inq-wrap .com span {display: block;flex: 1 1 auto;background: var(--white);padding:0.9rem; font-weight:500;color:var(--dark);font-size:15px;}
-.inq-wrap .com span.contents {min-height:280px;padding: 1rem;}
+.inq-wrap .com span.contents {min-height:280px;padding: 1rem;line-height:1.5;}
 .inq-wrap .com a:hover {text-decoration:underline;}
 .inq-wrap .com a input[type="button"] {cursor:pointer;background: var(--primary);color: var(--white);border: 0;padding: 6px 10px;border-radius: 4px;font-size: 14px;font-weight: 700;margin-left: 10px;}
 .inq-wrap .com.attach {justify-content: center;margin-top: 14px;margin-bottom: 0;}

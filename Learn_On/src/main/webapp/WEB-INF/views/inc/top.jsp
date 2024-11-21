@@ -95,7 +95,8 @@ function logout() {
 	</section>
 	<nav id="nav">	
 		<ul class="navbar">
-			<li><a href="#">카테고리</a>
+			<li>
+				<a href="#">카테고리</a>
 				<div class="dropdown-bg"></div>
 				<ul class="dropdown">
 <!-- 					<li> -->
@@ -110,39 +111,13 @@ function logout() {
 <!-- 						</ul> -->
 <!-- 					</li> -->
 
-
+					<li>
+						<ul id="resultArea">
+							<ul class="sub-dropdown" id="subResultArea"></ul>							
+						</ul>
+					</li>
 				
-					<c:set var="cnt" value="0" />  <!-- cnt를 처음에 0으로 초기화 -->
-					<c:forEach var="code" items="${requestScope.commonCode}" varStatus="count">
-						<c:set var="num" value="${fn:substring(code.codetype, 4, 6)}"/>
-						<!-- 처음 'num'이 cnt와 다를 때만 출력되게 설정 -->
-<%-- 						CHOOSE UP NUM : ${num } --%>
-						<c:choose>
-							<c:when test="${num != cnt}">
-									<!-- 여기서 반복 자체가 안됨.!! -->
-									<li>								
-										<a href="Category?codetype=${code.codetype}">${code.codename}</a>
-										<ul class="sub-dropdown">
-											<li><a href="Category?codetype=${code.codetype}">전체</a></li>
-<%-- 											<li><a href="Category?codetype=${code.codetype}&codetype_id=${code.codetype_id}">${code.name}</a></li> --%>
-											<%-- ================================================= --%>
-											<%-- 객체를 다시 반복 --%>
-											<c:forEach var="subcode" items="${requestScope.codeTypeAll}" varStatus="count">
-												<%-- code 객체의 codeType 과 새로 반복하는 codeType 이 같으면--%>
-												<%-- 서브카테고리명 출력 --%>
-												<c:if test="${subcode.codetype eq code.codetype}">
-													<li><a href="Category?codetype=${subcode.codetype}&codetype_id=${subcode.codetype_id}">${subcode.name}</a></li>
-												</c:if>
-											</c:forEach>										
-											<%-- ================================================= --%>
-										</ul>
-									</li>
-								<!-- codetype이 바뀔 때만 출력 -->
-<%-- 							CHOOSE DOWN NUM : ${num } --%>
-								<c:set var="cnt" value="${num}" /> <!-- 출력 후 cnt 값을 num으로 갱신 -->
-							</c:when>
-						</c:choose>
-					</c:forEach>
+					
 				</ul>	
 			</li>						
 					

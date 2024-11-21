@@ -24,13 +24,13 @@
 	<div id="nt_dt_form">
 		<h2>문의하기</h2>
 		
-		<form action="CourseSupportModify" method="post" enctype="multipart/form-data">
+		<form action="CourseSupportWrite" method="post" enctype="multipart/form-data">
  			<input type="hidden" name="class_id" value="${param.class_id}">
  			<select name="c_support_category">
- 				<option>카테고리 선택</option>
- 				<option value="강의수강/영상" <c:if test="${param.c_support_cate eq '01'}">selected</c:if>>수강/영상</option>
- 				<option value="강의결제/환불" <c:if test="${param.c_support_cate eq '02'}">selected</c:if>>결제/환불</option>
- 				<option value="강의기타" <c:if test="${param.c_support_cate eq '03'}">selected</c:if>>기타</option>
+ 				<option value=''>카테고리 선택</option>
+ 				<option value="01" <c:if test="${param.c_support_cate eq '01'}">selected</c:if>>수강/영상</option>
+ 				<option value="02" <c:if test="${param.c_support_cate eq '02'}">selected</c:if>>결제/환불</option>
+ 				<option value="03" <c:if test="${param.c_support_cate eq '03'}">selected</c:if>>기타</option>
  			</select>
  			
 			<table>

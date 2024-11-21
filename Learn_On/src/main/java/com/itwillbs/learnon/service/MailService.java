@@ -91,12 +91,39 @@ public class MailService {
 		}).start();
 		
 		System.out.println("메일 발송 쓰레드 작업 시작" + new Date());
-		System.out.println("memverVO" + member.getEmail());
+		System.out.println("memverVO" + member.getMem_email());
 		
 		MailAuthInfo mailAuthInfo = new MailAuthInfo(email, auth_code);
 		
 		return mailAuthInfo;
-//		
+	}
+
+	//	========================================================================
+//	public void sendPasswdMail(MemberVO dbMember, String email, String tempPasswd) {
+//		sendPasswdMail(dbMember, email);
+//	} //오버라이딩
+	public MailAuthInfo sendPasswdMail(MemberVO dbMember, String email, String temPasswd) {
+		String dbemail = email;
+		System.out.println(dbMember);
+//		String tempPasswd = GenerateRandomCode.getRandomCode(5);
+		
+		String subject = "[런온]임시 비밀번호가 발급되었습니다.";
+		String content = "<h1>" + temPasswd + "</h1>";
+		
+		
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				sendMailClient.sendMail(email, subject, content);
+				System.out.println("비밀번호 변경 메일 발송 쓰레드 작업 완료!" + new Date());
+			}
+		}).start();
+		
+		System.out.println("memverVO" + dbMember.getMem_email());
+		
+		MailAuthInfo mailAuthInfo = new MailAuthInfo(email, temPasswd);
+		return mailAuthInfo;
 	}
 
 }

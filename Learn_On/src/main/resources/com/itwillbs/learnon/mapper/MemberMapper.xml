@@ -4,23 +4,36 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itwillbs.learnon.mapper.MemberMapper">
 	
-	
+<!-- 	아이디 중복체크  -->
 	<select id="selectMember" resultType="member">
 		SELECT *
 		  FROM MEMBER
 		 WHERE mem_id = #{mem_id}
 	</select>
-	
-	<select id="selectMemberNick" resultType="com.itwillbs.learnon.vo.MemberVO">
+<!-- 	닉네임 중복체크 -->
+	<select id="selectMemberNick" resultType="member">
 		SELECT *
 		  FROM MEMBER
 		 WHERE mem_nick = #{mem_nick}
 	</select>
 	
 	<select id="selectMemberPasswd" resultType="String">
-	SELECT mem_passwd
-	  FROM MEMBER
-	 WHERE mem_id = #{mem_id} 
+		SELECT mem_passwd
+		  FROM MEMBER
+		 WHERE mem_id = #{mem_id} 
+	</select>
+<!--  회원정보 수정 - 비밀번호 변경	 --> 
+	<update id="updateNewPasswd">
+		UPDATE MEMBER
+		   SET mem_passwd = #{mem_passwd}
+		 WHERE mem_email = #{mem_email}
+	</update>
+	
+<!-- 	이메일로 비밀번호 변경 - 이메일 존재 확인  -->
+	<select id="selectEmail" resultType="member">
+		SELECT mem_id,mem_email,mem_name
+		  FROM MEMBER
+		 WHERE mem_email = #{mem_email}
 	</select>
 
 	
@@ -45,7 +58,8 @@ INSERT INTO MEMBER (
     mem_like1_class,
     mem_like2_class,
     file_pp,
-    mail_auth_status
+    mail_auth_status,
+    profile_image
 ) VALUES (
     null,
     #{mem_id},
@@ -66,7 +80,8 @@ INSERT INTO MEMBER (
     #{mem_like1_class},
     #{mem_like2_class},
     SUBSTR(#{file_pp}, INSTR(#{file_pp}, '_') + 1),
-    'N'
+    'N',
+    null
 )
 </insert>
 	
@@ -86,13 +101,13 @@ INSERT INTO MEMBER (
 	WHERE
 		mem_id = #{mem_id}
 </update>
-	
+<!-- 	메일 인증 후, 인증상태 변경  -->
 	<update id="updateMailAuthStatus">
 		UPDATE MEMBER
 		   SET mail_auth_status = 'Y'
 		 WHERE mem_email = #{mem_email}
 	</update>
-	
+<!-- 	메일 인증 후, 인증코드 테이블에서 인증코드 삭제 -->
 	<delete id="deleteMailAuthInfo">
 	DELETE FROM MAIL_AUTH_INFO
 	WHERE mem_email = #{mem_email}
@@ -114,17 +129,25 @@ INSERT INTO MEMBER (
 
 <!-- 	이메일 인증정보 조회  -->
 	<select id="selectMailAuthInfo" resultType="mailAuthInfo">
-	SELECT *
-	  FROM MAIL_AUTH_INFO
-	 WHERE mem_email = #{mem_email}
+		SELECT *
+		  FROM MAIL_AUTH_INFO
+		 WHERE mem_email = #{mem_email}
 	</select>
 	
-<!-- 	비번변경 -->
+<!-- 	패스워드 찾기로 비번변경 -->
 
-	<update id="updatePasswd">
-	UPDATE MEMBER
-	   SET mem_passwd = #{mem_passwd}
-	WHERE mem_id = #{mem_id} 
+	<update id="updateTempPasswd">
+		UPDATE MEMBER
+		   SET MEM_PASSWD = #{temPasswd}
+		WHERE MEM_EMAIL = #{mem_email} 
+	</update>
 	
+<!-- 	회원탈퇴  status = 3 -->
+	<update id="updateMemberStatus">
+		UPDATE MEMBER
+		  SET 
+		  	mem_status = #{mem_status}
+			,mem_withdraw_date = now()
+		 WHERE mem_id = #{mem_id}
 	</update>
 </mapper>

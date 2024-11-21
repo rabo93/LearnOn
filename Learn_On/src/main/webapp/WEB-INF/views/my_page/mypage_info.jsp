@@ -117,7 +117,7 @@
 								<input type="submit" class="btn-submit" value="수정">
 							</div>
 						</form>
-						<a href="#" class="withdraw-link">회원탈퇴</a>
+						<a href="MemberWithdraw" class="withdraw-link">회원탈퇴</a>
 					</section>
 					<!-- // contents -->
 				</div>
@@ -150,19 +150,22 @@
 	</script>
 	
 	<script type="text/javascript">
-	$("#profile_img").change(function (event){
-		let file = event.target.files[0];
-		let reader = new FileReader();
-		
-		reader.onload = function(event2){
-			console.log("파일 : " + event2.target.result);
-			$("#preview_profile").attr("src",event2.target.result);
-			reader.readAsDataURL(file);
-		};
-		
-	});
-	
-	</script>
+    $("#profile_img").change(function (event) {
+        let file = event.target.files[0]; // 사용자가 업로드한 파일 가져오기
+        let reader = new FileReader();
+
+        reader.onload = function (event2) {
+            console.log("파일 : " + event2.target.result); // 파일 내용 확인용 로그
+            $("#preview_profile").attr("src", event2.target.result); // 미리보기 이미지 변경
+        };
+
+        // 파일을 URL로 읽어오기
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+
 	
 </body>
 </html>

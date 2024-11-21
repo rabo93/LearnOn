@@ -43,5 +43,11 @@ public interface CourseMapper {
 
 	List<Map<String, String>> selectMenuList();
 
+	int updateCourseSupport(CourseSupportVO cSupport);
+
+	int deleteBoardFile(Map<String, String> map);
+
+	int deleteCourseSupport(int c_support_idx);
+
 
 }

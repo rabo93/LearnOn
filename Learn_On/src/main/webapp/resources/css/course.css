@@ -26,6 +26,7 @@
 	
 }
 .cls-cate .cate-li button.on {background:var(--primary); color:var(--white);}
+.cls-cate .cate-li form {margin-left:auto;}
 .cls-cate button {
 	padding: 8px 14px;
 	font-size: 1rem;
@@ -33,14 +34,28 @@
 	background: var(--light-gray);
 	font-weight: 500;
 }
-.cls-cate select {
-	margin-left:auto;
-	padding: 8px 14px;
-	font-size: 0.875rem;
-	border-radius: 6px;
+.cls-cate .cate-li form select {
 	background: var(--white);
-	font-weight: 500;
+    border: 0;
+    color: var(--gray);
+    padding: 0 1rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    border: 1px solid #ddd;
+    font-weight: 600;
+    height: 36px;
+    margin-left: auto;
 }	
+.cls-cate .cate-li form input[type=submit] {
+	border:0;
+	padding:4px 10px;
+	height:36px;
+	border-radius:4px;
+	background:var(--primary);
+	color:var(--white);
+	font-weight:700;
+	font-size:0.875rem;
+}
 
 .card {
     background-color: #fff;

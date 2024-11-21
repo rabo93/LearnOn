@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.itwillbs.learnon.service.AdminService;
 import com.itwillbs.learnon.service.MypageService;
 import com.itwillbs.learnon.vo.AttendanceVO;
 import com.itwillbs.learnon.vo.MyCourseVO;
@@ -40,6 +41,9 @@ public class MypageController {
 	@Autowired
 	private MypageService myService;
 	
+	@Autowired
+	private AdminService admService;
+	
 	// 첨부파일 가상경로
 	private String uploadPath = "/resources/upload";
 	
@@ -53,6 +57,27 @@ public class MypageController {
 	@GetMapping("MyFav")
 	public String myFav(@RequestParam(defaultValue = "") String filterType, HttpServletRequest request, HttpSession session, Model model) {
 //		System.out.println("필터타입: " + filterType);
+		savePreviousUrl(request, session);
+		
+		String id = (String)session.getAttribute("sId");
+		if(id == null) {
+			model.addAttribute("msg", "로그인 필수!\\n 로그인 페이지로 이동합니다!");
+			model.addAttribute("targetURL", "MemberLogin");
+			
+			return "result/fail";
+		}
+		
+		List<WishlistVO> wishlist = myService.getWishlist(id, filterType);
+		
+		model.addAttribute("wishlist", wishlist);
+		
+		return "my_page/mypage_fav";
+	}
+	
+	// 관심목록 추가
+	@GetMapping("MyFavAdd")
+	public String myFavAdd(WishlistVO wish, HttpServletRequest request, HttpSession session, Model model) {
+//		System.out.println("추가할 관심클래스 : " + class_id);
 		
 		String id = (String)session.getAttribute("sId");
 		if(id == null) {
@@ -63,11 +88,16 @@ public class MypageController {
 			return "result/fail";
 		}
 		
-		List<WishlistVO> wishlist = myService.getWishlist(id, filterType);
+		wish.setMem_id(id);
 		
-		model.addAttribute("wishlist", wishlist);
+		int insertCount = myService.registMyFav(wish);
 		
-		return "my_page/mypage_fav";
+		if (insertCount > 0) {
+			return "redirect:" + session.getAttribute("prevURL");
+		} else {
+			model.addAttribute("msg", "추가 실패!");
+			return "result/fail";
+		}
 	}
 	
 	// 관심목록 삭제
@@ -87,7 +117,46 @@ public class MypageController {
 		int deleteCount = myService.cancelMyFav(class_id);
 
 		if (deleteCount > 0) {
-			return "redirect:/MyFav";
+			// 이전 페이지 저장 여부 판별 후 리다이렉트 또는 url로 이동
+			if(session.getAttribute("prevURL") == null) {
+				return "redirect:/";
+			} else {
+				// request.getServletPath() 메서드를 통해 이전 요청 URL 을 저장할 경우
+				// "/요청URL" 형식으로 저장되므로 redirect:/ 에서 / 제외하고 결합하여 사용
+				return "redirect:" + session.getAttribute("prevURL");
+			}
+		} else {
+			model.addAttribute("msg", "삭제 실패!");
+			return "result/fail";
+		}
+		
+	}
+	
+	// 카테고리 페이지에서 관심강의 삭제
+	@GetMapping("MyFavDel")
+	public String myFavDelete(String class_id, HttpServletRequest request, HttpSession session, Model model) {
+		System.out.println("class_id: " + class_id);
+
+		String id = (String)session.getAttribute("sId");
+		if(id == null) {
+			model.addAttribute("msg", "로그인 필수!\\n 로그인 페이지로 이동합니다!");
+			model.addAttribute("targetURL", "MemberLogin");
+			savePreviousUrl(request, session);
+			
+			return "result/fail";
+		}
+		
+		int deleteCount = myService.cancelMyFav(class_id);
+
+		if (deleteCount > 0) {
+			// 이전 페이지 저장 여부 판별 후 리다이렉트 또는 url로 이동
+			if(session.getAttribute("prevURL") == null) {
+				return "redirect:/";
+			} else {
+				// request.getServletPath() 메서드를 통해 이전 요청 URL 을 저장할 경우
+				// "/요청URL" 형식으로 저장되므로 redirect:/ 에서 / 제외하고 결합하여 사용
+				return "redirect:" + session.getAttribute("prevURL");
+			}
 		} else {
 			model.addAttribute("msg", "삭제 실패!");
 			return "result/fail";
@@ -510,6 +579,7 @@ public class MypageController {
 		
 		if(deleteCount > 0) {
 			String realPath = session.getServletContext().getRealPath(uploadPath);
+			System.out.println(realPath);
 			
 			if(!map.get("file").equals("")) {
 				Path path = Paths.get(realPath, map.get("file"));
@@ -571,11 +641,6 @@ public class MypageController {
 			return "result/fail";
 		}
 	}
-	
-	// 문의내역 수정 - 첨부파일 삭제
-	
-	
-	
 	
 	// 출석체크
 	@GetMapping("MyAttendance")

@@ -22,14 +22,27 @@ public class MypageService {
 	@Autowired
 	private MypageMapper myMapper;
 
+	// 관심목록 가져오기
 	public List<WishlistVO> getWishlist(String id, String filterType) {
 		return myMapper.selectWishlist(id, filterType);
 	}
+	
+	// 관심목록 가져오기 - 카테고리 목록
+	public List<Map<String, Object>> getWishlistForCategoryList(String id){
+		return myMapper.selectWishlistForCategoryList(id);
+	}
 
+	// 관심목록 삭제하기
 	public int cancelMyFav(String class_id) {
 		return myMapper.deleteWish(class_id);
 	}
 
+	// 관심목록 추가하기
+	public int registMyFav(WishlistVO wish) {
+		return myMapper.insertWish(wish);
+	}
+	
+	// 나의 강의실 목록 가져오기
 	public List<MyCourseVO> getMyCourse(String id, String filterType, String statusType) {
 		return myMapper.selectMyCourse(id, filterType, statusType);
 	}
@@ -132,6 +145,7 @@ public class MypageService {
 		myMapper.updateStudyTime(myCurriculum);
 		return myMapper.updateCourseStatus(myCurriculum);
 	}
+
 
 
 }

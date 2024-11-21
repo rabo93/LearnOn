@@ -16,9 +16,12 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -77,7 +80,7 @@ public class AdminController {
 		return "admin/index";
 		
 	}
-	// =======================================================================
+	// ======================================================================================================
 	
 	// 어드민 카테고리 편집 페이지 매핑
 	@GetMapping("AdmClassCategory")
@@ -199,6 +202,8 @@ public class AdminController {
 		return "redirect:/AdmClassCategory";
 	}
 	
+	// ======================================================================================================
+	
 	// 어드민 클래스 등록 페이지 매핑
 	@GetMapping("AdmClassAdd")
 	public String admin_class_add(Model model) {
@@ -208,40 +213,47 @@ public class AdminController {
 	
 	@PostMapping("AdmClassAdd")
 	public String admin_class_add1(AdminVO VO, HttpSession session, Model model) {
+		int classId = adminService.getClassId();
+		VO.setClass_id(classId);
 		
-		AdminVO insertCur = new AdminVO();
+		System.out.println("!@#!@#");
+		for (int i = 0; i < VO.getCur_video_get().length; i++) {
+			System.out.println(VO.getCur_video_get()[i].getOriginalFilename());
+		}
+		
+//		AdminVO insertCur = new AdminVO();
 		
 		String[] arrCurTitle = VO.getCur_title().split(",");
 		String[] arrCurRunTime = VO.getCur_runtime().split(",");
 		int totalRunTime = VO.getClass_runtime();
-		
-		for (int i = 0; i < arrCurTitle.length; i++) {
-			insertCur.setCur_title(arrCurTitle[i]);
-			insertCur.setCur_runtime(arrCurRunTime[i]);
-			totalRunTime += Integer.parseInt(arrCurRunTime[i]);
-			
-			adminService.curriculum(insertCur);
-		}
-		VO.setClass_runtime(totalRunTime);
-		
-		int insertCountCla = adminService.registClass(VO);
-		
 		// 실제 경로
 		String realPath = getRealPath(session);
 		//	서브 디렉토리 생성
-		String subDir = createDirectories(insertCur, realPath);
+		String subDir = createDirectories(classId, realPath);
 		realPath += "/" + subDir;
-		//	첨부파일 업로드
-		String fileName = addFileProcess(VO, realPath, subDir);
+		
 		for (int i = 0; i < arrCurTitle.length; i++) {
-			String videoName = addVideoProcess(VO, realPath, subDir);
+			
+			String videoName = addVideoProcess(VO.getCur_video_get()[i], realPath, subDir);
+			
 			VO.setCur_video(videoName);
+			VO.setCur_title(arrCurTitle[i]);
+			VO.setCur_runtime(arrCurRunTime[i]);
+			totalRunTime += Integer.parseInt(arrCurRunTime[i]);
+			System.out.println("누적 ======" + totalRunTime);
+			adminService.curriculum(VO);
+			
 			adminService.insertCurVideo(VO);
 		}
+		System.out.println("결과 ======" + totalRunTime);
+		VO.setClass_runtime(totalRunTime);
 		
+		//	첨부파일 업로드
+		String fileName = addFileProcess(VO, realPath, subDir);
 		VO.setClass_pic1(fileName);
 		
 		adminService.insertClassPic(VO);
+		int insertCountCla = adminService.registClass(VO);
 		
 		if (insertCountCla < 0) {
 			model.addAttribute("msg", "클래스 등록 실패!");
@@ -257,14 +269,14 @@ public class AdminController {
 		return realPath;
 	}
 	// 서브 디렉토리 생성
-	public String createDirectories(AdminVO VO, String realPath) {
+	public String createDirectories(int classId, String realPath) {
 		
 		//	기존 실제 업로드 경로
-		realPath += "/" + VO.getClass_id()+1;
+		realPath += "/" + classId;
 		//	실제 경로 전달
-		Path path = Paths.get(realPath);
+//		Path path = Paths.get(realPath);
 		
-		return Integer.toString(VO.getClass_id()+1);
+		return Integer.toString(classId);
 	}
 	
 	public String addFileProcess(AdminVO VO, String realPath, String subDir) {
@@ -291,18 +303,16 @@ public class AdminController {
 		return fileName;
 	}
 	
-	public String addVideoProcess(AdminVO VO, String realPath, String subDir) {
-		MultipartFile multis = VO.getCur_video_get();
-		
-		VO.setCur_video("");
+	public String addVideoProcess(MultipartFile multi, String realPath, String subDir) {
 		String fileName = "";
-		
+		String origin = multi.getOriginalFilename();
+		String temp = "";
 		try {
-			String origin = multis.getOriginalFilename();
 			if (!origin.equals("")) {
-				String temp = UUID.randomUUID().toString().substring(0, 8) + "_" + origin;
-				multis.transferTo(new File(realPath, temp));
+				temp = UUID.randomUUID().toString().substring(0, 8) + "_" + origin;
 				fileName += subDir + "/" + temp + ",";
+				
+				multi.transferTo(new File(realPath, temp));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -318,13 +328,14 @@ public class AdminController {
 	@ResponseBody
 	@GetMapping("SelectCategory")
 	public String selectCategory(AdminVO admin) {
-		List<AdminVO> adminArr = adminService.selectSubCate(admin);
-		System.out.println("admin : " + adminArr);
+		List<Map<String, Object>> adminArr = adminService.selectSubCate(admin);
+//		System.out.println("admin : " + adminArr);
 		
 		JSONArray joArr = new JSONArray(adminArr);
 		
 		return joArr.toString();
 	}
+	
 	
 	// 어드민 클래스 목록 페이지 매핑
 	@GetMapping("AdmClassList")
@@ -337,18 +348,31 @@ public class AdminController {
 	
 	// 어드민 클래스 수정 페이지 매핑
 	@GetMapping("AdmClassListModify")
-	public String admin_class_list_modi(int class_id, Model model) {
-		model.addAttribute("getClass", adminService.getClass(class_id));
+	public String admin_class_list_modi(AdminVO VO, Model model) {
+		model.addAttribute("getMainCate", adminService.getMainCate());
+		model.addAttribute("getCurriculum", adminService.getCurriculum(VO));
+		List<AdminVO> classLoad = adminService.getClass(VO);
+		System.out.println(VO);
+		model.addAttribute("getClass", classLoad);
 		
-//		if (loadClass < 0) {
-//			model.addAttribute("msg", "클래스 불러오기 실패!");
-//			return "admin/fail";
-//		}
 		
-		return "admin/class_list_modify";
+		if (classLoad == null) {
+			model.addAttribute("msg", "클래스 불러오기 실패!");
+			return "admin/fail";
+		} else {
+			return "admin/class_list_modify";
+		}
+		
 	}
 	
-	// =======================================================================
+	@PostMapping("AdmClassListModify")
+	public String admin_class_list_modi_submit(AdminVO VO, Model model) {
+		model.addAttribute("updateClass", adminService.updateClass(VO));
+		
+		return "redirect:/class_list";
+	}
+	
+	// ======================================================================================================
 	
 	// 어드민 회원 목록 페이지 매핑
 	@GetMapping("AdmMemList")

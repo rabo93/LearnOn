@@ -57,13 +57,13 @@
 									<c:forEach var="wish" items="${wishlist}">
 										<li>
 											<div class="thumb-area">
-												<img src="${pageContext.request.contextPath}/resources/images/thumb_01.webp" class="card-thumb" alt="thumbnail" />
+												<img src="${pageContext.request.contextPath}/resources/images/thumb_01.webp" class="card-thumb" alt="thumbnail" onclick="location.href='CourseDetail?class_id=${wish.class_id}'" />
 												<form action="MyFavDel" method="post" class="MyFavDelFrm">
 													<input type="hidden" name="class_id" value="${wish.class_id}">
-													<button type="button" class="fav-on" onclick="confirmDeleteWishItem()"><i class="fa-solid fa-bookmark"></i></button>
+													<button type="button" class="fav-on" onclick="confirmDeleteWishItem()"><i class="fa-solid fa-heart"></i></button>
 												</form>
 											</div>
-											<div class="card-info">
+											<div class="card-info" onclick="location.href='CourseDetail?class_id=${wish.class_id}'">
 												<div class="category">
 													<span>${wish.class_category}</span>
 												</div>

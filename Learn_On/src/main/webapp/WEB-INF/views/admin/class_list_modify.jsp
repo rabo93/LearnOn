@@ -44,7 +44,7 @@
 	<!-- Blank Start -->
 		<form action="AdmClassAdd" name="addForm" method="post" enctype="multipart/form-data">
             <div class="container-fluid pt-4 px-4">
-            	<c:forEach items="${getClass}" var="cla">
+            	<c:forEach items="${getClass}" var="modi">
 	                <div class="row vh-100 bg-light rounded align-items-center justify-content-center mx-0">
 	                	<div class="bg-light rounded p-4">
 	                		<div class="d-flex justify-content-between mb-3">
@@ -59,43 +59,44 @@
 							<div class="d-flex justify-content-between">
 								<div class="col-8">
 			                		<div class="form-floating mb-3">
-			                			<input type="text" class="form-control" id="floatingInput" name="class_title" value="${cla}">
+			                			<input type="text" class="form-control" id="floatingInput" name="class_title" value="${modi.class_title}">
 			                			<label for="floatingInput">강의 제목</label>
 			                		</div>
 									<div class="form-floating mb-3">
-										<input type="text" class="form-control" id="floatingInput" name="class_intro">
+										<input type="text" class="form-control" id="floatingInput" name="class_intro" value="${modi.class_intro}">
 										<label for="floatingInput">강의 소개</label>
 									</div>
 									<div class="form-floating mb-3">
-										<input type="text" class="form-control" id="floatingTextarea" style="height: 150px;" name="class_contents"/>
+										<input type="text" class="form-control" id="floatingTextarea" style="height: 150px;" name="class_contents" value="${modi.class_contents}"/>
 										<label for="floatingTextarea">강의 상세내용</label>
 									</div>
 									<div class="d-flex">
 										<div class="form-floating flex-fill me-3">
 											<select class="form-select" id="floatingSelect" name="class_maincate" onchange="selectMainCate()">
 												<c:forEach items="${getMainCate}" var="cate">
-													<option value="${cate.CODEID}">${cate.CODENAME}</option>
+													<option <c:if test="${cate.CODEID eq modi.codetype}">selected="selected"</c:if> value="${cate.CODEID}">${cate.CODENAME}</option>
 												</c:forEach>
 											</select>
 											<label for="floatingSelect">대분류</label>
 										</div>
 										<div class="form-floating flex-fill me-3">
+											<input type="hidden" value="${modi.name}" id="selectedSubCate">
 											<select class="form-select" id="floatingSelect2" name="class_category">
 											</select>
 											<label for="floatingSelect2">소분류</label>
 										</div>
 										<div class="form-floating flex-fill">
-											<input type="text" class="form-control" id="floatingInput" name="mem_id">
+											<input type="text" class="form-control" id="floatingInput" name="mem_id" value="${modi.mem_id}">
 											<label for="floatingInput">강사</label>
 										</div>
 									</div>
 								</div>
 								<figure class="figure">
-									<img src="resources/admin/img/learn_on_logo2.png" id="preview" class="figure-img img-fluid rounded" alt="thumpnail" style="height: 280px;">
+									<img src="resources/upload/${modi.class_pic1}" id="preview" class="figure-img img-fluid rounded" alt="thumpnail" style="height: 280px;">
 									<figcaption class="figure-caption text-center mb-3">썸네일 이미지 미리보기</figcaption>
 	<!-- 									<input type="file" class="file form-control" id="inputGroupFile02" name="CLASS_PIC1"  -->
 										<input type="file" class="file form-control" id="inputGroupFile02"
-										accept="image/*" onchange="readURL(this);" name="class_pic1_get">
+										accept="image/*" onchange="readURL(this);" name="class_pic1_get" value="resources/upload/${modi.class_pic1}">
 								</figure>
 							</div>
 							<div class="p-2 bd-highlight d-flex">
@@ -106,8 +107,15 @@
 							<div class="col-12">
 		                        <div class="bg-light rounded h-100 p-4">
 		                            <div class="table-responsive" style="overflow: scroll; height: 200px;">
-	<!-- 	                                <table class="table" id="dynamic_table" cellpadding="0" cellspacing="0" name="CLASS_CURRICULUM"> -->
 		                                <table class="table" id="dynamic_table" cellpadding="0" cellspacing="0">
+		                                	<c:forEach items="${getCurriculum}" var="cur">
+	                                			<tr>
+			                                		<td><input type="checkbox" name="checkboxObj"/></td>
+													<td><input type="text" name="cur_title" class="form-control" id="floatingInput" placeholder="커리큘럼 제목" value="${cur.cur_title}"></td>
+													<td><input type="number" name="cur_runtime" class="form-control" id="floatingInput" placeholder="커리큘럼 영상길이" value="${cur.cur_runtime}"></td>
+													<td><input type="file" name="cur_video_get" class="file form-control" id="inputGroupFile02" placeholder="커리큘럼 영상" value="resources/upload/${cur.cur_video}"></td>
+												</tr>
+		                                	</c:forEach>
 		                                </table>
 		                            </div>
 		                        </div>
@@ -116,14 +124,14 @@
 	                   		 	<div class="col-3 me-3">
 									<h6>가격</h6>
 									<div class="input-group">
-										<input type="number" class="form-control" name="class_price">
+										<input type="number" class="form-control" name="class_price" value="${modi.class_price}">
 										<span class="input-group-text">원</span>
 									</div>
 								</div>
 								<div class="col-3 me-3">
 									<h6>할인</h6>
 									<div class="input-group">
-										<input type="number" class="form-control" ">
+										<input type="number" class="form-control" >
 										<span class="input-group-text">원</span>
 									</div>
 								</div>
@@ -131,9 +139,9 @@
 									<h6>공개상태</h6>
 									<div class="form-floating">
 										<select class="form-select mb-3" aria-label="Default select example" name="class_status">
-											<option value="1">공개</option>
-											<option value="2">비공개</option>
-											<option value="3">폐강</option>
+											<option value="1" <c:if test="${li.class_status == 1}">selected</c:if>>공개</option>
+											<option value="2" <c:if test="${li.class_status == 2}">selected</c:if>>비공개</option>
+											<option value="3" <c:if test="${li.class_status == 3}">selected</c:if>>폐강</option>
 										</select>
 									</div>
 								</div>
@@ -169,9 +177,16 @@
     <script type="text/javascript">
    		var link = document.location.href;
     	if (link.includes("class")) {
-    		document.getElementById("classAdd").classList.toggle("active");
+    		document.getElementById("classList").classList.toggle("active");
     		document.getElementById("classManage").classList.toggle("active");
     	};
+    	
+    	$(function () {
+    		let classSubCate = document.getElementById("selectedSubCate").value;
+    		let selectSubCate = document.getElementById("floatingSelect2");
+    		console.log(classSubCate);
+    		console.log(selectSubCate);
+    	})
     </script>
 </body>
 </html>

@@ -171,7 +171,7 @@
 }
 
 .sidebar .navbar .dropdown-item {
-    padding-left: 10px 10px 10px 25px;
+    padding: 10px 10px 10px 25px;
     border-radius: 0 30px 30px 0;
 }
 

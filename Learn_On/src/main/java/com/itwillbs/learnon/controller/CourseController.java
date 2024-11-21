@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -26,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.learnon.service.CourseService;
 import com.itwillbs.learnon.service.MemberService;
+import com.itwillbs.learnon.service.MypageService;
 import com.itwillbs.learnon.vo.CommonCodeTypeVO;
 import com.itwillbs.learnon.vo.CourseSupportVO;
 import com.itwillbs.learnon.vo.CourseVO;
@@ -33,6 +35,7 @@ import com.itwillbs.learnon.vo.MemberVO;
 import com.itwillbs.learnon.vo.MyReviewVO;
 import com.itwillbs.learnon.vo.NoticeBoardVO;
 import com.itwillbs.learnon.vo.PageInfo;
+import com.itwillbs.learnon.vo.WishlistVO;
 
 import netscape.javascript.JSObject;
 
@@ -42,6 +45,9 @@ public class CourseController {
 	CourseService courseService;
 	@Autowired
 	MemberService memberService;
+	@Autowired
+	MypageService myService;
+	
 	
 	// 이클립스 상의 가상의 업로드 경로명 저장(프로젝트 상에서 보이는 경ㅇ로)
 	private String uploadPath = "/resources/upload";
@@ -68,17 +74,36 @@ public class CourseController {
 	@GetMapping("Category")
 	public String courseList(CourseVO course 
 							,@RequestParam(defaultValue = "") String searchType
+							, HttpSession session
+							, HttpServletRequest request
 							, Model model) {
+		String id = (String)session.getAttribute("sId");
+		
 		List<CommonCodeTypeVO> codeType = courseService.getCodeType(course.getCodetype());
 		List<CourseVO> courseList = courseService.getCourseList(course, searchType);
 		List<CommonCodeTypeVO> codeTypeAll = courseService.getCodeTypeAll();
 		List<CommonCodeTypeVO> commonCode = courseService.getCommonCode();
+		
+		// 관심목록 조회
+		List<Map<String, Object>> wishList = myService.getWishlistForCategoryList(id);
+		JSONArray jsonToWishList = new JSONArray(wishList);
+		System.out.println("jsonToWishList : " + jsonToWishList);
+		model.addAttribute("wishList", jsonToWishList);
 
 		model.addAttribute("commonCode", commonCode);
 		model.addAttribute("codeTypeAll", codeTypeAll);
 		
 		model.addAttribute("courseList", courseList);	
 		model.addAttribute("codeType", codeType);
+		
+		// 현재페이지 prevURL로 저장
+		String prevURL = request.getServletPath();
+		String queryString = request.getQueryString();
+		if(queryString != null) {
+			prevURL += "?" + queryString;
+		} 
+		session.setAttribute("prevURL", prevURL);
+		
 		return "course/course_list"; 
 	}
 	
@@ -269,7 +294,6 @@ public class CourseController {
 		
 		return "";
 	}
-	
 	
 	
 	

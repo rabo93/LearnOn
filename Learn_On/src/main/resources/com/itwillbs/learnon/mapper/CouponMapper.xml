@@ -11,6 +11,7 @@
 		    , mc.COUPON_ID 
 		    , c.COUPON_CODE -- 쿠폰코드
 		    , c.COUPON_NAME
+		    , c.DISCOUNT_STATUS -- 쿠폰유형(1:퍼센트,2:금액)
 		    , c.DISCOUNT_PERCENT
 			, c.DISCOUNT_AMOUNT 
 		    , mc.ISSUE_DATE -- 발급날짜
@@ -22,7 +23,10 @@
 		WHERE mc.MEM_ID = #{sId}
 		AND c.COUPON_STATUS = 1
 		AND mc.COUPON_ISUSED = 1
+		ORDER BY c.C_EXPIRY_DATE; -- 유효기간 임박한 순으로
   	</select>
+  	
+  	
   	<!-- 쿠폰 개수 조회 -->
   	<select id="selectCouponCount" resultType="int">
   		SELECT COUNT(*) AS '사용가능쿠폰갯수'
@@ -30,6 +34,7 @@
 		WHERE MEM_ID = #{sId}
 		AND COUPON_ISUSED = 1
   	</select>
+  
   
   	<!-- 쿠폰 코드 입력시 조회 후 인서트 -->
   	<insert id="insertCoupon" parameterType="map">
@@ -50,7 +55,7 @@
 		)
   	</insert>
  	
- 	<!-- 쿠폰 사용 후 사용여부 업데이트 (COUPON_ISUSED = 2)-->
+ 	<!-- 쿠폰 사용 후 사용여부 업데이트 -> 결제 성공 후 (COUPON_ISUSED = 2)-->
  	 	
   	<!-- ===================== 관리자용 쿠폰 ======================= -->
   	<select id="selectAdmCoupon" resultType="coupon">

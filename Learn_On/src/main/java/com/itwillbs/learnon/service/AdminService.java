@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.itwillbs.learnon.mapper.AdminMapper;
 import com.itwillbs.learnon.vo.AdminVO;
+import com.itwillbs.learnon.vo.CourseVO;
 import com.itwillbs.learnon.vo.MemberVO;
 
 @Service
@@ -28,7 +29,7 @@ public class AdminService {
 	public List<Map<String, String>> getSubCate() {
 		return mapper.getSubCate();
 	}
-	public List<AdminVO> selectSubCate(AdminVO admin) {
+	public List<Map<String, Object>> selectSubCate(AdminVO admin) {
 		return mapper.selectSubCate(admin);
 	}
 	public int insertMainCate(AdminVO VO) {
@@ -61,11 +62,11 @@ public class AdminService {
 	public List<AdminVO> getClassList() {
 		return mapper.getClassList();
 	}
-	public int updateClass(String class_id) {
-		return mapper.updateClass(class_id);
-	}
-	public List<AdminVO> getClass(int class_id) {
+	public List<AdminVO> getClass(AdminVO class_id) {
 		return mapper.getClass(class_id);
+	}
+	public List<CourseVO> updateClass(AdminVO vO) {
+		return mapper.updateClass(vO);
 	}
 	
 	// 멤버
@@ -78,6 +79,12 @@ public class AdminService {
 	}
 	public int insertCurVideo(AdminVO vO) {
 		return mapper.insertCurVideo(vO);
+	}
+	public List<CourseVO> getCurriculum(AdminVO class_id) {
+		return mapper.getCurriculum(class_id);
+	}
+	public int getClassId() {
+		return mapper.getClassId();
 	}
 
 

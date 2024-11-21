@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AdminVO {
 	
-	// 클래스
 	private int class_id;
 	private String class_title;
 	private String mem_id;
@@ -26,14 +25,16 @@ public class AdminVO {
 	private int class_status;
 	private String codetype_id;
 	private String name;
+	private String codetype;
 	
 	// 커리큘럼
 	private int cur_id;
 	private String cur_title;
 	private String cur_video;
-	private MultipartFile cur_video_get;
 	private String cur_runtime;
-	private MultipartFile cur_video_file;
+	private MultipartFile[] cur_video_get;
+	
+//	private MultipartFile cur_video_file;
 	
 	// 카테고리
 	//=======================================

@@ -72,40 +72,40 @@
 							</thead>
 							<tbody>
 								<c:forEach items="${getMemberList}" var="ml">
-								<c:if test="${ml.MEM_GRADE ne 'MEM02' and ml.MEM_STATUS ne '2'}">
+								<c:if test="${ml.mem_grade ne 'MEM02' and ml.mem_status ne '2'}">
 									<tr>
 										<th><input class="form-check-input" type="checkbox" id="gridCheck1"></th>
-										<td class="col-1"><input class="form-control" type="text" placeholder="회원 번호" aria-label="default input example" value="${ml.IDX}"></td>
-										<td class="col-1"><input class="form-control" type="text" placeholder="아이디" aria-label="default input example" value="${ml.MEM_ID}"></td>
-										<td class="col-1"><input class="form-control" type="text" placeholder="이름" aria-label="default input example" value="${ml.MEM_NAME}"></td>
-										<td class="col-1"><input class="form-control" type="text" placeholder="닉네임" aria-label="default input example" value="${ml.MEM_NICK}"></td>
-										<td class="col-1"><input class="form-control" type="text" placeholder="생년월일" aria-label="default input example" value="${ml.MEM_BIRTHDAY}"></td>
+										<td class="col-1"><input class="form-control" type="text" placeholder="회원 번호" aria-label="default input example" value="${ml.idx}"></td>
+										<td class="col-1"><input class="form-control" type="text" placeholder="아이디" aria-label="default input example" value="${ml.mem_id}"></td>
+										<td class="col-1"><input class="form-control" type="text" placeholder="이름" aria-label="default input example" value="${ml.mem_name}"></td>
+										<td class="col-1"><input class="form-control" type="text" placeholder="닉네임" aria-label="default input example" value="${ml.mem_nick}"></td>
+										<td class="col-1"><input class="form-control" type="text" placeholder="생년월일" aria-label="default input example" value="${ml.mem_birthday}"></td>
 										<td class="col-1">
 											<select class="form-select" aria-label="Default select example">
-												<option value="1" <c:if test="${ml.MEM_GENDER eq 'M'}">selected</c:if>>남자</option>
-												<option value="2" <c:if test="${ml.MEM_GENDER eq 'F'}">selected</c:if>>여자</option>
+												<option value="1" <c:if test="${ml.mem_gender eq 'M'}">selected</c:if>>남자</option>
+												<option value="2" <c:if test="${ml.mem_gender eq 'F'}">selected</c:if>>여자</option>
 											</select>
 										</td>
 										<td>
 											<div class="input-group ">
-												<input type="text" class="form-control" placeholder="Username" aria-label="Username" value="${ml.MEM_EMAIL1}">
+												<input type="text" class="form-control" placeholder="Username" aria-label="Username" value="${ml.mem_email1}">
 												<span class="input-group-text">@</span>
-												<input type="text" class="form-control" placeholder="Server" aria-label="Server" value="${ml.MEM_EMAIL2}">
+												<input type="text" class="form-control" placeholder="Server" aria-label="Server" value="${ml.mem_email2}">
 	                 		  				</div>
 	                          		 	</td>
-										<td><input class="form-control " type="text" placeholder="연락처" aria-label="default input example" value="${ml.MEM_PHONE}"></td>
+										<td><input class="form-control " type="text" placeholder="연락처" aria-label="default input example" value="${ml.mem_phone}"></td>
 										<td class="col-1">
 											<select class="form-select " aria-label="Default select example">
-												<option value="1" <c:if test="${ml.MEM_STATUS == 1}">selected</c:if>>정상</option>
-												<option value="2" <c:if test="${ml.MEM_STATUS == 2}">selected</c:if>>대기</option>
-												<option value="3" <c:if test="${ml.MEM_STATUS == 3}">selected</c:if>>휴면</option>
-												<option value="4" <c:if test="${ml.MEM_STATUS == 3}">selected</c:if>>탈퇴</option>
+												<option value="1" <c:if test="${ml.mem_status == 1}">selected</c:if>>정상</option>
+												<option value="2" <c:if test="${ml.mem_status == 2}">selected</c:if>>대기</option>
+												<option value="3" <c:if test="${ml.mem_status == 3}">selected</c:if>>휴면</option>
+												<option value="4" <c:if test="${ml.mem_status == 3}">selected</c:if>>탈퇴</option>
 											</select>
 										</td>
 										<td class="col-1">
 											<select class="form-select " aria-label="Default select example">
-												<option value="1" <c:if test="${ml.MEM_GRADE eq 'MEM03'}">selected</c:if>>관리자</option>
-												<option value="2" <c:if test="${ml.MEM_GRADE eq 'MEM01'}">selected</c:if>>일반회원</option>
+												<option value="1" <c:if test="${ml.mem_grade eq 'MEM03'}">selected</c:if>>관리자</option>
+												<option value="2" <c:if test="${ml.mem_grade eq 'MEM01'}">selected</c:if>>일반회원</option>
 											</select>
 	                                 	</td>
 	                             	</tr>

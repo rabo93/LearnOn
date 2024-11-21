@@ -23,14 +23,31 @@ public interface CourseMapper {
 	List<CourseVO> selectCourse(int classId);
 
 	List<CommonCodeTypeVO> selectCommonCodeType(String codetype);
+	List<CommonCodeTypeVO> selectCommonCodeTypeAll();
+	List<CommonCodeTypeVO> selectCommonCode();
 
 	List<MyReviewVO> selectReviewList(int class_id);
 
-//	int insertCourseSupport(@Param("cSupport") CourseSupportVO cSupport,@Param("class_id") int class_id);
 	int insertCourseSupport(CourseSupportVO cSupport);
 
-	List<CourseSupportVO> selectCourseSupportList(int class_id);
+	List<CourseSupportVO> selectCourseSupportList(
+			@Param("class_id") int class_id,
+			@Param("startRow") int startRow,
+			@Param("listLimit") int listLimit
+		);
 
-	List<CommonCodeTypeVO> selectCommonCodeTypeAll();
+
+	int selectCSupportListCount();
+
+	CourseSupportVO selectCourseSupport(int class_id);
+
+	List<Map<String, String>> selectMenuList();
+
+	int updateCourseSupport(CourseSupportVO cSupport);
+
+	int deleteBoardFile(Map<String, String> map);
+
+	int deleteCourseSupport(int c_support_idx);
+
 
 }

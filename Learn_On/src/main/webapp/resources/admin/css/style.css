@@ -171,7 +171,7 @@
 }
 
 .sidebar .navbar .dropdown-item {
-    padding-left: 10px 10px 10px 25px;
+    padding: 10px 10px 10px 25px;
     border-radius: 0 30px 30px 0;
 }
 
@@ -386,9 +386,19 @@ button:active {
 .AdmNoticeDetail {
 	display: none;
 }
+.nt-btns {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
 
 /*=================== 페이징 처리 ==================*/
-#nt_pagingArea {
+.AdmfaqDetail {
+	display: none;
+}
+/*=================== 페이징 처리 ==================*/
+#pagingArea {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -396,7 +406,7 @@ button:active {
     margin: 1rem auto;
 }
 
-#nt_pagingArea button {
+#pagingArea button {
     font-size: 13px;
     font-weight: 700;
     background: var(--white);
@@ -408,19 +418,19 @@ button:active {
     color: var(--dark);
 }
 
-#nt_pagingArea button:disabled {
+#pagingArea button:disabled {
 	background:#eee;
 	border-color:#ddd;
 	color:#c999;
 }
 
-#nt_pagingArea button:hover {
+#pagingArea button:hover {
     background: var(--primary);
     color: var(--white);
     border-color: var(--primary);
 }
 
-#nt_pagingArea strong {
+#pagingArea strong {
     width: 20px;
     display: inline-block;
     text-align: center;
@@ -428,13 +438,13 @@ button:active {
     cursor: pointer;
 }
 
-#nt_pagingArea a {
+#pagingArea a {
     display: inline-block;
     width: 20px;
     text-align: center;
 }
 
-#nt_pagingArea a:hover {
+#pagingArea a:hover {
     color: var(--primary);
     font-weight: 600;
 }

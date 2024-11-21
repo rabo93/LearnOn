@@ -11,40 +11,8 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/reset.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/course.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/notice.css">
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
-<style type="text/css">
-	#writeForm {
-		width: 500px;
-		min-height: 550px;
-		margin: auto;
-		border: 1px solid gray
-	}
-	
-	#writeForm  table {
-		margin: auto;
-		width: 500px;
-	}
-	
-	.write_td_left {
-		width: 150px;
-		text-align: center;
-	}
-	
-	.write_td_right {
-		width: 300px;
-	}
-	
-	#board_name {
-		background-color: #77777744;
-	}
-	
-	#commandCell {
-		text-align: center;
-		margin-top: 10px;
-		padding: 10px;
-		border-top: 1px solid gray;
-	}
-</style>
 </head>
 
 <body>
@@ -53,16 +21,16 @@
 		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>
 	</header>
 	<!-- 게시판 등록 -->
-	<article id="writeForm">
-		<h1>문의하기</h1>
+	<div id="nt_dt_form">
+		<h2>문의하기</h2>
 		
-		<form action="CourseSupportWrite" method="post">
+		<form action="CourseSupportWrite" method="post" enctype="multipart/form-data">
  			<input type="hidden" name="class_id" value="${param.class_id}">
  			<select name="c_support_category">
- 				<option>카테고리 선택</option>
- 				<option value="강의수강/영상" <c:if test="${param.c_support_cate eq '01'}">selected</c:if>>수강/영상</option>
- 				<option value="강의결제/환불" <c:if test="${param.c_support_cate eq '02'}">selected</c:if>>결제/환불</option>
- 				<option value="강의기타" <c:if test="${param.c_support_cate eq '03'}">selected</c:if>>기타</option>
+ 				<option value=''>카테고리 선택</option>
+ 				<option value="01" <c:if test="${param.c_support_cate eq '01'}">selected</c:if>>수강/영상</option>
+ 				<option value="02" <c:if test="${param.c_support_cate eq '02'}">selected</c:if>>결제/환불</option>
+ 				<option value="03" <c:if test="${param.c_support_cate eq '03'}">selected</c:if>>기타</option>
  			</select>
  			
 			<table>
@@ -74,6 +42,12 @@
 					<td>내용</td>
 					<td>
 						<textarea name="c_support_content" rows="15" cols="40" required="required" placeholder="문의할 내용"></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td class=""><label for="board_file">첨부파일</label></td>
+					<td class="">
+						<input type="file" name="file">
 					</td>
 				</tr>
 				

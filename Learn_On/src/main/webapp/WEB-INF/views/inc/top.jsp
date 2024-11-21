@@ -78,6 +78,7 @@ function logout() {
 						<a href="#">카테고리</a>
 						<ul class="mgnb-dep-01">
 							<li><a href="Category?codetype=CATE01">IT/개발</a></li>
+							<li><a href="Category?codetype=CATE01">IT/개발</a></li>
 							<li><a href="Category?codetype=CATE02">외국어</a></li>
 							<li><a href="Category?codetype=CATE03">운동/건강</a></li>
 							<li><a href="Category?codetype=CATE04">라이프스타일</a></li>
@@ -94,7 +95,8 @@ function logout() {
 	</section>
 	<nav id="nav">	
 		<ul class="navbar">
-			<li><a href="#">카테고리</a>
+			<li>
+				<a href="#">카테고리</a>
 				<div class="dropdown-bg"></div>
 				<ul class="dropdown">
 <!-- 					<li> -->
@@ -110,36 +112,22 @@ function logout() {
 <!-- 					</li> -->
 
 					<li>
-					 
-						<c:set var="cnt" value="0" />  <!-- cnt를 처음에 0으로 초기화 -->
-						<c:forEach var="code" items="${requestScope.codeTypeAll}">
-						    <c:set var="num" value="${fn:substring(code.codetype, 4, 6)}"/>
-						    
-						    <!-- 처음 'num'이 cnt와 다를 때만 출력되게 설정 -->
-						    <c:choose>
-						        <c:when test="${num != cnt}">
-									<a href="Category?codetype=${code.codetype}">${code.name}</a>
-						            <!-- codetype이 바뀔 때만 출력 -->
-	<%-- 					            ${code.codetype} ${code.name} --%>
-						            <ul class="sub-dropdown">
-						            	<li><a href="Category?codetype=${code.codetype}">전체${code.codetype}</a></li>
-						            </ul>
-						            <c:set var="cnt" value="${num}" /> <!-- 출력 후 cnt 값을 num으로 갱신 -->
-						        </c:when>
-						    </c:choose>
-						</c:forEach>
+						<ul id="resultArea">
+							<ul class="sub-dropdown" id="subResultArea"></ul>							
+						</ul>
 					</li>
-									
-							
+				
 					
-<!-- 						<a href="Category?codetype=CATE01">IT/개발</a> -->
-<!-- 							<ul class="sub-dropdown"> -->
-<!-- 								<li><a href="Category?codetype=CATE01">전체</a></li> -->
-<!-- 								<li><a href="Category?codetype=CATE01&codetype_id=01">프로그래밍</a></li> -->
-<!-- 							</ul> -->
-<%-- 					</c:forEach> --%>
-				</ul>
-			</li>
+				</ul>	
+			</li>						
+					
+					
+					
+					
+					
+					
+					
+					
 			<li><a href="#">BEST</a></li>
 			<li><a href="#">얼리버드 특가</a></li>
 			<li><a href="#">이벤트</a></li>

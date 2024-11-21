@@ -30,5 +30,38 @@ $(document).ready(function(){
 			console.log("장바구니 개수 불러오기 오류 : "+ jqXHR);
 		}
 	});
+	$.ajax({
+		type: "get",
+		url: "TopMenu",
+		dataType: "json",
+		success : function(data) {
+			for(let i of data) {
+				let code = i.CODEID;
+				if(code != code_test){
+					$("#resultArea").append(
+							"<li><a href='Category?codetype=" + code + "'>"+ i.MAIN_MENU +"</a></li>"
+					);
+					for(let j of data) {
+						if(code == 	j.CODEID) { 
+							$("#subResultArea").append(
+								"<li>code?"+code+", j.codeid?"+j.CODEID+"</li>"
+							);
+						}
+					}
+				}
+				var code_test = code;
+			}
+//				for(let sub of data) {
+//					if(arr = sub.MAIN_MENU) {
+//						$("#subResultArea").append(
+//							"<li><a href='Category?codetype=" + sub.CODEID + "'>"+ sub.SUB_MENU +"</a></li>"
+//						);
+//					} 
+//				}
+		},
+		error: function(){
+			alert("메뉴 불러오기 실패");
+		}
+	});	
+	
 });
-

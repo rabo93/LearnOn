@@ -5,7 +5,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-    <title>LearnOn - 관리자 페이지</title>
+    <title>LearnOn - 공지사항</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -47,9 +47,8 @@
 				<div class="bg-light rounded p-4">
 					<div class="d-flex mb-5">
 						<h5 class="me-auto tableSubject">공지사항 관리</h5>
-						<button type="button" class="btn btn-lg btn-primary ms-3">게시판 등록</button>
-						<button type="button" class="btn btn-lg btn-primary ms-3">게시판 수정</button>
-						<button type="button" class="btn btn-lg btn-primary ms-3">게시판 삭제</button>
+						<button type="button" class="btn btn-lg btn-primary ms-3" onclick="location.href='AdminNoticeWrite'">게시판 등록</button>
+						<button type="button" class="btn btn-lg btn-primary ms-3" onclick="deleteBoard()">게시판 삭제</button>
 					</div>
 					<div>
 						<form class="d-flex input-group mb-3" method="get">
@@ -71,13 +70,19 @@
 								<option value="subject" <c:if test="${param.searchType eq 'subject'}">selected</c:if>>제목</option>
 								<option value="content" <c:if test="${param.searchType eq 'content'}">selected</c:if>>내용</option>
 								<option value="subject_content" <c:if test="${param.searchType eq 'subject_content'}">selected</c:if>>제목&내용</option>
-								<option value="subject_content">제목+내용</option>
 							</select>
 							<input type="text" class="form-control" name="searchKeyword" placeholder="게시판 검색" aria-label="Recipient's username" aria-describedby="button-addon2">
 							<button class="btn btn-primary" type="submit" id="button-addon2">검색</button>
 						</form>
 					</div>
 						<table class="table table-striped">
+							<colgroup>
+								<col width="5%">
+								<col width="10%">
+								<col width="60%">
+								<col width="15%">
+								<col width="10%">
+							</colgroup>
 							<thead>
 								<tr>
 									<th scope="col">#</th>
@@ -90,10 +95,10 @@
 							<tbody>
 								<c:forEach items="${noticeList}" var="noticeBoard" varStatus="status">
 									<tr>
-										<th><input class="form-check-input" type="checkbox" id="gridCheck1"></th>
-										<td><input class="form-control" type="text" aria-label="default input example" value="${noticeBoard.notice_idx}"></td>
+										<th><input class="form-check-input" type="checkbox" id="gridCheck1" name="notice_idx" value="${noticeBoard.notice_idx}"></th>
+										<td><input class="form-control" type="text" aria-label="default input example" value="${noticeBoard.notice_idx}" onclick="showNotice(${status.index})"></td>
 										<td>
-											<input class="form-control" type="text" aria-label="default input example" value="${noticeBoard.notice_subject}" onclick="showNotice(${status.index}, ${noticeBoard.notice_idx})">
+											<input class="form-control" type="text" aria-label="default input example" value="${noticeBoard.notice_subject}" onclick="showNotice(${status.index})">
 										</td>
 										<td><input class="form-control" type="text" aria-label="default input example" value="공지사항" readonly></td>
 										<td>
@@ -104,29 +109,17 @@
 	                                 	</td>
                              		</tr>
                              		<tr class="AdmNoticeDetail">
-	                                 	<td colspan="3">
+	                                 	<td colspan="4">
 		                             		<div>
-												<textarea class="form-control" aria-label="default input example" rows="10">${noticeBoard.notice_content}</textarea>
+												<textarea class="form-control" aria-label="default input example" rows="10" readonly>${noticeBoard.notice_content}</textarea>
 											</div>
 	                                 	</td>
-	                                 	<td>
-	                                 		<c:forEach var="file" items="${fileList}" varStatus="status">
-	                                 			<div class="board_file" id="file_${status.count}">
-													<c:choose>
-														<c:when test="${not empty file}">
-															<input type="text" name="notice_file_get" value="${originalFileList[status.index]}" readonly>
-															<a href="javascript:deleteFile(${notice.notice_idx}, '${file}', ${status.count})"><i class="fa-solid fa-trash"></i></a>
-														</c:when>
-													</c:choose>
-												</div>
-	                                 		</c:forEach>
-	                                 	</td>
-	                                 	<td><button class="btn btn-primary" onclick="noticeModify(${noticeBoard.notice_idx})">수정</button></td>
+	                                 	<td><button class="btn btn-primary" onclick="noticeModify(${noticeBoard.notice_idx})">수정하기</button></td>
                              		</tr>
                                	</c:forEach>
 							</tbody>
 						</table>
-						<section id="nt_pagingArea">
+						<section id="pagingArea">
 							<button
 							onclick="location.href='AdmNotice?pageNum=${pageInfo.startPage - pageInfo.pageListLimit}&sort=${sort}&searchType=${searchType}&searchKeyword=${searchKeyword}'"
 							<c:if test="${pageInfo.startPage eq 1}">disabled</c:if>>
@@ -186,28 +179,7 @@
 			location.href= "AdmNotice";
 		}
 	    
-	    function noticeModify(notice_idx) {
-	    	console.log("notice_idx : " + notice_idx);
-// 			location.href = "NoticeModify?" + getParams();
-		}
-	    
-	    function showNotice(index, notice_idx) {
-	    	console.log("클릭했음");
-	    	
-	    	$.ajax({
-	    		type : "POST",
-	    		url : "AdmNoitce/getFileList",
-	    		data : {
-	    			notice_idx : notice_idx
-	    		}
-	    	}).done(function(result){
-	    		console.log("성공" + result)
-	    	}).fail(function(jqXHR) {
-	    		console.log("실패" + jqXHR)
-	    	});
-	    	
-	    	
-	    	
+	    function showNotice(index) {
 	        const detailRows = document.querySelectorAll('.AdmNoticeDetail');
 	        detailRows.forEach(function(row) {
 	            row.style.display = 'none';
@@ -218,6 +190,27 @@
 	            selectedSubject.style.display = 'table-row';
 	        }
         }
+	    
+	    function noticeModify(notice_idx) {
+	    	console.log("notice_idx : " + notice_idx);
+			location.href = "AdminNoticeModify?notice_idx=" + notice_idx;
+		}
+	    
+	    
+	    function deleteBoard() {
+	    	const checkedValues = $('input[name="notice_idx"]:checked').map(function() {
+	    		return $(this).val();
+	    	}).get();
+	    	
+	    	if (checkedValues.length <= 0) {
+	    		alert("삭제할 게시물을 선택하세요");
+	    		return;
+	    	}
+	    	
+	    	console.log("checkedValues : " + checkedValues);
+	    	location.href = "AdminNoticeDelete?notice_idxs=" + checkedValues;
+	    	
+	    }
 	    
   		var link = document.location.href;
 	   	if (link.includes("board")) {

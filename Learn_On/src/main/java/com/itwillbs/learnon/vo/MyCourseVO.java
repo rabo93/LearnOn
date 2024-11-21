@@ -10,6 +10,7 @@ public class MyCourseVO {
 	private String class_id;
 	private String class_category;
 	private String class_title;
+	private String class_pic;
 	private int class_runtime;
 	private int curriculum_count;
 	private String teacher_name;

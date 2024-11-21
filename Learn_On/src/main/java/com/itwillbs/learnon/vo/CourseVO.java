@@ -19,6 +19,8 @@ public class CourseVO {
 	private int cur_id;
 	private String cur_title;
 	private String cur_video;
+	private String cur_runtime;
+	
 	private double review_score;
 	
 	private String codetype;
@@ -27,4 +29,5 @@ public class CourseVO {
 	private String codetype_id;
 	
 	private String catename;
+	
 }

@@ -58,16 +58,15 @@
 								    			<p class="c-name">${coupon.COUPON_NAME}</p>
 								    			<p class="c-exp-date">
 								    				사용기한 : ~ 
-								    				<fmt:parseDate value="${coupon.C_EXPIRY_DATE}" var="couponDate" pattern="yyyyMMdd" />
+								    				<fmt:parseDate value="${coupon.C_EXPIRY_DATE}" var="couponDate" pattern="yyyy-MM-dd" />
 								    				<fmt:formatDate value="${couponDate}" pattern="yyyy년 MM월 dd일" /> 까지
 								    			</p>
-								    						
 								    			<p class="c-dis">
 								    				<c:choose>
-								    					<c:when test="${not empty coupon.DISCOUNT_PERCENT}">
+								    					<c:when test="${coupon.DISCOUNT_STATUS == 1}">
 								    						${coupon.DISCOUNT_PERCENT} %
 								    					</c:when>
-								    					<c:when test="${not empty coupon.DISCOUNT_AMOUNT}">
+								    					<c:when test="${coupon.DISCOUNT_STATUS == 2}">
 								    						${coupon.DISCOUNT_AMOUNT} 원
 								    					</c:when>
 								    				</c:choose>

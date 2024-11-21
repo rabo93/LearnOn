@@ -14,8 +14,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mypage.css">
     
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/modal.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/rating.js"></script>
 
 </head>
 <body>
@@ -33,7 +31,7 @@
 				<a href="MyReview">작성한 수강평</a>
 				<a href="MyPayment">결제내역</a>
 				<a href="MyCoupon">보유한 쿠폰</a>
-				<a href="MyInquiry" class="active">문의내역</a>
+				<a href="MySupport" class="active">문의내역</a>
 				<a href="MyAttendance">출석체크</a>
 			</aside>
 			<div class="my-container">
@@ -47,15 +45,15 @@
 						<div class="tb-wrap">
 							<table class="tb-01 tb-inq">
 								<colgroup>
-									<col width="10%">
+<%-- 									<col width="10%"> --%>
 									<col width="15%">
-									<col width="40%">
+									<col width="50%">
 									<col width="15%">
 									<col width="20%">
 								</colgroup>
 								<thead>
 									<tr>
-										<th>번호</th>
+<!-- 										<th>번호</th> -->
 										<th>분류</th>
 										<th>제목</th>
 										<th>작성자</th>
@@ -70,13 +68,13 @@
 									<c:choose>
 										<c:when test="${empty supportList}">
 											<tr>
-												<td class="empty" colspan="5">작성한 게시물이 없습니다.</td>
+												<td class="empty" colspan="4">작성한 게시물이 없습니다.</td>
 											</tr>
 										</c:when>
 										<c:otherwise>
 											<c:forEach var="support" items="${supportList}">
 												<tr>
-													<td class="board_num">${support.support_idx}</td>
+													<td class="board_num" style="display:none;">${support.support_idx}</td>
 													<td>
 														<c:if test="${support.support_category == 1}">
 															이용문의

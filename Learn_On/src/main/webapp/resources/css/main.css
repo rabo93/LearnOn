@@ -51,7 +51,7 @@
 .course-card .card-info {padding: 0.8rem 0.4rem;}
 .course-card .card-info .category span {border-radius:50px;background:var(--light-gray);color:var(--dark);display:inline-block;padding: 0.1rem 0.8rem;border:1px solid var(--gray);font-size: 0.75rem;font-weight: 700;}
 .course-card .card-info .ttl {font-size: 1.2rem;font-weight:600;margin:0.6rem 0;line-height: 1.2;text-overflow: ellipsis;overflow: hidden;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;}
-.course-card .card-info .price {margin-bottom:0.6rem;}
+.course-card .card-info .price {margin-bottom:0.6rem;font-size: 0.875rem;font-weight: 600;color: var(--dark);}
 .course-card .card-info .rating {margin-bottom:0.5rem;font-size:0.875rem;}
 .course-card .card-info .rating i {color:var(--yellow);}
 .course-card .card-info .rating span {font-weight:700;color:var(--dark);}

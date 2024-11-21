@@ -58,11 +58,20 @@
 			 , CC.CODETYPE AS CC_CODETYPE
 		  FROM COMMONCODETYPE CT
 		  JOIN COMMONCODE CC ON CC.CODEID = CT.CODETYPE
-		  WHERE CT.CODETYPE LIKE 'CATE%'
-		  ORDER BY CT.CODETYPE, CT.ORDER
-		  
+		 WHERE CT.CODETYPE LIKE 'CATE%'
+		 ORDER BY CT.CODETYPE, CT.ORDER
 	</select>
 	
+	<select id="selectCommonCode" resultType="codeType">
+		SELECT 
+			   CT.CODETYPE
+			 , CC.CODENAME
+		  FROM COMMONCODETYPE CT
+		  JOIN COMMONCODE CC
+			ON CT.CODETYPE = CC.CODEID
+		 WHERE CT.CODETYPE LIKE 'CATE%'
+		 GROUP BY CODETYPE , CC.CODENAME;
+	</select>
 	
 	<select id="selectCourse" resultType="course" parameterType="int">
 		 SELECT 
@@ -80,6 +89,7 @@
 			   , CR.CUR_ID
 			   , CR.CUR_TITLE
 			   , CR.CUR_VIDEO
+			   , CR.CUR_RUNTIME
 			   , (SELECT TRUNCATE(AVG(REVIEW_SCORE), 1)
 					FROM REVIEW
 				   WHERE C.CLASS_ID = #{class_id}
@@ -101,11 +111,15 @@
 		  JOIN MEMBER M ON M.MEM_ID = R.MEM_ID
 		 WHERE R.CLASS_ID = #{class_id}
 	</select>
-<!-- 	<select id="selectCourseSupportList" resultType="cSupport" parameterType="int"> -->
+	
 	<select id="selectCourseSupportList" resultType="cSupport" parameterType="int">
 		SELECT *
 		  FROM CLASS_SUPPORT
  	 	 WHERE C_CLASS_ID = #{class_id}
+ 	  ORDER BY C_SUPPORT_DATE DESC
+ 	 	 LIMIT 
+			   #{startRow}
+			 , #{listLimit}
 		  
 	</select>
 	<insert id="insertCourseSupport">
@@ -129,4 +143,51 @@
 		     , #{c_class_id}
 		)   
 	</insert>
+	<select id="selectCSupportListCount"  resultType="int">
+		SELECT COUNT(*)
+		  FROM CLASS_SUPPORT
+	</select>
+	
+	
+	<select id="selectCourseSupport" resultType="cSupport" parameterType="int">
+		SELECT *
+		  FROM CLASS_SUPPORT
+ 	 	 WHERE C_SUPPORT_IDX = #{c_support_idx}
+	</select>
+	<update id="updateCourseSupport">
+		UPDATE CLASS_SUPPORT 
+		   SET 
+		       C_SUPPORT_CATEGORY = #{c_support_category}
+		     , C_SUPPORT_SUBJECT = #{c_support_subject} 
+		     , C_SUPPORT_CONTENT = #{c_support_content}
+		     , C_SUPPORT_FILE = #{c_support_file} 
+		 WHERE C_SUPPORT_IDX = #{c_support_idx}
+	</update>
+	<update id="deleteBoardFile">
+	 	UPDATE CLASS_SUPPORT
+		SET
+			C_SUPPORT_FILE = CASE WHEN C_SUPPORT_FILE = #{c_support_file} THEN '' ELSE C_SUPPORT_FILE END 
+		WHERE
+			C_SUPPORT_IDX = #{c_support_idx}
+	</update>
+	<delete id="deleteCourseSupport">
+		DELETE 
+		  FROM CLASS_SUPPORT
+		 WHERE C_SUPPORT_IDX = #{c_support_idx}
+	</delete>
+	
+	
+	
+	<select id="selectMenuList" resultType="map">
+		SELECT C.CODEID
+			   , C.CODENAME AS MAIN_MENU
+		       , T.CODETYPE_ID
+		       , T.NAME AS SUB_MENU
+		FROM COMMONCODE C
+		JOIN COMMONCODETYPE T ON C.CODEID = T.CODETYPE
+		WHERE C.CODETYPE = 'CATE'
+	</select>
+	
+	
+	
 </mapper>

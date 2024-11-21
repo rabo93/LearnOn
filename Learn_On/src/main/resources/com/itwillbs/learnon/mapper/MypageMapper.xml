@@ -33,6 +33,25 @@
 		 	</when>
 		 </choose>
 	</select>
+	<select id="selectWishlistForCategoryList" resultType="map">
+		SELECT CLASS_ID
+			   , WISHLIST_IDX
+		FROM WISHLIST
+		WHERE MEM_ID = #{id}
+	</select>
+	<insert id="insertWish">
+		<selectKey keyProperty="wishlist_idx" resultType="int" order="BEFORE">
+			SELECT IFNULL(MAX(WISHLIST_IDX), 0)
+			  FROM WISHLIST
+		</selectKey>
+		-- 관심목록 추가
+		INSERT INTO WISHLIST
+		VALUES (
+			#{wishlist_idx} + 1
+			, #{class_id}
+			, #{mem_id}
+		)
+	</insert>
 	<delete id="deleteWish">
 		-- 관심목록 삭제
 		DELETE FROM WISHLIST

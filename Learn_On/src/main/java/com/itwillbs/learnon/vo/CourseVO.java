@@ -29,4 +29,5 @@ public class CourseVO {
 	private String codetype_id;
 	
 	private String catename;
+	
 }

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,10 +32,6 @@
 								 <a href="Category?codetype=${category.codetype}&codetype_id=${category.codetype_id}">${category.name}</a>
 							</button>
 						</c:forEach>
-						
-						
-						
-						
 						<form action="Category">
 <!-- 							<select name="searchType" id="searchType" onchange="handleChange(event)"> -->
 							<select name="searchType">
@@ -71,7 +68,13 @@
 				<div class="course-wrap">
 					<ul class="course-card">
 							<c:forEach var="course" items="${requestScope.courseList}" varStatus="status">
-								<li> 
+								<li id="${course.class_id}">
+									<button class="fav-off" style="display:block;" onclick="addToWishList('${course.class_id}')">
+										<i class="fa-regular fa-heart"></i>
+									</button>
+									<button class="fav-on" style="display:none;" onclick="deleteToWishList('${course.class_id}')">
+										<i class="fa-solid fa-heart"></i>
+									</button>
 									<a href="CourseDetail?class_id=${course.class_id}">
 										<img src="${pageContext.request.contextPath}/resources/images/thumb_0${status.count}.webp" class="card-thumb" alt="thumbnail" />
 										<div class="card-info">
@@ -79,6 +82,9 @@
 												<span>${course.catename}</span>
 											</div>
 											<div class="ttl">${course.class_title}</div>
+											<div class="price">
+												 <fmt:formatNumber pattern="#,###">${course.class_price}</fmt:formatNumber>원
+											</div>
 											<div class="rating">
 												<i class="fa-solid fa-star"></i>
 												<span>${course.review_score}</span>
@@ -88,9 +94,41 @@
 									</a>
 								</li>
 							</c:forEach>
-						
-						
-						
+							
+							
+							<script>
+								window.onload = function() {
+									const wishList = ${wishList};
+									
+									wishList.forEach(wish => {
+										const listItem = document.getElementById(wish.CLASS_ID);
+										if (listItem) {
+							                const favOnBtn = listItem.querySelector(".fav-on");
+							                if (favOnBtn) {
+							                	favOnBtn.style.display = "block";
+							                }
+		
+							                const favOffBtn = listItem.querySelector(".fav-off");
+							                if (favOffBtn) {
+							                	favOffBtn.style.display = "none";
+							                }
+							            }
+									});
+								}
+								
+								function addToWishList(id){
+									if(confirm("관심목록에 추가하시겠습니까?")) {
+										location.href="MyFavAdd?class_id=" + id;
+									}
+								}
+								
+								function deleteToWishList(id){
+									if(confirm("관심목록에서 삭제하시겠습니까?")){
+										location.href="MyFavDel?class_id=" + id;
+									}
+								}
+							</script>									
+									
 					</ul>
 				</div>
 			</div>

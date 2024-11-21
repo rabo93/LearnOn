@@ -60,7 +60,7 @@
 												<img src="${pageContext.request.contextPath}/resources/images/thumb_01.webp" class="card-thumb" alt="thumbnail" />
 												<form action="MyFavDel" method="post" class="MyFavDelFrm">
 													<input type="hidden" name="class_id" value="${wish.class_id}">
-													<button type="button" class="fav-on" onclick="confirmDeleteWishItem()"><i class="fa-solid fa-bookmark"></i></button>
+													<button type="button" class="fav-on" onclick="confirmDeleteWishItem()"><i class="fa-solid fa-heart"></i></button>
 												</form>
 											</div>
 											<div class="card-info">

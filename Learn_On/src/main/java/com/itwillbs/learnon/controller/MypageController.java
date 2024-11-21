@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.itwillbs.learnon.service.AdminService;
 import com.itwillbs.learnon.service.MypageService;
 import com.itwillbs.learnon.vo.AttendanceVO;
 import com.itwillbs.learnon.vo.MyCourseVO;
@@ -39,6 +40,9 @@ public class MypageController {
 	
 	@Autowired
 	private MypageService myService;
+	
+	@Autowired
+	private AdminService admService;
 	
 	// 첨부파일 가상경로
 	private String uploadPath = "/resources/upload";
@@ -575,6 +579,7 @@ public class MypageController {
 		
 		if(deleteCount > 0) {
 			String realPath = session.getServletContext().getRealPath(uploadPath);
+			System.out.println(realPath);
 			
 			if(!map.get("file").equals("")) {
 				Path path = Paths.get(realPath, map.get("file"));
@@ -636,11 +641,6 @@ public class MypageController {
 			return "result/fail";
 		}
 	}
-	
-	// 문의내역 수정 - 첨부파일 삭제
-	
-	
-	
 	
 	// 출석체크
 	@GetMapping("MyAttendance")

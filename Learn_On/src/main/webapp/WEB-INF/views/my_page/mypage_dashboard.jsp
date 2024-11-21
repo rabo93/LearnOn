@@ -68,6 +68,7 @@
 										<c:forEach var="course" items="${myCourse}">
 											<li>
 												<div class="thumb-area" onclick="location.href='MyCourseBoard?class_id=${course.class_id}'">
+<%-- 													<img src="${pageContext.request.contextPath}/resources/upload/${course.class_pic}" class="card-thumb" alt="thumbnail" /> --%>
 													<img src="${pageContext.request.contextPath}/resources/images/thumb_01.webp" class="card-thumb" alt="thumbnail" />
 												</div>
 												<div class="card-info" onclick="location.href='MyCourseBoard?class_id=${course.class_id}'">

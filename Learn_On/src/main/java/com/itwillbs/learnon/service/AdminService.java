@@ -80,5 +80,8 @@ public class AdminService {
 		return mapper.insertCurVideo(vO);
 	}
 
+	
+	// =============== 1:1 문의
+	
 
 }

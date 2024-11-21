@@ -29,7 +29,12 @@
 		        </section>
 		        
 		        <section class="class-details">
-		        
+		        	<button class="fav-off" style="display:block;" onclick="addToWishList('${course[0].class_id}')">
+						<i class="fa-regular fa-heart"></i>
+					</button>
+					<button class="fav-on" style="display:none;" onclick="deleteToWishList('${course[0].class_id}')">
+						<i class="fa-solid fa-heart"></i>
+					</button>
 		            <h1>${course[0].class_title}</h1>
 					<p>${course[0].class_intro}</p>       
 		            <div class="cls_det_rating">
@@ -168,46 +173,23 @@
 			    </div>
             </div>
         </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-			</div>
+		<script>
+			
+			function addToWishList(id){
+				if(confirm("관심목록에 추가하시겠습니까?")) {
+					location.href="MyFavAdd?class_id=" + id;
+				}
+			}
+			
+			function deleteToWishList(id){
+				if(confirm("관심목록에서 삭제하시겠습니까?")){
+					location.href="MyFavAdd?class_id=" + id;
+				}
+			}
+		</script>
+		
 		</div>
+	</div>
 	</main>
 	<footer>
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>

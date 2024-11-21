@@ -6,10 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.learnon.mapper.PayMapper;
-import com.itwillbs.learnon.vo.CouponVO;
 import com.itwillbs.learnon.vo.MemberVO;
 import com.itwillbs.learnon.vo.PurchaseVO;
-import com.siot.IamportRestClient.IamportClient;
 
 @Service
 public class PayService {

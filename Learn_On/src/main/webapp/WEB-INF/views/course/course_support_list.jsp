@@ -52,7 +52,7 @@
 							<li><a href="#tab01">클래스 소개</a></li>
 							<li><a href="#tab02">커리큘럼</a></li>
 							<li><a href="#tab03">수강평</a></li>
-							<li><a class="tab active" href="#" >문의(10)</a></li>
+							<li><a class="tab on" href="#" >문의(10)</a></li>
 						</ul>
 				
 						<div class="tabmenu" id="tab04">

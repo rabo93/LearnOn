@@ -197,6 +197,7 @@
 .tabnav li a{ position:relative; display:block; background: #F2F4F8; color: #656B77; padding:0 30px; line-height:46px; text-decoration:none; font-size:16px; border-top-left-radius: 8px; border-top-right-radius: 8px; border:1px solid #D4D8DD;}
 .tabnav li a:hover,
 .tabnav li a.active{background:#656B77; color:#FFF; border-top-left-radius: 8px; border-top-right-radius: 8px;}
+.tabnav li a.on{background:#656B77; color:#FFF; border-top-left-radius: 8px; border-top-right-radius: 8px;}
 /*--- tab menu ---*/
 
 .introduce, .curriculum, .reviews, .recommended-classes {

@@ -273,6 +273,9 @@ public class CourseController {
 		}
 		
 		model.addAttribute("courseSupport", courseSupport);
+		// ----------------------------------------------------------------
+		// 뷰페이지에서 파일 목록의 효율적 처리를 위해 addFileListToModel() 메서드 활용
+		addFileListToModel(courseSupport, model);
 		return "course/course_support_modify_form"; 
 	}
 	
@@ -339,12 +342,15 @@ public class CourseController {
 		return "true";
 	}
 	@GetMapping("CourseSupportDelete")
-	public String courseSupportDelete(CourseSupportVO cSupport,
-					@RequestParam(defaultValue = "1") int pageNum, 
-					HttpSession session, 
-					HttpServletRequest request,
-					Model model) {
-		
+	public String courseSupportDelete(
+			int class_id,
+			int c_support_idx,
+			CourseSupportVO cSupport, 	
+			@RequestParam(defaultValue = "1") int pageNum, 
+			HttpSession session, 
+			HttpServletRequest request,
+			Model model) {
+
 		// 미 로그인 처리 
 		String id = (String)session.getAttribute("sId");
 		if(id == null) {
@@ -371,7 +377,7 @@ public class CourseController {
 		// -------------------------------------------------------------------
 		// 게시물 삭제 후 실제 업로드 된 파일도 서버상에서 삭제해야 하므로
 		// DB에서 게시물에 해당하는 레코드 삭제 전 파일명을 미리 조회해야 함
-		cSupport = courseService.getCourseSupport(cSupport.getC_support_idx()); 
+		cSupport = courseService.getCourseSupport(c_support_idx); 
 		
 		// 조회된 게시물이 존재하지 않거나, 조회된 게시물의 작성자가 세션 아이디와 다를 경우 
 		// "잘못된 접근입니다!" 처리하기 위해 "result/fail.jsp"페이지로 포워딩 처리
@@ -383,7 +389,7 @@ public class CourseController {
 		// -------------------------------------------------------------------
 		// BoardService - removeBoard() 메서드 호출하여 게시물 삭제 요청
 		// => 파라미터 : boardVO 객체 리턴타입 : int(deleteCount)
-		int deleteCount = courseService.removeCourseSupport(cSupport.getC_support_idx());
+		int deleteCount = courseService.removeCourseSupport(c_support_idx);
 		
 		// DB 게시물 정보 삭제 처리 결과 판별 후 성공시 파일 삭제 작업처리 
 		if(deleteCount > 0) {
@@ -403,10 +409,8 @@ public class CourseController {
 			
 			// ----------------------------------------------------------
 			// URL주소에 붙어있는 파라미터를 가지고 온다!
-			return "";
-//			return "redirect:/BoardList" + (request.getQueryString() != null ? "?" + request.getQueryString() : "");
-			// BoardList 서블릿에는 글번호 파라미터는 제외시켜야 함. 페이지 번호만 전달.
-//			return "redirect:/CSupportList?class_id=" + cSupport.getC_class_id() + "&pageNum="+pageNum;
+			System.out.println("삭제됨???");
+			return "redirect:/CourseSupportList?class_id="+ class_id + "&pageNum=" + pageNum;
 			
 			
 		} else {
@@ -522,6 +526,37 @@ public class CourseController {
 			e.printStackTrace();
 		}
 	}
+	private void addFileListToModel(CourseSupportVO cSupport, Model model) {
+		// 뷰 페이지에서 파일목록의 효율적 처리를 위해 별도의 가공 후 전달
+//		1. 파일명을 별도의 list 객체에 저장(제네릭 타입 : String)
+		List<String> fileList = new ArrayList<String>();
+		fileList.add(cSupport.getC_support_file());
+		System.out.println(fileList);
+		//----------------------
+		// 2. 만약, 컨트롤러 측에서 원본 파일명을 추출하여 전달할 경우
+		// => 파일명이 저장된 List 객체를 반복하면서 원본 파일명을 추출하여 별도의 List에 저장
+		List<String> originalFileList = new ArrayList<String>();
+		
+		for(String file : fileList) {
+//			System.out.println("file: " + file);
+			if(!file.equals("")) {
+				// 실제 파일명에서 "-" 기호 다음(인덱스값 + 1)부터 끝까지 추출하여 리스트에 추가
+//				originalFileList.add(file.substring(file.indexOf("_") + 1));
+				originalFileList.add(file);
+			} else {
+				// 파일이 존재하지 않을 경우 원본 파일명도 파일명과 동일하게 null 로 저장
+				originalFileList.add(file);
+			}
+		}
+		System.out.println("originalFileList" + originalFileList); // 자동적으로 위치도 구분해서 나온다.
+		//----------------
+		// Model 객체에 파일 목록 객체 2개 저장
+		model.addAttribute("fileList", fileList);
+		model.addAttribute("originalFileList", originalFileList); // model은 파라미터에서 보내주니까 void가 맞다. 같은 객체이므로
+		// Model 객체를 별도로 리턴하지 않아도 객체 자체를 전달받았으므로
+				// 메서드 호출한 곳에서 저장된 속성 그대로 공유 가능
+	}
+	
 	public PageInfo paging(@RequestParam(defaultValue = "1") int pageNum) {
 		// -------------------------------------------------------------------
 		// [ 페이징 처리 ]

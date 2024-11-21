@@ -71,34 +71,34 @@
 								</thead>
 								<tbody>
 									<c:forEach items="${getClassList}" var="li">
-											<tr id="${li.class_id}">
-												<td><input class="form-check-input" type="checkbox" id="gridCheck1" name="checkboxObj" ></td>
-												<td><input class="form-control" type="text" placeholder="" value="${li.class_title}"></td>
-												<td>
-													<select class="form-select" id="floatingSelect" name="class_maincate" onchange="selectMainCate()">
-														<c:forEach items="${getMainCate}" var="cate">
-															<option value="${cate.CODEID}" 
-																<c:if test="${fn:contains(cate.DESCRIPTION, li.class_category)}">selected="selected"</c:if>>
-																	${cate.CODENAME}
-															</option>
-														</c:forEach>
-													</select>
-												</td>
-												<td>
-													<select class="form-select" id="floatingSelect2" name="class_category">
-													</select>
-												</td>
-												<td>
-													<select class="form-select" aria-label="Default select example" id="classStat">
-														<option value="1" <c:if test="${li.class_status == 1}">selected</c:if>>공개</option>
-														<option value="2" <c:if test="${li.class_status == 2}">selected</c:if>>비공개</option>
-														<option value="3" <c:if test="${li.class_status == 3}">selected</c:if>>폐강</option>
-													</select>
-			                                 	</td>
-			                                 	<td>
-			                                 		<button type="button" class="btn-primary" onclick="modifyClass(this)">수정</button>
-			                                 	</td>
-											</tr>
+										<tr id="${li.class_id}">
+											<td><input class="form-check-input" type="checkbox" id="gridCheck1" name="checkboxObj" ></td>
+											<td><input class="form-control" type="text" placeholder="" value="${li.class_title}"></td>
+											<td>
+												<select class="form-select" id="floatingSelect" name="class_maincate">
+													<c:forEach items="${getMainCate}" var="cate">
+														<option value="${cate.CODEID}" 
+															<c:if test="${fn:contains(cate.DESCRIPTION, li.class_category)}">selected="selected"</c:if>>
+																${cate.CODENAME}
+														</option>
+													</c:forEach>
+												</select>
+											</td>
+											<td>
+												<select class="form-select" id="floatingSelect2" name="class_category">
+												</select>
+											</td>
+											<td>
+												<select class="form-select" aria-label="Default select example" id="classStat">
+													<option value="1" <c:if test="${li.class_status == 1}">selected</c:if>>공개</option>
+													<option value="2" <c:if test="${li.class_status == 2}">selected</c:if>>비공개</option>
+													<option value="3" <c:if test="${li.class_status == 3}">selected</c:if>>폐강</option>
+												</select>
+		                                 	</td>
+		                                 	<td>
+		                                 		<button type="button" class="btn-primary" onclick="modifyClass(this)">수정</button>
+		                                 	</td>
+										</tr>
 									</c:forEach>
 								</tbody>
 							</table>

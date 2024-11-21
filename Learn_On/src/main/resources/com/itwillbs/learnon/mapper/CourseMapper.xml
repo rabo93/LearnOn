@@ -154,6 +154,28 @@
 		  FROM CLASS_SUPPORT
  	 	 WHERE C_SUPPORT_IDX = #{c_support_idx}
 	</select>
+	<update id="updateCourseSupport">
+		UPDATE CLASS_SUPPORT 
+		   SET 
+		       C_SUPPORT_CATEGORY = #{c_support_category}
+		     , C_SUPPORT_SUBJECT = #{c_support_subject} 
+		     , C_SUPPORT_CONTENT = #{c_support_content}
+		     , C_SUPPORT_FILE = #{c_support_file} 
+		 WHERE C_SUPPORT_IDX = #{c_support_idx}
+	</update>
+	<update id="deleteBoardFile">
+	 	UPDATE CLASS_SUPPORT
+		SET
+			C_SUPPORT_FILE = CASE WHEN C_SUPPORT_FILE = #{c_support_file} THEN '' ELSE C_SUPPORT_FILE END 
+		WHERE
+			C_SUPPORT_IDX = #{c_support_idx}
+	</update>
+	<delete id="deleteCourseSupport">
+		DELETE 
+		  FROM CLASS_SUPPORT
+		 WHERE C_SUPPORT_IDX = #{c_support_idx}
+	</delete>
+	
 	
 	
 	<select id="selectMenuList" resultType="map">
@@ -165,5 +187,7 @@
 		JOIN COMMONCODETYPE T ON C.CODEID = T.CODETYPE
 		WHERE C.CODETYPE = 'CATE'
 	</select>
+	
+	
 	
 </mapper>

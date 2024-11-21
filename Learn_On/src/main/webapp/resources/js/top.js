@@ -37,23 +37,27 @@ $(document).ready(function(){
 		success : function(data) {
 			for(let i of data) {
 				let code = i.CODEID;
-				let codeArr = new Array();
 				if(code != code_test){
 					$("#resultArea").append(
-						"<li><a href='Category?codetype=" + code + "'>"+ i.MAIN_MENU +"</a></li>"
+							"<li><a href='Category?codetype=" + code + "'>"+ i.MAIN_MENU +"</a></li>"
 					);
-					codeArr.push(code);
+					for(let j of data) {
+						if(code == 	j.CODEID) { 
+							$("#subResultArea").append(
+								"<li>code?"+code+", j.codeid?"+j.CODEID+"</li>"
+							);
+						}
+					}
 				}
-				
 				var code_test = code;
-//				for(let j of data) {
-//					if(i.CODEID == 	j.CODEID) {
-//						$("#subResultArea").append(
-//							"<li><a href='Category?codetype=" + code + "'>"+ i.SUB_MENU +"</a></li>"
-//						);
-//					}
-//				} 
 			}
+//				for(let sub of data) {
+//					if(arr = sub.MAIN_MENU) {
+//						$("#subResultArea").append(
+//							"<li><a href='Category?codetype=" + sub.CODEID + "'>"+ sub.SUB_MENU +"</a></li>"
+//						);
+//					} 
+//				}
 		},
 		error: function(){
 			alert("메뉴 불러오기 실패");

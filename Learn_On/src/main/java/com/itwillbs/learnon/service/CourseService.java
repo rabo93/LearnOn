@@ -62,6 +62,19 @@ public class CourseService {
 		return mapper.selectMenuList();
 	}
 
+	public int modifyCourseSupport(CourseSupportVO cSupport) {
+		return mapper.updateCourseSupport(cSupport);
+	}
+
+	public int removeBoardFile(Map<String, String> map) {
+		return mapper.deleteBoardFile(map);
+	}
+
+	public int removeCourseSupport(int c_support_idx) {
+		return mapper.deleteCourseSupport(c_support_idx);
+	}
+
+
 	
 
 	

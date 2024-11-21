@@ -20,6 +20,9 @@
 		<%-- inc/top.jsp 페이지 삽입(jsp:include 액션태그 사용 시 / 경로는 webapp 가리킴) --%>
 		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>
 	</header>
+	
+	
+	
 	<!-- 게시판 등록 -->
 	<div id="nt_dt_form">
 		<h2>문의하기</h2>
@@ -47,23 +50,25 @@
 				 </c:if>
 			</div>
 			<section class="tb-btns">
-				<button class="btn-02" onclick="noticeDelete()">삭제</button>
-				<button class="btn-03" onclick="CourseSupportModify(${courseSupport.c_support_idx})">수정</button>
-				<button class="btn-03"onclick="location.href='NoticeList'">목록</button>
+				<button class="btn-02" onclick="confirmDelete()">삭제</button>
+				<button class="btn-03" onclick="CourseSupportModify(${courseSupport.c_support_idx}, ${param.pageNum})">수정</button>
+				<button class="btn-03"onclick="location.href='CourseSupportList?class_id=${param.class_id}&pageNum=${param.pageNum}'">목록</button>
+				
 			</section>
-		</form>
-	</article>
+		</section>
+	</div>
 	<script type="text/javascript">
 		
 	
-		function noticeDelete() {
-			if (confirm("삭제하시겠습니까?")) {
-				location.href = "NoticeDelete?" + getParams();
+
+		function confirmDelete() {
+			if(confirm("삭제하시겠습니까?")) {
+				location.href = "CourseSupportDelete?" + getQueryParams(); // 페이지 요청
 			}
 		}
 		
-		function CourseSupportModify(cs_idx) {
-			location.href = "CourseSupportModifyForm?c_support_idx=" + cs_idx;
+		function CourseSupportModify(cs_idx, pageNum) {
+			location.href = "CourseSupportModifyForm?c_support_idx=" + cs_idx + "&pageNum=" + pageNum;
 		}
 		
 	</script>

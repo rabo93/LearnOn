@@ -24,22 +24,92 @@
 	<div id="nt_dt_form">
 		<h2>문의하기</h2>
 		<form action="CourseSupportModify" method="post" enctype="multipart/form-data">
-		
+			<input type="hidden" name="c_support_idx" value="${courseSupport.c_support_idx}">
+			<input type="hidden" name="pageNum" value="${param.pageNum}">
 			<section class="tb-con">
 				<div class="tb-hd">
-					<h3 class="ttl">${courseSupport.c_support_subject}</h3>
-					작성자 : <input type="hidden" name="mem_id" value="${param.class_id}">
+				제목 : <input type="text" name="c_support_subject" value="${courseSupport.c_support_subject}"/><br>
+					작성자 : <span>${courseSupport.mem_id}</span>
 					작성일자 : <span class="date">${courseSupport.c_support_date}</span>
-	 				카테고리 :
-	 				<c:if test="${courseSupport.c_support_category eq '01'}">수강/영상</c:if>
-	 				<c:if test="${courseSupport.c_support_category eq '02'}">결제/환불</c:if>
-	 				<c:if test="${courseSupport.c_support_category eq '03'}">기타</c:if>
+	 				카테고리 : 
+	 				<select name="c_support_category">
+		 				<option>카테고리 선택</option>
+		 				<option value="01" <c:if test="${courseSupport.c_support_category eq '01'}">selected</c:if>>수강/영상</option>
+		 				<option value="02" <c:if test="${courseSupport.c_support_category eq '02'}">selected</c:if>>결제/환불</option>
+		 				<option value="03" <c:if test="${courseSupport.c_support_category eq '03'}">selected</c:if>>기타</option>
+		 			</select>
 				</div>
+				<div class="tb-details">
+					<textarea name="c_support_content" rows="15" cols="40" required="required" placeholder="문의할 내용">${courseSupport.c_support_content}</textarea>
+				</div>
+				<section class="tb-btns">
+					<div class="tb-files">
+						<c:choose>
+							<c:when test="${not empty courseSupport.c_support_file}">
+								<div class="board_file" id="file">
+<%-- 									<input type="text" name="c_support_file" value="${originalFileList}" readonly> --%>
+									<input type="text" name="file" value="${courseSupport.c_support_file}" readonly size="50">
+									<a href="${pageContext.request.contextPath}/resources/upload/${courseSupport.c_support_file}" download="${originalFileList}"><i class="fa-solid fa-download"></i></a>
+									<a href="#" onclick="deleteFile(${courseSupport.c_support_idx}, '${courseSupport.c_support_file}')"><i class="fa-solid fa-trash"></i></a>
+<%-- 									<a href="${pageContext.request.contextPath}/resources/upload/${file}" download="${originalFileList}"> --%>
+<%-- 										${courseSupport.c_support_file}<button class="btn-03">다운로드	</button> --%>
+<!-- 									</a> -->
+<%-- 									<button class="btn-02" onclick="deleteFile(${courseSupport.c_support_idx}, '${file}')">삭제</button> --%>
+								</div>
+							</c:when>
+							<c:otherwise>
+							 	<input type="file" name="file">
+							
+<!-- 							 	<div> -->
+<!-- 							 		<i class="fa-solid fa-paperclip"></i> -->
+<%-- 							 		<input type="text" name="notice_file_get" value="${originalFileList[status.index]}" readonly>  --%>
+<%-- 							 		<a href="${pageContext.request.contextPath}/resources/upload/${courseSupport.c_support_file}" download="${originalFileList}"> --%>
+<%-- 							 			${courseSupport.c_support_file}<button class="btn-03">다운로드	</button>  --%>
+<!-- 							 		</a> -->
+<%-- 							 		<button class="btn-02" onclick="deleteFile(${courseSupport.c_support_idx}, '${file}')">삭제</button> --%>
+<!-- 							 		<input type="file" name="file" hidden> -->
+<!-- 							 	</div> -->
+							 
+							 </c:otherwise>
+						</c:choose>
+					</div>
+				</section>
 			</section>
 			
-			
+			<section id="commandCell">
+				<input type="submit" value="수정">
+				<input type="button" value="취소" onclick="history.back()">
+			</section>
 		</form>	
 	</div>
+	<script>
+		// --------- AJAX 활용하여 파일 삭제 ----------
+		function deleteFile(c_support_idx, c_support_file) {
+			if(confirm("삭제하시겠습니까?")) {
+				console.log(c_support_idx + ", " + c_support_file);
+				
+				$.ajax({
+					type : "post",
+					url : "CourseSupportDeleteFile",
+					data : {
+						c_support_idx : c_support_idx,
+						c_support_file : c_support_file
+					}
+				}).done(function(result) {
+					if(result.trim() == "true") {
+						let fileElem = $("input[name=file]");
+						$(fileElem).parent().html(fileElem);
+						$(fileElem).prop("hidden", false); 
+					} else {
+						alert("파일 삭제 실패\n 다시 시도하시오.")
+					}
+				}).fail(function(jqXHR) {
+					alert("오류 발생!");
+					console.log("오류: " + jqXHR.responseText);
+				});
+			}
+		}
+	</script>
 </body>
 </html>
 

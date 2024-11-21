@@ -29,7 +29,7 @@ import lombok.Data;
 		// insert 과정에서 .. . . .. . . .
 		//-----------------
 		//만약 뷰페이지에서 자바스트립트 활용하여 email 결합할 경우 email1,email2 멤버변수 불필요
-		private String email;
+		private String mem_email;
 		private String mem_email1;
 		private String mem_email2;
 		//-----------------

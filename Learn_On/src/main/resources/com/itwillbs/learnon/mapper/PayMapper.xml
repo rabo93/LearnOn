@@ -35,5 +35,11 @@
 	    </foreach>
     </select>
     
+    <!-- 주문회원 정보 조회 -->
+    <select id="selectMember" resultType="member">
+		SELECT *
+		FROM MEMBER
+		WHERE mem_id = #{sId}
+	</select>
     
 </mapper>

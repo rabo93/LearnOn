@@ -14,16 +14,15 @@ public class PayVO {
 	private int totalAmount; // 총 금액
 	private int itemCount; // 주문 상품수
 	
-	// 주문번호, 클래스id, 멤버id, 주문금액, 할인금액, 결제금액, 결제수단, 결제일시,
-	//channelKey, MID
-	private String orderNo;                   // 주문 번호
-    private String classId;                   // 클래스 ID
-    private String memberId;                  // 멤버 ID
-    private int orderAmount;                  // 주문 금액
-    private int discountAmount;               // 할인 금액
-    private int paymentAmount;                // 결제 금액
-    private String paymentMethod;             // 결제 수단
-    private String paymentDate;               // 결제 일시
-    private String channelKey;                // 채널 키
-    private String mid;                       // Merchant ID (MID)
+	//----------------------------------------------
+	private String merchantId;				// 주문 번호
+    private String classId;					// 클래스 ID
+    private String className;				// 클래스명
+    private String memId;					// 멤버 ID
+    private String memName;					// 주문자명
+    private int totalPrice;					// 주문 금액
+    private String payMethod;				// 결제 수단
+    private String memTel;					// 주문자 연락처
+    private String memEmail;				// 주문자 이메일
+    private String paymentDate;				// 결제 일시
 }

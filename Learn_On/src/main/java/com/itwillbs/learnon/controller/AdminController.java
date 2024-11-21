@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
@@ -419,6 +420,62 @@ public class AdminController {
 		return "admin/payment_list_coupon";
 	}
 	
+	@GetMapping("AdmCouponWrite")
+	public String admCouponWriteForm () {
+		return "admin/coupon_write_form";
+	}
+	
+	@PostMapping("AdmCouponWrite")
+	public String admCouponWrite(CouponVO coupon, Model model) {
+		System.out.println("coupon : " + coupon);
+		
+		int insertCount = couponService.createAdmCoupon(coupon);
+		
+		if(insertCount > 0) {
+			return "redirect:/AdmPayListCoupon";
+		} else {
+			model.addAttribute("msg", "쿠폰등록에 실패했습니다");
+			return "result/fail";
+		}
+	}
+	
+	@GetMapping("AdmCouponDelete")
+	public String admCouponDelete(int[] coupon_ids, Model model) {
+		for (int coupon_id : coupon_ids) {
+			CouponVO coupon = couponService.getIdxCoupon(coupon_id);
+			
+			if (coupon.equals(null)) {
+				model.addAttribute("msg", "존재하지 않는 쿠폰입니다");
+				return "result/fail";
+			}
+			
+			int deleteCount = couponService.removeCoupon(coupon.getCoupon_id());
+			
+			if (deleteCount < 0) {
+				model.addAttribute("msg", "삭제 실패");
+				return "result/fail";
+			}
+		}
+		return "redirect:/AdmPayListCoupon";
+	}
+	
+	@GetMapping("AdmCouponModify")
+	public String admCouponModifyForm(int coupon_id, Model model) {
+		CouponVO coupon = couponService.getIdxCoupon(coupon_id);
+		model.addAttribute("coupon", coupon);
+		return "admin/coupon_modify_form";
+	}
+	
+	@PostMapping("AdmCouponModify")
+	public String admCouponModify(CouponVO coupon, Model model) {
+		System.out.println("coupon : " + coupon);
+		int updateCount = couponService.modifyCouponInfo(coupon);
+		if(updateCount < 0) {
+			model.addAttribute("msg", "수정에 실패했습니다");
+			return "result/fail";
+		}
+		return "redirect:/AdmPayListCoupon";
+	}
 	// =======================================================================
 	
 	// 어드민 공지사항 관리 페이지 매핑

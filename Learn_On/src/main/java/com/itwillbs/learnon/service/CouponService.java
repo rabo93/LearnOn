@@ -49,6 +49,23 @@ public class CouponService {
 	public int getCouponListCount(String searchKeyword, String searchType) {
 		return mapper.selectAdmCouponCount(searchKeyword, searchType);
 	}
+
+	public CouponVO getIdxCoupon(int coupon_id) {
+		return mapper.selectAdmIdxCoupon(coupon_id);
+	}
+
+	public int createAdmCoupon(CouponVO coupon) {
+		return mapper.insertAdmCoupon(coupon);
+		
+	}
+
+	public int removeCoupon(int coupon_id) {
+		return mapper.deleteAdmCoupon(coupon_id);
+	}
+
+	public int modifyCouponInfo(CouponVO coupon) {
+		return mapper.updateCouponInfo(coupon);
+	}
 	
 	
 	

@@ -45,86 +45,71 @@
 				<div class="bg-light rounded p-4">
 					<div class="d-flex mb-5">
 						<h5 class="me-auto tableSubject">쿠폰 관리</h5>
-						<button type="button" class="btn btn-lg btn-primary ms-3">쿠폰 등록</button>
-						<button type="button" class="btn btn-lg btn-primary ms-3">쿠폰 삭제</button>
+						<button type="button" class="btn btn-lg btn-primary ms-3" onclick="location.href='AdmCouponWrite'">쿠폰 등록</button>
+						<button type="button" class="btn btn-lg btn-primary ms-3" onclick="deleteCoupon()">쿠폰 삭제</button>
 					</div>
-					<div class="d-flex input-group mb-3">
-						<input type="text" class="form-control" placeholder="쿠폰 제목 검색" aria-label="Recipient's username" aria-describedby="button-addon2">
-						<button class="btn btn-primary" type="button" id="button-addon2">검색</button>
-					</div>
+					<form class="d-flex input-group mb-3" method="get">
+						<select class="form-select" name= "searchType" aria-label="Default select example">
+							<option value="subject" <c:if test="${param.searchType eq 'subject'}">selected</c:if>>쿠폰이름</option>
+							<option value="code" <c:if test="${param.searchType eq 'code'}">selected</c:if>>쿠폰코드</option>
+						</select>
+						<input type="text" class="form-control" name="searchKeyword" placeholder="쿠폰 제목 검색" aria-label="Recipient's username" aria-describedby="button-addon2">
+						<button class="btn btn-primary" type="submit" id="button-addon2">검색</button>
+					</form>
 						<table class="table table-striped">
 							<colgroup>
-								<col width="10%">
+								<col width="5%">
+								<col width="5%">
+								<col width="30%">
 								<col width="20%">
 								<col width="10%">
 								<col width="10%">
 								<col width="10%">
 								<col width="10%">
-								<col width="15%">
-								<col width="15%">
 							</colgroup>
 							<thead>
 								<tr>
 									<th scope="col">#</th>
-									<th scope="col">쿠폰 고유번호</th>
+									<th scope="col">쿠폰 번호</th>
 									<th scope="col">쿠폰 이름</th>
 									<th scope="col">쿠폰 코드</th>
 									<th scope="col">쿠폰 할인률</th>
-									<th scope="col">쿠폰 할인금액</th>
 									<th scope="col">쿠폰 유효기간</th>
 									<th scope="col">쿠폰 상태</th>
+									<th scope="col">수정</th>
 								</tr>
 							</thead>
 							<tbody>
 								<c:forEach items="${couponList}" var="couponBoard" varStatus="status">
 									<tr>
-										<th><input class="form-check-input" type="checkbox" id="gridCheck1" name="faq_idx" value="${couponBoard.coupon_id}"></th>
-										<td><input class="form-control" type="text" aria-label="default input example" value="${couponBoard.coupon_id}" onclick="showFaq(${status.index})"></td>
-										<td><input class="form-control" type="text" aria-label="default input example" value="${couponBoard.coupon_name}" onclick="showFaq(${status.index})"></td>
-										<td><input class="form-control" type="text" aria-label="default input example" value="${couponBoard.coupon_code}" onclick="showFaq(${status.index})"></td>
-										<td><input class="form-control" type="text" aria-label="default input example" value="${couponBoard.discount_percent}" onclick="showFaq(${status.index})"></td>
-										<td><input class="form-control" type="text" aria-label="default input example" value="${couponBoard.discount_amount}" onclick="showFaq(${status.index})"></td>
-										<td><input class="form-control" type="text" aria-label="default input example" value="${couponBoard.expiry_date}" onclick="showFaq(${status.index})"></td>
+										<th><input class="form-check-input" type="checkbox" id="gridCheck1" name="coupon_id" value="${couponBoard.coupon_id}"></th>
+										<td><input class="form-control" type="text" aria-label="default input example" value="${couponBoard.coupon_id}"></td>
+										<td><input class="form-control" type="text" aria-label="default input example" value="${couponBoard.coupon_name}"></td>
+										<td><input class="form-control" type="text" aria-label="default input example" value="${couponBoard.coupon_code}"></td>
+										<td><input class="form-control" type="text" aria-label="default input example"
+											<c:choose>
+												<c:when test="${couponBoard.discount_status eq 1}">value="-${couponBoard.discount_percent}%"</c:when>
+												<c:when test="${couponBoard.discount_status eq 2}">value="-${couponBoard.discount_amount}원"</c:when>
+											</c:choose>></td>
+										<td><input class="form-control" type="text" aria-label="default input example" value="${couponBoard.c_expiry_date}"></td>
 										<td><input class="form-control" type="text" aria-label="default input example"
 											<c:choose>
 												<c:when test="${couponBoard.coupon_status eq 1}">value="사용가능"</c:when>
 												<c:when test="${couponBoard.coupon_status eq 2}">value="사용불가"</c:when>
-											</c:choose> readonly></td>
+											</c:choose>></td>
+										<td><button type="button" class="btn btn-lg btn-primary ms-3" onclick="couponModify(${couponBoard.coupon_id},)">수정하기</button></td>
                              		</tr>
-<!--                              		<tr class="AdmfaqDetail"> -->
-<!-- 	                                 	<td colspan="3"> -->
-<!-- 		                             		<div> -->
-<%-- 												<textarea class="form-control" aria-label="default input example" rows="10" readonly>${couponBoard.faq_content}</textarea> --%>
-<!-- 											</div> -->
-<!-- 	                                 	</td> -->
-<%-- 	                                 	<td><button class="btn btn-primary" onclick="faqModify(${faqBoard.faq_idx})">수정하기</button></td> --%>
-<!--                              		</tr> -->
                                	</c:forEach>
-<!-- 								<tr> -->
-<!-- 									<th class="col-auto"><input class="form-check-input" type="checkbox" id="gridCheck1"></th> -->
-<!-- 									<td class="col-1"><input class="form-control" type="text" placeholder="쿠폰 고유번호" aria-label="default input example" value="001"></td> -->
-<!-- 									<td><input class="form-control" type="text" placeholder="쿠폰 이름" aria-label="default input example" value="100일 출석 쿠폰"></td> -->
-<!-- 									<td><input class="form-control" type="text" placeholder="쿠폰 코드" aria-label="default input example" value="1234-5678-2345"></td> -->
-<!-- 									<td class="col-auto"><input class="form-control" type="text" placeholder="쿠폰 할인률" aria-label="default input example" value="% 10"></td> -->
-<!-- 									<td><input class="form-control" type="text" placeholder="쿠폰 할인금액" aria-label="default input example" value=" "></td> -->
-<!-- 									<td><input class="form-control" type="text" placeholder="쿠폰 유효기간" aria-label="default input example" value="2024-11-07 ~ 2025-11-01"></td> -->
-<!-- 									<td> -->
-<!-- 										<select class="form-select" aria-label="Default select example"> -->
-<!-- 											<option value="1" selected>정상</option> -->
-<!-- 											<option value="2">만료</option> -->
-<!-- 										</select> -->
-<!-- 									</td> -->
-<!--                              	</tr> -->
 							</tbody>
 						</table>
 						<section id="pagingArea">
 							<button
-							onclick="location.href='AdmFaq?pageNum=${pageInfo.startPage - pageInfo.pageListLimit}&searchType=${searchType}&searchKeyword=${searchKeyword}'"
+							onclick="location.href='AdmPayListCoupon?pageNum=${pageInfo.startPage - pageInfo.pageListLimit}&searchType=${searchType}&searchKeyword=${searchKeyword}'"
 							<c:if test="${pageInfo.startPage eq 1}">disabled</c:if>>
 								<i class="fa-solid fa-angles-left"></i>
 							</button>
 							<button
-							onclick="location.href='AdmFaq?pageNum=${pageNum - 1}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}'"
+							onclick="location.href='AdmPayListCoupon?pageNum=${pageNum - 1}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}'"
 							<c:if test="${pageNum eq 1}">disabled</c:if>>
 								<i class="fa-solid fa-angle-left"></i>
 							</button>
@@ -134,17 +119,17 @@
 										<strong>${i}</strong>
 									</c:when>
 									<c:otherwise>
-										<a href="AdmFaq?pageNum=${i}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">${i}</a>
+										<a href="AdmPayListCoupon?pageNum=${i}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">${i}</a>
 									</c:otherwise>
 								</c:choose>
 							</c:forEach>
 							<button
-							onclick="location.href='AdmFaq?pageNum=${pageNum + 1}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}'"
+							onclick="location.href='AdmPayListCoupon?pageNum=${pageNum + 1}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}'"
 							<c:if test="${pageNum eq pageInfo.maxPage}">disabled</c:if>>
 								<i class="fa-solid fa-angle-right"></i>
 							</button>
 						   	<button
-						   	onclick="location.href='AdmFaq?pageNum=${pageInfo.startPage + pageInfo.pageListLimit}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}'"
+						   	onclick="location.href='AdmPayListCoupon?pageNum=${pageInfo.startPage + pageInfo.pageListLimit}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}'"
 							<c:if test="${pageInfo.endPage eq pageInfo.maxPage}">disabled</c:if>>
 						   		<i class="fa-solid fa-angles-right"></i>
 						   	</button>
@@ -173,11 +158,33 @@
     <!-- Template Javascript -->
     <script src="resources/admin/js/main.js"></script>
     <script type="text/javascript">
-    		var link = document.location.href;
-	    	if (link.includes("Adm")) {
-	    		document.getElementById("payment").classList.toggle("active");
-	    		document.getElementById("paymentCoupon").classList.toggle("active");
-	    	};
+    	if (performance.navigation.type === 1) {
+			location.href= "AdmPayListCoupon";
+		}
+    	
+    	function deleteCoupon() {
+	    	const checkedValues = $('input[name="coupon_id"]:checked').map(function() {
+	    		return $(this).val();
+	    	}).get();
+	    	
+	    	if (checkedValues.length <= 0) {
+	    		alert("삭제할 게시물을 선택하세요");
+	    		return;
+    		}
+    		console.log("checkedValues : " + checkedValues);
+    		location.href = "AdmCouponDelete?coupon_ids=" + checkedValues;
+    	}
+    	
+    	function couponModify(coupon_id) {
+    		location.href = "AdmCouponModify?coupon_id=" + coupon_id;
+    	}
+    	
+    	
+   		var link = document.location.href;
+    	if (link.includes("Adm")) {
+    		document.getElementById("payment").classList.toggle("active");
+    		document.getElementById("paymentCoupon").classList.toggle("active");
+    	};
     </script>
 </body>
 </html>

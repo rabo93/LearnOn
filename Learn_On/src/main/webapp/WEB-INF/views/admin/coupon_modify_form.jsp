@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>공지사항</title>
+<title>COUPON</title>
 	<!-- Favicon -->
     <link href="resources/admin/img/favicon.ico" rel="icon">
 
@@ -40,43 +40,58 @@
 	<div class="container-fluid pt-4 px-4">
 		<div class="bg-light rounded p-4">
 			<div class="d-flex mb-5">
-				<h5 class="me-auto tableSubject">공지사항 글쓰기</h5>
+				<h5 class="me-auto tableSubject">COUPON 등록</h5>
 			</div>
 			<section class="tb-wrap">
-				<form action="AdminNoticeWrite" class="d-flex input-group mb-3" method="post" enctype="multipart/form-data">
+				<form action="AdmCouponModify" class="d-flex input-group mb-3" method="post" enctype="multipart/form-data">
+					<input type="hidden" name="coupon_id" value="${param.coupon_id}">
 					<table class="table table-striped">
-						<colgroup>
-								<col width="20%">
-								<col width="80%">
-						</colgroup>
 						<tr>
-							<th>글쓴이</th>
+							<th>쿠폰이름</th>
 							<td>
-								<input type="text" class="form-control" name="mem_id" value="${sessionScope.sId}" readonly>
+								<input type="text" class="form-control" name="coupon_name" value="${coupon.coupon_name}">
 							</td>
 						</tr>
 						<tr>
-							<th>제목</th>
+							<th>쿠폰코드</th>
 							<td>
-								<input type="text" class="form-control" name="notice_subject">
+								<input type="text" class="form-control" name="coupon_code" value="${coupon.coupon_code}">
 							</td>
 						</tr>
 						<tr>
-							<th>내용</th>
+							<th>쿠폰할인률</th>
 							<td>
-								<textarea class="form-control" rows="15" cols="40"  name="notice_content"></textarea>
+								<select class="form-select" name="discount_status" id="discount_status">
+									<option value="1" <c:if test="${coupon.discount_status eq 1}">selected</c:if>>%</option>
+									<option value="2" <c:if test="${coupon.discount_status eq 2}">selected</c:if>>금액</option>
+								</select>
+								<input type="text" class="form-control" id="discount_input" name="discount_value" pattern="^[0-9]{1,10}$" title="숫자만 입력하세요"
+									<c:choose>
+										<c:when test="${coupon.discount_status eq 1}">value='${coupon.discount_percent}'</c:when>
+										<c:when test="${coupon.discount_status eq 2}">value='${coupon.discount_amount}'</c:when>
+									</c:choose>
+								>
 							</td>
 						</tr>
 						<tr>
-							<th>파일첨부</th>
+							<th>쿠폰상태</th>
 							<td>
-								<input class="form-control" type="file" name="notice_file_get" multiple>
+								<select class="form-select" name="coupon_status">
+									<option value="1" <c:if test="${coupon.coupon_status eq 1}">selected</c:if>>사용가능</option>
+									<option value="2" <c:if test="${coupon.coupon_status eq 2}">selected</c:if>>사용불가</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th>쿠폰 유효기간</th>
+							<td>
+								<input type="date" class="form-control" id="expiry_date" name="c_expiry_date" min="" value="${coupon.c_expiry_date}">
 							</td>
 						</tr>
 					</table>
 					<section class="nt-btns">
 						<button class="btn btn-lg btn-primary ms-3" type="submit">등록</button>
-						<button class="btn btn-lg btn-primary ms-3" type="button" onclick="location.href='AdmNotice'">취소</button>
+						<button class="btn btn-lg btn-primary ms-3" type="button" onclick="location.href='AdmPayListCoupon'">취소</button>
 					</section>
 				</form>
 			</section>
@@ -100,6 +115,44 @@
     <!-- Template Javascript -->
     <script src="resources/admin/js/main.js"></script>
 	<script type="text/javascript">
+		$(document).ready(function() {
+	        let discountStatus = $('#discount_status').val(); // 초기 선택값 확인
+	        let discountInput = $('#discount_input');
+	
+	        if (discountStatus === '1') {
+	            discountInput.attr('name', 'discount_percent'); // 초기 상태가 퍼센트일 때
+	        } else if (discountStatus === '2') {
+	            discountInput.attr('name', 'discount_amount'); // 초기 상태가 금액일 때
+	        }
+	        
+	     	// 오늘 날짜를 'yyyy-mm-dd' 형식으로 가져오기
+	        let today = new Date();
+	        let day = String(today.getDate()).padStart(2, '0'); // 날짜 2자리로 포맷
+	        let month = String(today.getMonth() + 1).padStart(2, '0'); // 월 2자리로 포맷 (0부터 시작)
+	        let year = today.getFullYear(); // 년도
+
+	        // 'yyyy-mm-dd' 형식으로 결합
+	        let todayDate = year + '-' + month + '-' + day;
+
+	        // min 속성에 오늘 날짜 설정
+	        $('#expiry_date').attr('min', todayDate);
+	        
+	    });
+		
+		$('#discount_status').on('change', function() {
+	        let discountInput = $('#discount_input');
+	        let discountStatus = $(this).val();
+			
+	        // discount_value의 name 속성 변경
+	        if (discountStatus === '1') {
+	            discountInput.attr('name', 'discount_percent'); // 퍼센트일 경우
+	        } else if (discountStatus === '2') {
+	            discountInput.attr('name', 'discount_amount'); // 금액일 경우
+	        }
+	    });
+		
+		
+		
 		var link = document.location.href;
 	   	if (link.includes("board")) {
 	   		document.getElementById("board").classList.toggle("active");

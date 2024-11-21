@@ -28,5 +28,14 @@ public interface CouponMapper {
 
 	int selectAdmCouponCount(@Param("searchKeyword") String searchKeyword,
 							 @Param("searchType") String searchType);
+
+	CouponVO selectAdmIdxCoupon(int coupon_id);
+
+	int insertAdmCoupon(CouponVO coupon);
+
+	int deleteAdmCoupon(int coupon_id);
+
+	int updateCouponInfo(CouponVO coupon);
+
 	
 }

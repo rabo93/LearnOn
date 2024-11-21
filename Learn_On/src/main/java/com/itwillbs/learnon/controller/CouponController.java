@@ -22,7 +22,7 @@ public class CouponController {
 	private CouponService couponService;
 	
 	//=================================================================================
-	// 쿠폰선택 클릭시 보유한 쿠폰 목록 조회
+	// "쿠폰선택" 클릭시 보유한 쿠폰 목록 조회
 	@GetMapping("myCouponList")
 	public String couponSelect(
 			HttpSession session, Model model) {
@@ -51,7 +51,7 @@ public class CouponController {
 	
 	
 	//=================================================================================
-	// 쿠폰 발급 클릭시 입력한 쿠폰코드 확인 후 등록 - AJAX
+	// "쿠폰발급" 클릭시 입력한 쿠폰코드 확인 후 등록 - AJAX
 	@ResponseBody
 	@GetMapping(value = "CouponCreate", produces = "application/text; charset=UTF-8")
 //	public String couponCreate(@RequestParam String couponCode, HttpSession session, HttpServletResponse response) {
@@ -89,9 +89,5 @@ public class CouponController {
 	}
 	
 	//=================================================================================
-	
-	
-	
-	
 	
 }

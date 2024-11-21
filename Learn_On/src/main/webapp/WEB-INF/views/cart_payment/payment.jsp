@@ -27,7 +27,7 @@
 	</header>
 	<!----------------------------- page 영역 --------------------------- -->
 	<main id="pay">
-		<form action="Portone" method="post" id="payForm">
+<!-- 		<form action="Portone" method="post" id="payForm"> -->
 			<div class="wrapper">
 				<!-- pay-wrap start  -->
 				<div class="pay-wrap">
@@ -42,7 +42,7 @@
 								<h5 class="box-ttl">주문상품</h5>
 								
 								<c:forEach var="item" items="${selectedCartList}">
-									<div class="class-box">
+									<div class="class-box" data-class-title="${item.classTitle}">
 										<div class="class-pic">
 											<img alt="클래스썸네일" src="/resources/images/thumb_01.webp">
 										</div>
@@ -105,7 +105,7 @@
 								</dl>
 								<dl class="total">
 									<dt>결제 금액</dt>
-									<dd class="total-pay-amount">
+									<dd class="total-pay-amount" id="totalPrice" data-value="${totalAmount}">
 										<!-- 초기 결제 금액 => 쿠폰선택시 게산되어 금액 바뀜 -->
 										<fmt:formatNumber value="${totalAmount}" type="number" /> 원
 									</dd>
@@ -123,7 +123,7 @@
 									<span>신용카드</span>
 								</label>
 								<label class="pay-method">
-									<input type="radio" name="pay-method" value="bank">
+									<input type="radio" name="pay-method" value="vbank">
 									<span>무통장입금(가상계좌)</span>
 								</label>
 							</div>
@@ -134,7 +134,7 @@
 							<div class="pay-item">
 								<div class="notice-box">
 									<label class="notice-check">
-										<input type="checkbox" id="notice" name="notice" value="">	
+										<input type="checkbox" id="notice" name="notice">	
 						 				<span>이용약관 동의(필수)</span>
 									</label>
 					 				<a href="Terms">내용보기</a>
@@ -143,14 +143,21 @@
 						</section>	
 						<!-- ----------------- 결제하기 버튼 ---------------->
 						<div class="btns-box">
-							<input type="submit" value="결제하기" class="btnSubmit" id="btnSubmit" onclick="requestPay()">
+							<input type="submit" value="결제하기" class="btnSubmit" 
+							id="btnSubmit" onclick="kg_requestPay()">
+							<!-- 결제에 넘길 데이터 (form태그가 없으므로 data속성 사용 > js에서 서버로 값 넘길 예정)-->
+							<section id="memberInfo"
+								data-id="${member.mem_id}"
+								data-name="${member.mem_name}"
+								data-phone="${member.mem_phone}"
+								data-email="${member.email}"></section>
 						</div>
 					</div>
 				</div>
 				<!-- // pay-wrap end  -->
 				
 			</div>
-		</form>
+<!-- 		</form> -->
 	</main>
 	
 	<!----------------------------- page 영역 --------------------------- -->

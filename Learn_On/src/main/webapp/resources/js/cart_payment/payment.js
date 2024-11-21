@@ -2,31 +2,34 @@
 	결제 기능 구현
 	- (V) 결제 목록 불러오기 : 장바구니에서 넘겨받은 선택된 상품들의 클래스제목, 강사이름, 클래스가격, 총 주문금액/갯수
 	- (V) 쿠폰선택 클릭시 목록 불러오기(mypage_coupon 참고하기) => 쿠폰선택창 열기 
-	- () 선택한 쿠폰 금액 표출 : 
+	- (V) 선택한 쿠폰 금액 표출
 	- (V) 쿠폰 코드 입력시 MYCOUPON 테이블에 인서트
 	- (V) 주문금액 - 할인금액 = 결제 금액 표출
 	- (V) 결제하기 클릭시 이용약관 동의(필수) 체크 확인 : 클릭 안되어있으면 진행X
 	---------------------------------------------------------------------------
-	- () 결제하기 클릭시 결제 API에 데이터 넘겨주기 : 넘겨줄 데이터 (주문번호, 결제금액, 결제수단, 회원id, 회원연락처)
+	- (V) 결제하기 클릭시 결제 API에 데이터 넘겨주기 : 넘겨줄 데이터 (주문번호, 결제금액, 결제수단, 회원id, 회원연락처)
 	- () 결제 완료시 결제 테이블에 인서트 => 주문테이블에 같이 넣어야할지 고민해보자
 	- () 결제 완료시 인서트 해야할 테이블 => 주문 내역(PURCHASE), 결제 내역(PAYMENT), 마이페이지 
 */
 $(document).ready(function() {
+	console.log("초기 결제 상품 금액(totalAmount):", $("#totalAmount").data("value"));
+	console.log("초기 결제 금액(totalPrice):", $("#totalPrice").data("value"));
 	//=============================================================================
 	// "쿠폰선택" 클릭 시 쿠폰창 생성 이벤트
 	$("#couponSelect").click(function() {
 		// 새 창으로 열기
     	window.open("myCouponList", "_blank", "width=600,height=600,scrollbars=yes");
 		
-		//새창에 있는 쿠폰정보를 설정
+		// 새 창에 있는 쿠폰정보를 설정
 		window.setCoupon = function(coupon) {
 //		    console.log("쿠폰창에서 선택한 쿠폰정보 받은거:", coupon);
 		    //{COUPON_ID: 1, DISCOUNT_STATUS: 2, DISCOUNT_PERCENT: '', DISCOUNT_AMOUNT: 5000}
 		    
-			//결제 상품 금액 가져오기
+			// 결제 상품 금액 가져오기
 			let totalAmount = parseInt($("#totalAmount").data("value"), 10); //10진수 정수형으로 변환
 //			console.log("결제상품금액: "+ totalAmount);
-			//초기화
+			
+			// 초기화
 			let discountAmount = 0;
 			let payAmount = totalAmount;
 			
@@ -53,6 +56,12 @@ $(document).ready(function() {
 			// 할인 금액 및 최종 결제 금액 결제 페이지에 반영
 			$(".discount-amount").text("- " + discountAmount.toLocaleString() + " 원"); 
 			$(".total-pay-amount").text(payAmount.toLocaleString() + " 원"); 
+			
+			// 최종 결제 금액의 data-value 속성 동기화(결제 API에 넘기기 위해)
+			$("#totalPrice").data("value", payAmount);
+			$("#totalPrice").attr("data-value", payAmount); // HTML 속성도 업데이트
+			
+			console.log("쿠폰 적용 후(totalPrice):", $("#totalPrice").data("value"));
 		}
 	});
 	
@@ -62,7 +71,7 @@ $(document).ready(function() {
 		// 쿠폰 코드 입력 값 가져오기(양쪽 공백 제거)
 		let couponCode = $("#couponCode").val().trim(); 
 		
-		if (!couponCode) {
+		if (!couponCode) { //쿠폰코드를 입력하지 않았을 때
 	        alert("쿠폰 코드를 입력해 주세요.");
 	        return;
 	    }
@@ -73,7 +82,7 @@ $(document).ready(function() {
 			dataType : "json",
 			data: {couponCode : couponCode},
 			success: function(response) {
-				console.log("서버응답:", response); //{success: true}
+//				console.log("서버응답:", response); //{success: true}
 				if(response.success) {
 					alert("쿠폰이 발급되었습니다.\n지금 바로 사용해보세요!");
 				} else {
@@ -86,65 +95,176 @@ $(document).ready(function() {
 	});
 	
 	//=============================================================================
-	// "결제하기" 클릭시 약관동의 필수 체크 여부
+	// "결제하기" 클릭시 약관동의 필수 체크 여부 (아래코드와 중복될 수도 있으니 나중에 보고 합칠것)
 	$("#btnSubmit").click(function(event) {
 		if(!$("#notice").is(":checked")) {
 			alert("결제를 진행하려면 이용약관 동의에 체크하시기 바랍니다.");
 			event.preventDefault(); // 기본 동작(폼 제출) 방지
+			return;
 		}
+		kg_requestPay(); // 약관 동의가 체크된 경우 결제 요청
 	});
 	
+	
+	//=============================================================================
+	// [결제하기 사전검증]
+	// 결제 페이지가 로드되면 AJAX 통신을 통해 주문번호와 결제 예정금액을 전달 => AJAX
+	var merchantUid = new Date().toISOString().slice(0,10).replace(/-/g, '')
+						 + Math.floor(10000 + Math.random()*90000);
+	var totalPrice = $("#totalPrice").data("value").text();
+	
+	$.ajax({
+		type: "Post",
+		url: "Payment/prepare",
+		contentType: "application/json",
+		data: JSON.stringify({
+			merchant_uid: merchantUid,	// 주문 번호
+			amount: totalPrice			// 결제 예정 금액
+		})
+	});
+
+
+
+
+
+
+
+
+
+
+
 });
-
-//=============================================================================
-// "결제하기" 클릭시 결제 API 연동 구현
+//===================================================================================================
+// "결제하기" 클릭시 포트원 결제 API 연동 구현 (v1)
 //https://developers.portone.io/opi/ko/integration/start/v1/auth?v=v1
-//참고하세요!!!!!!!!!!!!
-
-//결제하기 클릭시 호출되는 결제창
-//var IMP = window.IMP;
-
-//1. SDK 초기화
-IMP.init("imp43247883"); //고객사 식별 코드(포트원에서 발급받음)
-
-function requestPay() {
-	let merchant_uid = sysdate() + crypto.randomUUID();
-	console.log(merchant_uid);
-
-
-//    IMP.request_pay( 
-//	{	
-//		//이니시스 결제창 일반결제
-////		channelKey: "{channel-key-5ed4eb60-9a3c-4fa3-947f-9bbe61a042aa}",
-//		pay_method: "card",
-//		merchant_uid: ""
+function kg_requestPay() {
+	//---------------------------------------------
+	// 결제페이지에서 전달할 데이터 (주문번호, 결제금액, 결제수단, 회원ID, 클래스ID 등등...) 가져오기
+	var merchantUid = new Date().toISOString().slice(0,10).replace(/-/g, '')
+						 + Math.floor(10000 + Math.random()*90000);
+	//[주문고유번호 생성(형식: yyyyMMdd+랜덤숫자5개)]
+	//- date() : 오늘날짜
+	//- toISOString() : 2024-11-21T00:00:00.000Z을 반환
+	//- slice(0, 10)으로 2024-11-21만 추출
+	//- replace(/-/g, '')로 -를 제거해 20241121 형식으로 변환
+	//- Math.floor(10000 + Math.random() * 90000)로 10000~99999 사이의 숫자를 생성
+	console.log("주문고유번호: " + merchantUid);
+	var payMethod = $('input:radio[name=pay-method]:checked').val();
+	console.log("결제수단:"  + payMethod);
+	var totalPrice = parseInt($("#totalPrice").data("value"), 10);
+	console.log("결제금액: " + totalPrice);
+	
+	//모든 클래스명 가져오기(classTitle)
+	var classTitles = [];
+	$(".class-box").each(function() {
+		classTitles.push($(this).data("class-title")); // data-class-title에서 가져오기
+    });
+    //결제 파라미터에 사용할 상품명 설정 (여러개일 경우 '첫번째 상품명 외 n개' )
+    var className = "";
+	if (classTitles.length > 1) {
+		className = `${classTitles[0]} 외 ${classTitles.length - 1}개`;
+	} else if (classTitles.length === 1) {
+		className = classTitles[0];
+	} else {
+		className = "상품 없음";
+	}
+	console.log("결제 상품명:", className);
+	
+	//회원정보 가져오기
+	var memberInfo = $("#memberInfo")
+	var memName = memberInfo.data("name");
+	var phone = memberInfo.data("phone");
+	var email = memberInfo.data("email");
+	console.log("회원 이름:", memName);
+	console.log("회원 전화번호:", phone);
+	console.log("회원 이메일:", email);
+	
+	//---------------------------------------------
+	// 결제 흐름 : 사전검증 - 결제 요청 - 사후 검증 흐름
+	//---------------------------------------------
+	// 결제하기 클릭시 호출되는 결제창 (생략가능)
+	var IMP = window.IMP;
+	// 가맹점 식별 코드(포트원에서 발급받음)
+	IMP.init("imp43247883");
+	//IMP.request_pay(param, callback) 결제창 호출
+    IMP.request_pay(
+		{	
+			//--------전달할 파라미터--------
+			//이니시스 결제창 일반결제 테스트 채널키(pg사 구분 없어지고 채널키로 대체 됐다고 하지만 일단 pg적어봄)
+//			channelKey: "{channel-key-5ed4eb60-9a3c-4fa3-947f-9bbe61a042aa}",
+			pg: "html5_inicis",			// 등록된 pg사 (적용된 pg사는 KG이니시스)
+			pay_method: payMethod, 		// 결제 방식 : card (신용카드) / vbank(가상계좌) / naverpay(네이버페이)..
+			merchant_uid: merchantUid,	// 주문 번호
+			name: className,			// 상품명
+			amount: totalPrice,			// 금액
+			buyer_name: memName,		// 주문자명
+			buyer_tel: phone,			// 전화번호
+			buyer_email: email,			// 이메일
+			//아래는 추가적인 파라미터(가상계좌시 필요할 수도 있음)
+//			vbank_due: "YYYY-MM-DD" //가상계좌 입금기한 : YYYY-MM-DD, YYYYMMDD, YYYY-MM-DD HH:mm:ss, YYYYMMDDHHmmss
+    	
+    	}, function(rsp) {
+    		if(rsp.success){
+				// [사후 검증] 
+				// - AJAX로 결제고유번호(imp_uid)를 통해 실결제금액 조회할 수 있으므로 서버 전달.
+				// - DB에 저장된 결제요청 금액을 조회하기 위해 주문번호인 merchant_uid 도 서버로 전달.
+				$.ajax({
+					type: "Post",
+					url: "Payment/validate",
+					contentType: "application/json",
+					data: JSON.stringify({
+						imp_uid: rsp.imp_uid,
+						merchant_uid: rsp.merchant_uid
+					})
+				}).done(function(data) {
+					//결제 정보 DB저장
+					//주문상품 정보 DB저장
+				});
+	
+	
+				//검증 완료하면----------------------------------------------
+				// 1. 결제정보 저장
+				// alert("결제가 완료되었습니다. \n마이페이지에서 확인하세요.");
+				// var buyerInfo = {
+				//	"merchant_uid": rsp.merchant_uid,
+				//	"userid": rsp.buyer_name, 
+				//   ...
+				//	}
+				
+			} else {
+				alert("결제를 실패하였습니다.");
+			}
+    	
+    	
+    	//======================================================================
+    	// 결제&주문 결과 저장 
+    	// 결제 정보 & 주문 정보를 따로 저장한 이유는 여러 개의 상품을 결제 했을 때 
+    	// 결제정보에는 '자바클래스 외 2개' 200000원 으로 저장하고 
+    	// 주문정보에는 '자바클래스1', 100000원 , '자바클래스2', 100000원 
+    	// 이렇게 주문한 상품 리스트를 하나씩 저장하기 위해 테이블을 2개를 두고 저장하는 로직으로 구성함
+    	// 1. 결제정보 저장
+    	
+    	//https://velog.io/@gangintheremark/SpringBoot-%ED%8F%AC%ED%8A%B8%EC%9B%90%EC%95%84%EC%9E%84%ED%8F%AC%ED%8A%B8-%EA%B2%B0%EC%A0%9C-API-%EC%82%AC%EC%9A%A9%ED%95%98%EC%97%AC-%EC%83%81%ED%92%88-%EA%B2%B0%EC%A0%9C-%EC%84%9C%EB%B9%84%EC%8A%A4
+    	//참고 할것
+//			if(rsp.success) {
+//				// ...
+//				}).done(function (data) {
+//					
+//				
+//			} else {
+//				alert("결제를 실패하였습니다.");
+//			}		
+//				
+//				
 //		
-//		
-//		
-//		
-//		/*
-//		// 결제요청 파라미터 정의
-//	    channelKey: "{콘솔 내 연동 정보의 채널키}", // 채널키: 포트원 콘솔 내 [결제 연동] - [연동 정보] - [채널 관리] 에서 확인 가능
-//	    pay_method: "card", // 결제수단: card,vbank
-//	    merchant_uid: `payment-${crypto.randomUUID()}`, //주문 고유 번호
-//	    name: "노르웨이 회전 의자", //주문명
-//	    amount: 64900, // 결제금액
-//	    buyer_name: "홍길동", //주문자명
-//	    buyer_tel: "010-4242-4242", //주문자연락처
-//	    buyer_email: "gildong@gmail.com", //주문자이메일
-//		m_redirect_url: ""//결제완료후 이동될 url 리다이렉트 주소
-//		
-//		//아래는 추가적인 파라미터(가상계좌시 필요할 수도 있음)
-////		vbank_due: "YYYY-MM-DD" //가상계좌 입금기한 : YYYY-MM-DD, YYYYMMDD, YYYY-MM-DD HH:mm:ss, YYYYMMDDHHmmss
-//    	*/
-//    }, 
-//    function (response) { // callback
-//    // 결제 종료 시 호출되는 콜백 함수
-//    // response.imp_uid 값으로 결제 단건조회 API를 호출하여 결제 결과를 확인하고,
-//    // 결제 결과를 처리하는 로직을 작성합니다.
-//    });
-  
-}
+//		}
+		// 2. 주문정보 저장(상품별)
+		
+
+
+		} //function(rsp) 함수 끝
+    );//IMP.request_pay끝
+}//kg_requestPay() 함수 끝
   
   
   
@@ -231,3 +351,43 @@ function requestPay() {
 //    });
 //  },
 //);
+
+
+//결제정보 저장
+//IMP.request_pay({
+//    ...
+//}, function (rsp) {
+//    if (rsp.success) {
+//           ... 
+//        }).done(function (data) {
+//            var mesg = '결제가 완료되었습니다.';
+//            var buyerInfo = {
+//                "merchant_uid": rsp.merchant_uid,
+//                "userid": rsp.buyer_name,
+//                "pay_method": rsp.pay_method,
+//                "name": rsp.name,
+//                "amount": rsp.paid_amount,
+//                "phone": rsp.buyer_tel,
+//                "addr": rsp.buyer_addr,
+//                "post": rsp.buyer_postcode,
+//                "recipient": recipient
+//            }
+//
+//            $.ajax({
+//                type: "post",
+//                url: "save_buyerInfo",
+//                contentType: "application/json",
+//                data: JSON.stringify(buyerInfo),
+//                success: function (response) {
+//                    console.log("결제정보 저장 완료");
+//                }
+//            });
+//        });
+//    } else {
+//        var mesg = '결제를 실패하였습니다.';
+//        alert(mesg);
+//    }
+//});
+
+
+

@@ -82,19 +82,31 @@ public class MemberService {
 
 
 //비번찾기
-	public MemberVO getMemberPasswdFinder(Member member) {
-		// TODO Auto-generated method stub
-		return mapper.selectMember(member);
+//	public MemberVO getMemberEmail(MemberVO member) {
+//		// TODO Auto-generated method stub
+//		return mapper.selectEmail(member);
+//	}
+	public MemberVO getMemberEmail(String mem_email) {
+		return mapper.selectEmail(mem_email);
+	}
+
+	//회원상탈퇴 요청
+	public int withdrawMember(String id) {
+		return mapper.updateMemberStatus(id,3);
 	}
 
 
 
-	public Member passwdFinder(Member member) {
-		// TODO Auto-generated method stub
-		return mapper.updatePasswd(member);
+
+	//비밀번호 찾기로 비밀번호 업데이트
+
+	public int setTempPasswd(String temPasswd, String mem_email) {
+		return mapper.updateTempPasswd(temPasswd,mem_email);
 	}
+
 
 }
+
 
 //	public int modifyMember(Map<String, String> map, MemberVO member) {
 //		// TODO Auto-generated method stub

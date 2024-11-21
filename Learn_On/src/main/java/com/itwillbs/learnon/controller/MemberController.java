@@ -2,7 +2,6 @@ package com.itwillbs.learnon.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Member;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -11,16 +10,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.mail.Session;
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.taglibs.standard.lang.jstl.test.beans.PublicBean1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -28,15 +23,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.itwillbs.learnon.handler.MailAuthenticator;
+import com.itwillbs.learnon.handler.GenerateRandomCode;
 import com.itwillbs.learnon.service.MailService;
 import com.itwillbs.learnon.service.MemberService;
 import com.itwillbs.learnon.vo.MailAuthInfo;
 import com.itwillbs.learnon.vo.MemberVO;
-import com.mysql.cj.protocol.x.SyncFlushDeflaterOutputStream;
 
 @Controller
 public class MemberController {
@@ -191,7 +184,7 @@ public class MemberController {
 	public String reSendAuthMail(MemberVO member,Model model , HttpSession session) {
 		MemberVO dbmember = memberService.getMember(member);
 
-		if(!member.getEmail().equals(dbmember.getEmail())) {
+		if(!member.getMem_email().equals(dbmember.getMem_email())) {
 			model.addAttribute("msg","[존재하지 않는 이메일]\\n이메일을 다시한번 확인해주세요");
 			return "result/fail";
 		}
@@ -289,12 +282,12 @@ public class MemberController {
 	public String memberModifyForm(MemberVO member,Model model , BCryptPasswordEncoder passwordEncoder ,@RequestParam Map<String, String>map,HttpSession session ) {
 		System.out.println("MAP : "+map);
 		System.out.println("member : "+member);
-		System.out.println("member id @@ : "+member.getMem_id());
-		System.out.println("member nick@@ : "+member.getMem_nick());
-		System.out.println("member phone@@ : "+member.getMem_phone());
-		System.out.println("member Email@@ : "+member.getEmail());
-		System.out.println("member Email1@@ : "+member.getMem_email1());
-		System.out.println("member Email2@@ : "+member.getMem_email2());
+//		System.out.println("member id @@ : "+member.getMem_id());
+//		System.out.println("member nick@@ : "+member.getMem_nick());
+//		System.out.println("member phone@@ : "+member.getMem_phone());
+//		System.out.println("member Email@@ : "+member.getEmail());
+//		System.out.println("member Email1@@ : "+member.getMem_email1());
+//		System.out.println("member Email2@@ : "+member.getMem_email2());
 		
 		String id = (String)session.getAttribute("sId");
 		map.put("id", id);
@@ -320,26 +313,99 @@ public class MemberController {
 		}
 	}
 	
-	/*******비밀번호 변경********/
 	@GetMapping("PasswdFinder")
-	public String passwdFinderForm() {
-		return "member/passwd_fineder";
+	public String passwdFinder(String mem_email) {
+		return"member/passwd_fineder";
 	}
 	
+	/******************비밀번호 찾기*******미구현 ㅠㅠ************/
 	@PostMapping("PasswdFinder")
-	public String passwdFinder(Member member,Model model,BCryptPasswordEncoder passwordEncoder) {
-		MemberVO DBmember = memberService.getMemberPasswdFinder(member);
-		System.out.println(member);
-		if(DBmember == null) {
+	public String passwdFinderForm(String mem_email,String mem_name,MemberVO member, Model model,HttpSession session) {
+	    try {
+	        MemberVO DBmember = memberService.getMemberEmail(mem_email);
+	        if (DBmember == null || !member.getMem_name().equals(mem_name)) {
+	            model.addAttribute("msg", "이름또는 이메일이 일치하지 않습니다.");
+	            return "result/fail";
+	        }
+	        
+	        String temPasswd = GenerateRandomCode.getRandomCode(5);
+	        System.out.println(temPasswd);
+	        int updateCount = memberService.setTempPasswd(temPasswd,mem_email);
+	        System.out.println("@@@@@@@@@@@@@@@@@@@@"+member);
+	        
+	        if(updateCount > 0) {
+	        	MailAuthInfo mailAuthInfo = mailService.sendPasswdMail(DBmember, mem_email, temPasswd);
+	        	System.out.println("인증정보 : " + mailAuthInfo);
+	        	memberService.registMemberAuthInfo(mailAuthInfo);
+	        	model.addAttribute("msg", "임시 비밀번호가 발급되었습니다\\n마이페이지에서 안전한 비밀번호로 변경해주세요");
+	        	return "result/fail";
+	        
+	        }else {
+	        	model.addAttribute("msg", "임시비밀번호 발급에 실패하였습니다.");
+	        	return "result/fail";
+	        }
+	        
+		    
+	      
+	    } catch (Exception e) {
+	        model.addAttribute("msg", "비밀번호 재설정 중 오류가 발생했습니다.");
+	        return "result/fail";
+	    }
+	}
+	
+//	@PostMapping("UpdatePassword")
+//	public String updatePassword(String mem_passwd,HttpSession session,Model model,BCryptPasswordEncoder passwordEncoder) {
+//	    Boolean isVerified = (Boolean) session.getAttribute("isVerified");
+//	    if(isVerified == null || !isVerified) {
+//	    	model.addAttribute("msg", "본인확인이 필요합니다");
+//	    	return "result/fail";
+//	    }
+//	    String email = (String) session.getAttribute("email");
+//	   
+//	    // 비밀번호 암호화 및 저장
+//        String encodedPassword = passwordEncoder.encode(mem_passwd);
+//        memberService.updatePasswd(email, encodedPassword);
+//        
+//        session.invalidate();
+//        
+//        model.addAttribute("msg", "비밀번호가 성공적으로 변경되었습니다.");
+//        return "result/success";
+//	}
+	/***********회원탈퇴*************/
+	@GetMapping("MemberWithdraw")
+	public String memberWithdraw(HttpSession session , Model model) {
+		String id = (String) session.getAttribute("sId");
+		if(id == null) {
+			model.addAttribute("msg", "로그인 후 이용가능합니다");
+			model.addAttribute("targetURL", "MemberLogin");
+			return "member/fail";
+		}
+		return"my_page/member_withraw";
+	}
+	
+	@PostMapping("MemberWithdraw")
+	public String memberWithdrawForm(MemberVO member,String mem_passwd,BCryptPasswordEncoder passwordEncoder,HttpSession session ,Model model) {
+		
+		String id = (String) session.getAttribute("sId");
+		String dbPasswd = memberService.getMemberPasswd(id);
+		if(dbPasswd == null || !passwordEncoder.matches(mem_passwd, dbPasswd)) {
 			model.addAttribute("msg", "권한이 없습니다");
 			return "result/fail";
-		}else {
-			
-			member = memberService.passwdFinder(member);
-			model.addAttribute("msg", "비밀번호가 변경되었습니다.");
-			
 		}
 		
-		return "";
+		int withdrawResult = memberService.withdrawMember(id);
+		
+		if(withdrawResult > 0) {
+			session.invalidate();
+			model.addAttribute("msg", "탈퇴 처리가 완료되었습니다.");
+			model.addAttribute("targetURL", "./");
+			return "result/fail";
+		} else {
+			model.addAttribute("msg", "탈퇴 실패\\n관리자에게 문의 바랍니다.");
+			return "result/fail";
+		}
+		
 	}
+	
+	
 }

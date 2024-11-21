@@ -15,21 +15,13 @@ import lombok.Data;
 		private String mem_gender;
 		//--------------
 		private String mem_birthday;
-//		private String YEAR;
-//		private String MONTH;
-//		private String DAY;
 		//--------------
 		private String mem_phone;
 		private String mem_post_code;
 		private String mem_address1;
 		private String mem_address2;
 		//-----------------
-		// 폼에서 입력받은 이메일 주소는 email1,2 라는 파라미터명으로 전달되므로
-		// memberVO 객체에 email1 , 2객체필요
-		// insert 과정에서 .. . . .. . . .
-		//-----------------
-		//만약 뷰페이지에서 자바스트립트 활용하여 email 결합할 경우 email1,email2 멤버변수 불필요
-		private String email;
+		private String mem_email;
 		private String mem_email1;
 		private String mem_email2;
 		//-----------------
@@ -45,8 +37,10 @@ import lombok.Data;
 		private Date mem_withdraw_date;  
 		private String mem_like1_class;
 		private String mem_like2_class;
-		private MultipartFile mem_pp_file;
-		private String file_pp;
+		private MultipartFile mem_pp_file; //강사 포트폴리오 파일
+		private String file_pp; //강사 포트폴리오 이름
+		private String profile_image; //기본값 null
+		
 		
 
 }

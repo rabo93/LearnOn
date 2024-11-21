@@ -90,33 +90,34 @@
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
 	</footer>
 	<script>
-		function getQueryParams() {
-			let params = "";
-			
-			let searchParams = new URLSearchParams(location.search);
-			if(searchParams)
-			for(let param of searchParams) {
-				params += param[0] + "=" + param[1] + "&";
-			}
-			
-			if(params.lastIndexOf("&") == params.length - 1) {
-				params = params.substring(0, params.length - 1);
-			}
-			return params;
-		}
-	
-		function confirmDelete(){
-			if(confirm("삭제하시겠습니까?")){
-				location.href = "MySupportDelete?" + getQueryParams(); // 페이지 요청
-			}			
-		}
-	
-		function requestModify() {
-			location.href = "MySupportDetail?" + getQueryParams(); // 페이지 요청
-		}
-		
+		// 수정 화면에서 첨부파일 삭제
 		function deleteFile(support_idx, file) {
 			console.log(support_idx + ", " + file);
+			if(confirm("삭제하시겠습니까?")) {
+				$.ajax({
+					type : "post",
+					url : "MySupportDeleteFile",
+					data : {
+						support_idx : support_idx,
+						file : file
+					}
+				}).done(function(result){
+					console.log(result);
+					if(result.trim() == "true"){
+						let fileElem = $("input[name=file1]");
+						$(fileElem).parent().html(fileElem);
+						$(fileElem).prop("hidden", false);
+					} else {
+						alert("파일 삭제 실패!\n다시 시도해주시기 바랍니다.");
+					}
+					
+					
+				}).fail(function(){
+					alert("오류 발생");
+				});
+				
+			}
+			
 			
 		}
 	</script>

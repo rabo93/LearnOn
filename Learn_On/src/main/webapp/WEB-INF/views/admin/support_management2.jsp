@@ -42,11 +42,9 @@
 	<!-- Blank Start -->
 			<div class="container-fluid pt-4 px-4">
 				<div class="bg-light rounded p-4">
-					<div class="d-flex mb-5">
-						<h5 class="me-auto tableSubject">게시판 관리</h5>
-						<button type="button" class="btn btn-lg btn-primary ms-3">게시판 등록</button>
-						<button type="button" class="btn btn-lg btn-primary ms-3">게시판 수정</button>
-						<button type="button" class="btn btn-lg btn-primary ms-3">게시판 삭제</button>
+					<div class="d-flex mb-2">
+						<h5 class="me-auto tableSubject">1:1 문의 관리</h5>
+<!-- 						<button type="button" class="btn btn-lg btn-primary ms-3">삭제</button> -->
 					</div>
 					<div class="d-flex input-group mb-3">
 						<input type="text" class="form-control" placeholder="게시판 검색" aria-label="Recipient's username" aria-describedby="button-addon2">

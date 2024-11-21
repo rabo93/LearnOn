@@ -27,8 +27,7 @@
 	</header>
 	<!----------------------------- page 영역 --------------------------- -->
 	<main id="pay">
-		<form action="Portone" method="post" id="payForm">
-		
+<!-- 		<form action="Portone" method="post" id="payForm"> -->
 			<div class="wrapper">
 				<!-- pay-wrap start  -->
 				<div class="pay-wrap">
@@ -43,7 +42,7 @@
 								<h5 class="box-ttl">주문상품</h5>
 								
 								<c:forEach var="item" items="${selectedCartList}">
-									<div class="class-box">
+									<div class="class-box" data-class-title="${item.classTitle}">
 										<div class="class-pic">
 											<img alt="클래스썸네일" src="/resources/images/thumb_01.webp">
 										</div>
@@ -69,17 +68,17 @@
 								<div class="coupon">
 									<div class="coupon-select">
 										<div class="coupon-select-info">
-											<p>쿠폰 할인 금액</p>
+											<p>쿠폰 할인</p>
 											<!-- 선택한 할인 쿠폰 금액 표출 -->
-											<span class="coupon-price">${coupon.totalDiscount}원</span>
+											<span class="coupon-price">선택된 쿠폰 없음</span>
 										</div>
-										<!-- 버튼 클릭시 쿠폰 모달창 생성 -->
+										<!-- 버튼 클릭시 쿠폰창 생성 -->
 										<input type="button" value="쿠폰선택" class="coupon-btn" id="couponSelect">
 									</div>
 									<!-- 쿠폰 코드 등록 -->
 									<div class="coupon-input">
-										<input type="text" placeholder="쿠폰 코드를 입력해주세요." class="coupon-inputbox" name="couponCode" id="couponCode">
-										<input type="button" value="쿠폰발급" class="coupon-btn" onclick="couponCreate()">
+										<input type="text" placeholder="쿠폰 코드를 입력해주세요." class="coupon-inputbox" id="couponCode" name="couponCode">
+										<input type="button" value="쿠폰발급" class="coupon-btn" id="couponRegist">
 									</div>
 								</div>
 							</div>
@@ -96,25 +95,22 @@
 									<c:forEach var="cart" items="${selectedCartList}">
 									    <c:set var="totalAmount" value="${totalAmount + cart.classPrice}" />
 									</c:forEach>
-									<dd><fmt:formatNumber value="${totalAmount}" type="number" /> 원</dd>
+									<dd id="totalAmount" data-value="${totalAmount}">
+										<fmt:formatNumber value="${totalAmount}" type="number" /> 원
+									</dd>
 								</dl>
 								<dl>
 									<dt>할인 금액</dt>
-									<dd><fmt:formatNumber value="${discountAmount}" type="number" /> 원</dd>
-									<dd><fmt:formatNumber value="${discountPercent}" type="number" /> %</dd>
+									 <dd class="discount-amount">0 원</dd>
 								</dl>
 								<dl class="total">
 									<dt>결제 금액</dt>
-									<c:choose>
-										<c:when test=""> <!-- 금액인 경우 -->
-											<c:set var="payAmount" value="${totalAmount - discountAmount}" />
-										</c:when>
-										<c:otherwise> <!-- 퍼센트인 경우 -->
-											<c:set var="payAmount" value="${totalAmount - (totalAmount * discountAmount / 100)}" />
-										</c:otherwise>
-									</c:choose>
-									<dd><fmt:formatNumber value="${payAmount}" type="number" /> 원</dd>
+									<dd class="total-pay-amount" id="totalPrice" data-value="${totalAmount}">
+										<!-- 초기 결제 금액 => 쿠폰선택시 게산되어 금액 바뀜 -->
+										<fmt:formatNumber value="${totalAmount}" type="number" /> 원
+									</dd>
 								</dl>
+
 							</div>
 						</section>
 						
@@ -123,11 +119,11 @@
 							<div class="pay-item">
 								<h5 class="box-ttl">결제수단</h5>
 								<label class="pay-method">
-									<input type="radio" name="pay-method" value="card">
+									<input type="radio" name="pay-method" value="card" checked>
 									<span>신용카드</span>
 								</label>
 								<label class="pay-method">
-									<input type="radio" name="pay-method" value="bank">
+									<input type="radio" name="pay-method" value="vbank">
 									<span>무통장입금(가상계좌)</span>
 								</label>
 							</div>
@@ -138,7 +134,7 @@
 							<div class="pay-item">
 								<div class="notice-box">
 									<label class="notice-check">
-										<input type="checkbox" id="notice" name="notice" value="">	
+										<input type="checkbox" id="notice" name="notice">	
 						 				<span>이용약관 동의(필수)</span>
 									</label>
 					 				<a href="Terms">내용보기</a>
@@ -147,14 +143,21 @@
 						</section>	
 						<!-- ----------------- 결제하기 버튼 ---------------->
 						<div class="btns-box">
-							<input type="submit" value="결제하기" class="btnSubmit">
+							<input type="submit" value="결제하기" class="btnSubmit" 
+							id="btnSubmit" onclick="kg_requestPay()">
+							<!-- 결제에 넘길 데이터 (form태그가 없으므로 data속성 사용 > js에서 서버로 값 넘길 예정)-->
+							<section id="memberInfo"
+								data-id="${member.mem_id}"
+								data-name="${member.mem_name}"
+								data-phone="${member.mem_phone}"
+								data-email="${member.email}"></section>
 						</div>
 					</div>
 				</div>
 				<!-- // pay-wrap end  -->
 				
 			</div>
-		</form>
+<!-- 		</form> -->
 	</main>
 	
 	<!----------------------------- page 영역 --------------------------- -->

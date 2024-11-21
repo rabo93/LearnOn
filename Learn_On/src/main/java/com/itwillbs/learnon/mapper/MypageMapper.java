@@ -22,6 +22,9 @@ public interface MypageMapper {
 			@Param("id") String id, 
 			@Param("filterType") String filterType);
 
+	// 관심목록 조회 - 카테고리 목록
+	List<Map<String, Object>> selectWishlistForCategoryList(String id);
+	
 	// 관심목록 삭제
 	int deleteWish(String class_id);
 
@@ -59,12 +62,13 @@ public interface MypageMapper {
 	int insertSupport(SupportBoardVO support);
 
 	// 1:1 문의글 전체 게시물 수 조회
-	int selectSupportListCount();
+	int selectSupportListCount(String id);
 
 	// 1:1 문의글 전체 게시물 조회
 	List<SupportBoardVO> selectSupportList(
 				@Param("startRow") int startRow, 
-				@Param("listLimit") int listLimit);
+				@Param("listLimit") int listLimit,
+				@Param("id") String id);
 
 	// 1:1 문의글 게시글 상세내용 조회
 	SupportBoardVO selectSupportDetail(int support_idx);
@@ -76,8 +80,7 @@ public interface MypageMapper {
 	int deleteSupport(int support_idx);
 
 	// 1:1 문의글 수정 - 첨부파일 삭제
-	int updateSupportFile(@Param("support_idx") int support_idx, 
-						  @Param("file") String file);
+	int deleteSupportFile(Map<String, String> map);
 
 	// 출석체크 가져오기
 	AttendanceVO selectAttendance(String id);
@@ -85,13 +88,21 @@ public interface MypageMapper {
 	// 나의 강의실 - 강의 수강 화면
 	MyDashboardVO selectMyDashboard(MyDashboardVO myDashboard);
 
+	// 수강률 업데이트
 	void updateCurStatus(MyCurriculumVO myCurriculum);
 
+	// 나의 수강목록
 	List<MyCurriculumVO> selectMyCurList(MyDashboardVO myDashboard);
 
+	// 나의 학습시간 업데이트
 	int updateStudyTime(MyCurriculumVO myCurriculum);
 
+	// 클래스 상태 변경
 	int updateCourseStatus(MyCurriculumVO myCurriculum);
+
+	// 관심목록 추가
+	int insertWish(WishlistVO wish);
+
 	
 	
 

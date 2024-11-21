@@ -1,11 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8">
     <title>LearnOn - 관리자 페이지</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -69,42 +71,34 @@
 								</thead>
 								<tbody>
 									<c:forEach items="${getClassList}" var="li">
-										<c:if test="${li.class_status eq 1 || li.class_status eq 2}">
-											<tr id="${li.class_id}">
-												<td><input class="form-check-input" type="checkbox" id="gridCheck1" name="checkboxObj" ></td>
-												<td><input class="form-control" type="text" placeholder="" value="${li.class_title}"></td>
-												<td>
-													<select class="form-select" aria-label="Default select example">
-														<option>대분류</option>
-														<option value="1">IT/개발</option>
-														<option value="2">외국어</option>
-														<option value="3">운동/건강</option>
-														<option value="4">라이프스타일</option>
-														<option value="5">요리/음료</option>
-													</select>
-												</td>
-												<td>
-													<select class="form-select" aria-label="Default select example">
-														<option>소분류</option>
-														<option value="1">IT/개발</option>
-														<option value="2">외국어</option>
-														<option value="3">운동/건강</option>
-														<option value="4">라이프스타일</option>
-														<option value="5">요리/음료</option>
-													</select>
-												</td>
-												<td>
-													<select class="form-select" aria-label="Default select example" id="classStat">
-														<option value="1" <c:if test="${li.class_status == 1}">selected</c:if>>공개</option>
-														<option value="2" <c:if test="${li.class_status == 2}">selected</c:if>>비공개</option>
-														<option value="3" <c:if test="${li.class_status == 3}">selected</c:if>>폐강</option>
-													</select>
-			                                 	</td>
-			                                 	<td>
-			                                 		<button type="button" class="btn-primary" onclick="modifyClass(this)">수정</button>
-			                                 	</td>
-											</tr>
-										</c:if>
+										<tr id="${li.class_id}">
+											<td><input class="form-check-input" type="checkbox" id="gridCheck1" name="checkboxObj" ></td>
+											<td><input class="form-control" type="text" placeholder="" value="${li.class_title}"></td>
+											<td>
+												<select class="form-select" id="floatingSelect" name="class_maincate">
+													<c:forEach items="${getMainCate}" var="cate">
+														<option value="${cate.CODEID}" 
+															<c:if test="${fn:contains(cate.DESCRIPTION, li.class_category)}">selected="selected"</c:if>>
+																${cate.CODENAME}
+														</option>
+													</c:forEach>
+												</select>
+											</td>
+											<td>
+												<select class="form-select" id="floatingSelect2" name="class_category">
+												</select>
+											</td>
+											<td>
+												<select class="form-select" aria-label="Default select example" id="classStat">
+													<option value="1" <c:if test="${li.class_status == 1}">selected</c:if>>공개</option>
+													<option value="2" <c:if test="${li.class_status == 2}">selected</c:if>>비공개</option>
+													<option value="3" <c:if test="${li.class_status == 3}">selected</c:if>>폐강</option>
+												</select>
+		                                 	</td>
+		                                 	<td>
+		                                 		<button type="button" class="btn-primary" onclick="modifyClass(this)">수정</button>
+		                                 	</td>
+										</tr>
 									</c:forEach>
 								</tbody>
 							</table>
@@ -132,6 +126,7 @@
 
     <!-- Template Javascript -->
     <script src="resources/admin/js/main.js"></script>
+    <script src="resources/admin/js/admClass.js"></script>
     <script type="text/javascript">
     		var link = document.location.href;
 	    	if (link.includes("Adm")) {

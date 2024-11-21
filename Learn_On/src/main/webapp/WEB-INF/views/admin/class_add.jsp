@@ -6,11 +6,7 @@
 <head>
 	<meta charset="utf-8">
     <title>LearnOn - 관리자 페이지</title>
-    <script
-		src="https://code.jquery.com/jquery-3.7.1.js"
-		integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-		crossorigin="anonymous">
-    </script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -77,14 +73,13 @@
 									<div class="form-floating flex-fill me-3">
 										<select class="form-select" id="floatingSelect" name="class_maincate" onchange="selectMainCate()">
 											<c:forEach items="${getMainCate}" var="cate">
-												<option value="${cate.CODEID}">${cate.CODEID}</option>
+												<option value="${cate.CODEID}">${cate.CODENAME}</option>
 											</c:forEach>
 										</select>
 										<label for="floatingSelect">대분류</label>
 									</div>
 									<div class="form-floating flex-fill me-3">
 										<select class="form-select" id="floatingSelect2" name="class_category">
-											
 										</select>
 										<label for="floatingSelect2">소분류</label>
 									</div>

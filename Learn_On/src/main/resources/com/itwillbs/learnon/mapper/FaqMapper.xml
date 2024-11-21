@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itwillbs.learnon.mapper.FaqMapper">
+	<select id="selectBoardList" resultType="faq">
+		SELECT	FAQ_IDX
+				, FAQ_SUBJECT
+				, FAQ_CONTENT
+				, FAQ_CATE
+				, CLASS_CATEGORY
+		FROM	FAQ
+	</select>
+	
+	<select id="selectIdxBoardList" resultType="faq">
+		SELECT	FAQ_IDX
+				, FAQ_SUBJECT
+				, FAQ_CONTENT
+				, FAQ_CATE
+				, CLASS_CATEGORY
+		FROM	FAQ
+		WHERE	FAQ_IDX = #{faq_idx}
+	</select>
+
+	<insert id="insertFaq">
+		<selectKey keyProperty="faq_idx" resultType="int" order="BEFORE">
+			SELECT	IFNULL(MAX(faq_idx),0)
+			FROM	FAQ
+		</selectKey>
+		INSERT
+		INTO	FAQ
+		VALUES	(
+			#{faq_idx} + 1
+			, #{faq_subject}
+			, #{faq_content}
+			, #{faq_cate}
+			, #{class_category}
+		)
+		
+	</insert>
+	
+	<select id="selectAdmBoardList" resultType="faq">
+		SELECT	FAQ_IDX
+				, FAQ_SUBJECT
+				, FAQ_CONTENT
+				, FAQ_CATE
+				, CLASS_CATEGORY
+		FROM	FAQ
+		<if test="!searchKeyword.equals('')">
+		WHERE
+			<choose>
+				<when test="searchType.equals('subject')">
+					FAQ_SUBJECT LIKE CONCAT('%', #{searchKeyword}, '%')
+				</when>
+				<when test="searchType.equals('content')">
+					FAQ_CONTENT LIKE CONCAT('%', #{searchKeyword}, '%')
+				</when>
+				<when test="searchType.equals('subject_content')">
+					FAQ_SUBJECT LIKE CONCAT('%', #{searchKeyword}, '%')
+					OR FAQ_CONTENT LIKE CONCAT('%', #{searchKeyword}, '%')
+				</when>
+				<otherwise>
+					WHERE	1 = 1
+				</otherwise>
+			</choose>
+		</if>
+		LIMIT	#{startRow}
+				, #{listLimit}
+	</select>
+	
+	<select id="selectBoardListCount" resultType="int">
+		SELECT	COUNT(*)
+		FROM	FAQ
+		<if test="!searchKeyword.equals('')">
+		 WHERE
+			<choose>
+				<when test="searchType.equals('subject')">
+					FAQ_SUBJECT LIKE CONCAT('%', #{searchKeyword}, '%')
+				</when>
+				<when test="searchType.equals('content')">
+					FAQ_CONTENT LIKE CONCAT('%', #{searchKeyword}, '%')
+				</when>
+				<when test="searchType.equals('subject_content')">
+					FAQ_SUBJECT LIKE CONCAT('%', #{searchKeyword}, '%')
+					OR FAQ_CONTENT LIKE CONCAT('%', #{searchKeyword}, '%')
+				</when>
+				<otherwise>
+					WHERE	1 = 1
+				</otherwise>
+			</choose>
+		</if>
+	</select>
+	
+	<update id="updateFaqBoard">
+		UPDATE	FAQ
+		SET		FAQ_SUBJECT = #{faq_subject}
+				, FAQ_CONTENT = #{faq_content}
+		WHERE	FAQ_IDX = #{faq_idx}
+	</update>
+	
+	<delete id="deleteFaqBoard">
+		DELETE
+		FROM	FAQ
+		WHERE	FAQ_IDX = #{faq_idx}
+	</delete>
+	
+</mapper>

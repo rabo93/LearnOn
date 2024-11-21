@@ -7,13 +7,11 @@ function addRow() {
 	var cell2 = newRow.insertCell();
 	var cell3 = newRow.insertCell();
 	var cell4 = newRow.insertCell();
-	var cell5 = newRow.insertCell();
 	  
 	cell1.innerHTML = '<input type="checkbox" name="checkboxObj"/>';
 	cell2.innerHTML = '<input type="text" name="cur_title" class="form-control" id="floatingInput" placeholder="커리큘럼 제목">';
 	cell3.innerHTML = '<input type="number" name="cur_runtime" class="form-control" id="floatingInput" placeholder="커리큘럼 영상길이">';
 	cell4.innerHTML = '<input type="file" name="cur_video_get" class="file form-control" id="inputGroupFile02" placeholder="커리큘럼 영상">';
-	cell5.innerHTML = '<input type="hidden" value="" name="cur_video">';
 	
 }
 
@@ -80,7 +78,32 @@ function deleteSubCateRow() {
 	}
 }
 
+// 소분류 불러오기
 function selectMainCate() {
+	let mainCateId = document.querySelector("select[name=class_maincate]").value;
+	
+	$.ajax({
+		type: "GET",
+		url: "SelectCategory",
+		data: {
+			codetype_id_subcate : mainCateId
+		},
+		dataType : "json"
+	}).done(function(data){
+		$("#floatingSelect2").empty();
+		for(let item of data) {
+			$("#floatingSelect2").append(
+				`<option value="${item.name}" ${item.selected}>${item.name}</option>`
+			);
+		}
+	}).fail(function(){
+		console.log("에러");
+	});
+		
+}
+
+// 소분류 실행
+$(function () {
 	let mainCateId = document.querySelector("select[name=class_maincate]").value;
 	
 	$.ajax({
@@ -91,15 +114,17 @@ function selectMainCate() {
 		},
 		dataType : "json"
 	}).done(function(data){
+		
+//		debugger;
+		
 		$("#floatingSelect2").empty();
 		for(let item of data) {
 			$("#floatingSelect2").append(
-				'<option>' + item.name_subcate + '</option>'
+				`<option value="${item.name}" ${item.selected}>${item.name}</option>`
 			);
 		}
 	}).fail(function(){
 		console.log("에러");
-	})
-	
-	;	
-}
+	});
+		
+});

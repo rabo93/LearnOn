@@ -9,6 +9,7 @@ public class WishlistVO {
 	private int class_id;
 	private String class_category;
 	private String class_title;
+	private String class_pic;
 	private String class_reg_date;
 	private String review_score;
 	private String teacher_name;

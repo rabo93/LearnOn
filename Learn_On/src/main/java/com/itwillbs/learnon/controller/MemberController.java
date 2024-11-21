@@ -84,7 +84,16 @@ public class MemberController {
 			session.setAttribute("sId", dbMember.getMem_name());
 			session.setAttribute("sId", member.getMem_id());
 			session.setMaxInactiveInterval(60 * 120);
-			return "redirect:/";
+//			return "redirect:/";
+			
+			// 이전 페이지 저장 후 로그인 시 리다이렉트처리
+			if(session.getAttribute("prevURL") == null) {
+				return "redirect:/";
+			} else {
+				// request.getServletPath() 메서드를 통해 이전 요청 URL 을 저장할 경우
+				// "/요청URL" 형식으로 저장되므로 redirect:/ 에서 / 제외하고 결합하여 사용
+				return "redirect:" + session.getAttribute("prevURL");
+			}
 		}
 		
 	}	

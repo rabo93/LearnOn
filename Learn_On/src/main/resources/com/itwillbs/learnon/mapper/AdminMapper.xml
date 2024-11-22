@@ -244,17 +244,14 @@
 		UPDATE MEMBER
 		   SET MEM_STATUS = #{mem_status}
 		<choose>
-			<when test="mem_status.equals('1')">
-			 , MEM_WITHDRAW_DATE = NULL;
+			<when test="mem_status == 3">
+			  , MEM_WITHDRAW_DATE = NOW()
 			</when>
-			<when test="mem_status.equals('2')">
-			 , MEM_WITHDRAW_DATE = NULL;
-			</when>
-			<when test="mem_status.equals('3')">
-			 , MEM_WITHDRAW_DATE = NOW();
-			</when>
+			<otherwise>
+			  , MEM_WITHDRAW_DATE = NULL
+			</otherwise>
 		</choose>
-		WHERE	MEM_ID = #{mem_id}
+		WHERE MEM_ID = #{mem_id}
 	</update>	
 <!-- ================================================================== -->
 <!-- 카테고리 -->	

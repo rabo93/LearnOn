@@ -137,13 +137,14 @@
 	        }
 	    });
 		
-		
-		
-		var link = document.location.href;
-	   	if (link.includes("board")) {
-	   		document.getElementById("board").classList.toggle("active");
-	   		document.getElementById("boardManage").classList.toggle("active");
-	   	};
+		// 메뉴 활성화
+		let link = document.location.href;
+    	if (link.includes("AdmCouponWrite")) {
+    		document.querySelector("#paymentCoupon").parentElement.previousElementSibling.classList.add("show");
+    		document.querySelector("#paymentCoupon").parentElement.previousElementSibling.classList.add("active");
+    		document.querySelector("#paymentCoupon").parentElement.classList.add("show");
+    		document.querySelector("#paymentCoupon").classList.toggle("active");
+    	};
 	</script>
 </body>
 </html>

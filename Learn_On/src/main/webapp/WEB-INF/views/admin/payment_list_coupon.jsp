@@ -179,11 +179,13 @@
     		location.href = "AdmCouponModify?coupon_id=" + coupon_id;
     	}
     	
-    	
-   		var link = document.location.href;
-    	if (link.includes("Adm")) {
-    		document.getElementById("payment").classList.toggle("active");
-    		document.getElementById("paymentCoupon").classList.toggle("active");
+    	// 메뉴 활성화
+		let link = document.location.href;
+    	if (link.includes("AdmPayListCoupon")) {
+    		document.querySelector("#paymentCoupon").parentElement.previousElementSibling.classList.add("show");
+    		document.querySelector("#paymentCoupon").parentElement.previousElementSibling.classList.add("active");
+    		document.querySelector("#paymentCoupon").parentElement.classList.add("show");
+    		document.querySelector("#paymentCoupon").classList.toggle("active");
     	};
     </script>
 </body>

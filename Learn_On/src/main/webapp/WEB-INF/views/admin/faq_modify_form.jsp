@@ -100,11 +100,13 @@
     <!-- Template Javascript -->
     <script src="resources/admin/js/main.js"></script>
 	<script type="text/javascript">
-		var link = document.location.href;
-	   	if (link.includes("board")) {
-	   		document.getElementById("board").classList.toggle("active");
-	   		document.getElementById("boardManage").classList.toggle("active");
-	   	};
+		let link = document.location.href;
+		if (link.includes("AdminFaqModify")) {
+			document.querySelector("#AdmFaq").parentElement.previousElementSibling.classList.add("show");
+			document.querySelector("#AdmFaq").parentElement.previousElementSibling.classList.add("active");
+			document.querySelector("#AdmFaq").parentElement.classList.add("show");
+			document.querySelector("#AdmFaq").classList.toggle("active");
+		};
 	</script>
 </body>
 </html>

@@ -58,11 +58,8 @@
 		</section>
 	</div>
 	<script type="text/javascript">
-		
-	
-
 		function confirmDelete() {
-			if(confirm("삭제하시겠습니까?")) {
+			if(confirm("문의글을 삭제하시겠습니까?")) {
 				location.href = "CourseSupportDelete?" + getQueryParams(); // 페이지 요청
 			}
 		}
@@ -70,7 +67,24 @@
 		function CourseSupportModify(cs_idx, pageNum) {
 			location.href = "CourseSupportModifyForm?c_support_idx=" + cs_idx + "&pageNum=" + pageNum;
 		}
-		
+		function getQueryParams() {
+			let params = "";
+			
+			// URL 에서 파라미터 탐색하여 파라미터가 존재하면 URL 뒤에 파라미터 결합
+			let searchParams = new URLSearchParams(location.search);
+			for(let param of searchParams) {
+				params += param[0] + "=" + param[1] + "&";
+			}
+			
+			// 마지막 파라미터 뒤에 붙은 & 기호 제거
+			if(params.lastIndexOf("&") == params.length - 1) { // & 기호가 배열의 끝에 있을 경우
+				// & 기호 앞까지 추출하여 url 변수에 저장(덮어쓰기)
+				params = params.substring(0, params.length - 1);
+			}
+			
+			// 파라미터 결합된 문자열 리턴
+			return params;
+		}
 	</script>
 </body>
 </html>

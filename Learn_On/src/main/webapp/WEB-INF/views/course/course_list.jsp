@@ -22,10 +22,10 @@
 		<div class="wrapper">
 			<div class="cls-wrap">
 				<div class="cls-cate">
-					<h1 class="cls-ttl">${courseList[0].catename}</h1>
+					<h1 class="cls-ttl">${codeType[0].codename}</h1>
 					<div class="cate-li">
 						<button <c:if test="${param.codetype eq codeType[0].codetype && param.codetype_id eq null}">class="on"</c:if>>
-							<a href="Category?codetype=CATE01" >전체</a>
+							<a href="Category?codetype=${codeType[0].codetype}" >전체</a>
 						</button>
 						<c:forEach var="category" items="${requestScope.codeType}" varStatus="status">
  							<button <c:if test="${param.codetype_id eq category.codetype_id}">class="on"</c:if>> 
@@ -33,14 +33,13 @@
 							</button>
 						</c:forEach>
 						<form action="Category">
-<!-- 							<select name="searchType" id="searchType" onchange="handleChange(event)"> -->
 							<select name="searchType">
-<!-- 							<select name="searchType"> -->
 								<option value="new" <c:if test="${param.searchType eq 'new'}">selected</c:if>>최신순</option>
 								<option value="title" <c:if test="${param.searchType eq 'title'}">selected</c:if>>제목순</option>
 								<option value="price" <c:if test="${param.searchType eq 'price'}">selected</c:if>>가격순</option>
 								<option value="score" <c:if test="${param.searchType eq 'score'}">selected</c:if>>평점순</option>
 							</select>
+							<input type="hidden" name="codetype" value="${codeType[0].codetype }"/>
 							<input type="submit" value="검색" />
 						</form>
 						<script>
@@ -58,11 +57,6 @@
 								
 							}
 						</script>
-						
-						
-						
-						
-						
 					</div>
 				</div>
 				<div class="course-wrap">
@@ -75,7 +69,7 @@
 									<button class="fav-on" style="display:none;" onclick="deleteToWishList('${course.class_id}')">
 										<i class="fa-solid fa-heart"></i>
 									</button>
-									<a href="CourseDetail?class_id=${course.class_id}">
+									<a href="CourseDetail?class_id=${course.class_id}&codetype=${codeType[0].codetype}">
 										<img src="${pageContext.request.contextPath}/resources/images/thumb_0${status.count}.webp" class="card-thumb" alt="thumbnail" />
 										<div class="card-info">
 											<div class="category">
@@ -95,11 +89,9 @@
 								</li>
 							</c:forEach>
 							
-							
 							<script>
 								window.onload = function() {
 									const wishList = ${wishList};
-									
 									wishList.forEach(wish => {
 										const listItem = document.getElementById(wish.CLASS_ID);
 										if (listItem) {
@@ -115,20 +107,17 @@
 							            }
 									});
 								}
-								
 								function addToWishList(id){
 									if(confirm("관심목록에 추가하시겠습니까?")) {
 										location.href="MyFavAdd?class_id=" + id;
 									}
 								}
-								
 								function deleteToWishList(id){
 									if(confirm("관심목록에서 삭제하시겠습니까?")){
 										location.href="MyFavDel?class_id=" + id;
 									}
 								}
 							</script>									
-									
 					</ul>
 				</div>
 			</div>

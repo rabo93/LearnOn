@@ -16,6 +16,8 @@ public class CourseVO {
 	private int class_status;
 	private int class_id;
 	
+	private String teacher_id;
+	
 	private int cur_id;
 	private String cur_title;
 	private String cur_video;

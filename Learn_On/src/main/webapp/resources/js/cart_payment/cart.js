@@ -138,8 +138,8 @@ function chkDelete() {
 		type : "GET",
 		url : "DeleteItems",
 		data : { //넘겨줄 데이터들 작성
-			cartitem_idx : cartItemsParam }, //요청 파라미터
-		
+			cartitem_idx : cartItemsParam //요청 파라미터
+		}, 
 		success : function(response) {
 			alert("선택한 상품이 삭제되었습니다.");
 			location.reload();// 삭제 후 페이지 새로 고침

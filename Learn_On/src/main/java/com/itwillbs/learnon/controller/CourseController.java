@@ -67,29 +67,34 @@ public class CourseController {
 	
 	
 	@GetMapping("Category")
-	public String courseList(CourseVO course 
+	public String courseList(
+							String codetype,
+							CourseVO course 
 							,@RequestParam(defaultValue = "") String searchType
 							, HttpSession session
 							, HttpServletRequest request
 							, Model model) {
+
+		System.out.println("codetype ??  "  + codetype); // CATE01
 		String id = (String)session.getAttribute("sId");
 		
-		List<CommonCodeTypeVO> codeType = courseService.getCodeType(course.getCodetype());
-		List<CourseVO> courseList = courseService.getCourseList(course, searchType);
+		// 전체 메뉴 조회
 		List<CommonCodeTypeVO> codeTypeAll = courseService.getCodeTypeAll();
+		// codetype  으로 뿌리는 공통코드
+		List<CommonCodeTypeVO> codeType = courseService.getCodeType(codetype); 
+		// codetype group by 해서 CATE타입만 출력
 		List<CommonCodeTypeVO> commonCode = courseService.getCommonCode();
+		// 강의 목록 출력
+		List<CourseVO> courseList = courseService.getCourseList(course, codetype, searchType);
 		
 		// 관심목록 조회
 		List<Map<String, Object>> wishList = myService.getWishlistForCategoryList(id);
 		JSONArray jsonToWishList = new JSONArray(wishList);
-		System.out.println("jsonToWishList : " + jsonToWishList);
 		model.addAttribute("wishList", jsonToWishList);
-
 		model.addAttribute("commonCode", commonCode);
 		model.addAttribute("codeTypeAll", codeTypeAll);
-		
 		model.addAttribute("courseList", courseList);	
-		model.addAttribute("codeType", codeType);
+		model.addAttribute("codeType", codeType); 
 		
 		// 현재페이지 prevURL로 저장
 		String prevURL = request.getServletPath();
@@ -105,17 +110,41 @@ public class CourseController {
 	@GetMapping("CourseDetail")
 	public String courseDetail(
 				int class_id, 
-				Model model) {
-		List<CourseVO> course = courseService.getCourse(class_id);
-		List<MyReviewVO> myReviewList = courseService.getReviewList(class_id);
-		List<CommonCodeTypeVO> codeTypeAll = courseService.getCodeTypeAll();
-		List<CommonCodeTypeVO> commonCode = courseService.getCommonCode();
-
+				String codetype,
+				Model model,
+				HttpSession session,
+				HttpServletRequest request
+				) {
+		String id = (String)session.getAttribute("sId");
 		
-		model.addAttribute("commonCode", commonCode);
-		model.addAttribute("codeTypeAll", codeTypeAll);
+		// 클래스 목록
+		List<CourseVO> course = courseService.getCourse(class_id);
+		// 수강평 목록 
+		List<MyReviewVO> myReviewList = courseService.getReviewList(class_id);
+		// codetype으로 조회한 공통코드
+		List<CommonCodeTypeVO> codeType = courseService.getCodeType(codetype); 
+		// 강사의 다른 클래스 조회
+//		System.out.println("선생님 아이딛??????????@#$!@%!   :    "  + course.get(1).getTeacher_id());
+		List<CourseVO> courseTeacher = courseService.getCourseTeacher(class_id, course.get(1).getTeacher_id());
+		
+		
+		// 관심목록 조회
+		List<Map<String, Object>> wishList = myService.getWishlistForCategoryList(id);
+		JSONArray jsonToWishList = new JSONArray(wishList);
+//		System.out.println("jsonToWishList : " + jsonToWishList);
+		model.addAttribute("wishList", jsonToWishList);
 		model.addAttribute("course", course);
 		model.addAttribute("myReview", myReviewList);
+		model.addAttribute("codeType", codeType);
+		model.addAttribute("courseTeacher", courseTeacher);
+		
+		// 현재페이지 prevURL로 저장
+		String prevURL = request.getServletPath();
+		String queryString = request.getQueryString();
+		if(queryString != null) {
+			prevURL += "?" + queryString;
+		} 
+		session.setAttribute("prevURL", prevURL);
 		
 		return "course/course_detail";
 	}
@@ -402,18 +431,90 @@ public class CourseController {
 			}
 			
 			// ----------------------------------------------------------
-			// URL주소에 붙어있는 파라미터를 가지고 온다!
-			return "";
-//			return "redirect:/BoardList" + (request.getQueryString() != null ? "?" + request.getQueryString() : "");
-			// BoardList 서블릿에는 글번호 파라미터는 제외시켜야 함. 페이지 번호만 전달.
-//			return "redirect:/CSupportList?class_id=" + cSupport.getC_class_id() + "&pageNum="+pageNum;
-			
+			return "redirect:/CourseSupportList?class_id=" + cSupport.getC_class_id() + "&pageNum="+pageNum;
 			
 		} else {
 			model.addAttribute("msg", "삭제실패");
 			return "result/fail";
 		}
 	}
+	
+	
+	// 수강신청 버튼 
+	@GetMapping("ApplyForCourse")
+	public String applyForCourse(
+				int class_id,
+				String codetype,
+				HttpSession session,
+				HttpServletRequest request,
+				Model model
+				) {
+//		System.out.println("codetype ㄷ받아오나??" + codetype);
+		
+		// 미 로그인 처리 
+		String id = (String)session.getAttribute("sId");
+		if(id == null) {
+			model.addAttribute("msg", "로그인 필수!\\n로그인 페이지로 이동합니다.");
+			model.addAttribute("targetURL", "MemberLogin");
+			
+			// 로그인 성공 후 다시 현재페이지로 돌아오기 위해 prevURL 세션 속성값 설정
+			// => 경로를 직접 입력하지 않고 request 객체의 getServletPath() 메서드로 서블릿 주소 추출 가능
+			String prevURL = request.getServletPath();
+			String queryString = request.getQueryString();
+			System.out.println("prevURL: " + prevURL);
+			System.out.println("요청 파라미터: " + request.getQueryString());
+			
+			// UTL 파라미터(쿼리)가 null이 아닐 경우 prevURL에 결합(?포함
+			if(queryString != null) {
+				prevURL += "?" + queryString;
+			} 
+			
+			// 세션 객체에 prevURL 갑 저장
+			session.setAttribute("prevURL", prevURL);
+			return "result/fail";
+		}
+		
+		
+		int insertCount = courseService.registApplyForCourse(class_id, id);
+		if(insertCount > 0) { // 등록 성공
+			
+			model.addAttribute("class_id", class_id);
+			return "redirect:/CourseDetail?class_id="+ class_id + "&codetype=" + codetype;
+		} else {
+			model.addAttribute("msg", "문의글쓰기실패");
+			return "result/fail";
+		}
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	// 파일 업로드에 사용될 실제 업로드 디렉토리 경로를 리턴하는 메서드
 	public String getRealPath(HttpSession session) {
@@ -541,4 +642,24 @@ public class CourseController {
 		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
 		return pageInfo;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

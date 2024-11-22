@@ -29,7 +29,7 @@ $(document).ready(function() {
 			let totalAmount = parseInt($("#totalAmount").data("value"), 10); //10진수 정수형으로 변환
 //			console.log("결제상품금액: "+ totalAmount);
 			
-			// 초기화
+			// 금액 초기화
 			let discountAmount = 0;
 			let payAmount = totalAmount;
 			
@@ -61,7 +61,7 @@ $(document).ready(function() {
 			$("#totalPrice").data("value", payAmount);
 			$("#totalPrice").attr("data-value", payAmount); // HTML 속성도 업데이트
 			
-			console.log("쿠폰 적용 후(totalPrice):", $("#totalPrice").data("value"));
+			console.log("쿠폰 적용 후 결제 금액(totalPrice):", $("#totalPrice").data("value"));
 		}
 	});
 	
@@ -96,7 +96,8 @@ $(document).ready(function() {
 	
 	//=============================================================================
 	// "결제하기" 클릭시 약관동의 필수 체크 여부 (아래코드와 중복될 수도 있으니 나중에 보고 합칠것)
-	$("#btnSubmit").click(function(event) {
+	$("#btnSubmit").off("click").on("click", function(event)  {
+		console.log("체크박스 상태:", $("#notice").is(":checked")); //false
 		if(!$("#notice").is(":checked")) {
 			alert("결제를 진행하려면 이용약관 동의에 체크하시기 바랍니다.");
 			event.preventDefault(); // 기본 동작(폼 제출) 방지
@@ -105,13 +106,12 @@ $(document).ready(function() {
 		kg_requestPay(); // 약관 동의가 체크된 경우 결제 요청
 	});
 	
-	
 	//=============================================================================
 	// [결제하기 사전검증]
 	// 결제 페이지가 로드되면 AJAX 통신을 통해 주문번호와 결제 예정금액을 전달 => AJAX
-	var merchantUid = new Date().toISOString().slice(0,10).replace(/-/g, '')
+	let merchantUid = new Date().toISOString().slice(0,10).replace(/-/g, '')
 						 + Math.floor(10000 + Math.random()*90000);
-	var totalPrice = $("#totalPrice").data("value").text();
+	let totalPrice = $("#totalPrice").data("value").text();
 	
 	$.ajax({
 		type: "Post",
@@ -125,42 +125,36 @@ $(document).ready(function() {
 
 
 
-
-
-
-
-
-
-
-
 });
+
 //===================================================================================================
 // "결제하기" 클릭시 포트원 결제 API 연동 구현 (v1)
 //https://developers.portone.io/opi/ko/integration/start/v1/auth?v=v1
 function kg_requestPay() {
 	//---------------------------------------------
-	// 결제페이지에서 전달할 데이터 (주문번호, 결제금액, 결제수단, 회원ID, 클래스ID 등등...) 가져오기
-	var merchantUid = new Date().toISOString().slice(0,10).replace(/-/g, '')
+	// 결제페이지에서 전달할 데이터값 (주문번호, 결제금액, 결제수단, 회원ID, 클래스ID 등등...) 가져와서 변수 저장
+	let merchantUid = new Date().toISOString().slice(0,10).replace(/-/g, '')
 						 + Math.floor(10000 + Math.random()*90000);
 	//[주문고유번호 생성(형식: yyyyMMdd+랜덤숫자5개)]
 	//- date() : 오늘날짜
 	//- toISOString() : 2024-11-21T00:00:00.000Z을 반환
 	//- slice(0, 10)으로 2024-11-21만 추출
 	//- replace(/-/g, '')로 -를 제거해 20241121 형식으로 변환
-	//- Math.floor(10000 + Math.random() * 90000)로 10000~99999 사이의 숫자를 생성
+	//- Math.floor(10000 + Math.random() * 90000)로 10000~99999 사이의 랜덤 숫자를 생성
 	console.log("주문고유번호: " + merchantUid);
-	var payMethod = $('input:radio[name=pay-method]:checked').val();
+	let payMethod = $('input:radio[name=pay-method]:checked').val();
 	console.log("결제수단:"  + payMethod);
-	var totalPrice = parseInt($("#totalPrice").data("value"), 10);
+	let totalPrice = parseInt($("#totalPrice").data("value"), 10);
 	console.log("결제금액: " + totalPrice);
 	
-	//모든 클래스명 가져오기(classTitle)
-	var classTitles = [];
+	//모든 클래스명 가져와서 [배열]에 담기(classTitle)
+	let classTitles = [];
 	$(".class-box").each(function() {
 		classTitles.push($(this).data("class-title")); // data-class-title에서 가져오기
     });
-    //결제 파라미터에 사용할 상품명 설정 (여러개일 경우 '첫번째 상품명 외 n개' )
-    var className = "";
+    //결제 파라미터에 사용할 상품명 설정 
+    //=> 상품이 여러개일 경우 '첫번째 상품명 외 n개'로 설정
+    let className = "";
 	if (classTitles.length > 1) {
 		className = `${classTitles[0]} 외 ${classTitles.length - 1}개`;
 	} else if (classTitles.length === 1) {
@@ -170,20 +164,20 @@ function kg_requestPay() {
 	}
 	console.log("결제 상품명:", className);
 	
-	//회원정보 가져오기
-	var memberInfo = $("#memberInfo")
-	var memName = memberInfo.data("name");
-	var phone = memberInfo.data("phone");
-	var email = memberInfo.data("email");
+	//회원정보 가져오기(MemberVO를 jsp에 model로 받아서 data속성으로 값 가져옴)
+	let memberInfo = $("#memberInfo")
+	let memName = memberInfo.data("name");
+	let phone = memberInfo.data("phone");
+	let email = memberInfo.data("email");
 	console.log("회원 이름:", memName);
 	console.log("회원 전화번호:", phone);
 	console.log("회원 이메일:", email);
 	
 	//---------------------------------------------
-	// 결제 흐름 : 사전검증 - 결제 요청 - 사후 검증 흐름
+	// 결제 흐름 : 사전검증 > 결제 요청 > 사후 검증 흐름
 	//---------------------------------------------
 	// 결제하기 클릭시 호출되는 결제창 (생략가능)
-	var IMP = window.IMP;
+	let IMP = window.IMP;
 	// 가맹점 식별 코드(포트원에서 발급받음)
 	IMP.init("imp43247883");
 	//IMP.request_pay(param, callback) 결제창 호출
@@ -225,7 +219,7 @@ function kg_requestPay() {
 				//검증 완료하면----------------------------------------------
 				// 1. 결제정보 저장
 				// alert("결제가 완료되었습니다. \n마이페이지에서 확인하세요.");
-				// var buyerInfo = {
+				// let buyerInfo = {
 				//	"merchant_uid": rsp.merchant_uid,
 				//	"userid": rsp.buyer_name, 
 				//   ...
@@ -360,8 +354,8 @@ function kg_requestPay() {
 //    if (rsp.success) {
 //           ... 
 //        }).done(function (data) {
-//            var mesg = '결제가 완료되었습니다.';
-//            var buyerInfo = {
+//            let mesg = '결제가 완료되었습니다.';
+//            let buyerInfo = {
 //                "merchant_uid": rsp.merchant_uid,
 //                "userid": rsp.buyer_name,
 //                "pay_method": rsp.pay_method,
@@ -384,7 +378,7 @@ function kg_requestPay() {
 //            });
 //        });
 //    } else {
-//        var mesg = '결제를 실패하였습니다.';
+//        let mesg = '결제를 실패하였습니다.';
 //        alert(mesg);
 //    }
 //});

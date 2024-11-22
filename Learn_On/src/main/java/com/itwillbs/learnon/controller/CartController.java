@@ -29,13 +29,7 @@ public class CartController {
 	// Cart 서블릿 주소 로드시 장바구니 목록 조회 (회원아이디를 받아서 그 회원id에 해당하는 장바구니 목록 조회)
 	// 클래스제목(class_title), 강사이름(mem_name), 클래스가격(class_price) 
 	@GetMapping("Cart")
-	public String cartList( 
-//			@RequestParam(value = "sId", defaultValue = "bborara") String sId
-			//이 경우 sId가 하드코딩으로 설정(테스트용), 사용자가 미리 로그인하거나 멤버 정보를 선택하여야 할 수 있음
-			//컨트롤러 메서드에서 sId 파라미터에 기본값을 설정하면, sId가 전달되지 않았을 때 기본값을 사용하도록 할 수 있음
-			 HttpSession session
-			, Model model) {
-		
+	public String cartList(HttpSession session, Model model) {
 		//------------------------------------------------------
 		// 로그인 정보 가져오기 (세션 아이디값 확인)
 		String sId = (String) session.getAttribute("sId");

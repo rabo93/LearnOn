@@ -22,4 +22,5 @@ public class SupportBoardVO {
 	// 첨부파일
 	private String support_file1; // 파일명
 	private MultipartFile file1; // 실제 파일
+	private String original_file1;
 }

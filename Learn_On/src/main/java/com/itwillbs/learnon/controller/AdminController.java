@@ -7,10 +7,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
@@ -31,12 +33,14 @@ import org.springframework.web.multipart.MultipartFile;
 import com.itwillbs.learnon.service.AdminService;
 import com.itwillbs.learnon.service.CouponService;
 import com.itwillbs.learnon.service.FaqService;
+import com.itwillbs.learnon.service.MypageService;
 import com.itwillbs.learnon.service.NoticeBoardService;
 import com.itwillbs.learnon.vo.AdminVO;
 import com.itwillbs.learnon.vo.CouponVO;
 import com.itwillbs.learnon.vo.FaqVO;
 import com.itwillbs.learnon.vo.NoticeBoardVO;
 import com.itwillbs.learnon.vo.PageInfo;
+import com.itwillbs.learnon.vo.SupportBoardVO;
 
 @Controller
 public class AdminController {
@@ -48,6 +52,8 @@ public class AdminController {
 	private FaqService faqService;
 	@Autowired
 	private CouponService couponService;
+	@Autowired
+	private MypageService myService;
 	
 	
 	private String uploadPath = "/resources/upload";
@@ -546,12 +552,96 @@ public class AdminController {
 		return "admin/notice_management";
 	}
 	
-	// 어드민 1:1 문의 관리 페이지 매핑
+	// 어드민 1:1 문의 관리 목록
 	@GetMapping("AdmSupport")
-	public String admin_support_management2() {
+	public String adminSupportList(@RequestParam(defaultValue = "1") int pageNum, HttpServletRequest request, HttpSession session, Model model) {
+//		System.out.println("페이지번호: " + pageNum);
+		// 세션아이디 체크
+		String id = (String)session.getAttribute("sId");
+		if(id == null) {
+			model.addAttribute("msg", "로그인 필수!\\n 로그인 페이지로 이동합니다!");
+			model.addAttribute("targetURL", "MemberLogin");
+			savePreviousUrl(request, session);
+			
+			return "result/fail";
+		}
+		
+		// 페이징 설정
+		int listLimit = 10; // 한 페이지당 게시물 수
+		int startRow = (pageNum - 1) * listLimit;
+		int listCount = myService.getSupportListCount(id);
+		
+		int pageListLimit = 5; // 페이징 개수 
+		int maxPage = (listCount / listLimit) + (listCount % listLimit > 0 ? 1 : 0);
+		
+		if(maxPage == 0) {
+			maxPage = 1;
+		}
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		System.out.println("maxPage = " + maxPage);
+		int endPage = startPage + pageListLimit - 1;
+		
+		if(endPage > maxPage) {
+			endPage = maxPage;
+		}
+		
+		if(pageNum < 1 || pageNum > maxPage) {
+			model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+			model.addAttribute("targetURL", "MySupport?pageNum=1");
+			return "result/fail";
+		}
+		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
+		
+		// Model 객체에 페이징 정보 저장
+		model.addAttribute("pageInfo", pageInfo);
+		
+		// 게시물 목록 조회
+		List<SupportBoardVO> supportList = myService.getSupportListToAdm(startRow, listLimit);
+		
+		
+		// 첨부파일 정보 저장
+		for(SupportBoardVO support : supportList) {
+			String originalFileName = "";
+			
+			if(support.getSupport_file1() != null) {
+				originalFileName = support.getSupport_file1().substring(support.getSupport_file1().indexOf("_") + 1);
+			} else {
+				originalFileName = null;
+			}
+			
+			support.setOriginal_file1(originalFileName);
+		}
+		
+		System.out.println(supportList);
+		
+		model.addAttribute("supportList", supportList);
+		
 		return "admin/support_management2";
 	}
 	
+	// 관리자 1:1 문의 답변 작성/수정(업데이트)
+	@PostMapping("AdmSupportUpdate")
+	public String admSupportUpdate(@RequestParam(defaultValue = "1") int pageNum, SupportBoardVO support, HttpServletRequest request, HttpSession session, Model model) {
+		System.out.println("pageNum : " + pageNum);
+		// 세션아이디 체크
+		String id = (String)session.getAttribute("sId");
+		if(id == null) {
+			model.addAttribute("msg", "로그인 필수!\\n 로그인 페이지로 이동합니다!");
+			model.addAttribute("targetURL", "MemberLogin");
+			savePreviousUrl(request, session);
+			
+			return "result/fail";
+		}
+		
+		int updateCount = myService.answerSupport(support);
+		
+		if(updateCount > 0) {
+			return "redirect:/AdmSupport?pageNum=" + pageNum;
+		} else {
+			model.addAttribute("msg", "수정 실패!");
+			return "result/fail";
+		}
+	}
 	
 	
 	
@@ -601,9 +691,17 @@ public class AdminController {
 	}
 	
 	// =======================================================================
-	
-	
-	
+	// 이전 페이지 이동 저장
+	private void savePreviousUrl(HttpServletRequest request, HttpSession session) {
+		String prevURL = request.getServletPath();
+		String queryString = request.getQueryString();
+		
+		if (queryString != null) {
+			prevURL += "?" + queryString;
+		}
+		
+		session.setAttribute("prevURL", prevURL);
+	}
 	
 	
 	

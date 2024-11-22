@@ -333,7 +333,7 @@ public class MypageController {
 		return "my_page/mypage_course";
 	}
 	
-	// 강의 
+	// 커리큘럼 동영상 시청 - 완료 처리
 	@GetMapping("CompletedVideo")
 	public String completedVideo(MyCurriculumVO myCurriculum, HttpServletRequest request, HttpSession session, Model model) {
 		System.out.println(myCurriculum);
@@ -455,7 +455,7 @@ public class MypageController {
 	
 	// 문의내역 목록
 	@GetMapping("MySupport")
-	public String mySupportList(@RequestParam(defaultValue = "1") int pageNum,HttpServletRequest request, HttpSession session, Model model) {
+	public String mySupportList(@RequestParam(defaultValue = "1") int pageNum, HttpServletRequest request, HttpSession session, Model model) {
 		System.out.println("페이지번호: " + pageNum);
 		// 세션아이디 체크
 		String id = (String)session.getAttribute("sId");

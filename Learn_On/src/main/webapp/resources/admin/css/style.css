@@ -382,6 +382,18 @@ button:active {
 	display: none;
 }
 
+/*=================== Member ==================*/
+.form-select.gender {
+	pointer-events: none;
+	background-color: #fff;
+	background-image: none;
+}
+
+.form-control.member {
+	background-color: #fff;
+}
+
+
 /*=================== AdmNotice ==================*/
 .AdmNoticeDetail {
 	display: none;
@@ -393,7 +405,7 @@ button:active {
 	justify-content: center;
 }
 
-/*=================== 페이징 처리 ==================*/
+/*=================== Faq ==================*/
 .AdmfaqDetail {
 	display: none;
 }
@@ -448,4 +460,9 @@ button:active {
     color: var(--primary);
     font-weight: 600;
 }
+
+
+.notice-sch {display:flex;align-items: stretch;justify-content:center;gap: 10px;}
+
+
 

@@ -19,7 +19,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
@@ -49,10 +49,14 @@
 						<button type="button" class="btn btn-lg btn-primary ms-3">회원 수정</button>
 						<button type="button" class="btn btn-lg btn-primary ms-3">회원 삭제</button>
 					</div>
-					<div class="d-flex input-group mb-3">
-						<input type="text" class="form-control" placeholder="회원 이름 검색" aria-label="Recipient's username" aria-describedby="button-addon2">
-						<button class="btn btn-primary" type="button" id="button-addon2">검색</button>
-					</div>
+					<form class="d-flex input-group mb-3" method="get">
+							<select class="form-select" name= "searchType" aria-label="Default select example">
+								<option value="id" <c:if test="${param.searchType eq 'id'}">selected</c:if>>아이디</option>
+								<option value="name" <c:if test="${param.searchType eq 'name'}">selected</c:if>>이름</option>
+							</select>
+							<input type="text" class="form-control" name="searchKeyword" aria-label="Recipient's username" aria-describedby="button-addon2">
+							<button class="btn btn-primary" type="submit" id="button-addon2">검색</button>
+						</form>
 					<div>
 						<table class="table table-striped">
 							<thead>
@@ -64,55 +68,78 @@
 									<th scope="col">닉네임</th>
 									<th scope="col">생년월일</th>
 									<th scope="col">성별</th>
+									<th scope="col">가입일</th>
 									<th scope="col">이메일</th>
 									<th scope="col">연락처</th>
 									<th scope="col">상태</th>
-									<th scope="col">권한</th>
+<!-- 									<th scope="col">권한</th> -->
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach items="${getMemberList}" var="ml">
-								<c:if test="${ml.mem_grade ne 'MEM02' and ml.mem_status ne '2'}">
+								<c:forEach items="${getMemberList}" var="ml" varStatus="mem">
 									<tr>
-										<th><input class="form-check-input" type="checkbox" id="gridCheck1"></th>
-										<td class="col-1"><input class="form-control" type="text" placeholder="회원 번호" aria-label="default input example" value="${ml.idx}"></td>
-										<td class="col-1"><input class="form-control" type="text" placeholder="아이디" aria-label="default input example" value="${ml.mem_id}"></td>
-										<td class="col-1"><input class="form-control" type="text" placeholder="이름" aria-label="default input example" value="${ml.mem_name}"></td>
-										<td class="col-1"><input class="form-control" type="text" placeholder="닉네임" aria-label="default input example" value="${ml.mem_nick}"></td>
-										<td class="col-1"><input class="form-control" type="text" placeholder="생년월일" aria-label="default input example" value="${ml.mem_birthday}"></td>
+										<th><input class="form-check-input" type="checkbox" id="gridCheck_${mem.index}"></th>
+										<td class="col-1"><input id="idx_${mem.index}" class="form-control member" type="text" placeholder="회원 번호" aria-label="default input example" value="${ml.idx}" readonly></td>
+										<td class="col-1"><input id="memId_${mem.index}" class="form-control member" type="text" placeholder="아이디" aria-label="default input example" value="${ml.mem_id}" readonly></td>
+										<td class="col-1"><input id="memName_${mem.index}" class="form-control member" type="text" placeholder="이름" aria-label="default input example" value="${ml.mem_name}" readonly></td>
+										<td class="col-1"><input id="memNick_${mem.index}" class="form-control member" type="text" placeholder="닉네임" aria-label="default input example" value="${ml.mem_nick}" readonly></td>
+										<td class="col-1"><input id="memBirth_${mem.index}" class="form-control member" type="text" placeholder="생년월일" aria-label="default input example" value="${ml.mem_birthday}" readonly></td>
 										<td class="col-1">
-											<select class="form-select" aria-label="Default select example">
+											<select id="memGender_${mem.index}" class="form-select gender" aria-label="Default select example">
 												<option value="1" <c:if test="${ml.mem_gender eq 'M'}">selected</c:if>>남자</option>
 												<option value="2" <c:if test="${ml.mem_gender eq 'F'}">selected</c:if>>여자</option>
 											</select>
 										</td>
+										<td><input id="memRegDate_${mem.index}" class="form-control member" type="text" placeholder="가입일" aria-label="default input example" value="${ml.mem_reg_date}" readonly></td>
 										<td>
-											<div class="input-group ">
-												<input type="text" class="form-control" placeholder="Username" aria-label="Username" value="${ml.mem_email}">
-<!-- 												<span class="input-group-text">@</span> -->
-<%-- 												<input type="text" class="form-control" placeholder="Server" aria-label="Server" value="${ml.mem_email2}"> --%>
+											<div class="input-group">
+												<input id="memEmail_${mem.index}" type="text" class="form-control member" placeholder="Username" aria-label="Username" value="${ml.mem_email}" readonly>
 	                 		  				</div>
 	                          		 	</td>
-										<td><input class="form-control " type="text" placeholder="연락처" aria-label="default input example" value="${ml.mem_phone}"></td>
+										<td><input id="memPhone_${mem.index}" class="form-control member" type="text" placeholder="연락처" aria-label="default input example" value="${ml.mem_phone}" readonly></td>
 										<td class="col-1">
-											<select class="form-select " aria-label="Default select example">
-												<option value="1" <c:if test="${ml.mem_status == 1}">selected</c:if>>정상</option>
-												<option value="2" <c:if test="${ml.mem_status == 2}">selected</c:if>>대기</option>
-												<option value="3" <c:if test="${ml.mem_status == 3}">selected</c:if>>휴면</option>
-												<option value="4" <c:if test="${ml.mem_status == 3}">selected</c:if>>탈퇴</option>
+											<select id="status_${mem.index}" class="form-select status" aria-label="Default select example">
+												<option value="1" <c:if test="${ml.mem_status == 1}">selected</c:if>>승인</option>
+												<option value="2" <c:if test="${ml.mem_status == 2}">selected</c:if> hidden>승인</option>
+												<option value="3" <c:if test="${ml.mem_status == 3}">selected</c:if>>탈퇴</option>
 											</select>
 										</td>
-										<td class="col-1">
-											<select class="form-select " aria-label="Default select example">
-												<option value="1" <c:if test="${ml.mem_grade eq 'MEM03'}">selected</c:if>>관리자</option>
-												<option value="2" <c:if test="${ml.mem_grade eq 'MEM01'}">selected</c:if>>일반회원</option>
-											</select>
-	                                 	</td>
 	                             	</tr>
-	                            </c:if>
 								</c:forEach>
 							</tbody>
 						</table>
+						<section id="pagingArea">
+							<button
+							onclick="location.href='AdmMemList?pageNum=${pageInfo.startPage - pageInfo.pageListLimit}&sort=${sort}&searchType=${searchType}&searchKeyword=${searchKeyword}'"
+							<c:if test="${pageInfo.startPage eq 1}">disabled</c:if>>
+								<i class="fa-solid fa-angles-left"></i>
+							</button>
+							<button
+							onclick="location.href='AdmMemList?pageNum=${pageNum - 1}&sort=${sort}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}'"
+							<c:if test="${pageNum eq 1}">disabled</c:if>>
+								<i class="fa-solid fa-angle-left"></i>
+							</button>
+							<c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
+								<c:choose>
+									<c:when test="${i eq pageNum}">
+										<strong>${i}</strong>
+									</c:when>
+									<c:otherwise>
+										<a href="AdmMemList?pageNum=${i}&sort=${sort}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">${i}</a>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+							<button
+							onclick="location.href='AdmMemList?pageNum=${pageNum + 1}&sort=${sort}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}'"
+							<c:if test="${pageNum eq pageInfo.maxPage}">disabled</c:if>>
+								<i class="fa-solid fa-angle-right"></i>
+							</button>
+						   	<button
+						   	onclick="location.href='AdmMemList?pageNum=${pageInfo.startPage + pageInfo.pageListLimit}&sort=${sort}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}'"
+							<c:if test="${pageInfo.endPage eq pageInfo.maxPage}">disabled</c:if>>
+						   		<i class="fa-solid fa-angles-right"></i>
+						   	</button>
+					   	</section>
 					</div>
 				</div>
 			</div>
@@ -134,15 +161,20 @@
     <script src="resources/admin/lib/tempusdominus/js/moment.min.js"></script>
     <script src="resources/admin/lib/tempusdominus/js/moment-timezone.min.js"></script>
     <script src="resources/admin/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-
+    <script src="resources/admin/js/member_list.js"></script>
+    
     <!-- Template Javascript -->
     <script src="resources/admin/js/main.js"></script>
     <script type="text/javascript">
-    		var link = document.location.href;
-	    	if (link.includes("Adm")) {
-	    		document.getElementById("member").classList.toggle("active");
-	    		document.getElementById("memberList").classList.toggle("active");
-	    	};
+	    if (performance.navigation.type === 1) {
+			location.href= "AdmMemList";
+		}
+   
+   		var link = document.location.href;
+    	if (link.includes("Adm")) {
+    		document.getElementById("member").classList.toggle("active");
+    		document.getElementById("memberList").classList.toggle("active");
+    	};
     </script>
 </body>
 </html>

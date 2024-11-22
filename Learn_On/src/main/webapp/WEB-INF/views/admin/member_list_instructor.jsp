@@ -71,35 +71,31 @@
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach items="${getMemberList}" var="ml">
-								<c:if test="${ml.MEM_GRADE eq 'MEM02' or ml.MEM_STATUS eq '2'}">
+								<c:forEach items="${getMemberList}" var="ml" varStatus="mem">
 									<tr>
-										<th><input class="form-check-input" type="checkbox" id="gridCheck1"></th>
-										<td class="col-auto"><input class="form-control" type="text" placeholder="회원 번호" aria-label="default input example" value="${ml.IDX}"></td>
-										<td class="col-1"><input class="form-control" type="text" placeholder="아이디" aria-label="default input example" value="${ml.MEM_ID}"></td>
-										<td class="col-1"><input class="form-control" type="text" placeholder="이름" aria-label="default input example" value="${ml.MEM_NAME}"></td>
-										<td class="col-1"><input class="form-control" type="text" placeholder="닉네임" aria-label="default input example" value="${ml.MEM_NICK}"></td>
-										<td class="col-1"><input class="form-control" type="text" placeholder="생년월일" aria-label="default input example" value="${ml.MEM_BIRTHDAY}"></td>
+										<th><input class="form-check-input" type="checkbox" id="gridCheck_${mem.index}"></th>
+										<td class="col-1"><input id="idx_${mem.index}" class="form-control member" type="text" placeholder="회원 번호" aria-label="default input example" value="${ml.idx}" readonly></td>
+										<td class="col-1"><input id="memId_${mem.index}" class="form-control member" type="text" placeholder="아이디" aria-label="default input example" value="${ml.mem_id}" readonly></td>
+										<td class="col-1"><input id="memName_${mem.index}" class="form-control member" type="text" placeholder="이름" aria-label="default input example" value="${ml.mem_name}" readonly></td>
+										<td class="col-1"><input id="memNick_${mem.index}" class="form-control member" type="text" placeholder="닉네임" aria-label="default input example" value="${ml.mem_nick}" readonly></td>
+										<td class="col-1"><input id="memBirth_${mem.index}" class="form-control member" type="text" placeholder="생년월일" aria-label="default input example" value="${ml.mem_birthday}" readonly></td>
 										<td class="col-1">
-											<select class="form-select" aria-label="Default select example">
-												<option value="1" <c:if test="${ml.MEM_GENDER eq 'M'}">selected</c:if>>남자</option>
-												<option value="2" <c:if test="${ml.MEM_GENDER eq 'F'}">selected</c:if>>여자</option>
+											<select id="memGender_${mem.index}" class="form-select gender" aria-label="Default select example">
+												<option value="1" <c:if test="${ml.mem_gender eq 'M'}">selected</c:if>>남자</option>
+												<option value="2" <c:if test="${ml.mem_gender eq 'F'}">selected</c:if>>여자</option>
 											</select>
 										</td>
 										<td>
-											<div class="input-group ">
-												<input type="text" class="form-control" placeholder="Username" aria-label="Username" value="${ml.MEM_EMAIL1}">
-												<span class="input-group-text">@</span>
-												<input type="text" class="form-control" placeholder="Server" aria-label="Server" value="${ml.MEM_EMAIL2}">
+											<div class="input-group">
+												<input id="memEmail_${mem.index}" type="text" class="form-control member" placeholder="Username" aria-label="Username" value="${ml.mem_email}" readonly>
 	                 		  				</div>
 	                          		 	</td>
-										<td class="col-1"><input class="form-control" type="text" placeholder="연락처" aria-label="default input example" value="${ml.MEM_PHONE}"></td>
+										<td><input id="memPhone_${mem.index}" class="form-control member" type="text" placeholder="연락처" aria-label="default input example" value="${ml.mem_phone}" readonly></td>
 										<td class="col-1">
-											<select class="form-select " aria-label="Default select example">
-												<option value="1" <c:if test="${ml.MEM_STATUS == 1}">selected</c:if>>정상</option>
-												<option value="2" <c:if test="${ml.MEM_STATUS == 2}">selected</c:if>>대기</option>
-												<option value="3" <c:if test="${ml.MEM_STATUS == 3}">selected</c:if>>휴면</option>
-												<option value="4" <c:if test="${ml.MEM_STATUS == 3}">selected</c:if>>탈퇴</option>
+											<select id="status_${mem.index}" class="form-select status" aria-label="Default select example">
+												<option value="1" <c:if test="${ml.mem_status == 1}">selected</c:if>>정상</option>
+												<option value="2" <c:if test="${ml.mem_status == 2}">selected</c:if>>대기</option>
+												<option value="3" <c:if test="${ml.mem_status == 3}">selected</c:if>>탈퇴</option>
 											</select>
 										</td>
 										<td class="d-flex">
@@ -107,7 +103,6 @@
 											<button type="button" class="btn btn-lg btn-primary row col-auto ms-3">반려</button>
 										</td>
 	                             	</tr>
-	                            </c:if>
 								</c:forEach>
 							</tbody>
 						</table>
@@ -132,6 +127,7 @@
     <script src="resources/admin/lib/tempusdominus/js/moment.min.js"></script>
     <script src="resources/admin/lib/tempusdominus/js/moment-timezone.min.js"></script>
     <script src="resources/admin/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+	<script src="resources/admin/js/member_list.js"></script>
 
     <!-- Template Javascript -->
     <script src="resources/admin/js/main.js"></script>

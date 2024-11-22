@@ -32,7 +32,7 @@ import lombok.Data;
 		private String terms2;
 		private String terms3;
 
-		private int mem_status; //회원상태 (1:정상 2:휴먼 3:탈퇴)
+		private int mem_status; //회원상태 (1:정상 2:대기 3:탈퇴)
 		private Date mem_reg_date;
 		private Date mem_withdraw_date;  
 		private String mem_like1_class;

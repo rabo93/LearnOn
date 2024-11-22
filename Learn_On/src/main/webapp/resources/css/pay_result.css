@@ -1,12 +1,17 @@
 @charset "UTF-8";
-
-
-.wrapper {
-	display: flex;
-	justify-content: center;
-	flex-direction: column;
-	gap: 1rem;
+html, body {
+    height: 100%; /* 문서 전체의 높이를 100%로 설정 */
+    margin: 0; /* 기본 margin 제거 */
 }
+.wrapper {
+    display: flex;
+    justify-content: center; /* 수평 정렬 */
+    align-items: center; /* 수직 정렬 */
+    flex-direction: column; /* 방향 설정 */
+    gap: 1rem;
+    min-height: 100vh; /* 화면 전체 높이를 차지 */
+}
+
 .wrapper .ord-box {
 	margin: 2rem;
     padding: 2rem;

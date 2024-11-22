@@ -26,41 +26,43 @@
 		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>
 	</header>
 	<!----------------------------- page 영역 --------------------------- -->
-	<main id="pay">
+	<main>
 		<div class="wrapper">
 			<!-- pay-wrap start  -->
 			<div class="pay-wrap">
 				<h2 class="pay-ttl">
-					<i class="fa-solid fa-circle-right" ></i>
+					<i class="fa-regular fa-credit-card"></i>
 				  	 결제하기
 				  </h2>
 				<div class="frame">
 					<!----------------- 결제 상품 내역 ----------------->
-					<section class="pay-list">
-						<div class="pay-item">
-							<h5 class="box-ttl">주문상품</h5>
-							
-							<c:forEach var="item" items="${selectedCartList}">
-								<div class="class-box" data-class-title="${item.classTitle}">
-									<div class="class-pic">
-										<img alt="클래스썸네일" src="/resources/images/thumb_01.webp">
+					<section class="pay-sec">
+						<div class="pay-list">
+							<div class="pay-item">
+								<h5 class="box-ttl">주문상품</h5>
+								
+								<c:forEach var="item" items="${selectedCartList}">
+									<div class="class-box" data-class-title="${item.classTitle}">
+										<div class="class-pic">
+											<img alt="클래스썸네일" src="/resources/images/thumb_01.webp">
+										</div>
+										<div class="item-info">
+											<p id="classTitle">${item.classTitle}</p>
+											<p id="teacherName">${item.teacherName}</p>
+										</div>
 									</div>
-									<div class="item-info">
-										<p id="classTitle">${item.classTitle}</p>
-										<p id="teacherName">${item.teacherName}</p>
+									<!-- 상품 금액부분 -->
+									<div class="item-result">
+										<span class="price">
+											<fmt:formatNumber value="${item.classPrice}" type="number" />
+										</span>원
 									</div>
-								</div>
-								<!-- 상품 금액부분 -->
-								<div class="item-result">
-									<span class="price">
-										<fmt:formatNumber value="${item.classPrice}" type="number" />
-									</span>원
-								</div>
-							</c:forEach>
+								</c:forEach>
+							</div>
 						</div>
 					</section>
 					<!-- ----------------- 쿠폰 ---------------->
-					<section class="pay-right">
+					<section class="pay-sec">
 						<div class="pay-item">
 							<h5 class="box-ttl">쿠폰</h5>
 							<div class="coupon">
@@ -82,7 +84,7 @@
 						</div>
 					</section>
 					<!-- ----------------- 결제 금액 ---------------->
-					<section class="pay-right">
+					<section class="pay-sec">
 						<div class="price-box">
 							<h5 class="box-ttl">결제 금액</h5>
 							<dl>
@@ -110,7 +112,7 @@
 						</div>
 					</section>
 					<!-- ----------------- 결제수단 ---------------->
-					<section class="pay-right">
+					<section class="pay-sec">
 						<div class="pay-item">
 							<h5 class="box-ttl">결제수단</h5>
 							<label class="pay-method">
@@ -124,7 +126,7 @@
 						</div>
 					</section>
 					<!-- ----------------- 이용약관 동의(필수) ---------------->
-					<section class="pay-right">
+					<section class="pay-sec">
 						<div class="pay-item">
 							<div class="notice-box">
 								<label class="notice-check">

@@ -75,7 +75,6 @@
 						<input type="button" value="나의 강의실" onclick="location.href='MyDashboard'" class="btnMypage">
 					</div>
 				</article>
-	
 			</div>
 			<!-- // pay-wrap end  -->
 		</div>

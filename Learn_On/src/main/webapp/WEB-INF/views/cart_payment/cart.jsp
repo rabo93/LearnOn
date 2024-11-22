@@ -27,12 +27,14 @@
 	</header>
 	
 	<!----------------------------- page 영역 --------------------------- -->
-	<main id="cart">
+	<main>
 	<form action="Payment" method="get" id="cartForm">
 		<div class="wrapper">
 			<!-- cart-wrap start  -->
 			<div class="cart-wrap">
-				<h2 class="cart-ttl">장바구니</h2>
+				<h2 class="cart-ttl">
+					<i class="fa-solid fa-basket-shopping"></i>장바구니
+				</h2>
 				<!-- -----------------장바구니 상품 목록 ---------------->
 				<div class="frame">
 					<section class="cart-list">

@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -44,58 +46,165 @@
 				<div class="bg-light rounded p-4">
 					<div class="d-flex mb-2">
 						<h5 class="me-auto tableSubject">1:1 문의 관리</h5>
-<!-- 						<button type="button" class="btn btn-lg btn-primary ms-3">삭제</button> -->
 					</div>
 					<div class="d-flex input-group mb-3">
-						<input type="text" class="form-control" placeholder="게시판 검색" aria-label="Recipient's username" aria-describedby="button-addon2">
+						<input type="text" class="form-control" placeholder="게시글 검색" aria-label="Recipient's username" aria-describedby="button-addon2">
 						<button class="btn btn-primary" type="button" id="button-addon2">검색</button>
 					</div>
 						<table class="table table-striped">
+							<colgroup>
+								<col width="3%">
+								<col width="10%">
+								<col width="10%">
+								<col width="40%">
+								<col width="10%">
+								<col width="15%">
+								<col width="12%">
+							</colgroup>
 							<thead>
 								<tr>
 									<th scope="col">#</th>
+									<th scope="col">글번호</th>
+									<th scope="col">분류</th>
 									<th scope="col">제목</th>
-									<th scope="col">게시판 유형</th>
-									<th scope="col">공개상태</th>
+									<th scope="col">작성자</th>
+									<th scope="col">작성일</th>
+									<th scope="col">답변여부</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<th><input class="form-check-input" type="checkbox" id="gridCheck1"></th>
-									<td><input class="form-control" type="text" aria-label="default input example" value="IT/개발"></td>
-									<td>
-										<select class="form-select" aria-label="Default select example">
-											<option value="1">클래스</option>
-											<option value="2">고객지원</option>
-											<option value="3">리뷰</option>
-										</select>
-									</td>
-									<td>
-										<select class="form-select" aria-label="Default select example">
-											<option value="1">공개</option>
-											<option value="2">비공개</option>
-										</select>
-                                 	</td>
-                             	</tr>
-								<tr>
-									<th><input class="form-check-input" type="checkbox" id="gridCheck1"></th>
-									<td><input class="form-control" type="text" aria-label="default input example" value="1:1 문의 게시판"></td>
-									<td>
-										<select class="form-select" aria-label="Default select example">
-											<option value="1">클래스</option>
-											<option value="2" selected>고객지원</option>
-											<option value="3">리뷰</option>
-										</select>
-									</td>
-									<td>
-										<select class="form-select" aria-label="Default select example">
-											<option value="1">공개</option>
-											<option value="2">비공개</option>
-										</select>
-                                 	</td>
-                             	</tr>
+								<c:set var="pageNum" value="1" />
+								<c:if test="${not empty param.pageNum}">
+									<c:set var="pageNum" value="${param.pageNum}" />
+								</c:if>
+								<c:choose>
+									<c:when test="${empty supportList}">
+										<tr>
+											<td class="empty" colspan="4">작성된 문의내역이 없습니다.</td>
+										</tr>
+									</c:when>
+									<c:otherwise>
+										<c:forEach var="support" items="${supportList}" varStatus="status">
+											<tr onclick="showDetail(${status.index})">
+												<th><input class="form-check-input" type="checkbox" id="gridCheck1"></th>
+												<td>${support.support_idx}</td>
+												<td>
+													<c:if test="${support.support_category == 1}">
+														<span class="support_cate cate01">이용문의</span>
+													</c:if>
+													<c:if test="${support.support_category == 2}">
+														<span class="support_cate cate02">결제문의</span>
+													</c:if>
+													<c:if test="${support.support_category == 3}">
+														<span class="support_cate cate03">기타</span>
+													</c:if>
+												</td>
+												<td><input class="form-control" type="text" value="${support.support_subject}" readonly></td>
+												<td><input class="form-control" type="text" value="${support.mem_id}" readonly></td>
+												<td><input class="form-control" type="text" value="${support.support_date}" readonly></td>
+												<td>
+												<c:choose>
+													<c:when test="${support.support_answer_date != null}">
+														<span class="answer-st status01">답변완료</span>
+													</c:when>
+													<c:otherwise>
+														<span class="answer-st status02">미답변</span>
+													</c:otherwise>												
+												</c:choose>
+												</td>
+			                             	</tr>
+			                             	<tr class="supportDetailBox" id="supportDetail${status.index}">
+			                             		<td colspan="6">
+			                             			<textarea class="form-control" rows="5" readonly>${support.support_content}</textarea>
+			                             			<c:if test="${not empty support.support_file1}">
+				                             			<div class="support-attach">
+					                             			${support.support_file1}
+							 								<a href="${pageContext.request.contextPath}/resources/upload/${support.support_file1}" download="${originalFileNames[status.index]}">
+							 									<input type="button" value="다운로드">
+							 								</a>
+						 								</div>
+					 								</c:if>
+			                             		</td>
+			                             		<td colspan="2">
+			                             			<button class="btn btn-lg btn-primary ms-3" type="button" onclick="showAnswer(${status.index})">
+			                             				<c:choose>
+			                             					<c:when test="${empty support.support_answer_subject}">답변작성</c:when>
+			                             					<c:otherwise>답변보기</c:otherwise>
+			                             				</c:choose>
+			                             			</button>
+			                             		</td>
+			                             	</tr>
+			                             	<tr class="answerDetailBox" id="answerDetail${status.index}">
+			                             		<c:choose>
+			                             			<c:when test="${empty support.support_answer_subject}">
+				                             			<%-- 문의 답글 작성 --%>
+				                             			<form action="AdmSupportUpdate" method="post">
+				                             				<input type="hidden" name="support_idx" value="${support.support_idx}">
+				                             				<input type="hidden" name="pageNum" value="${pageNum}">
+						                             		<td colspan="6">
+						                             			<input class="form-control mb-2" type="text" placeholder="답글 제목" name="support_answer_subject">
+						                             			<textarea class="form-control" rows="5" placeholder="답글 내용" name="support_answer_content"></textarea>
+						                             		</td>
+						                             		<td colspan="2">
+						                             			<button class="btn btn-lg btn-primary ms-3">작성하기</button>
+				                             				</td>
+			                             				</form>
+			                             			</c:when>
+			                             			<c:otherwise>
+			                             				<%-- 문의 답글 작성 후 --%>
+			                             				<form action="AdmSupportUpdate" method="post">
+			                             					<input type="hidden" name="support_idx" value="${support.support_idx}">
+			                             					<input type="hidden" name="pageNum" value="${pageNum}">
+				                             				<td colspan="6">
+						                             			<input class="form-control mb-2" type="text" placeholder="답글 제목" name="support_answer_subject" value="${support.support_answer_subject}">
+						                             			<textarea class="form-control" rows="5" placeholder="답글 내용" name="support_answer_content">${support.support_answer_content}</textarea>
+						                             		</td>
+						                             		<td colspan="2">
+						                             			<button class="btn btn-lg btn-primary ms-3">수정하기</button>
+				                             				</td>
+			                             				</form>
+			                             			</c:otherwise>
+			                             		</c:choose>
+			                             	</tr>
+										</c:forEach>
+									</c:otherwise>
+								</c:choose>
 							</tbody>
 						</table>
+						
+						<section id="pagingArea">
+							<button
+							onclick="location.href='AdmSupportpageNum=${pageInfo.startPage - pageInfo.pageListLimit}'"
+							<c:if test="${pageInfo.startPage eq 1}">disabled</c:if>>
+								<i class="fas fa-angle-double-left"></i>
+							</button>
+							<button
+							onclick="location.href='AdmSupport?pageNum=${pageNum - 1}'"
+							<c:if test="${pageNum eq 1}">disabled</c:if>>
+								<i class="fas fa-chevron-left"></i>
+							</button>
+							<c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
+								<c:choose>
+									<c:when test="${i eq pageNum}">
+										<strong>${i}</strong>
+									</c:when>
+									<c:otherwise>
+										<a href="AdmSupport?pageNum=${i}">${i}</a>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+							<button
+							onclick="location.href='AdmSupport?pageNum=${pageNum + 1}'"
+							<c:if test="${pageNum eq pageInfo.maxPage}">disabled</c:if>>
+								<i class="fas fa-angle-right"></i>
+							</button>
+						   	<button
+						   	onclick="location.href='AdmSupport?pageNum=${pageInfo.startPage + pageInfo.pageListLimit}'"
+							<c:if test="${pageInfo.endPage eq pageInfo.maxPage}">disabled</c:if>>
+						   		<i class="fas fa-angle-double-right"></i>
+						   	</button>
+					   	</section>
+					   	
 					</div>
 				</div>
             <!-- Blank End -->
@@ -120,10 +229,36 @@
     <!-- Template Javascript -->
     <script src="resources/admin/js/main.js"></script>
     <script type="text/javascript">
-    		var link = document.location.href;
-	    	if (link.includes("board")) {
-	    		document.getElementById("board").classList.toggle("active");
-	    		document.getElementById("boardManage").classList.toggle("active");
+    		function showDetail(idx){
+				let supportDetailBox = document.querySelectorAll(".supportDetailBox");
+				let answerDetailBox = document.querySelectorAll(".answerDetailBox");
+				
+				supportDetailBox.forEach((elem) => {
+					elem.style.display = "none";
+    			});
+				answerDetailBox.forEach((elem) => {
+					elem.style.display = "none";
+    			});
+				
+				supportDetailBox[idx].style.display = "table-row";
+    		}
+    		
+    		function showAnswer(idx){
+    			let answerDetailBox = document.querySelectorAll(".answerDetailBox");
+    			answerDetailBox.forEach((elem) => {
+					elem.style.display = "none";
+    			});
+    			answerDetailBox[idx].style.display = "table-row";
+    		}
+    		
+    		
+    		// 메뉴 활성화
+    		let link = document.location.href;
+	    	if (link.includes("AdmSupport")) {
+	    		document.querySelector("#AdmSupport").parentElement.previousElementSibling.classList.add("show");
+	    		document.querySelector("#AdmSupport").parentElement.previousElementSibling.classList.add("active");
+	    		document.querySelector("#AdmSupport").parentElement.classList.add("show");
+	    		document.querySelector("#AdmSupport").classList.toggle("active");
 	    	};
     </script>
 </body>

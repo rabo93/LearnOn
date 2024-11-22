@@ -68,7 +68,7 @@
 									<c:choose>
 										<c:when test="${empty supportList}">
 											<tr>
-												<td class="empty" colspan="4">작성한 게시물이 없습니다.</td>
+												<td class="empty" colspan="4">작성한 문의내역이 없습니다.</td>
 											</tr>
 										</c:when>
 										<c:otherwise>
@@ -86,10 +86,16 @@
 															기타
 														</c:if>
 													</td>
-													<td class="subject">${support.support_subject}</td>
+													<td class="subject">
+														${support.support_subject}
+														<c:if test="${support.support_answer_date != null}">
+															<span class="inq-reply">답변완료 <i class="fa-solid fa-reply"></i></span>
+														</c:if>
+													</td>
 													<td>${support.mem_name}</td>
 													<td><fmt:formatDate value="${support.support_date}" pattern="yy-MM-dd HH:mm" /></td>
 												</tr>
+												
 											</c:forEach>
 										</c:otherwise>
 									</c:choose>

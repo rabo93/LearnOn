@@ -77,6 +77,21 @@
 		                    	</span>
 		                    </div>
 						</c:if>
+						<c:if test="${support.support_answer_date != null}">
+							<div class="reply-hr"></div>
+							<div class="com reply">
+								<label>답변제목</label>
+								<span class="subject">
+									${support.support_answer_subject}
+								</span>
+							</div>
+							<div class="com reply">
+								<label>답변내용</label>
+								<span class="contents">
+									${support.support_answer_content}
+								</span>
+							</div>
+						</c:if>
 	                    <div class="btns">
 		                    <c:if test="${not empty sessionScope.sId}">
 		                    	<c:if test="${sessionScole.sId eq 'admin'}">

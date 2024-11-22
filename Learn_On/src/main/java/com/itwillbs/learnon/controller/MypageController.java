@@ -31,9 +31,9 @@ import com.itwillbs.learnon.vo.MyCourseVO;
 import com.itwillbs.learnon.vo.MyCurriculumVO;
 import com.itwillbs.learnon.vo.MyDashboardVO;
 import com.itwillbs.learnon.vo.MyReviewVO;
+import com.itwillbs.learnon.vo.PageInfo;
 import com.itwillbs.learnon.vo.SupportBoardVO;
 import com.itwillbs.learnon.vo.WishlistVO;
-import com.itwillbs.learnon.vo.PageInfo;
 
 @Controller
 public class MypageController {
@@ -662,6 +662,12 @@ public class MypageController {
 	}
 	
 	// 출석체크
+	
+	
+	
+	
+	
+	
 	
 	
 	

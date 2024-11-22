@@ -150,4 +150,5 @@ INSERT INTO MEMBER (
 			,mem_withdraw_date = now()
 		 WHERE mem_id = #{mem_id}
 	</update>
+	
 </mapper>

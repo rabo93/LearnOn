@@ -67,5 +67,30 @@
 	<footer>
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
 	</footer>
+	
+	<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        const checkButton = document.querySelector('.btn-att.checked');
+        const streakDisplay = document.querySelector('.att-box span'); // 연속 출석 일 수를 표시하는 요소
+
+        if (checkButton) {
+            checkButton.addEventListener('click', function () {
+                // 연속 출석일 계산
+                let streakDays = parseInt(streakDisplay.textContent) || 0;
+                streakDays += 1; // 버튼 클릭 시 1 증가
+                
+                // UI 업데이트
+                streakDisplay.textContent = streakDays;
+
+                // 알림 표시
+                alert("출석완료!");
+                
+                // 버튼 상태 변경
+                checkButton.textContent = '출석완료';
+                checkButton.classList.remove('checked'); // 버튼을 '출석완료' 상태로 변경
+            });
+        }
+    });
+</script>
 </body>
 </html>

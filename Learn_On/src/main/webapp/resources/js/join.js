@@ -14,7 +14,7 @@ $(document).ready(function() {
 	}
 	);
 
-// 이메일 구현중...
+// *********이메일 셀랙트박스**********
 $(document).ready(function() {
 //	$("#submit").click(submit);
 	$("#emaildmain").change(function() {
@@ -37,6 +37,7 @@ let checkMail = false;
 let checkCode = false;
 let checkIdResult = false;
 let checkNic = false;
+let isIdValid=false;
 
 // ************* 이름 null 검사**************
 function checkNameLength(){
@@ -66,10 +67,10 @@ function checkId(){
 //				debugger;
 				if(result.trim() == "false"){
 					$("#checkIdResult").text("사용가능한 아이디 입니다.").css("color","GREEN");
-					checkIdResult = true;
+					isIdValid = true;
 				}else{
 					$("#checkIdResult").text("이미 존재하는 아이디 입니다.").css("color","RED");
-					checkIdResult = false;
+					isIdValid = false;
 				}
 			} ,
 			error : function(){
@@ -79,7 +80,7 @@ function checkId(){
 	}else{
 		$("#checkIdResult").text("4~12글자만 사용가능");
 		$("#checkIdResult").css("color", "red");
-		checkIdResult = false;
+		isIdValid = false;
 	}
 }
  		
@@ -165,7 +166,6 @@ function checkPasswdResult(){
 	}else {
 		$("#checkPasswd2").text("비밀번호가 일치하지 않습니다.");
 		$("#checkPasswd2").css("color","red");
-		
 	}
 }
 // *************연락처 null검사**************
@@ -205,27 +205,10 @@ $("#profile_img").change(function (event) {
 
 /******************* */
 function submit() {
-    if (!checkIdResult) {
-        alert("아이디를 다시 입력해주세요.");
-        $("#mem_id").focus();
-        return false;
-    } else if (!checkNic) {
-        alert("닉네임을 다시 입력해주세요.");
-        $("#mem_nick").focus();
-        return false;
-    } else if (!checkPasswd1 || !checkPasswd2) {
-        alert("비밀번호를 확인해주세요.");
-        $("#mem_passwd1").focus();
-        return false;
-    } else if (!checkName) {
-        alert("이름을 입력해주세요.");
-        $("#mem_name").focus();
-        return false;
-    } else if (!checkMail) {
-        alert("이메일을 확인해주세요.");
-        $("#mem_email1").focus();
-        return false;
-    }
-    return true;
+    if (!isIdValid){
+	alert("아이디를 다시 확인해주세요");
+    return false;
+}
     
+	return true;    
 }

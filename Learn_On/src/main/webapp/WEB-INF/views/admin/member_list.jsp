@@ -88,9 +88,9 @@
 										</td>
 										<td>
 											<div class="input-group ">
-												<input type="text" class="form-control" placeholder="Username" aria-label="Username" value="${ml.mem_email1}">
-												<span class="input-group-text">@</span>
-												<input type="text" class="form-control" placeholder="Server" aria-label="Server" value="${ml.mem_email2}">
+												<input type="text" class="form-control" placeholder="Username" aria-label="Username" value="${ml.mem_email}">
+<!-- 												<span class="input-group-text">@</span> -->
+<%-- 												<input type="text" class="form-control" placeholder="Server" aria-label="Server" value="${ml.mem_email2}"> --%>
 	                 		  				</div>
 	                          		 	</td>
 										<td><input class="form-control " type="text" placeholder="연락처" aria-label="default input example" value="${ml.mem_phone}"></td>

@@ -64,16 +64,16 @@ public class PayController {
 	// 결제하고자 하는 상품의 금액과 실제로 결제된 금액을 비교!!!
 	// 아임포트에서 제공하는 자바용 라이브러리 사용(https://github.com/iamport/iamport-rest-client-java?tab=readme-ov-file)
 	// 1. 결제 사전 검증 - 결제 페이지 로드시 결제 예상 주문번호/주문금액을 DB에 저장한다
-//	@ResponseBody
-//	@PostMapping("payments/prepare")
-//	public void preparePayment(@RequestBody PayVO pay) throws IamportResponseException, IOException {
-//		//PayService - postPrepare 호출
-//		//파라미터 : PayVO
-//		payService.postPrepare(pay);
-//		
-//		// 일단 등록은 되는데... 쿠폰 적용하면 다시 업데이트 구현이 안되었음
-//		// 그리고 페이지 새로고침할때 기존꺼는 삭제 되고 다시 인서트 되어야함
-//	}
+	@ResponseBody
+	@PostMapping("payments/prepare")
+	public void preparePayment(@RequestBody PayVO pay) throws IamportResponseException, IOException {
+		//PayService - postPrepare 호출
+		//파라미터 : PayVO
+		payService.postPrepare(pay);
+		
+		// 일단 등록은 되는데... 쿠폰 적용하면 다시 업데이트 구현이 안되었음
+		// 그리고 페이지 새로고침할때 기존꺼는 삭제 되고 다시 인서트 되어야함
+	}
 	
 	//--------------------------------------------------------
 	// 2. 결제 사후 검증

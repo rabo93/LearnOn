@@ -24,8 +24,8 @@ public class PayService {
 		this.api = new IamportClient("1582333057803703", "Xeql20bTzSYAkeu3qPVXGoU3GEn0Ve4WKSmXsZViEAIrMFoJKE8n8q78DJlZMXkconSi5Nd3JpfpUX7h");
 	}
 	
-//	@Autowired
-//	private PrePaymentMapper prePaymentMapper;
+	@Autowired
+	private PrePaymentMapper prePaymentMapper;
 	
 	@Autowired
 	private PayMapper mapper;
@@ -41,14 +41,14 @@ public class PayService {
 	}
 	
 	//결제 사전 검증 - 결제예상 주문번호와 주문금액을 DB에 저장
-//	public void postPrepare(PayVO pay) throws IamportResponseException, IOException {
-//		PrepareData prepareData = new PrepareData(pay.getMerchantUid(), pay.getPrice());
-//		System.out.println("서비스 넘겨줄 사전데이터: " + prepareData);
-//		
-//		api.postPrepare(prepareData);  // 사전 등록 API 
-//		
-//		prePaymentMapper.save(pay); // 주문번호와 결제예정 금액 DB 저장
-//	}
+	public void postPrepare(PayVO pay) throws IamportResponseException, IOException {
+		PrepareData prepareData = new PrepareData(pay.getMerchantUid(), pay.getPrice());
+		System.out.println("서비스 넘겨줄 사전데이터: " + prepareData);
+		
+		api.postPrepare(prepareData);  // 사전 등록 API 
+		
+		prePaymentMapper.save(pay); // 주문번호와 결제예정 금액 DB 저장
+	}
 	
 	
 	//결제 사후 검증 - 포트원에서 받은 결제 정보

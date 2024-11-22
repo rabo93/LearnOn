@@ -23,7 +23,7 @@ $(document).ready(function() {
 		// 새 창에 있는 쿠폰정보를 설정
 		window.setCoupon = function(coupon) {
 //		    console.log("쿠폰창에서 선택한 쿠폰정보 받은거:", coupon);
-		    //{COUPON_ID: 1, DISCOUNT_STATUS: 2, DISCOUNT_PERCENT: '', DISCOUNT_AMOUNT: 5000}
+		    //{COUPON_ID: 1, DISCOUNT_TYPE: 2, DISCOUNT_PERCENT: '', DISCOUNT_AMOUNT: 5000}
 		    
 			// 결제 상품 금액 가져오기
 			let totalAmount = parseInt($("#totalAmount").data("value"), 10); //10진수 정수형으로 변환
@@ -35,13 +35,13 @@ $(document).ready(function() {
 			
 			// 선택한 쿠폰의할인 금액 또는 할인률에 따른 계산
 			// 계산한 할인 금액을 결제 페이지에 반영
-			if(coupon.DISCOUNT_STATUS == 1) { //퍼센트 할인
+			if(coupon.DISCOUNT_TYPE == 1) { //퍼센트 할인
 				let discountPercent = parseInt(coupon.DISCOUNT_PERCENT, 10);
 				discountAmount = Math.floor(totalAmount * (discountPercent / 100));
 				//상품금액-할인금액 계산은 밖으로 뺌(중복되므로)
 				$(".coupon-price").text(discountPercent +  " %");
 				
-			} else if(coupon.DISCOUNT_STATUS == 2){ //금액할인
+			} else if(coupon.DISCOUNT_TYPE == 2){ //금액할인
 				discountAmount = parseInt(coupon.DISCOUNT_AMOUNT, 10);
 				//상품금액-할인금액 계산은 밖으로 뺌(중복되므로)
 				$(".coupon-price").text(discountAmount + " 원");
@@ -103,47 +103,30 @@ $(document).ready(function() {
 			event.preventDefault(); // 기본 동작(폼 제출) 방지
 			return;
 		}
-		kg_requestPay(); // 약관 동의가 체크된 경우 결제 요청
+		
+		// 약관 동의가 체크된 경우 결제 요청
+		kg_requestPay(); 
 	});
-	
-	//=============================================================================
-	// [결제하기 사전검증]
-	// 결제 페이지가 로드되면 AJAX 통신을 통해 주문번호와 결제 예정금액을 전달 => AJAX
-//	let merchantUid = new Date().toISOString().slice(0,10).replace(/-/g, '')
-//						 + Math.floor(10000 + Math.random()*90000);
-//	let price = $("#totalPrice").data("value");
-//	
-//	$.ajax({
-//		type: "Post",
-//		url: "payments/prepare",
-//		contentType: "application/json",
-//		data: JSON.stringify({
-//			merchantUid: merchantUid,	// 주문 번호
-//			price: price			// 결제 예정 금액
-//		})
-//	});
-
 });
-
 //===================================================================================================
 // "결제하기" 클릭시 포트원 결제 API 연동 구현 (v1)
 //https://developers.portone.io/opi/ko/integration/start/v1/auth?v=v1
 function kg_requestPay() {
-	//---------------------------------------------
+	//-----------------------------------------------------------------------------------
 	// 결제페이지에서 전달할 데이터값 (주문번호, 결제금액, 결제수단, 회원ID, 클래스ID 등등...) 가져와서 변수 저장
-	let merchantUid = new Date().toISOString().slice(0,10).replace(/-/g, '')
-						 + Math.floor(10000 + Math.random()*90000);
-	//[주문고유번호 생성(형식: yyyyMMdd+랜덤숫자5개)]
+	// * 주문고유번호 생성(형식: yyyyMMdd+랜덤숫자5개)
 	//- date() : 오늘날짜
 	//- toISOString() : 2024-11-21T00:00:00.000Z을 반환
 	//- slice(0, 10)으로 2024-11-21만 추출
 	//- replace(/-/g, '')로 -를 제거해 20241121 형식으로 변환
 	//- Math.floor(10000 + Math.random() * 90000)로 10000~99999 사이의 랜덤 숫자를 생성
+	let merchantUid = new Date().toISOString().slice(0,10).replace(/-/g, '')
+					 + Math.floor(10000 + Math.random()*90000);
 	console.log("주문고유번호: " + merchantUid);
-	let payMethod = $('input:radio[name=pay-method]:checked').val();
-	console.log("결제수단:"  + payMethod);
 	let price = parseInt($("#totalPrice").data("value"), 10);
 	console.log("결제금액: " + price);
+	let payMethod = $('input:radio[name=pay-method]:checked').val();
+	console.log("결제수단:"  + payMethod);
 	
 	//모든 클래스명 가져와서 [배열]에 담기(classTitle)
 	let classTitles = [];
@@ -165,14 +148,29 @@ function kg_requestPay() {
 	//회원정보 가져오기(MemberVO를 jsp에 model로 받아서 data속성으로 값 가져옴)
 	let memberInfo = $("#memberInfo")
 	let memName = memberInfo.data("name");
-	let phone = memberInfo.data("phone");
-	let email = memberInfo.data("email");
 	console.log("회원 이름:", memName);
+	let phone = memberInfo.data("phone");
 	console.log("회원 전화번호:", phone);
+	let email = memberInfo.data("email");
 	console.log("회원 이메일:", email);
 	
 	//---------------------------------------------
-	// 결제 흐름 : 사전검증 > 결제 요청 > 사후 검증 흐름
+	// 결제 흐름 : 사전검증 > 결제 요청 > 사후 검증
+	//----------------------------------------------------
+	// [결제하기 사전검증]
+	// 주문테이블에 결제 전에 DB저장 (결제 후 비교 검증)
+	$.ajax({
+		type: "Post",
+		url: "payments/prepare",
+		contentType: "application/json",
+		data: JSON.stringify({
+			merchantUid: merchantUid,	// 주문 번호
+			className: className,		// 주문상품명
+			memName: memName,			// 주문자명
+			price: price,				// 결제 예정 금액
+			payMethod: payMethod,		// 결제수단
+		})
+	});
 	//---------------------------------------------
 	// 결제하기 클릭시 호출되는 결제창 (생략가능)
 	let IMP = window.IMP;

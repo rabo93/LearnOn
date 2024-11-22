@@ -8,4 +8,5 @@ import com.itwillbs.learnon.vo.PayVO;
 public interface PrePaymentMapper {
 
 	void save(PayVO pay);
+	
 }

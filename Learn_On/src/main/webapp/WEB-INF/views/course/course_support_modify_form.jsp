@@ -43,36 +43,23 @@
 					<textarea name="c_support_content" rows="15" cols="40" required="required" placeholder="문의할 내용">${courseSupport.c_support_content}</textarea>
 				</div>
 				<section class="tb-btns">
-					<div class="tb-files">
-						<c:choose>
-							<c:when test="${not empty courseSupport.c_support_file}">
-								<div class="board_file" id="file">
-<%-- 									<input type="text" name="c_support_file" value="${originalFileList}" readonly> --%>
-									<input type="text" name="file" value="${courseSupport.c_support_file}" readonly size="50">
-									<a href="${pageContext.request.contextPath}/resources/upload/${courseSupport.c_support_file}" download="${originalFileList}"><i class="fa-solid fa-download"></i></a>
-									<a href="#" onclick="deleteFile(${courseSupport.c_support_idx}, '${courseSupport.c_support_file}')"><i class="fa-solid fa-trash"></i></a>
-<%-- 									<a href="${pageContext.request.contextPath}/resources/upload/${file}" download="${originalFileList}"> --%>
-<%-- 										${courseSupport.c_support_file}<button class="btn-03">다운로드	</button> --%>
-<!-- 									</a> -->
-<%-- 									<button class="btn-02" onclick="deleteFile(${courseSupport.c_support_idx}, '${file}')">삭제</button> --%>
-								</div>
-							</c:when>
-							<c:otherwise>
-							 	<input type="file" name="file">
-							
-<!-- 							 	<div> -->
-<!-- 							 		<i class="fa-solid fa-paperclip"></i> -->
-<%-- 							 		<input type="text" name="notice_file_get" value="${originalFileList[status.index]}" readonly>  --%>
-<%-- 							 		<a href="${pageContext.request.contextPath}/resources/upload/${courseSupport.c_support_file}" download="${originalFileList}"> --%>
-<%-- 							 			${courseSupport.c_support_file}<button class="btn-03">다운로드	</button>  --%>
-<!-- 							 		</a> -->
-<%-- 							 		<button class="btn-02" onclick="deleteFile(${courseSupport.c_support_idx}, '${file}')">삭제</button> --%>
-<!-- 							 		<input type="file" name="file" hidden> -->
-<!-- 							 	</div> -->
-							 
-							 </c:otherwise>
-						</c:choose>
-					</div>
+						<div class="tb-files">
+							<c:choose>
+								<c:when test="${not empty originalFileList}">
+									<div class="board_file" id="file">
+										${originalFileList}
+										<a href="${pageContext.request.contextPath}/resources/upload/${originalFileList}" download="${originalFileList}"><i class="fa-solid fa-download"></i></a>
+										<a href="#" onclick="deleteFile(${courseSupport.c_support_idx}, '${originalFileList}')"><i class="fa-solid fa-trash"></i></a>
+										<input type="file" name="file" size="50" hidden>
+										
+									</div>
+								</c:when>
+								<c:otherwise>
+								 	<input type="file" name="file">
+								 </c:otherwise>
+							</c:choose>
+						</div>
+<%-- 					</c:forEach> --%>
 				</section>
 			</section>
 			

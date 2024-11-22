@@ -23,13 +23,45 @@
 		<div class="wrapper">
 			<div class="cls-wrap">
 				
+				
+				
+				<div class="cls-event-card">
+			        <div class="cls-event-card-header">
+			            얼리버드 할인 중
+			        </div>
+			        <div class="cls-event-card-body">
+			            <div class="price">88,200 원</div>
+			            <div>
+			                <span class="percentage">30%</span>
+			                <span class="discount">199,000원</span>
+			            </div>
+			        </div>
+			        <div class="cls-event-card-footer">
+
+			            <button class="apply-button" onclick="applyForCourse('${course[0].class_id}', '${param.codetype}')">수강신청 하기</button>
+			            <button class="cart-button">바구니에 담기</button>
+			        </div>
+			    </div>
+			
+			
+			
 				<div class="container">
 				<section class="breadcrumb">
-		            <a href="#">카테고리</a> &gt; <a href="#">IT/프로그래밍</a> &gt; 백엔드
+				
+		            <a href="#">카테고리</a> &gt; <a href="Category?codetype=${codeType[0].codetype}">${codeType[0].codename}</a> &gt;${course[0].class_category}
 		        </section>
 		        
 		        <section class="class-details">
-		        
+		        	<ul>
+			        	<li id="${course[0].class_id}">
+				        	<button class="fav-off" style="display:block;" onclick="addToWishList('${course[0].class_id}')">
+								<i class="fa-regular fa-heart"></i>
+							</button>
+							<button class="fav-on" style="display:none;" onclick="deleteToWishList('${course[0].class_id}')">
+								<i class="fa-solid fa-heart"></i>
+							</button>
+						</li>
+					</ul>
 		            <h1>${course[0].class_title}</h1>
 					<p>${course[0].class_intro}</p>       
 		            <div class="cls_det_rating">
@@ -46,7 +78,6 @@
 			            </div>
 		            </div>
 		        </section>
-		        
 		        <!-- 탭메뉴 영역안에 탭을 만드는 것이아니고 content 바로 위에 넣어야 함. -->
 		<!-- 		<div class="tab"> -->
 					<ul class="tabnav">
@@ -67,15 +98,10 @@
 						</div>
 						<div class="tabmenu" id="tab02">
 							<h2>커리큘럼 소개</h2>
-							<c:forEach var="cur" items="${course}">
-				            	<div class="lesson">${cur.cur_id}강 ${cur.cur_title}
+							<c:forEach var="cur" items="${course}" varStatus="status">
+				            	<div class="lesson">${status.count}강 ${cur.cur_title}
 					            	<span>
-					            		<c:set var="totalSeconds" value="${cur.cur_runtime}" />
-					            		<c:set var="hours" value="${totalSeconds div 3600}" />
-										<c:set var="minutes" value="${(totalSeconds mod 3600) div 60}" />
-										<c:set var="seconds" value="${totalSeconds mod 60}" />
-										
-										<p>${hours} : ${minutes} : ${seconds}</p>
+					            		<p>${cur.cur_runtime} 분</p>
 					            	</span>
 				            	</div>
 							</c:forEach>
@@ -121,93 +147,65 @@
 
         <section class="recommended-classes">
             <h2>강사의 다른 클래스 보기</h2>
+            
 			<div class="card-container">
-			    <div class="card">
-			        <img src="" alt="Class Image">
-		            <div class="rating">
-		                <span class="star">★</span> 4.8 (+50)
-		            </div>
-			        <div class="card-content">
-			            <div class="category">IT/개발</div>
-			            <div class="title">자바(Java) 알고리즘 문제풀이 입문: 코딩테스트 대비</div>
-			            <div class="description">프로그래머 홍길동</div>
-			        </div>
-			    </div>
-			    <div class="card">
-			        <img src="" alt="Class Image">
-		            <div class="rating">
-		                <span class="star">★</span> 4.8 (+50)
-		            </div>
-			        <div class="card-content">
-			            <div class="category">IT/개발</div>
-			            <div class="title">자바(Java) 알고리즘 문제풀이 입문: 코딩테스트 대비</div>
-			            <div class="description">프로그래머 홍길동</div>
-			        </div>
-			    </div>
-			    <div class="card">
-			        <img src="" alt="Class Image">
-		            <div class="rating">
-		                <span class="star">★</span> 4.8 (+50)
-		            </div>
-			        <div class="card-content">
-			            <div class="category">IT/개발</div>
-			            <div class="title">자바(Java) 알고리즘 문제풀이 입문: 코딩테스트 대비</div>
-			            <div class="description">프로그래머 홍길동</div>
-			        </div>
-			    </div>
-			    <div class="card">
-			        <img src="" alt="Class Image">
-		            <div class="rating">
-		                <span class="star">★</span> 4.8 (+50)
-		            </div>
-			        <div class="card-content">
-			            <div class="category">IT/개발</div>
-			            <div class="title">자바(Java) 알고리즘 문제풀이 입문: 코딩테스트 대비</div>
-			            <div class="description">프로그래머 홍길동</div>
-			        </div>
-			    </div>
+				<c:forEach var="others" items="${requestScope.courseTeacher}">
+				    <div class="card">
+				        <img src="" alt="Class Image">
+			            <div class="rating">
+			                <span class="star">★</span>  (+ ???? )
+			            </div>
+				        <div class="card-content">
+				            <div class="category">IT/개발</div>
+				            <div class="title">${others.class_title}</div>
+				            <div class="description">${others.mem_id}</div>
+				        </div>
+				    </div>
+				</c:forEach>
             </div>
         </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-			</div>
+		<script>
+		
+			window.onload = function() {
+				const wishList = ${wishList};
+				
+				
+				wishList.forEach(wish => {
+					const listItem = document.getElementById(wish.CLASS_ID);
+					if (listItem) {
+		                const favOnBtn = listItem.querySelector(".fav-on");
+		                if (favOnBtn) {
+		                	favOnBtn.style.display = "block";
+		                }
+	
+		                const favOffBtn = listItem.querySelector(".fav-off");
+		                if (favOffBtn) {
+		                	favOffBtn.style.display = "none";
+		                }
+		            }
+				});
+			}
+			
+			function applyForCourse(id, codetype){
+				var codetype = ${param.codetype};
+				location.href="ApplyForCourse?class_id=" + id + "&codetype=" + codetype;
+			}
+			
+			function addToWishList(id){
+				if(confirm("관심목록에 추가하시겠습니까?")) {
+					location.href="MyFavAdd?class_id=" + id;
+				}
+			}
+			
+			function deleteToWishList(id){
+				if(confirm("관심목록에서 삭제하시겠습니까?")){
+					location.href="MyFavDel?class_id=" + id;
+				}
+			}
+		</script>
+		
 		</div>
+	</div>
 	</main>
 	<footer>
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>

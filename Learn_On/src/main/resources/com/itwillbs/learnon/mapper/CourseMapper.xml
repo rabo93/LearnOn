@@ -21,18 +21,28 @@
 			 , (SELECT CODENAME FROM COMMONCODE WHERE CODEID = #{course.codetype}) as CATENAME
 			 , T.CODETYPE_ID
 			 , R.REVIEW_SCORE
+			 , C.MEM_ID AS TEACHER_ID
 		  FROM CLASS C
 	LEFT  JOIN MEMBER M ON C.MEM_ID = M.MEM_ID
 		  JOIN COMMONCODETYPE T ON C.CLASS_CATEGORY = T.NAME
  	 LEFT JOIN (SELECT TRUNCATE(AVG(REVIEW_SCORE), 1) AS REVIEW_SCORE, CLASS_ID FROM REVIEW GROUP BY CLASS_ID) R ON R.CLASS_ID  = C.CLASS_ID
 		 WHERE 1 = 1
-		  AND T.CODETYPE = #{course.codetype}
+		  AND T.CODETYPE = #{codetype}
   		 <if test="course.CODETYPE_ID != null"> 
 		  AND T.CODETYPE_ID = #{course.codetype_id}
 		 </if>
 		 <choose>
 		 	<when test="searchType.equals('new')">
 		 	 ORDER BY CLASS_ID DESC
+		 	</when>
+		 	<when test="searchType.equals('title')">
+		 	 ORDER BY CLASS_TITLE ASC
+		 	</when>
+		 	<when test="searchType.equals('price')">
+		 	 ORDER BY CLASS_PRICE ASC
+		 	</when>
+		 	<when test="searchType.equals('score')">
+		 	 ORDER BY REVIEW_SCORE DESC
 		 	</when>
 		 </choose>
 		  
@@ -41,12 +51,14 @@
 	
 	
 	<select id="selectCommonCodeType" resultType="codeType" parameterType="string">
-		SELECT CODETYPE
-			 , NAME
-			 , DESCRIPTION
-			 , CODETYPE_ID
-		  FROM COMMONCODETYPE
-		 WHERE CODETYPE = #{codetype}
+		SELECT 
+			   CC.CODEID AS CODETYPE
+			 , CC.CODENAME 
+			 , CT.CODETYPE_ID
+			 , CT.NAME
+		  FROM COMMONCODETYPE CT
+		  JOIN COMMONCODE CC ON CC.CODEID = CT.CODETYPE
+		 WHERE CC.CODEID = #{codetype}
 	</select>
 	
 	<select id="selectCommonCodeTypeAll" resultType="codeType">
@@ -94,10 +106,26 @@
 					FROM REVIEW
 				   WHERE C.CLASS_ID = #{class_id}
 					) AS REVIEW_SCORE
+			   , M.MEM_ID 		AS TEACHER_ID	
 			FROM CLASS C
 			JOIN MEMBER M ON M.MEM_ID = C.MEM_ID
 			JOIN CURRICULUM CR ON CR.CLASS_ID = C.CLASS_ID
 		   WHERE C.CLASS_ID = #{class_id}
+	</select>
+	
+	<select id="selectCourseTeacher" resultType="course">
+		SELECT 
+			    C.CLASS_TITLE
+			  , M.MEM_NAME		AS MEM_ID
+			  , (SELECT TRUNCATE(AVG(REVIEW_SCORE), 1)
+			       FROM REVIEW
+				  WHERE C.CLASS_ID = #{class_id}
+				   ) AS REVIEW_SCORE
+		  FROM CLASS C
+		  JOIN MEMBER M 
+		    ON C.MEM_ID = M.MEM_ID
+		 WHERE C.MEM_ID = #{teacher_id}  
+		   AND CLASS_ID != #{class_id}
 	</select>
 	
 	<select id="selectReviewList" resultType="myreview" parameterType="int">

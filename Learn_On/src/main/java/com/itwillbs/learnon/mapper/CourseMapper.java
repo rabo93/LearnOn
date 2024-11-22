@@ -54,5 +54,9 @@ public interface CourseMapper {
 			@Param("class_id") int class_id, 
 			@Param("teacher_id") String teacher_id);
 
+	int insertApplyForCourse(
+			@Param("class_id") int class_id, 
+			@Param("id") String id);
+
 
 }

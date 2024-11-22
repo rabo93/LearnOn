@@ -203,9 +203,6 @@
 		  FROM CLASS_SUPPORT
 		 WHERE C_SUPPORT_IDX = #{c_support_idx}
 	</delete>
-	
-	
-	
 	<select id="selectMenuList" resultType="map">
 		SELECT C.CODEID
 			   , C.CODENAME AS MAIN_MENU
@@ -217,5 +214,16 @@
 	</select>
 	
 	
-	
+	<insert id="insertApplyForCourse">
+		<selectKey keyProperty="cartitem_idx" resultType="int" order="BEFORE">
+			SELECT IFNULL(MAX(CARTITEM_IDX),0)
+			  FROM CART
+		</selectKey>
+		INSERT INTO CART
+		VALUES (
+			   #{cartitem_idx} + 1
+			 , #{class_id}
+			 , #{id}
+		)
+	</insert>
 </mapper>

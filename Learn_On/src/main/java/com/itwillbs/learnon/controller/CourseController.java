@@ -431,16 +431,90 @@ public class CourseController {
 			}
 			
 			// ----------------------------------------------------------
-			// URL주소에 붙어있는 파라미터를 가지고 온다!
 			return "redirect:/CourseSupportList?class_id=" + cSupport.getC_class_id() + "&pageNum="+pageNum;
-//			return "redirect:/BoardList" + (request.getQueryString() != null ? "?" + request.getQueryString() : "");
-			// BoardList 서블릿에는 글번호 파라미터는 제외시켜야 함. 페이지 번호만 전달.
 			
 		} else {
 			model.addAttribute("msg", "삭제실패");
 			return "result/fail";
 		}
 	}
+	
+	
+	// 수강신청 버튼 
+	@GetMapping("ApplyForCourse")
+	public String applyForCourse(
+				int class_id,
+				String codetype,
+				HttpSession session,
+				HttpServletRequest request,
+				Model model
+				) {
+//		System.out.println("codetype ㄷ받아오나??" + codetype);
+		
+		// 미 로그인 처리 
+		String id = (String)session.getAttribute("sId");
+		if(id == null) {
+			model.addAttribute("msg", "로그인 필수!\\n로그인 페이지로 이동합니다.");
+			model.addAttribute("targetURL", "MemberLogin");
+			
+			// 로그인 성공 후 다시 현재페이지로 돌아오기 위해 prevURL 세션 속성값 설정
+			// => 경로를 직접 입력하지 않고 request 객체의 getServletPath() 메서드로 서블릿 주소 추출 가능
+			String prevURL = request.getServletPath();
+			String queryString = request.getQueryString();
+			System.out.println("prevURL: " + prevURL);
+			System.out.println("요청 파라미터: " + request.getQueryString());
+			
+			// UTL 파라미터(쿼리)가 null이 아닐 경우 prevURL에 결합(?포함
+			if(queryString != null) {
+				prevURL += "?" + queryString;
+			} 
+			
+			// 세션 객체에 prevURL 갑 저장
+			session.setAttribute("prevURL", prevURL);
+			return "result/fail";
+		}
+		
+		
+		int insertCount = courseService.registApplyForCourse(class_id, id);
+		if(insertCount > 0) { // 등록 성공
+			
+			model.addAttribute("class_id", class_id);
+			return "redirect:/CourseDetail?class_id="+ class_id + "&codetype=" + codetype;
+		} else {
+			model.addAttribute("msg", "문의글쓰기실패");
+			return "result/fail";
+		}
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	// 파일 업로드에 사용될 실제 업로드 디렉토리 경로를 리턴하는 메서드
 	public String getRealPath(HttpSession session) {

@@ -81,6 +81,10 @@ public class CourseService {
 		return mapper.selectCourseTeacher(class_id, teacher_id);
 	}
 
+	public int registApplyForCourse(int class_id, String id) {
+		return mapper.insertApplyForCourse(class_id, id);
+	}
+
 
 	
 

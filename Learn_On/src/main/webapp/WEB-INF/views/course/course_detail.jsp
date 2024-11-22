@@ -22,6 +22,29 @@
 	<main>
 		<div class="wrapper">
 			<div class="cls-wrap">
+				
+				
+				
+				<div class="cls-event-card">
+			        <div class="cls-event-card-header">
+			            얼리버드 할인 중
+			        </div>
+			        <div class="cls-event-card-body">
+			            <div class="price">88,200 원</div>
+			            <div>
+			                <span class="percentage">30%</span>
+			                <span class="discount">199,000원</span>
+			            </div>
+			        </div>
+			        <div class="cls-event-card-footer">
+
+			            <button class="apply-button" onclick="applyForCourse('${course[0].class_id}', '${param.codetype}')">수강신청 하기</button>
+			            <button class="cart-button">바구니에 담기</button>
+			        </div>
+			    </div>
+			
+			
+			
 				<div class="container">
 				<section class="breadcrumb">
 				
@@ -139,13 +162,13 @@
 				        </div>
 				    </div>
 				</c:forEach>
-			   
             </div>
         </section>
 		<script>
 		
 			window.onload = function() {
 				const wishList = ${wishList};
+				
 				
 				wishList.forEach(wish => {
 					const listItem = document.getElementById(wish.CLASS_ID);
@@ -161,6 +184,11 @@
 		                }
 		            }
 				});
+			}
+			
+			function applyForCourse(id, codetype){
+				var codetype = ${param.codetype};
+				location.href="ApplyForCourse?class_id=" + id + "&codetype=" + codetype;
 			}
 			
 			function addToWishList(id){

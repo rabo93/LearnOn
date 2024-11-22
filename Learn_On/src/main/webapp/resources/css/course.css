@@ -155,6 +155,87 @@
     color: #666;
 }
 
+
+
+/* 이벤트 카드 css 시작 */
+.cls-event-card {
+    width: 250px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    background-color: #fff;
+}
+
+.cls-event-card-header {
+    background-color: #e3e9f3;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    color: #444;
+    padding: 10px 0;
+}
+
+.cls-event-card-body {
+    text-align: center;
+    padding: 20px 10px;
+}
+
+.cls-event-card-body .price {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+.cls-event-card-body .discount {
+    font-size: 14px;
+    color: #888;
+    text-decoration: line-through;
+    margin-left: 5px;
+}
+
+.cls-event-card-body .percentage {
+    font-size: 14px;
+    color: #3c8dbc;
+}
+
+.cls-event-card-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px;
+/*     background-color: #f8f8f8; */
+}
+
+.cls-event-card-footer button {
+    border: none;
+    padding: 10px 15px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.apply-button {
+    background-color: #444;
+    color: #fff;
+    font-weight: bold;
+}
+
+.apply-button:hover {
+    background-color: #333;
+}
+
+.cart-button {
+    background-color: #f8f8f8;
+    color: #444;
+    border: 1px solid #ddd;
+}
+
+.cart-button:hover {
+    background-color: #eaeaea;
+}
+/* 이벤트 카드 css 끝 */
+
 .class-details {
     background-color: #fff;
     padding: 20px;

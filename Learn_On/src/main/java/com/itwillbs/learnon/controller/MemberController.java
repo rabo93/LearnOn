@@ -327,7 +327,7 @@ public class MemberController {
 		return"member/passwd_fineder";
 	}
 	
-	/******************비밀번호 찾기*******미구현 ㅠㅠ************/
+	/******************비밀번호 찾기******************/
 	@PostMapping("PasswdFinder")
 	public String passwdFinderForm(String mem_email,String mem_name,MemberVO member, Model model,HttpSession session) {
 	    try {

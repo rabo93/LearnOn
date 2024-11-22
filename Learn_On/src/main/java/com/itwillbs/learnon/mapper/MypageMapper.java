@@ -103,6 +103,15 @@ public interface MypageMapper {
 	// 관심목록 추가
 	int insertWish(WishlistVO wish);
 
+	// ======================================================================
+	// 관리자 - 1:1 목록
+	List<SupportBoardVO> selectSupportListToAdm(
+				@Param("startRow") int startRow, 
+				@Param("listLimit") int listLimit);
+
+	// 관리자 - 1:1 답변 작성/수정
+	int updateSupportAnswer(SupportBoardVO support);
+
 	
 	
 

@@ -109,21 +109,19 @@ $(document).ready(function() {
 	//=============================================================================
 	// [결제하기 사전검증]
 	// 결제 페이지가 로드되면 AJAX 통신을 통해 주문번호와 결제 예정금액을 전달 => AJAX
-	let merchantUid = new Date().toISOString().slice(0,10).replace(/-/g, '')
-						 + Math.floor(10000 + Math.random()*90000);
-	let totalPrice = $("#totalPrice").data("value").text();
-	
-	$.ajax({
-		type: "Post",
-		url: "Payment/prepare",
-		contentType: "application/json",
-		data: JSON.stringify({
-			merchant_uid: merchantUid,	// 주문 번호
-			amount: totalPrice			// 결제 예정 금액
-		})
-	});
-
-
+//	let merchantUid = new Date().toISOString().slice(0,10).replace(/-/g, '')
+//						 + Math.floor(10000 + Math.random()*90000);
+//	let price = $("#totalPrice").data("value");
+//	
+//	$.ajax({
+//		type: "Post",
+//		url: "payments/prepare",
+//		contentType: "application/json",
+//		data: JSON.stringify({
+//			merchantUid: merchantUid,	// 주문 번호
+//			price: price			// 결제 예정 금액
+//		})
+//	});
 
 });
 
@@ -144,8 +142,8 @@ function kg_requestPay() {
 	console.log("주문고유번호: " + merchantUid);
 	let payMethod = $('input:radio[name=pay-method]:checked').val();
 	console.log("결제수단:"  + payMethod);
-	let totalPrice = parseInt($("#totalPrice").data("value"), 10);
-	console.log("결제금액: " + totalPrice);
+	let price = parseInt($("#totalPrice").data("value"), 10);
+	console.log("결제금액: " + price);
 	
 	//모든 클래스명 가져와서 [배열]에 담기(classTitle)
 	let classTitles = [];
@@ -182,39 +180,55 @@ function kg_requestPay() {
 	IMP.init("imp43247883");
 	//IMP.request_pay(param, callback) 결제창 호출
     IMP.request_pay(
-		{	
-			//--------전달할 파라미터--------
+		{	//--------전달할 파라미터--------
 			//이니시스 결제창 일반결제 테스트 채널키(pg사 구분 없어지고 채널키로 대체 됐다고 하지만 일단 pg적어봄)
 //			channelKey: "{channel-key-5ed4eb60-9a3c-4fa3-947f-9bbe61a042aa}",
 			pg: "html5_inicis",			// 등록된 pg사 (적용된 pg사는 KG이니시스)
 			pay_method: payMethod, 		// 결제 방식 : card (신용카드) / vbank(가상계좌) / naverpay(네이버페이)..
 			merchant_uid: merchantUid,	// 주문 번호
 			name: className,			// 상품명
-			amount: totalPrice,			// 금액
+			amount: price,				// 주문 금액
 			buyer_name: memName,		// 주문자명
 			buyer_tel: phone,			// 전화번호
 			buyer_email: email,			// 이메일
+			
 			//아래는 추가적인 파라미터(가상계좌시 필요할 수도 있음)
 //			vbank_due: "YYYY-MM-DD" //가상계좌 입금기한 : YYYY-MM-DD, YYYYMMDD, YYYY-MM-DD HH:mm:ss, YYYYMMDDHHmmss
-    	
-    	}, function(rsp) {
-    		if(rsp.success){
+    	}, 
+    	//-------------결제 결과 처리-------------
+    	function(rsp) {
+			console.log("결제성공시 응답 (JSON): "+rsp); //결제금액이 들어있음
+			//{success: true, imp_uid: 'imp_598208212134', pay_method: 'card', merchant_uid: '2024112288980', name: '자바 고급 강의 1편', …}
+			if(rsp.success){
 				// [사후 검증] 
 				// - AJAX로 결제고유번호(imp_uid)를 통해 실결제금액 조회할 수 있으므로 서버 전달.
 				// - DB에 저장된 결제요청 금액을 조회하기 위해 주문번호인 merchant_uid 도 서버로 전달.
+				
+				// AJAX 요청할 파라미터 가져와서 변수에 담기
+				let data = {
+					imp_uid: rsp.imp_uid,
+					merchantUid: rsp.merchant_uid,
+					price: rsp.paid_amount
+				}
+				// 사후검증을 위한 AJAX 비동기 요청
 				$.ajax({
 					type: "Post",
-					url: "Payment/validate",
-					contentType: "application/json",
-					data: JSON.stringify({
-						imp_uid: rsp.imp_uid,
-						merchant_uid: rsp.merchant_uid
-					})
+					url: "/payment/verification",
+					dataType: "json",
+					contentType: "application/json; charset=utf-8",
+					data: JSON.stringify(data) 
+					//위의 rsp.paid_amount 와 data.response.price를 비교한후 로직 실행 (import 서버검증)
 				}).done(function(data) {
+					console.log("data: "+ data);//주문금액이 들어있음
+					if(rsp.paid_amount == data.response.price) {
+						alert("결제 및 결제 검증완료");
+					} else {
+						alert("결제 실패");
+					}
+					
 					//결제 정보 DB저장
 					//주문상품 정보 DB저장
 				});
-	
 	
 				//검증 완료하면----------------------------------------------
 				// 1. 결제정보 저장
@@ -224,38 +238,34 @@ function kg_requestPay() {
 				//	"userid": rsp.buyer_name, 
 				//   ...
 				//	}
+		    	//======================================================================
+		    	// 결제&주문 결과 저장 
+		    	// 결제 정보 & 주문 정보를 따로 저장한 이유는 여러 개의 상품을 결제 했을 때 
+		    	// 결제정보에는 '자바클래스 외 2개' 200000원 으로 저장하고 
+		    	// 주문정보에는 '자바클래스1', 100000원 , '자바클래스2', 100000원 
+		    	// 이렇게 주문한 상품 리스트를 하나씩 저장하기 위해 테이블을 2개를 두고 저장하는 로직으로 구성함
+		    	// 1. 결제정보 저장
+		    	
+		    	//https://velog.io/@gangintheremark/SpringBoot-%ED%8F%AC%ED%8A%B8%EC%9B%90%EC%95%84%EC%9E%84%ED%8F%AC%ED%8A%B8-%EA%B2%B0%EC%A0%9C-API-%EC%82%AC%EC%9A%A9%ED%95%98%EC%97%AC-%EC%83%81%ED%92%88-%EA%B2%B0%EC%A0%9C-%EC%84%9C%EB%B9%84%EC%8A%A4
+		    	//참고 할것
+		    	
+		    	
+				// 2. 주문정보 저장(상품별)
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
 				
 			} else {
+				console.log("결제 에러 내용: "+ rsp.error_msg);
 				alert("결제를 실패하였습니다.");
 			}
-    	
-    	
-    	//======================================================================
-    	// 결제&주문 결과 저장 
-    	// 결제 정보 & 주문 정보를 따로 저장한 이유는 여러 개의 상품을 결제 했을 때 
-    	// 결제정보에는 '자바클래스 외 2개' 200000원 으로 저장하고 
-    	// 주문정보에는 '자바클래스1', 100000원 , '자바클래스2', 100000원 
-    	// 이렇게 주문한 상품 리스트를 하나씩 저장하기 위해 테이블을 2개를 두고 저장하는 로직으로 구성함
-    	// 1. 결제정보 저장
-    	
-    	//https://velog.io/@gangintheremark/SpringBoot-%ED%8F%AC%ED%8A%B8%EC%9B%90%EC%95%84%EC%9E%84%ED%8F%AC%ED%8A%B8-%EA%B2%B0%EC%A0%9C-API-%EC%82%AC%EC%9A%A9%ED%95%98%EC%97%AC-%EC%83%81%ED%92%88-%EA%B2%B0%EC%A0%9C-%EC%84%9C%EB%B9%84%EC%8A%A4
-    	//참고 할것
-//			if(rsp.success) {
-//				// ...
-//				}).done(function (data) {
-//					
-//				
-//			} else {
-//				alert("결제를 실패하였습니다.");
-//			}		
-//				
-//				
-//		
-//		}
-		// 2. 주문정보 저장(상품별)
-		
-
-
 		} //function(rsp) 함수 끝
     );//IMP.request_pay끝
 }//kg_requestPay() 함수 끝
@@ -292,7 +302,7 @@ function kg_requestPay() {
 	  "buyer_name": "포트원 기술지원팀",
 	  "buyer_postcode": "123-456",
 	  "buyer_tel": "010-1234-5678",
-	  "card_name": "신한카드",
+	  "CARD_NAME": "신한카드",
 	  "card_number": "5428790000000294",
 	  "card_quota": 0,
 	  "currency": "KRW",

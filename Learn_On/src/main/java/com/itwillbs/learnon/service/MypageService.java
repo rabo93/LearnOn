@@ -146,6 +146,16 @@ public class MypageService {
 		return myMapper.updateCourseStatus(myCurriculum);
 	}
 
+	// 관리자 1:1 문의 전체 목록
+	public List<SupportBoardVO> getSupportListToAdm(int startRow, int listLimit) {
+		return myMapper.selectSupportListToAdm(startRow, listLimit);
+	}
+
+	// 관리자 1:1 문의 - 답변 작성/수정
+	public int answerSupport(SupportBoardVO support) {
+		return myMapper.updateSupportAnswer(support);
+	}
+
 
 
 }

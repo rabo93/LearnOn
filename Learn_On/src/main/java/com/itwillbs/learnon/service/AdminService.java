@@ -69,10 +69,29 @@ public class AdminService {
 		return mapper.updateClass(vO);
 	}
 	
-	// 멤버
+	//	=================== 멤버 ==============================
+	//	일반회원 조회
+	public List<MemberVO> getNomalMemberList(int startRow, int listLimit, String searchKeyword, String searchType) {
+		return mapper.getNomalMemberList(startRow, listLimit, searchKeyword, searchType);
+	}
+	//	일반회원 카운트
+	public int getNomalMemberListCount(String searchKeyword, String searchType) {
+		return mapper.getNomalMemberListCount(searchKeyword, searchType);
+	}
+	
+	//	강사회원 조회
+	public List<MemberVO> getInstructorMemberList() {
+		return mapper.getInstructorMemberList();
+	}
+	//	탈퇴회원 조회
+	public List<MemberVO> getWithdrawMemberList() {
+		return mapper.getWithdrawMemberList();
+	}
+	
 	public List<MemberVO> getMemberList() {
 		return mapper.getMemberList();
 	}
+	
 	public int insertClassPic(AdminVO vO) {
 		return mapper.insertClassPic(vO);
 		
@@ -85,6 +104,9 @@ public class AdminService {
 	}
 	public int getClassId() {
 		return mapper.getClassId();
+	}
+	public int changeMemStatus(Map<String, String> map) {
+		return mapper.changeMemStatus(map);
 	}
 
 	

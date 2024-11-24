@@ -40,37 +40,38 @@
 	<div class="container-fluid pt-4 px-4">
 		<div class="bg-light rounded p-4">
 			<div class="d-flex mb-5">
-				<h5 class="me-auto tableSubject">FAQ 글수정</h5>
+				<h5 class="me-auto tableSubject">FAQ 글쓰기</h5>
 			</div>
 			<section class="tb-wrap">
-				<form action="AdminFaqModify" class="d-flex input-group mb-3" method="post" enctype="multipart/form-data">
-					<input type="hidden" name="faq_idx" value="${param.faq_idx}">
+				<form action="AdminFaqWrite" class="d-flex input-group mb-3" method="post" enctype="multipart/form-data">
 					<table class="table table-striped">
 						<colgroup>
 								<col width="20%">
 								<col width="80%">
 						</colgroup>
 						<tr>
-							<td>제목</td>
+							<th>제목</th>
 							<td>
-								<input class="form-control" type="text" name="faq_subject" value="${faq.faq_subject}" required />
+								<input type="text" class="form-control" name="faq_subject">
+							</td>
+							<td>
 							</td>
 						</tr>
 						<tr>
 							<th>카테고리</th>
 							<td>
 								<select class="form-select" name="faq_cate">
-									<option value="1" <c:if test="${faq.faq_cate eq 1}">selected</c:if>>강의수강</option>
-									<option value="2" <c:if test="${faq.faq_cate eq 2}">selected</c:if>>계정관리</option>
-									<option value="3" <c:if test="${faq.faq_cate eq 3}">selected</c:if>>결제환불</option>
-									<option value="4" <c:if test="${faq.faq_cate eq 4}">selected</c:if>>증빙서류</option>
+									<option value="1">강의수강</option>
+									<option value="2">계정관리</option>
+									<option value="3">결제환불</option>
+									<option value="4">증빙서류</option>
 								</select>
 							</td>
 						</tr>
 						<tr>
-							<td>내용</td>
+							<th>내용</th>
 							<td>
-								<textarea class="form-control" name="faq_content" rows="15" cols="40" required>${faq.faq_content}</textarea>
+								<textarea class="form-control" rows="15" cols="40" name="faq_content"></textarea>
 							</td>
 						</tr>
 					</table>
@@ -100,13 +101,11 @@
     <!-- Template Javascript -->
     <script src="resources/admin/js/main.js"></script>
 	<script type="text/javascript">
-		let link = document.location.href;
-		if (link.includes("AdminFaqModify")) {
-			document.querySelector("#AdmFaq").parentElement.previousElementSibling.classList.add("show");
-			document.querySelector("#AdmFaq").parentElement.previousElementSibling.classList.add("active");
-			document.querySelector("#AdmFaq").parentElement.classList.add("show");
-			document.querySelector("#AdmFaq").classList.toggle("active");
-		};
+		var link = document.location.href;
+	   	if (link.includes("board")) {
+	   		document.getElementById("board").classList.toggle("active");
+	   		document.getElementById("boardManage").classList.toggle("active");
+	   	};
 	</script>
 </body>
 </html>

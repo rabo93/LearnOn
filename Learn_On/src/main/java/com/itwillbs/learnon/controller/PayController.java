@@ -1,5 +1,6 @@
 package com.itwillbs.learnon.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -8,19 +9,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.learnon.service.PayService;
 import com.itwillbs.learnon.vo.MemberVO;
+import com.itwillbs.learnon.vo.PayVO;
 import com.itwillbs.learnon.vo.PurchaseVO;
+import com.siot.IamportRestClient.IamportClient;
+import com.siot.IamportRestClient.exception.IamportResponseException;
+import com.siot.IamportRestClient.response.Payment;
 
 @Controller
 public class PayController {
 	@Autowired
 	private PayService payService;
 	
-//	private IamportClient api; //선언한 api를 이용하여 아임포트에서 제공되는 다양한 API 를 사용할 수 있음
-//	private PrePaymentRepository prePaymentRepository;
+	private IamportClient iamportClient;
+	
 	
 	//=================================================================================
 	// "Payment" 서블릿 주소 로드시 매핑 - GET
@@ -55,31 +63,28 @@ public class PayController {
 	// 결제금액 위변조 검증 (클라이언트가 스크립트를 조작해 금액 위변조 방지)
 	// 결제하고자 하는 상품의 금액과 실제로 결제된 금액을 비교!!!
 	// 아임포트에서 제공하는 자바용 라이브러리 사용(https://github.com/iamport/iamport-rest-client-java?tab=readme-ov-file)
-	// 1. 결제 사전 검증
-//	@ResponseBody
-//	@PostMapping("Payment/prepare")
-//	public void preparePayment(@RequestBody PayVO pay) 
-//								throws IamportResponseException, IOException {
-//		payService.postPrepare(pay);
-//	}
-//	
-//	public void postPrepare(PayVO pay) throws IamportResponseException, IOException {
-//		PrepareData prepareData = new PrepareData(pay.getMerchantId(), pay.getTotalPrice());
-//		api.postPrepare(prepareData);  // 사전 등록 API 
-//		
-//		prePaymentRepository.save(pay); // 주문번호와 결제예정 금액 DB 저장
-//	}
+	// 1. 결제 사전 검증 - 결제 페이지 로드시 결제 예상 주문번호/주문금액을 DB에 저장한다
+	@ResponseBody
+	@PostMapping("payments/prepare")
+	public void preparePayment(@RequestBody PayVO pay) throws IamportResponseException, IOException {
+		//PayService - postPrepare 호출
+		//파라미터 : PayVO
+		payService.postPrepare(pay);
+		
+		// 일단 등록은 되는데... 쿠폰 적용하면 다시 업데이트 구현이 안되었음
+		// 그리고 페이지 새로고침할때 기존꺼는 삭제 되고 다시 인서트 되어야함
+	}
 	
 	//--------------------------------------------------------
 	// 2. 결제 사후 검증
 	// - 사후 검증은 클라이언트에서 결제 요청이 끝난 후 이루어진다. 
 	// - 결제 요청 후 응답받은 내용을 바탕으로 실 결제금액과 자체 DB에 저장된 결제요청금액을 비교한다.
 	// - 테스트 환경에서는 부분 환불이 불가능하므로 전체 환불 처리
-//	@PostMapping("Payment/validate")
-//	public Payment validatePayment() {
+//	@ResponseBody
+//	@PostMapping("payments/verification")
+//	public Payment validatePayment(@RequestBody PayVO pay) {
 //		
-//		
-//		return paymentService.validatePayment(request);
+//		return payService.validatePayment(pay);
 //	}
 	
 //	 public Payment validatePayment(PaymentDTO request) throws IamportResponseException, IOException {
@@ -131,10 +136,10 @@ public class PayController {
 	}
 	
 	//=================================================================================
-	// "PaySuccess" 매핑 - GET => 결제 완료 뷰페이지 포워딩
-	@GetMapping("PaySuccess")
+	// "PayResult" 매핑 - GET => 결제 완료 뷰페이지 포워딩
+	@GetMapping("PayResult")
 	public String paySuccess() {
-		return "cart_payment/pay_success";
+		return "cart_payment/pay_result";
 	}
 	
 }

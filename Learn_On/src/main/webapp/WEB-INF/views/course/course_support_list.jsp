@@ -49,9 +49,9 @@
 			        <!-- 탭메뉴 영역안에 탭을 만드는 것이아니고 content 바로 위에 넣어야 함. -->
 			<!-- 		<div class="tab"> -->
 						<ul class="tabnav">
-							<li><a href="#tab01">클래스 소개</a></li>
-							<li><a href="#tab02">커리큘럼</a></li>
-							<li><a href="#tab03">수강평</a></li>
+							<li><a href="CourseDetail?class_id=${course[0].class_id}#tab01">클래스 소개</a></li>
+							<li><a href="CourseDetail?class_id=${course[0].class_id}#tab02">커리큘럼</a></li>
+							<li><a href="CourseDetail?class_id=${course[0].class_id}#tab03">수강평</a></li>
 							<li><a class="tab on" href="#" >문의(10)</a></li>
 						</ul>
 				

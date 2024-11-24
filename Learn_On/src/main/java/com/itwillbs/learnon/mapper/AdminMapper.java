@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.itwillbs.learnon.vo.AdminVO;
 import com.itwillbs.learnon.vo.CourseVO;
@@ -35,8 +36,22 @@ public interface AdminMapper {
 	int insertCurVideo(AdminVO vO);
 	int getClassId();
 	
-	// 멤버
+	// ============== 멤버 ==========================
+	//	멤버 리스트 조회(일반회원)
+	List<MemberVO> getNomalMemberList(@Param("startRow") int startRow,
+									  @Param("listLimit") int listLimit,
+									  @Param("searchKeyword") String searchKeyword,
+									  @Param("searchType") String searchType);
+	//	멤버 리스트 카운트(일반회원)
+	int getNomalMemberListCount(@Param("startRow") String searchKeyword,
+								@Param("startRow") String searchType);
+	//	멤버 리스트 조회(강사회원)
+	List<MemberVO> getInstructorMemberList();
+	//	멤버 리스트 조회(탈퇴회원)
+	List<MemberVO> getWithdrawMemberList();
 	List<MemberVO> getMemberList();
+	//	멤버 상태변경(정상, 휴먼, 탈퇴)
+	int changeMemStatus(Map<String, String> map);
 	
 
 

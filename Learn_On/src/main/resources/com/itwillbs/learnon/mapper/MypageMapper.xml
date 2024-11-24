@@ -287,7 +287,7 @@
 		       , M.COUPON_STATUS
 		       , C.COUPON_NAME
 		       , C.COUPON_CODE
-		       , C.DISCOUNT_STATUS
+		       , C.DISCOUNT_TYPE
 		       , C.DISCOUNT_PERCENT
 		       , C.DISCOUNT_AMOUNT
 		       , C.C_EXPIRY_DATE
@@ -340,16 +340,19 @@
 				, S.SUPPORT_SUBJECT
 				, S.SUPPORT_CONTENT
 				, S.SUPPORT_FILE AS SUPPORT_FILE1
+				, S.SUPPORT_ANSWER_DATE
+				, S.SUPPORT_ANSWER_SUBJECT
+				, S.SUPPORT_ANSWER_CONTENT
 		  FROM SUPPORT S
 		  JOIN MEMBER M 
 		    ON M.MEM_ID = S.MEM_ID
 		 WHERE S.MEM_ID = #{id}
 		 ORDER BY
-		 	SUPPORT_IDX DESC
+		 	S.SUPPORT_IDX DESC
 		 LIMIT
 		 	#{startRow}
 		 	, #{listLimit}
-	</select>
+	</select> 
 	<select id="selectSupportDetail" resultType="mysupport">
 		-- 1:1문의 상세내용
 		SELECT SUPPORT_IDX
@@ -359,6 +362,9 @@
 			   , SUPPORT_SUBJECT
 			   , SUPPORT_CONTENT
 			   , SUPPORT_FILE AS SUPPORT_FILE1
+			   , SUPPORT_ANSWER_DATE
+			   , SUPPORT_ANSWER_SUBJECT
+			   , SUPPORT_ANSWER_CONTENT
 		  FROM SUPPORT
 		 WHERE SUPPORT_IDX = #{support_idx}
 	</select>
@@ -392,4 +398,34 @@
 		FROM ATTENDANCE
 		WHERE MEM_ID = #{id}
 	</select>
+	<select id="selectSupportListToAdm" resultType="mysupport">
+		-- 관리자 1:1문의 전체 목록 조회
+		SELECT S.SUPPORT_IDX
+				, S.SUPPORT_DATE
+				, S.SUPPORT_CATEGORY
+			    , M.MEM_NAME
+				, S.MEM_ID
+				, S.SUPPORT_SUBJECT
+				, S.SUPPORT_CONTENT
+				, S.SUPPORT_ANSWER_DATE
+				, S.SUPPORT_ANSWER_SUBJECT
+				, S.SUPPORT_ANSWER_CONTENT
+				, S.SUPPORT_FILE AS SUPPORT_FILE1
+		  FROM SUPPORT S
+		  JOIN MEMBER M 
+		    ON M.MEM_ID = S.MEM_ID
+		 ORDER BY
+		 	S.SUPPORT_IDX DESC
+		 LIMIT
+		 	#{startRow}
+		 	, #{listLimit}
+	</select>
+	<update id="updateSupportAnswer">
+		-- 관리자 1:1문의 답변 작성 및 수정
+		UPDATE SUPPORT
+		   SET SUPPORT_ANSWER_DATE = NOW()
+			   , SUPPORT_ANSWER_SUBJECT = #{support_answer_subject}
+		       , SUPPORT_ANSWER_CONTENT = #{support_answer_content}
+		  WHERE SUPPORT_IDX = #{support_idx}
+	</update>
 </mapper>

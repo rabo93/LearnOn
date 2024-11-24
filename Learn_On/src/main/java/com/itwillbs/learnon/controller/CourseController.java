@@ -65,6 +65,17 @@ public class CourseController {
 		return jo.toString();
 	}
 	
+	@PostMapping("CourseFind")
+	public String courseFind(String find_title, CourseVO course) {
+		
+		// 기존의 강의 목록 출력(course가 왜필요한거지??)
+//		List<CourseVO> courseList = courseService.getCourseList(course, codetype, searchType);
+		// 상단의 클래스 검색창 
+		List<CourseVO> courseList = courseService.getCourseList(course, find_title, find_title);
+		
+		return "course/course_list"; 
+	}
+	
 	
 	@GetMapping("Category")
 	public String courseList(
@@ -157,18 +168,18 @@ public class CourseController {
 		
 		
 		// [ 페이징 처리 ]		
-		int startRow = (pageNum - 1) * paging(pageNum).getPageListLimit();
-		if(pageNum < 1 || pageNum > paging(pageNum).getMaxPage()) {
+		int startRow = (pageNum - 1) * paging(pageNum, class_id).getPageListLimit();
+		if(pageNum < 1 || pageNum > paging(pageNum, class_id).getMaxPage()) {
 			model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
 			model.addAttribute("targetURL", "CourseDetail?pageNum=1");
 			return "result/fail";
 		}
 		// 페이징 처리한 문의사항 항목가져옴. 
-		List<CourseSupportVO> courseSupportList = courseService.getCourseSupportList(class_id, startRow, paging(pageNum).getPageListLimit());
+		List<CourseSupportVO> courseSupportList = courseService.getCourseSupportList(class_id, startRow, paging(pageNum, class_id).getPageListLimit());
 		List<CourseVO> course = courseService.getCourse(class_id);
 		// -------------------------------------------------------------------
 		// Model 객체에 페이징 정보 저장
-		model.addAttribute("pageInfo", paging(pageNum));
+		model.addAttribute("pageInfo", paging(pageNum, class_id));
 		// -------------------------------------------------------------------
 		
 		model.addAttribute("course", course);
@@ -661,18 +672,21 @@ public class CourseController {
 				// 메서드 호출한 곳에서 저장된 속성 그대로 공유 가능
 	}
 	
-	public PageInfo paging(@RequestParam(defaultValue = "1") int pageNum) {
+	public PageInfo paging(@RequestParam(defaultValue = "1") int pageNum, int class_id) {
 		// -------------------------------------------------------------------
 		// [ 페이징 처리 ]
 		int listLimit = 5; // 페이지 당 게시물 수
-		int listCount = courseService.getCSupportListCount();
+		int listCount = courseService.getCSupportListCount(class_id);
+//		System.out.println("listCount : " + listCount);
 		int pageListLimit = 5; 
 		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+//		System.out.println("maxPage : " + maxPage);
 		if(maxPage == 0) {
 			maxPage = 1;
 		}
 		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
 		int endPage = startPage + pageListLimit - 1;
+//		System.out.println("endPage : " + endPage);
 		if(endPage > maxPage) {
 			endPage = maxPage;
 		}

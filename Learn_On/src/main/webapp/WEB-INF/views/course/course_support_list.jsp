@@ -138,7 +138,6 @@
 									<c:if test="${pageNum == 1}">disabled</c:if> 	
 								>
 								
-								
 								<!-- 계산된 페이지 번호가 저장된 PageInfo 객체(pageInfo)를 통해 페이지 번호 출력 -->
 								<!-- startPage 부터 endPage 까지 1씩 증가하면서 페이지 번호 표시 -->
 <%-- 								startPage : ${pageInfo.startPage} , endPage : ${pageInfo.endPage} , pageNum : ${pageNum} --%>
@@ -148,6 +147,7 @@
 									<!-- 단, 현재 페이지 (i값과 pageNum 파라미터값이 동일)는 하이퍼링크 없이 굵게 표시			 -->
 									<c:choose>
 										<c:when test="${i eq pageNum}">
+										
 											<strong>${i}</strong>
 										</c:when>
 										<c:otherwise>

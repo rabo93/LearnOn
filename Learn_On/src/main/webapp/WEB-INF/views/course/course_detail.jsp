@@ -40,12 +40,16 @@
 
 			            <button class="apply-button" onclick="applyForCourse('${course[0].class_id}', '${param.codetype}')">수강신청 하기</button>
 <!-- 			            <button class="cart-button">관심목록에 추가하기</button> -->
-			            <button class="fav-off" style="display:block;" onclick="addToWishList('${course[0].class_id}')">
-							<i class="fa-regular fa-heart"></i>
-						</button>
-						<button class="fav-on" style="display:none;" onclick="deleteToWishList('${course[0].class_id}')">
-							<i class="fa-solid fa-heart"></i>
-						</button>
+						<div  id="${course[0].class_id}">
+				            <button class="fav-off" style="display:block;" onclick="addToWishList('${course[0].class_id}')">
+<!-- 								<i class="fa-regular fa-heart"></i> -->
+									관심목록에 추가
+							</button>
+							<button class="fav-on" style="display:none;" onclick="deleteToWishList('${course[0].class_id}')">
+<!-- 								<i class="fa-solid fa-heart"></i> -->
+									관심목록에서 삭제
+							</button>
+						</div>
 			        </div>
 			    </div>
 			
@@ -205,7 +209,6 @@
 			function deleteToWishList(id){
 				if(confirm("관심목록에서 삭제하시겠습니까?")){
 					location.href="MyFavDel?class_id=" + id;
->>>>>>> branch 'main' of https://github.com/jhk727/learn_on.git
 				}
 			}
 		</script>

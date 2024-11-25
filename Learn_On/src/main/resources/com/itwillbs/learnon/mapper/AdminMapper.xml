@@ -127,6 +127,18 @@
 		WHERE class_id = #{class_id}
 	</update>
 	
+	<delete id="deleteClass">
+		DELETE
+		FROM CLASS
+		WHERE CLASS_ID = #{class_id}
+	</delete>
+	
+	<delete id="deleteCurriculum">
+		DELETE
+		FROM CURRICULUM
+		WHERE CLASS_ID = #{class_id}
+	</delete>
+	
 <!-- ================================================================== -->
 <!-- 회원 -->	
 	

@@ -39,6 +39,7 @@ import com.itwillbs.learnon.service.NoticeBoardService;
 import com.itwillbs.learnon.vo.AdminVO;
 import com.itwillbs.learnon.vo.CouponVO;
 import com.itwillbs.learnon.vo.CourseSupportVO;
+import com.itwillbs.learnon.vo.CourseVO;
 import com.itwillbs.learnon.vo.FaqVO;
 import com.itwillbs.learnon.vo.NoticeBoardVO;
 import com.itwillbs.learnon.vo.PageInfo;
@@ -339,6 +340,7 @@ public class AdminController {
 	@ResponseBody
 	@GetMapping("SelectCategory")
 	public String selectCategory(AdminVO admin) {
+		System.out.println("=========================================================" + admin);
 		List<Map<String, Object>> adminArr = adminService.selectSubCate(admin);
 		
 		JSONArray joArr = new JSONArray(adminArr);
@@ -358,11 +360,10 @@ public class AdminController {
 	
 	// 어드민 클래스 수정 페이지 매핑
 	@GetMapping("AdmClassListModify")
-	public String admin_class_list_modi(AdminVO VO, Model model) {
+	public String admin_class_list_modi(AdminVO VO, Model model, int class_id) {
 		model.addAttribute("getMainCate", adminService.getMainCate());
 		model.addAttribute("getCurriculum", adminService.getCurriculum(VO));
 		List<AdminVO> classLoad = adminService.getClass(VO);
-		System.out.println(VO);
 		model.addAttribute("getClass", classLoad);
 		
 		
@@ -379,7 +380,42 @@ public class AdminController {
 	public String admin_class_list_modi_submit(AdminVO VO, Model model) {
 		model.addAttribute("updateClass", adminService.updateClass(VO));
 		
-		return "redirect:/class_list";
+		return "redirect:/AdmClassList";
+	}
+	
+	// 클래스 삭제 페이징
+	@GetMapping("AdmClassListDelete")
+	public String admin_class_list_delete(AdminVO class_id, Model model, HttpSession session) {
+		
+		AdminVO classIndex = adminService.getClass(class_id).get(0);
+		List<CourseVO> curIndex = adminService.getCurriculum(class_id);
+		
+		String realPath = session.getServletContext().getRealPath(uploadPath);
+		if(!classIndex.getClass_pic1().equals("")) {
+			// 업로드 경로와 파일명(서브디렉토리 경로 포함) 결합하여 Path 객체 생성
+			for (int i = 0; i < curIndex.size(); i++) {
+				Path picPath = Paths.get(realPath, classIndex.getClass_pic1());
+				Path curPath = Paths.get(realPath, curIndex.get(i).getCur_video());
+				// java.nio.file 패키지의 Files 클래스의 deleteIfExists() 메서드 호출하여
+				// 해당 파일이 실제 서버 상에 존재할 경우에만 삭제 처리
+				try {
+					Files.deleteIfExists(picPath);
+					Files.deleteIfExists(curPath);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+			
+		int deleteCount = adminService.deleteClass(class_id.getClass_id());
+		int deleteCurriculum = adminService.deleteCurriculum(class_id.getClass_id());
+		
+		if (deleteCount < 0 || deleteCurriculum < 0) {
+			model.addAttribute("msg", "클래스 삭제 실패하였습니다");
+			return "admin/fail";
+		}
+		
+		return "redirect:/AdmClassList";
 	}
 	
 	// ======================================================================================================

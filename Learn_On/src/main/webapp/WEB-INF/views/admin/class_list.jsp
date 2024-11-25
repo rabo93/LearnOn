@@ -51,8 +51,6 @@
 					<div class="d-flex mb-5">
 						<h5 class="me-auto tableSubject">클래스 목록</h5>
 						<button type="button" class="btn btn-lg btn-primary ms-3" onclick="location.href='AdmClassAdd'">클래스 등록</button>
-<!-- 						<button type="button" class="btn btn-lg btn-primary ms-3" onclick="classModi()">클래스 수정</button> -->
-						<button type="button" class="btn btn-lg btn-primary ms-3">클래스 삭제</button>
 					</div>
 					<div class="d-flex input-group mb-3">
 						<input type="text" class="form-control" placeholder="클래스 제목 검색" aria-label="Recipient's username" aria-describedby="button-addon2">
@@ -62,20 +60,20 @@
 							<table class="table table-striped">
 								<thead>
 									<tr>
-										<th scope="col">#</th>
 										<th scope="col">제목</th>
 										<th scope="col">대분류</th>
 										<th scope="col">소분류</th>
 										<th scope="col">공개상태</th>
+										<th scope="col"></th>
+										<th scope="col"></th>
 									</tr>
 								</thead>
 								<tbody>
 									<c:forEach items="${getClassList}" var="li">
 										<tr id="${li.class_id}">
-											<td><input class="form-check-input" type="checkbox" id="gridCheck1" name="checkboxObj" ></td>
-											<td><input class="form-control" type="text" placeholder="" value="${li.class_title}"></td>
+											<td><input class="form-control" type="text" placeholder="" value="${li.class_title}" disabled="disabled"></td>
 											<td>
-												<select class="form-select" id="floatingSelect" name="class_maincate">
+												<select class="form-control" id="floatingSelect" name="class_maincate" disabled="disabled">
 													<c:forEach items="${getMainCate}" var="cate">
 														<option value="${cate.CODEID}" 
 															<c:if test="${fn:contains(cate.DESCRIPTION, li.class_category)}">selected="selected"</c:if>>
@@ -85,11 +83,11 @@
 												</select>
 											</td>
 											<td>
-												<select class="form-select" id="floatingSelect2" name="class_category">
+												<select class="form-control" id="floatingSelect2" name="class_category" disabled="disabled">
 												</select>
 											</td>
 											<td>
-												<select class="form-select" aria-label="Default select example" id="classStat">
+												<select class="form-control" id="classStat" disabled="disabled">
 													<option value="1" <c:if test="${li.class_status == 1}">selected</c:if>>공개</option>
 													<option value="2" <c:if test="${li.class_status == 2}">selected</c:if>>비공개</option>
 													<option value="3" <c:if test="${li.class_status == 3}">selected</c:if>>폐강</option>
@@ -97,6 +95,9 @@
 		                                 	</td>
 		                                 	<td>
 		                                 		<button type="button" class="btn-primary" onclick="modifyClass(this)">수정</button>
+		                                 	</td>
+		                                 	<td>
+		                                 		<button type="button" class="btn-primary" onclick="deleteClass(this)">삭제</button>
 		                                 	</td>
 										</tr>
 									</c:forEach>

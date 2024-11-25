@@ -57,14 +57,13 @@ public class AdminService {
 		return mapper.insertClass(vO);
 	}
 	public int curriculum(AdminVO insertCur) {
-		System.out.println("==================서비스 작동함");
 		return mapper.curriculum(insertCur);
 	}
 	public List<AdminVO> getClassList() {
 		return mapper.getClassList();
 	}
-	public List<AdminVO> getClass(AdminVO class_id) {
-		return mapper.getClass(class_id);
+	public List<AdminVO> getClass(AdminVO vO) {
+		return mapper.getClass(vO);
 	}
 	public List<CourseVO> updateClass(AdminVO vO) {
 		return mapper.updateClass(vO);
@@ -123,6 +122,12 @@ public class AdminService {
 	// 문의 답변 작성/수정 업데이트
 	public int answerSupport(CourseSupportVO cSupport) {
 		return mapper.updateCourseSupport(cSupport);
+	}
+	public int deleteClass(int i) {
+		return mapper.deleteClass(i);
+	}
+	public int deleteCurriculum(int i) {
+		return mapper.deleteCurriculum(i);
 	}
 
 }

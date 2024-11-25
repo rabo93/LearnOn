@@ -27,7 +27,7 @@ public interface AdminMapper {
 	int insertSubCate(AdminVO vO);
 
 	// 클래스
-	List<AdminVO> getClass(AdminVO class_id);
+	List<AdminVO> getClass(AdminVO vO);
 	List<AdminVO> getClassList();
 	List<CourseVO> getCurriculum(AdminVO class_id);
 	List<CourseVO> updateClass(AdminVO vO);
@@ -36,6 +36,8 @@ public interface AdminMapper {
 	int insertClassPic(AdminVO vO);
 	int insertCurVideo(AdminVO vO);
 	int getClassId();
+	int deleteClass(int i);
+	int deleteCurriculum(int i);
 	
 	// ============== 멤버 ==========================
 	//	멤버 리스트 조회(일반회원)

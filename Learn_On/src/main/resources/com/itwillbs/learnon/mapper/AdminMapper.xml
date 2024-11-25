@@ -41,12 +41,12 @@
 			FROM CLASS
 		</selectKey>
 		UPDATE CLASS
-		SET class_pic1 = #{class_pic1}
+		SET CLASS_PIC1 = #{class_pic1}
 		WHERE  CLASS_ID = #{class_id}
 	</update>
 	
 	<!-- 클래스 등록시 커리큘럼 입력 -->
-	<insert id="curriculum">
+	<insert id="insertCurriculum">
 <!-- 		<selectKey keyProperty="class_id" resultType="int" order="BEFORE"> -->
 <!-- 			SELECT IFNULL(MAX(CLASS_ID), 0) + 1 -->
 <!-- 			FROM CLASS -->
@@ -68,8 +68,8 @@
 			FROM CURRICULUM
 		</selectKey>
 		UPDATE CURRICULUM
-		SET cur_video = #{cur_video}
-		WHERE cur_id = #{cur_id}
+		SET CUR_VIDEO = #{cur_video}
+		WHERE CUR_ID = #{cur_id}
 	</update>
 	
 	
@@ -82,49 +82,56 @@
 	<!-- 클래스 상세정보 조회 -->
 	<select id="getClass" resultType="admin">
 		SELECT 
-			cla.class_id
-			, cla.class_title
-		    , cla.mem_id
-		    , cla.class_intro
-		    , cla.class_price
-		    , cla.class_category 
-			, cla.class_reg_date
-		    , cla.class_runtime
-		    , cla.class_pic1 
-		    , cla.class_contents
-		    , cla.class_status
-		    , comty.codetype
-		    , comty.codetype_id
-		    , com.codeid
-		    , com.codename
-		    , comty.name 
-		FROM CLASS cla LEFT OUTER JOIN COMMONCODETYPE comty 
-		ON cla.class_category = comty.name 
-		LEFT OUTER JOIN COMMONCODE com
-		ON com.codeid = comty.codetype 
-		WHERE cla.class_id = #{class_id}
+			CLA.CLASS_ID
+			, CLA.CLASS_TITLE
+		    , CLA.MEM_ID
+		    , CLA.CLASS_INTRO
+		    , CLA.CLASS_PRICE
+		    , CLA.CLASS_CATEGORY 
+			, CLA.CLASS_REG_DATE
+		    , CLA.CLASS_RUNTIME
+		    , CLA.CLASS_PIC1 
+		    , CLA.CLASS_CONTENTS
+		    , CLA.CLASS_STATUS
+		    , COMTY.CODETYPE
+		    , COMTY.CODETYPE_ID
+		    , COM.CODEID
+		    , COM.CODENAME
+		    , COMTY.NAME 
+		FROM CLASS CLA LEFT OUTER JOIN COMMONCODETYPE COMTY 
+		ON CLA.CLASS_CATEGORY = COMTY.NAME 
+		LEFT OUTER JOIN COMMONCODE COM
+		ON COM.CODEID = COMTY.CODETYPE 
+		WHERE CLA.CLASS_ID = #{class_id}
 	</select>
 	
 	<!-- 커리큘럼 조회 -->
 	<select id="getCurriculum">
 		SELECT *
 		FROM CURRICULUM
-		WHERE class_id = #{class_id}
+		WHERE CLASS_ID = #{class_id}
 	</select>
 	
 	<update id="updateClass">
 		UPDATE CLASS
 		SET
-			class_title = #{class_title}
-			, class_memid = #{mem_id}
-			, class_intro = #{class_intro}
-			, class_price = #{class_price}
-			, class_category = #{class_category}
-			, class_runtime = #{class_runtime}
-			, class_pic1 = #{class_pic1}
-			, class_contents = #{class_contents}
-			, class_status = #{class_status})
-		WHERE class_id = #{class_id}
+			CLASS_TITLE = #{class_title}
+			, MEM_ID = #{mem_id}
+			, CLASS_INTRO = #{class_intro}
+			, CLASS_PRICE = #{class_price}
+			, CLASS_CATEGORY = #{class_category}
+			, CLASS_RUNTIME = #{class_runtime}
+			, CLASS_PIC1 = #{class_pic1}
+			, CLASS_CONTENTS = #{class_contents}
+			, CLASS_STATUS = #{class_status}
+		WHERE CLASS_ID = #{class_id}
+	</update>
+	
+	<update id="updateCurriculum">
+		UPDATE CURRICULUM
+		SET CUR_TITLE = #{cur_title}
+			, CUR_VIDEO = #{cur_video}
+		WHERE CUR_ID = #{cur_id}
 	</update>
 	
 	<delete id="deleteClass">

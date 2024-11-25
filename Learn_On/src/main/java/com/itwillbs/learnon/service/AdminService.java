@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.itwillbs.learnon.mapper.AdminMapper;
 import com.itwillbs.learnon.vo.AdminVO;
+import com.itwillbs.learnon.vo.CourseSupportVO;
 import com.itwillbs.learnon.vo.CourseVO;
 import com.itwillbs.learnon.vo.MemberVO;
 
@@ -55,24 +56,23 @@ public class AdminService {
 	public int registClass(AdminVO vO) {
 		return mapper.insertClass(vO);
 	}
-	public int curriculum(AdminVO insertCur) {
-		System.out.println("==================서비스 작동함");
-		return mapper.curriculum(insertCur);
+	public int insertCurriculum(AdminVO insertCur) {
+		return mapper.insertCurriculum(insertCur);
 	}
 	public List<AdminVO> getClassList() {
 		return mapper.getClassList();
 	}
-	public List<AdminVO> getClass(AdminVO class_id) {
-		return mapper.getClass(class_id);
+	public List<AdminVO> getClass(AdminVO vO) {
+		return mapper.getClass(vO);
 	}
-	public List<CourseVO> updateClass(AdminVO vO) {
+	public int updateClass(AdminVO vO) {
 		return mapper.updateClass(vO);
 	}
 	
 	//	=================== 멤버 ==============================
 	//	일반회원 조회
-	public List<MemberVO> getNomalMemberList(int startRow, int listLimit, String searchKeyword, String searchType) {
-		return mapper.getNomalMemberList(startRow, listLimit, searchKeyword, searchType);
+	public List<MemberVO> getNomalMemberList(int startRow, int listLimit, String searchKeyword, String searchType, String sort) {
+		return mapper.getNomalMemberList(startRow, listLimit, searchKeyword, searchType, sort);
 	}
 	//	일반회원 카운트
 	public int getNomalMemberListCount(String searchKeyword, String searchType) {
@@ -88,8 +88,20 @@ public class AdminService {
 		return mapper.getWithdrawMemberList();
 	}
 	
-	public List<MemberVO> getMemberList() {
-		return mapper.getMemberList();
+	public MemberVO getMemberList(String mem_id) {
+		return mapper.getMemberList(mem_id);
+	}
+	//	멤버상태 변경(1:승인, 2:대기 3:탈퇴)
+	public int changeMemStatus(Map<String, String> map) {
+		return mapper.changeMemStatus(map);
+	}
+	//	회원 삭제
+	public int removeMember(String mem_id) {
+		return mapper.deleteMember(mem_id);
+	}
+	//	회원 등급 변경(일반 OR 강사)
+	public int changeGradeMember(MemberVO member) {
+		return mapper.updateGrade(member);
 	}
 	
 	public int insertClassPic(AdminVO vO) {
@@ -105,12 +117,29 @@ public class AdminService {
 	public int getClassId() {
 		return mapper.getClassId();
 	}
-	public int changeMemStatus(Map<String, String> map) {
-		return mapper.changeMemStatus(map);
-	}
+
 
 	
 	// =============== 1:1 문의
 	
+	
+	// 수강 문의 게시판
+	// 문의 목록 조회 (강의별 수강문의 게시판)
+	public List<CourseSupportVO> getCourserSupportListToAdm(int startRow, int listLimit) {
+		return mapper.selectCourseSupportList(startRow, listLimit);
+	}
+	// 문의 답변 작성/수정 업데이트
+	public int answerSupport(CourseSupportVO cSupport) {
+		return mapper.updateCourseSupport(cSupport);
+	}
+	public int deleteClass(int i) {
+		return mapper.deleteClass(i);
+	}
+	public int deleteCurriculum(int i) {
+		return mapper.deleteCurriculum(i);
+	}
+	public int updateCurriculum(AdminVO vO) {
+		return mapper.updateCurriculum(vO);
+	}
 
 }

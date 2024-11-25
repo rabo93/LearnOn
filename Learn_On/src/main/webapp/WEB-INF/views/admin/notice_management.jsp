@@ -71,7 +71,7 @@
 								<option value="content" <c:if test="${param.searchType eq 'content'}">selected</c:if>>내용</option>
 								<option value="subject_content" <c:if test="${param.searchType eq 'subject_content'}">selected</c:if>>제목&내용</option>
 							</select>
-							<input type="text" class="form-control" name="searchKeyword" placeholder="게시판 검색" aria-label="Recipient's username" aria-describedby="button-addon2">
+							<input type="text" class="form-control w-50" name="searchKeyword" placeholder="게시판 검색" aria-label="Recipient's username" aria-describedby="button-addon2">
 							<button class="btn btn-primary" type="submit" id="button-addon2">검색</button>
 						</form>
 					</div>
@@ -95,12 +95,12 @@
 							<tbody>
 								<c:forEach items="${noticeList}" var="noticeBoard" varStatus="status">
 									<tr onclick="showNotice(${status.index})">
-										<th><input class="form-check-input" type="checkbox" id="gridCheck1" name="notice_idx" value="${noticeBoard.notice_idx}"></th>
-										<td><input class="form-control" type="text" aria-label="default input example" value="${noticeBoard.notice_idx}"></td>
+										<th><input class="form-check-input" type="checkbox" id="gridCheck1" name="notice_idx" value="${noticeBoard.notice_idx}" readonly></th>
+										<td><input class="form-control nt-readonly" type="text" aria-label="default input example" value="${noticeBoard.notice_idx}" readonly></td>
 										<td>
-											<input class="form-control" type="text" aria-label="default input example" value="${noticeBoard.notice_subject}">
+											<input class="form-control nt-readonly" type="text" aria-label="default input example" value="${noticeBoard.notice_subject}" readonly>
 										</td>
-										<td><input class="form-control" type="text" aria-label="default input example" value="공지사항" readonly></td>
+										<td><input class="form-control nt-readonly" type="text" aria-label="default input example" value="공지사항" readonly></td>
 										<td>
 											<select class="form-select" aria-label="Default select example">
 												<option value="1">공개</option>
@@ -111,7 +111,7 @@
                              		<tr class="AdmNoticeDetail">
 	                                 	<td colspan="4">
 		                             		<div>
-												<textarea class="form-control" aria-label="default input example" rows="10" readonly>${noticeBoard.notice_content}</textarea>
+												<textarea class="form-control nt-readonly" aria-label="default input example" rows="10" readonly>${noticeBoard.notice_content}</textarea>
 											</div>
 	                                 	</td>
 	                                 	<td><button class="btn btn-primary" onclick="noticeModify(${noticeBoard.notice_idx})">수정하기</button></td>
@@ -171,46 +171,47 @@
     <script src="resources/admin/lib/tempusdominus/js/moment.min.js"></script>
     <script src="resources/admin/lib/tempusdominus/js/moment-timezone.min.js"></script>
     <script src="resources/admin/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="resources/admin/js/notice_list.js"></script>
 
     <!-- Template Javascript -->
     <script src="resources/admin/js/main.js"></script>
     <script type="text/javascript">
-	    if (performance.navigation.type === 1) {
-			location.href= "AdmNotice";
-		}
+// 	    if (performance.navigation.type === 1) {
+// 			location.href= "AdmNotice";
+// 		}
 	    
-	    function showNotice(index) {
-	        const detailRows = document.querySelectorAll('.AdmNoticeDetail');
-	        detailRows.forEach(function(row) {
-	            row.style.display = 'none';
-	        });
+// 	    function showNotice(index) {
+// 	        const detailRows = document.querySelectorAll('.AdmNoticeDetail');
+// 	        detailRows.forEach(function(row) {
+// 	            row.style.display = 'none';
+// 	        });
 
-	        const selectedSubject = document.querySelectorAll('.AdmNoticeDetail')[index];
-	        if (selectedSubject) {
-	            selectedSubject.style.display = 'table-row';
-	        }
-        }
+// 	        const selectedSubject = document.querySelectorAll('.AdmNoticeDetail')[index];
+// 	        if (selectedSubject) {
+// 	            selectedSubject.style.display = 'table-row';
+// 	        }
+//         }
 	    
-	    function noticeModify(notice_idx) {
-	    	console.log("notice_idx : " + notice_idx);
-			location.href = "AdminNoticeModify?notice_idx=" + notice_idx;
-		}
+// 	    function noticeModify(notice_idx) {
+// 	    	console.log("notice_idx : " + notice_idx);
+// 			location.href = "AdminNoticeModify?notice_idx=" + notice_idx;
+// 		}
 	    
 	    
-	    function deleteBoard() {
-	    	const checkedValues = $('input[name="notice_idx"]:checked').map(function() {
-	    		return $(this).val();
-	    	}).get();
+// 	    function deleteBoard() {
+// 	    	const checkedValues = $('input[name="notice_idx"]:checked').map(function() {
+// 	    		return $(this).val();
+// 	    	}).get();
 	    	
-	    	if (checkedValues.length <= 0) {
-	    		alert("삭제할 게시물을 선택하세요");
-	    		return;
-	    	}
+// 	    	if (checkedValues.length <= 0) {
+// 	    		alert("삭제할 게시물을 선택하세요");
+// 	    		return;
+// 	    	}
 	    	
-	    	console.log("checkedValues : " + checkedValues);
-	    	location.href = "AdminNoticeDelete?notice_idxs=" + checkedValues;
+// 	    	console.log("checkedValues : " + checkedValues);
+// 	    	location.href = "AdminNoticeDelete?notice_idxs=" + checkedValues;
 	    	
-	    }
+// 	    }
 	    
 	    // 메뉴 active
 	    let link = document.location.href;

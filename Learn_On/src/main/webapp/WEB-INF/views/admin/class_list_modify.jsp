@@ -42,7 +42,8 @@
 	
 	<%-- 내용 시작 --%>
 	<!-- Blank Start -->
-		<form action="AdmClassAdd" name="addForm" method="post" enctype="multipart/form-data">
+		<form action="AdmClassListModify" name="addForm" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="class_id" value="${param.class_id}">
             <div class="container-fluid pt-4 px-4">
             	<c:forEach items="${getClass}" var="modi">
 	                <div class="row vh-100 bg-light rounded align-items-center justify-content-center mx-0">
@@ -80,7 +81,7 @@
 											<label for="floatingSelect">대분류</label>
 										</div>
 										<div class="form-floating flex-fill me-3">
-											<input type="hidden" value="${modi.name}" id="selectedSubCate">
+<%-- 											<input type="hidden" value="${modi.name}" id="selectedSubCate"> --%>
 											<select class="form-select" id="floatingSelect2" name="class_category">
 											</select>
 											<label for="floatingSelect2">소분류</label>
@@ -111,6 +112,7 @@
 		                                	<c:forEach items="${getCurriculum}" var="cur">
 	                                			<tr>
 			                                		<td><input type="checkbox" name="checkboxObj"/></td>
+													<td><input type="hidden" name="cur_id" value="${cur.cur_id}"></td>
 													<td><input type="text" name="cur_title" class="form-control" id="floatingInput" placeholder="커리큘럼 제목" value="${cur.cur_title}"></td>
 													<td><input type="number" name="cur_runtime" class="form-control" id="floatingInput" placeholder="커리큘럼 영상길이" value="${cur.cur_runtime}"></td>
 													<td><input type="file" name="cur_video_get" class="file form-control" id="inputGroupFile02" placeholder="커리큘럼 영상" value="resources/upload/${cur.cur_video}"></td>
@@ -180,13 +182,6 @@
     		document.getElementById("classList").classList.toggle("active");
     		document.getElementById("classManage").classList.toggle("active");
     	};
-    	
-    	$(function () {
-    		let classSubCate = document.getElementById("selectedSubCate").value;
-    		let selectSubCate = document.getElementById("floatingSelect2");
-    		console.log(classSubCate);
-    		console.log(selectSubCate);
-    	})
     </script>
 </body>
 </html>

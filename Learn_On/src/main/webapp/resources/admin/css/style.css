@@ -390,11 +390,22 @@ button:active {
 	background-image: none;
 }
 
+.form-select.grade {
+	pointer-events: none;
+	background-color: #fff;
+	background-image: none;
+}
+
 .form-control.member {
 	background-color: #fff;
 }
 
+.AdmMemberDetail {
+	display: none;
+}
 
+.memModifyAddress  {display:flex;align-items: stretch;justify-content:left;gap: 10px;}
+.member-sch {display:flex;align-items: stretch;justify-content:center;gap: 10px;}
 /*=================== AdmNotice ==================*/
 .AdmNoticeDetail {
 	display: none;
@@ -404,6 +415,10 @@ button:active {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+}
+
+.form-control.nt-readonly {
+	background-color: #fff;
 }
 
 /*=================== Faq ==================*/

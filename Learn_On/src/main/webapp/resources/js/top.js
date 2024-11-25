@@ -35,13 +35,29 @@ $(document).ready(function(){
 		url: "TopMenu",
 		dataType: "json",
 		success : function(data) {
-			console.log(data);
+//			console.log(data);
 			let resultArea = document.querySelector("#resultArea");
 			
-			const menuMap = {};
+			const newData = data.reduce((acc, item) => {
+				const {MAIN_MENU, SUB_MENU, CODEID, CODETYPE_ID} = item;
+				
+				if(!acc[MAIN_MENU]) {
+					acc[MAIN_MENU] = {MAIN_MENU, sub_menus: []}; // 배열 생성
+				}
+				acc[MAIN_MENU].sub_menus.push({SUB_MENU, CODEID, CODETYPE_ID});
+				return acc;
+				
+			}, {});
 			
-			for(let cate of data){
-			}
+			const dataArr = Object.values(newData);
+			
+			dataArr.forEach((item) => {
+				console.log("메인: " + item.MAIN_MENU);
+				item.sub_menus.forEach((sub) => {
+					console.log("sub: " + sub.SUB_MENU);
+				})
+			}); 
+			
 			
 			
 //			for (let i of data) {

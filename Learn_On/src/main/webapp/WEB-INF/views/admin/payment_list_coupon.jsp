@@ -88,8 +88,8 @@
 										<td><input class="form-control" type="text" aria-label="default input example" value="${couponBoard.coupon_code}"></td>
 										<td><input class="form-control" type="text" aria-label="default input example"
 											<c:choose>
-												<c:when test="${couponBoard.discount_status eq 1}">value="-${couponBoard.discount_percent}%"</c:when>
-												<c:when test="${couponBoard.discount_status eq 2}">value="-${couponBoard.discount_amount}원"</c:when>
+												<c:when test="${couponBoard.discount_type eq 1}">value="-${couponBoard.discount_percent}%"</c:when>
+												<c:when test="${couponBoard.discount_type eq 2}">value="-${couponBoard.discount_amount}원"</c:when>
 											</c:choose>></td>
 										<td><input class="form-control" type="text" aria-label="default input example" value="${couponBoard.c_expiry_date}"></td>
 										<td><input class="form-control" type="text" aria-label="default input example"
@@ -179,11 +179,13 @@
     		location.href = "AdmCouponModify?coupon_id=" + coupon_id;
     	}
     	
-    	
-   		var link = document.location.href;
-    	if (link.includes("Adm")) {
-    		document.getElementById("payment").classList.toggle("active");
-    		document.getElementById("paymentCoupon").classList.toggle("active");
+    	// 메뉴 활성화
+		let link = document.location.href;
+    	if (link.includes("AdmPayListCoupon")) {
+    		document.querySelector("#paymentCoupon").parentElement.previousElementSibling.classList.add("show");
+    		document.querySelector("#paymentCoupon").parentElement.previousElementSibling.classList.add("active");
+    		document.querySelector("#paymentCoupon").parentElement.classList.add("show");
+    		document.querySelector("#paymentCoupon").classList.toggle("active");
     	};
     </script>
 </body>

@@ -437,7 +437,10 @@ public class AdminController {
 	@ResponseBody
 	@PostMapping("AdmChangeMemStatus")
 	public String admChangeMemStatus(@RequestParam Map<String, String> map) {
-		System.out.println("Received mem_status: " +  map.get("mem_status"));
+//		System.out.println("++++++++++++mem_status: " +  map.get("mem_status"));
+//		System.out.println("map? ==============" + map);
+		adminService.changeMemStatus(map);
+		
 		String mem_status = "";
 		switch (map.get("mem_status")) {
 		case "1": mem_status = "승인";break;
@@ -445,12 +448,11 @@ public class AdminController {
 		case "3": mem_status = "탈퇴";break;
 		}
 		
-		adminService.changeMemStatus(map);
 		JSONObject json = new JSONObject();
 		json.put("mem_id", map.get("mem_id"));
 		json.put("mem_status", mem_status);
 		
-		System.out.println("Response JSON: " + json.toString());
+//		System.out.println("Response JSON: " + json.toString());
 		
 		return json.toString();
 	}

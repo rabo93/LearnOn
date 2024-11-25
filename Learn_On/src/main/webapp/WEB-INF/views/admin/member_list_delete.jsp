@@ -126,15 +126,14 @@
     <!-- Template Javascript -->
     <script src="resources/admin/js/main.js"></script>
     <script type="text/javascript">
-	    if (performance.navigation.type === 1) {
-			location.href= "AdmMemListDelete";
-		}
-	    
-   		var link = document.location.href;
-    	if (link.includes("Adm")) {
-    		document.getElementById("member").classList.toggle("active");
-    		document.getElementById("memberDelete").classList.toggle("active");
-    	};
+		// 메뉴 활성화
+		let link = document.location.href;
+		if (link.includes("AdmMemListDelete")) {
+			document.querySelector("#memberDelete").parentElement.previousElementSibling.classList.add("show");
+			document.querySelector("#memberDelete").parentElement.previousElementSibling.classList.add("active");
+			document.querySelector("#memberDelete").parentElement.classList.add("show");
+			document.querySelector("#memberDelete").classList.toggle("active");
+		};
     </script>
 </body>
 </html>

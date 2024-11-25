@@ -170,10 +170,13 @@
 			location.href= "AdmMemList";
 		}
    
-   		var link = document.location.href;
-    	if (link.includes("Adm")) {
-    		document.getElementById("member").classList.toggle("active");
-    		document.getElementById("memberList").classList.toggle("active");
+	 // 메뉴 활성화
+		let link = document.location.href;
+    	if (link.includes("AdmMemList")) {
+    		document.querySelector("#memberList").parentElement.previousElementSibling.classList.add("show");
+    		document.querySelector("#memberList").parentElement.previousElementSibling.classList.add("active");
+    		document.querySelector("#memberList").parentElement.classList.add("show");
+    		document.querySelector("#memberList").classList.toggle("active");
     	};
     </script>
 </body>

@@ -6,7 +6,6 @@
     padding: 0 10px;
 }
 .pay-wrap .frame{
-/*     display: flex; */
     align-items: flex-start;
     justify-content: space-between;
     gap: 10px;
@@ -19,10 +18,16 @@
 	text-align: center;
 }
 
+.fa-credit-card-alt:before, .fa-credit-card:before {
+    content: "\f09d";
+    margin-right: 5px;
+}
+
 /* 주문상품부분 */
 .pay-list {
     flex: 1 1 0;
 }
+
 .pay-list .pay-item {
 	background: var(--light-blue);
 	border-radius: 10px;
@@ -86,10 +91,12 @@
 
 
 /* 결제 부분(쿠폰, 결제금액, 결제수단, 이용약관) */
-.pay-right {
+.pay-sec {
     flex: 0 1 260px;
+/* 	flex: 1; pay-sec의 비율 설정 (좁게) */
+/*     max-width: 40%; 최대 너비 설정 */
 }
-.pay-right {
+.pay-sec {
     background: var(--light-blue);
     border-radius: 10px;
     padding: 16px;
@@ -100,7 +107,7 @@
 }
 
 /* 쿠폰선택 */
-.pay-right .coupon {
+.pay-sec .coupon {
 	flex-direction: column;
 }
 
@@ -142,39 +149,49 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: .8rem;
+    gap: 1rem;
 }
 
 .coupon-input .coupon-inputbox {
-	box-sizing: border-box;
-	width: 500px;
-	height: 10px;
-	padding: 1.1rem 1.6rem 1.3rem 1.1rem;
-	border: .1rem solid #e0e0e0;
-	border-radius: .5rem;
-	background-color: #fff;
-	outline: none;
-	font-size: .8rem;
-	color: #4d4d4d;
-	margin-right: 10px;
+	flex: 1; /* 남은 공간을 입력 박스가 차지 */
+    min-width: 150px; /* 너무 작아지지 않도록 최소 너비 설정 */
+    box-sizing: border-box; /* 패딩 포함하여 크기 계산 */
+    height: 3rem;
+    padding: 0 1rem;
+    border: 1px solid #e0e0e0;
+    border-radius: .5rem;
+    background-color: #fff;
+    font-size: 0.9rem;
+    color: #4d4d4d;
 }
-
+.coupon-input .coupon-btn {
+    flex: 0 0 6rem; /* 버튼 너비 고정 */
+    height: 3rem; /* 버튼 높이 고정 */
+    background-color: var(--info);
+    color: #fff;
+    border: none;
+    border-radius: .5rem;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+}
 /* 결제금액 */
-.pay-right dl {
+.pay-sec dl {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 6px;
 }
-.pay-right dl.total {
+.pay-sec dl.total {
     padding-top: 8px;
     margin-top: 10px;
     border-top: 1px solid #ddd;
 }
-.pay-right dl dd {
+.pay-sec dl dd {
     font-weight: 700;
 }
 
-.pay-right dl.total dd.total-pay-amount {
+.pay-sec dl.total dd.total-pay-amount {
 	color: #F91A3F;
 	font-size: 1.1rem;
 }
@@ -182,7 +199,7 @@
 
 
 /* 결제수단 */
-.pay-right .pay-item .pay-method {
+.pay-sec .pay-item .pay-method {
 	display: flex;
 	align-items: center;
 	flex-wrap: wrap;
@@ -194,14 +211,14 @@
 	margin-bottom: 5px;
 	background-color: var(--white);
 }
-.pay-right .pay-item .pay-method span{
+.pay-sec .pay-item .pay-method span{
 	font-size: 16px;
 	font-weight: 700;
 }
 
 
 /* 이용 약관 동의 */
-.pay-right .notice-box {
+.pay-sec .notice-box {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -210,31 +227,30 @@
 	text-align: center;
 	word-break: keep-all;
 }
-.pay-right .notice-box .notice-check {
+.pay-sec .notice-box .notice-check {
 	align-items: center;
 }
 
-.pay-right .notice-box .notice-check span{
+.pay-sec .notice-box .notice-check span{
 	padding-left: .8rem;
 }
 
 /* ------------- 결제하기 버튼 -------------------- */
 .btns-box {
-    /* margin-top: 10px; */
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    margin: 10px;
+	margin-bottom: 50px;
+    padding: 10px;
 }
 
 .btns-box .btnSubmit {
     border-radius: 6px;
     background-color: var(--primary);
-    font-weight: 600;
+    font-weight: bold;
     font-size: 1rem;
     color: var(--white);
-    padding: 10px;
+    padding: 15px;
     flex: 1 0 0;
     border: 0;
 }

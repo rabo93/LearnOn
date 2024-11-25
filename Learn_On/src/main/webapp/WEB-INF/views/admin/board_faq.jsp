@@ -192,12 +192,14 @@
 	    	location.href = "AdminFaqDelete?faq_idxs=" + checkedValues;
 	    	
 	    }
-    	
     
-   		var link = document.location.href;
+    	// 메뉴 활성화
+		let link = document.location.href;
     	if (link.includes("AdmFaq")) {
-    		document.getElementById("support").classList.toggle("active");
-    		document.getElementById("AdmFaq").classList.toggle("active");
+    		document.querySelector("#AdmFaq").parentElement.previousElementSibling.classList.add("show");
+    		document.querySelector("#AdmFaq").parentElement.previousElementSibling.classList.add("active");
+    		document.querySelector("#AdmFaq").parentElement.classList.add("show");
+    		document.querySelector("#AdmFaq").classList.toggle("active");
     	};
     </script>
 </body>

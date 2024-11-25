@@ -11,7 +11,7 @@
 		    , mc.COUPON_ID 
 		    , c.COUPON_CODE -- 쿠폰코드
 		    , c.COUPON_NAME
-		    , c.DISCOUNT_STATUS -- 쿠폰유형(1:퍼센트,2:금액)
+		    , c.DISCOUNT_TYPE -- 쿠폰유형(1:퍼센트,2:금액)
 		    , c.DISCOUNT_PERCENT
 			, c.DISCOUNT_AMOUNT 
 		    , mc.ISSUE_DATE -- 발급날짜
@@ -63,7 +63,7 @@
   			COUPON_ID
   			, COUPON_NAME
   			, COUPON_CODE
-  			, DISCOUNT_STATUS
+  			, DISCOUNT_TYPE
   			, DISCOUNT_PERCENT
   			, DISCOUNT_AMOUNT
   			, C_EXPIRY_DATE
@@ -110,7 +110,7 @@
   			COUPON_ID
   			, COUPON_NAME
   			, COUPON_CODE
-  			, DISCOUNT_STATUS
+  			, DISCOUNT_TYPE
   			, DISCOUNT_PERCENT
   			, DISCOUNT_AMOUNT
   			, C_EXPIRY_DATE
@@ -129,7 +129,7 @@
   				COUPON_ID
 				, COUPON_NAME
 				, COUPON_CODE
-				, DISCOUNT_STATUS
+				, DISCOUNT_TYPE
 				, DISCOUNT_PERCENT
 				, DISCOUNT_AMOUNT
 				, C_EXPIRY_DATE
@@ -139,7 +139,7 @@
   				#{coupon_id} + 1
   				, #{coupon_name}
   				, #{coupon_code}
-  				, #{discount_status}
+  				, #{discount_type}
   				, #{discount_percent}
   				, #{discount_amount}
   				, #{c_expiry_date}
@@ -157,7 +157,7 @@
   		UPDATE	COUPONINFO
   		SET		COUPON_CODE = #{coupon_code}
   				, COUPON_NAME = #{coupon_name}
-  				, DISCOUNT_STATUS = #{discount_status}
+  				, DISCOUNT_TYPE = #{discount_type}
   				, DISCOUNT_AMOUNT = #{discount_amount}
   				, DISCOUNT_PERCENT = #{discount_percent}
   				, C_EXPIRY_DATE = #{c_expiry_date}

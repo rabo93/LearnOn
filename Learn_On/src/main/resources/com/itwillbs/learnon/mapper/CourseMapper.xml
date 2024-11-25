@@ -166,7 +166,6 @@
  	 	 LIMIT 
 			   #{startRow}
 			 , #{listLimit}
-		  
 	</select>
 	<insert id="insertCourseSupport">
 		<selectKey keyProperty="c_support_idx" resultType="int" order="BEFORE">

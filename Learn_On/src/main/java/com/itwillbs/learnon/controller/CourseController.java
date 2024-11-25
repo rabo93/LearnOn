@@ -119,6 +119,7 @@ public class CourseController {
 	
 	@GetMapping("CourseDetail")
 	public String courseDetail(
+				@RequestParam(defaultValue = "1") int pageNum,
 				int class_id, 
 				String codetype,
 				Model model,
@@ -135,13 +136,27 @@ public class CourseController {
 		List<CommonCodeTypeVO> codeType = courseService.getCodeType(codetype); 
 		// 강사의 다른 클래스 조회
 		List<CourseVO> courseTeacher = courseService.getCourseTeacher(class_id, course.get(0).getTeacher_id());
-		
-		
 		// 관심목록 조회
 		List<Map<String, Object>> wishList = myService.getWishlistForCategoryList(id);
+		
+		
+		// [ 페이징 처리 ]		
+		int startRow = (pageNum - 1) * paging(pageNum, class_id).getPageListLimit();
+		if(pageNum < 1 || pageNum > paging(pageNum, class_id).getMaxPage()) {
+			model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+			model.addAttribute("targetURL", "CourseDetail?pageNum=1");
+			return "result/fail";
+		}
+		// 페이징 처리한 문의사항 항목가져옴. 
+		List<CourseSupportVO> courseSupportList = courseService.getCourseSupportList(class_id, startRow, paging(pageNum, class_id).getPageListLimit());
+				
+		
+		
+		
 		JSONArray jsonToWishList = new JSONArray(wishList);
-//		System.out.println("jsonToWishList : " + jsonToWishList);
 		model.addAttribute("wishList", jsonToWishList);
+		model.addAttribute("courseSupportList", courseSupportList);
+		
 		model.addAttribute("course", course);
 		model.addAttribute("myReview", myReviewList);
 		model.addAttribute("codeType", codeType);
@@ -175,6 +190,8 @@ public class CourseController {
 		// 페이징 처리한 문의사항 항목가져옴. 
 		List<CourseSupportVO> courseSupportList = courseService.getCourseSupportList(class_id, startRow, paging(pageNum, class_id).getPageListLimit());
 		List<CourseVO> course = courseService.getCourse(class_id);
+		// 강사의 다른 클래스 조회
+		List<CourseVO> courseTeacher = courseService.getCourseTeacher(class_id, course.get(0).getTeacher_id());
 		// -------------------------------------------------------------------
 		// Model 객체에 페이징 정보 저장
 		model.addAttribute("pageInfo", paging(pageNum, class_id));
@@ -182,6 +199,7 @@ public class CourseController {
 		
 		model.addAttribute("course", course);
 		model.addAttribute("courseSupportList", courseSupportList);
+		model.addAttribute("courseTeacher", courseTeacher);
 		return "course/course_support_list"; 
 	}
 	

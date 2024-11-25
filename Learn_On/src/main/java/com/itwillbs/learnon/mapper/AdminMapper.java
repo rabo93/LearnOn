@@ -41,7 +41,8 @@ public interface AdminMapper {
 	List<MemberVO> getNomalMemberList(@Param("startRow") int startRow,
 									  @Param("listLimit") int listLimit,
 									  @Param("searchKeyword") String searchKeyword,
-									  @Param("searchType") String searchType);
+									  @Param("searchType") String searchType,
+									  @Param("sort") String sort);
 	//	멤버 리스트 카운트(일반회원)
 	int getNomalMemberListCount(@Param("startRow") String searchKeyword,
 								@Param("startRow") String searchType);
@@ -49,9 +50,14 @@ public interface AdminMapper {
 	List<MemberVO> getInstructorMemberList();
 	//	멤버 리스트 조회(탈퇴회원)
 	List<MemberVO> getWithdrawMemberList();
-	List<MemberVO> getMemberList();
+	//	멤버 수정용 리스트 조회
+	MemberVO getMemberList(String mem_id);
 	//	멤버 상태변경(정상, 휴먼, 탈퇴)
 	int changeMemStatus(Map<String, String> map);
+	//	회원 삭제
+	int deleteMember(String mem_id);
+	//	회원 등급변경
+	int updateGrade(MemberVO member);
 	
 
 

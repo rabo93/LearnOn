@@ -71,8 +71,8 @@ public class AdminService {
 	
 	//	=================== 멤버 ==============================
 	//	일반회원 조회
-	public List<MemberVO> getNomalMemberList(int startRow, int listLimit, String searchKeyword, String searchType) {
-		return mapper.getNomalMemberList(startRow, listLimit, searchKeyword, searchType);
+	public List<MemberVO> getNomalMemberList(int startRow, int listLimit, String searchKeyword, String searchType, String sort) {
+		return mapper.getNomalMemberList(startRow, listLimit, searchKeyword, searchType, sort);
 	}
 	//	일반회원 카운트
 	public int getNomalMemberListCount(String searchKeyword, String searchType) {
@@ -88,8 +88,20 @@ public class AdminService {
 		return mapper.getWithdrawMemberList();
 	}
 	
-	public List<MemberVO> getMemberList() {
-		return mapper.getMemberList();
+	public MemberVO getMemberList(String mem_id) {
+		return mapper.getMemberList(mem_id);
+	}
+	//	멤버상태 변경(1:승인, 2:대기 3:탈퇴)
+	public int changeMemStatus(Map<String, String> map) {
+		return mapper.changeMemStatus(map);
+	}
+	//	회원 삭제
+	public int removeMember(String mem_id) {
+		return mapper.deleteMember(mem_id);
+	}
+	//	회원 등급 변경(일반 OR 강사)
+	public int changeGradeMember(MemberVO member) {
+		return mapper.updateGrade(member);
 	}
 	
 	public int insertClassPic(AdminVO vO) {
@@ -104,9 +116,6 @@ public class AdminService {
 	}
 	public int getClassId() {
 		return mapper.getClassId();
-	}
-	public int changeMemStatus(Map<String, String> map) {
-		return mapper.changeMemStatus(map);
 	}
 
 	

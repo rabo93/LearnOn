@@ -38,6 +38,7 @@ import com.itwillbs.learnon.service.NoticeBoardService;
 import com.itwillbs.learnon.vo.AdminVO;
 import com.itwillbs.learnon.vo.CouponVO;
 import com.itwillbs.learnon.vo.FaqVO;
+import com.itwillbs.learnon.vo.MemberVO;
 import com.itwillbs.learnon.vo.NoticeBoardVO;
 import com.itwillbs.learnon.vo.PageInfo;
 import com.itwillbs.learnon.vo.SupportBoardVO;
@@ -383,12 +384,12 @@ public class AdminController {
 	// 어드민 회원 목록 페이지 매핑
 	@GetMapping("AdmMemList")
 	public String admin_member_list(@RequestParam(defaultValue = "1") int pageNum,
-									@RequestParam(defaultValue = "latest") String sort,
+									@RequestParam(defaultValue = "reg_latest") String sort,
 									@RequestParam(defaultValue = "") String searchKeyword,
 									@RequestParam(defaultValue = "") String searchType,
 									Model model) {
 		
-		int listLimit = 5;
+		int listLimit = 10;
 		int startRow = (pageNum - 1) * listLimit;
 		
 		int listCount = adminService.getNomalMemberListCount(searchKeyword, searchType);
@@ -415,7 +416,8 @@ public class AdminController {
 		
 		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
 		model.addAttribute("pageInfo", pageInfo);
-		model.addAttribute("getMemberList", adminService.getNomalMemberList(startRow, listLimit, searchKeyword, searchType));
+		model.addAttribute("getMemberList", adminService.getNomalMemberList(startRow, listLimit, searchKeyword, searchType, sort));
+		model.addAttribute("sort", sort);
 		return "admin/member_list";
 	}
 	
@@ -432,7 +434,50 @@ public class AdminController {
 		model.addAttribute("getMemberList", adminService.getWithdrawMemberList());
 	return "admin/member_list_delete";
 	}
-
+	
+	//	어드민 회원정보 수정
+	//	************* 잠시 보류 *********************
+	@GetMapping("AdmMemberModify")
+	public String AdmMemberModifyForm(String mem_id, Model model) {
+		System.out.println("mem_id : " + mem_id);
+		MemberVO member = adminService.getMemberList(mem_id);
+		System.out.println("member : " + member);
+		model.addAttribute("member", member);
+		return "admin/member_modify_form";
+	}
+	
+	@GetMapping("AdminMemberDelete")
+	public String adminMemberDelete(String[] mem_ids, Model model) {
+		for(String mem_id : mem_ids) {
+			System.out.println(mem_id);
+			int deleteCount = adminService.removeMember(mem_id);
+			if(deleteCount < 0) {
+				model.addAttribute("msg", "회원 삭제 실패");
+				return "result/fail";
+			}
+		}
+		return "redirect:/AdmMemList";
+	}
+	
+	//	어드민 강사회원 승인
+	@GetMapping("AdmMemGradeChange")
+	public String admMemGradeChange(String mem_id, Model model) {
+//		System.out.println("mem_id : " + mem_id);
+		//	mem_id 파라미터로 받아와서 memberVO 에 저장
+		MemberVO member = adminService.getMemberList(mem_id);
+//		System.out.println(member);
+		//	MemberVO를 통해서 MEM_GRADE 여부에 따라 업데이트 처리
+		//	ex) MEM_GRADE = 'MEM01'일 시 'MEM02'로 업데이트
+		//	ex) MEM_GRADE = 'MEM02'일 시 'MEM01'로 업데이트
+		int updateCount = adminService.changeGradeMember(member);
+		if (updateCount < 0) {
+			model.addAttribute("msg", "회원 등급 변경 실패");
+			return "result/fail";
+		}
+		
+		return "redirect:/AdmMemInstructor";
+	}
+	
 	//	어드민 회원상태 변경
 	@ResponseBody
 	@PostMapping("AdmChangeMemStatus")

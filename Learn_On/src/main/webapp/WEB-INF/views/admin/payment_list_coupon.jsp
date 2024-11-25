@@ -97,7 +97,7 @@
 												<c:when test="${couponBoard.coupon_status eq 1}">value="사용가능"</c:when>
 												<c:when test="${couponBoard.coupon_status eq 2}">value="사용불가"</c:when>
 											</c:choose>></td>
-										<td><button type="button" class="btn btn-lg btn-primary ms-3" onclick="couponModify(${couponBoard.coupon_id},)">수정하기</button></td>
+										<td><button type="button" class="btn btn-lg btn-primary ms-3" onclick="couponModify(${couponBoard.coupon_id})">수정하기</button></td>
                              		</tr>
                                	</c:forEach>
 							</tbody>
@@ -154,30 +154,31 @@
     <script src="resources/admin/lib/tempusdominus/js/moment.min.js"></script>
     <script src="resources/admin/lib/tempusdominus/js/moment-timezone.min.js"></script>
     <script src="resources/admin/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="resources/admin/js/coupon_list.js"></script>
 
     <!-- Template Javascript -->
     <script src="resources/admin/js/main.js"></script>
     <script type="text/javascript">
-    	if (performance.navigation.type === 1) {
-			location.href= "AdmPayListCoupon";
-		}
+//     	if (performance.navigation.type === 1) {
+// 			location.href= "AdmPayListCoupon";
+// 		}
     	
-    	function deleteCoupon() {
-	    	const checkedValues = $('input[name="coupon_id"]:checked').map(function() {
-	    		return $(this).val();
-	    	}).get();
+//     	function deleteCoupon() {
+// 	    	const checkedValues = $('input[name="coupon_id"]:checked').map(function() {
+// 	    		return $(this).val();
+// 	    	}).get();
 	    	
-	    	if (checkedValues.length <= 0) {
-	    		alert("삭제할 게시물을 선택하세요");
-	    		return;
-    		}
-    		console.log("checkedValues : " + checkedValues);
-    		location.href = "AdmCouponDelete?coupon_ids=" + checkedValues;
-    	}
+// 	    	if (checkedValues.length <= 0) {
+// 	    		alert("삭제할 게시물을 선택하세요");
+// 	    		return;
+//     		}
+//     		console.log("checkedValues : " + checkedValues);
+//     		location.href = "AdmCouponDelete?coupon_ids=" + checkedValues;
+//     	}
     	
-    	function couponModify(coupon_id) {
-    		location.href = "AdmCouponModify?coupon_id=" + coupon_id;
-    	}
+//     	function couponModify(coupon_id) {
+//     		location.href = "AdmCouponModify?coupon_id=" + coupon_id;
+//     	}
     	
     	// 메뉴 활성화
 		let link = document.location.href;

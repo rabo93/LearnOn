@@ -35,54 +35,55 @@ $(document).ready(function(){
 		url: "TopMenu",
 		dataType: "json",
 		success : function(data) {
-			for (let i of data) {
-
-				let code = i.CODEID;
-//					if(j.CODEID != i.CODEID){
-					for (let j of data) {
-							var sub_menu = "";
-//							console.log("code : " + code);
-//							console.log("j.SUB_MENU : " + j.SUB_MENU);
-							sub_menu += "<ul class='sub-dropdown'>" 
-//						    sub_menu += 	"<li><a href='Category?codetype=" + code  +"'>" + i.MAIN_MENU + "</a></li>"
-							sub_menu += 	"<li>" + j.SUB_MENU + "</li>"
-							sub_menu += "</ul>"
-					}
-//					}
-					console.log(sub_menu);
-				if(code != code_test){
-					$("#resultArea").append(
-					    "<li>" 
-					    + "<a href='Category?codetype=" + code  +"'>" + i.MAIN_MENU + "</a>"
-					    	+ "<ul class='sub-dropdown'>"
-					    		+ "<li><a href='Category?codetype=" + code  +"'>" + i.MAIN_MENU + "</a></li>"
-					    		+ "<li>" + i.SUB_MENU + "</li>"
-					    		 
-					    + "</li>"
-					);
-				}
-					
-				var code_test = code;
-
-				   				 
-
-//<li>
-//	<a href="Category?codetype=CATE01">IT/개발</a>
-//	<ul class="sub-dropdown">
-//		<li><a href="Category?codetype=CATE01&codetype_id=01">프로그래밍</a></li>
-//	</ul>
-//</li>
+			console.log(data);
+			let resultArea = document.querySelector("#resultArea");
+			
+			const menuMap = {};
+			
+			for(let cate of data){
 			}
 			
-//				for(let sub of data) {
-//					if(arr = sub.MAIN_MENU) {
-//						$("#subResultArea").append(
-//							"<li><a href='Category?codetype=" + sub.CODEID + "'>"+ sub.SUB_MENU +"</a></li>"
-//						);
-//					} 
+			
+//			for (let i of data) {
+//
+//				let code = i.CODEID;
+////					if(j.CODEID != i.CODEID){
+//					for (let j of data) {
+//							console.log(j);
+//							var sub_menu = "";
+////							console.log("code : " + code);
+////							console.log("j.SUB_MENU : " + j.SUB_MENU);
+////							sub_menu += "<ul class='sub-dropdown'>" 
+////						    sub_menu += 	"<li><a href='Category?codetype=" + code  +"'>" + i.MAIN_MENU + "</a></li>"
+////							sub_menu += 	"<li>" + j.SUB_MENU + "</li>"
+////							sub_menu += "</ul>"
+//							sub_menu = `
+//								<ul class='sub-dropdown'>
+//									<li>${j.SUB_MENU}</li>
+//								</ul>
+//							`;
+//					}
+////					}
+//					console.log(sub_menu);
+//				if(code != code_test){
+//					$("#resultArea").append(
+//					    "<li>" 
+//					    + "<a href='Category?codetype=" + code  +"'>" + i.MAIN_MENU + "</a>"
+//					    	+ "<ul class='sub-dropdown'>"
+//					    		+ "<li><a href='Category?codetype=" + code  +"'>" + i.MAIN_MENU + "</a>"
+//					    		
+//					    		
+//					    		
+//					    		+"</li>"
+//					    		 
+//					    + "</li>"
+//					);
 //				}
-		},
-		error: function(){
+//					
+//				var code_test = code;
+
+				   			
+		}, error: function(){
 			alert("메뉴 불러오기 실패");
 		}
 	});	

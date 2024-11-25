@@ -15,7 +15,7 @@
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 
 </head>
-<body>
+<body>f
 	<header>
 		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>
 	</header>
@@ -94,7 +94,7 @@
 						<li><a href="#tab01">클래스 소개</a></li>
 						<li><a href="#tab02">커리큘럼</a></li>
 						<li><a href="#tab03">수강평</a></li>
-						<li><a class="tab" href="CourseSupportList?class_id=${course[0].class_id}">문의(10)</a></li>
+						<li><a class="tab" href="CourseSupportList?class_id=${course[0].class_id}">문의()</a></li>
 					</ul>
 					<div class="tabcontent">
 						<div class="tabmenu" id="tab01">

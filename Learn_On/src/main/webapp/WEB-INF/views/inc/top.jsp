@@ -105,22 +105,12 @@ function logout() {
 								<a href="Category?codetype=CATE01">IT/개발</a>
 								<ul class="sub-dropdown">
 									<li><a href="Category?codetype=CATE01">전체</a></li>
-									
-<!-- 							<ul class="sub-dropdown" id="subResultArea"></ul>							 -->
 								</ul>
 							</li>
 						</ul>
 					</li>
 				</ul>	
 			</li>						
-					
-					
-					
-					
-					
-					
-					
-					
 			<li><a href="#">BEST</a></li>
 			<li><a href="#">얼리버드 특가</a></li>
 			<li><a href="#">이벤트</a></li>

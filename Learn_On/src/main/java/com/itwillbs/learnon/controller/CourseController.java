@@ -134,8 +134,7 @@ public class CourseController {
 		// codetype으로 조회한 공통코드
 		List<CommonCodeTypeVO> codeType = courseService.getCodeType(codetype); 
 		// 강사의 다른 클래스 조회
-//		System.out.println("선생님 아이딛??????????@#$!@%!   :    "  + course.get(1).getTeacher_id());
-		List<CourseVO> courseTeacher = courseService.getCourseTeacher(class_id, course.get(1).getTeacher_id());
+		List<CourseVO> courseTeacher = courseService.getCourseTeacher(class_id, course.get(0).getTeacher_id());
 		
 		
 		// 관심목록 조회
@@ -220,41 +219,54 @@ public class CourseController {
 		cSupport.setC_class_id(class_id);
 
 		// --------------------------------------------------------
-		// [ 답글등록 과정에서 파일 업로드 처리 ]
-		String realPath = session.getServletContext().getRealPath(uploadPath); // request대신 session을 써도 똑같은 메서드가 존재함.
-		String subDir = "";// 서브 디렉토리명을 저장할 변수 선언
-		LocalDate today = LocalDate.now();//현재 시스템의 날짜 정보 생성
-		String datePattern ="yyyy/MM/dd"; // 날짜 포맷 변경에 사용할 패턴 문자열 지정
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern(datePattern);
-		subDir = today.format(dtf);  // LocalDate - DateTimeFormatter
+		// [ 파일 업로드 처리 ]
+//		String realPath = session.getServletContext().getRealPath(uploadPath); // request대신 session을 써도 똑같은 메서드가 존재함.
+//		String subDir = "";// 서브 디렉토리명을 저장할 변수 선언
+//		LocalDate today = LocalDate.now();//현재 시스템의 날짜 정보 생성
+//		String datePattern ="yyyy/MM/dd"; // 날짜 포맷 변경에 사용할 패턴 문자열 지정
+//		DateTimeFormatter dtf = DateTimeFormatter.ofPattern(datePattern);
+//		subDir = today.format(dtf);  // LocalDate - DateTimeFormatter
+//		realPath += "/" + subDir;
+//		
+//		try {
+//			Path path = Paths.get(realPath); // 파라미터로 실제 업로드 경로전달
+//			Files.createDirectories(path); // IOException 예외 처리 필요(임시로 현재 클래스에서 처리) - 이거쓰면 그냥 10월29일 날짜 폴더 만들어져 있으면 알아서 안만든다. exist*() 메서드로 폴더있나 없나 확인안해도 됨.
+//		} catch(Exception e) {
+//			e.printStackTrace();
+//		}
+//		// ------------------------------------
+//		// [업로드 되는 실제 파일 처리]
+//		// 실제 파일은 BoardVO 객체의 MultipartFile 타입 객체로 관리함(멤버변수명 fileXXX)
+//		MultipartFile mFile1 = cSupport.getFile(); 
+//		cSupport.setC_support_file("");
+//		
+//		String fileName1 = "";
+//		
+//		// 업로드 파일명이 널스트링이 아닐 경우를 판별하여 파일명 저장
+//		if(!mFile1.getOriginalFilename().equals("")) {
+//			fileName1 = UUID.randomUUID().toString().substring(0, 8) + "_" + mFile1.getOriginalFilename();
+//			cSupport.setC_support_file(fileName1);
+//		}
+//		
+		
+		
+		// 파일 업로드 처리 준비
+		String realPath = getRealPath(session); // 실제 경로 알아내기
+		String subDir = createDirectories(realPath); // 디렉토리 생성하기
+		// 기존 realPth 경로에 subDir 경로 결합
 		realPath += "/" + subDir;
 		
-		try {
-			Path path = Paths.get(realPath); // 파라미터로 실제 업로드 경로전달
-			Files.createDirectories(path); // IOException 예외 처리 필요(임시로 현재 클래스에서 처리) - 이거쓰면 그냥 10월29일 날짜 폴더 만들어져 있으면 알아서 안만든다. exist*() 메서드로 폴더있나 없나 확인안해도 됨.
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		// ------------------------------------
-		// [업로드 되는 실제 파일 처리]
-		// 실제 파일은 BoardVO 객체의 MultipartFile 타입 객체로 관리함(멤버변수명 fileXXX)
-		MultipartFile mFile1 = cSupport.getFile(); 
-		cSupport.setC_support_file("");
+		List<String> fileNames = processDuplicateFileNames(cSupport, subDir); // 중복 처리된 파일명 리턴
+		int updateCount = courseService.modifyCourseSupport(cSupport);
 		
-		String fileName1 = "";
-		
-		// 업로드 파일명이 널스트링이 아닐 경우를 판별하여 파일명 저장
-		if(!mFile1.getOriginalFilename().equals("")) {
-			fileName1 = UUID.randomUUID().toString().substring(0, 8) + "_" + mFile1.getOriginalFilename();
-			cSupport.setC_support_file(fileName1);
-		}
+		CourseSupportVO courseSupport = courseService.getCourseSupport(class_id);
 		
 		//----------------------------
 		 // BoradService - registReplyBoard() 메서드 호출하여 게시물 등록 작업요청
 		 // => 파라미터: BoardVO 객체, 리턴타입 : int(insrtCount)
 		int insertCount = courseService.registCourseSupport(cSupport);
 		if(insertCount > 0) { // 등록 성공
-			
+			completeUpload(cSupport, realPath, fileNames);
 			model.addAttribute("class_id", class_id);
 			return "redirect:/CourseSupportList?class_id="+ class_id;
 		} else {

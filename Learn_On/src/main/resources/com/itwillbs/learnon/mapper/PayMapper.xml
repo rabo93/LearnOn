@@ -54,6 +54,7 @@
 			, CARD_NAME
 			, CARD_NUM
 			, BANK_NAME
+			, BANK_NUM
 			, APPLY_NUM
 			, RECEIPT_URL
 		)
@@ -63,12 +64,19 @@
 			, #{mem_name}
 			, #{price}
 			, #{pay_method}
-			, #{pay_date}
-			, #{pay_status}
+			, CASE
+				WHEN #{pay_status} = 'paid' THEN 1		-- 결제완료
+				WHEN #{pay_status} = 'failed' THEN 2	-- 결제취소
+				WHEN #{pay_status} = 'ready' THEN 3		-- 결제대기(무통장입금) 
+				ELSE NULL
+			  END
+			, CURRENT_TIMESTAMP()
 			, #{imp_uid}
 			, #{card_name}
 			, #{card_num}
 			, #{bank_name}
+			, #{bank_num}
+			, #{apply_num}
 			, #{receipt_url}
 		)
 	</insert>
@@ -99,11 +107,11 @@
 			, #{class_id}
 			, #{class_price}
 			, #{coupon_code}
-			, #{pay_price}
-			, #{pay_date}
-			, #{pay_status}
+			, #{price}
 		)
 	</insert>
+	
+	
 	
 	
 	<!-- 장바구니 내역 삭제 -->
@@ -111,4 +119,7 @@
     	DELETE FROM CART
     	WHERE CARTITEM_IDX = #{cartItemIdx}
     </delete>
+    
+	<!-- 결제 완료시 사용한 쿠폰 상태 업데이트 -->
+	
 </mapper>

@@ -13,6 +13,8 @@ public interface PayMapper {
 	//주문자 정보 조회
 	MemberVO selectMember(String sId);
 	
+	
+	
 	//결제 정보 저장
 	void insertPayInfo(PayVO payVO);
 	

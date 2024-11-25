@@ -8,8 +8,7 @@
 	- (V) 결제하기 클릭시 이용약관 동의(필수) 체크 확인 : 클릭 안되어있으면 진행X
 	---------------------------------------------------------------------------
 	- (V) 결제하기 클릭시 결제 API에 데이터 넘겨주기 : 넘겨줄 데이터 (주문번호, 결제금액, 결제수단, 회원id, 회원연락처)
-	- () 결제 완료시 결제 테이블에 인서트 => 주문테이블에 같이 넣어야할지 고민해보자
-	- () 결제 완료시 인서트 해야할 테이블 => 주문 내역(PURCHASE), 결제 내역(PAYMENT), 마이페이지 
+	- () 결제 완료시 인서트 해야할 테이블 => 결제 내역(PAY_INFO), 주문 내역(ORDER_INFO), 마이페이지 
 */
 $(document).ready(function() {
 	console.log("초기 결제 상품 금액(totalAmount):", $("#totalAmount").data("value"));
@@ -148,51 +147,30 @@ $(document).ready(function() {
 		let email = memberInfo.data("email");
 		console.log("회원 이메일:", email);
 		
-	    //모든 클래스 아이디/클래스명/클래스가격 [배열]에 담기
-		let items = [];
+	    //모든 클래스명 [배열]에 담기
+		let classTitles = [];
 	    $(".class-box").each(function() {
-			items.push({
-				class_title: $(this).data("class-title"), // data-class-title에서 가져오기
-				class_id: $(this).data("class-id"), // data-class-id에서 가져오기
-				class_price: $(this).data("class-price") // data-class-price에서 가져오기
-			});
+			classTitles.push($(this).data("class-title")); // data-class-title에서 가져오기
+//			items.push({
+//				class_id: $(this).data("class-id"), // data-class-id에서 가져오기
+//				class_price: $(this).data("class-price") // data-class-price에서 가져오기
+//			});
 	    });
+	    
 	    //결제 파라미터에 사용할 상품명 설정 
 	    //=> 상품이 여러개일 경우 '첫번째 상품명 외 n개'로 설정
 	    let className = "";
-		if (items.length > 1) {
-			className = `${items[0].class_title} 외 ${items.length - 1}개`;
-		} else if (items.length === 1) {
-			className = items[0].class_title;
+		if (classTitles.length > 1) {
+			className = `${classTitles[0]} 외 ${classTitles.length - 1}개`;
+		} else if (classTitles.length === 1) {
+			className = classTitles[0];
 		} else {
 			className = "상품 없음";
 		}
 		console.log("결제 상품명:", className);
 		
 		//---------------------------------------------
-		// 결제 흐름 : 사전검증 > 결제 요청 > 사후 검증
-		//----------------------------------------------------
-		// [결제하기 사전검증]
-		// 주문 테이블에 결제 전에 각 상품별 주문 내역 DB저장?
-		/* 
-			고민!!!!!!! 상품 여러개일 경우... 각 상품별로 주문정보 DB에 먼저 넣을지... 결제 완료후 각 상품별로 DB넣을지...
-			1. DB에 먼저 넣게 되면, 상품별로 ROW 쌓이고.. 주문번호는 같아야함. 상품명 배열로 담은거 각자 넣어야하고, 가격도 각자 넣어야함.
-			2. 결제 완료후 넣게 되면, PAYTEST 테이블에 일단 모든 결제 정보 다 넣고 주문 테이블에 상품별로 나눠서 다시 넣어햐함 (일단 이방법으로 해보자)
-		*/
-		
-	//	$.ajax({
-	//		type: "Post",
-	//		url: "payments/prepare",
-	//		contentType: "application/json",
-	//		data: JSON.stringify({
-	//			merchantUid: merchantUid,	// 주문 번호
-	//			className: className,		// 주문상품명
-	//			memName: memName,			// 주문자명
-	//			price: price,				// 결제 예정 금액
-	//			payMethod: payMethod,		// 결제수단
-	//		})
-	//	});
-	
+		// 결제 흐름 : 결제 요청 > 사후 검증 > 결제완료(DB저장)
 		//---------------------------------------------
 		// 결제하기 클릭시 호출되는 결제창 (생략가능)
 		let IMP = window.IMP;
@@ -215,7 +193,7 @@ $(document).ready(function() {
 	    	}, 
 	    	//-------------결제 결과 처리-------------
 	    	function(rsp) {
-				console.log("결제성공시 응답 (JSON): "+ rsp); //결제금액이 들어있음
+				console.log("결제성공시 응답 (JSON): "+ JSON.stringify(rsp)); //결제금액이 들어있음
 				//{success: true, imp_uid: 'imp_598208212134', pay_method: 'card', merchant_uid: '2024112288980', name: '자바 고급 강의 1편', …}
 				
 				//결제완료후 후속 검증 실행(주문금액과 일치하는지 확인)
@@ -223,7 +201,6 @@ $(document).ready(function() {
 					// [사후 검증] 
 					// - AJAX로 결제고유번호(imp_uid)를 통해 실결제금액 조회할 수 있으므로 서버 전달.
 					// - DB에 저장된 결제요청 금액을 조회하기 위해 주문번호인 merchant_uid 도 서버로 전달.
-					
 					// AJAX 요청할 파라미터 가져와서 변수에 담기
 					let data = {
 						imp_uid: rsp.imp_uid,			//결제 고유 번호
@@ -239,7 +216,7 @@ $(document).ready(function() {
 						data: JSON.stringify(data) 
 						//위의 rsp.paid_amount 와 data.response.price를 비교한후 로직 실행 (import 서버검증)
 					}).done(function(data) {
-						console.log("data: "+ data);//주문금액이 들어있음
+						console.log("data: "+ JSON.stringify(data));//주문금액이 들어있음
 						if(rsp.paid_amount == data.response.amount) {
 							alert("결제가 완료되었습니다.");
 							
@@ -253,11 +230,13 @@ $(document).ready(function() {
 							saveOrderinfo(rsp);
 							
 							//저장 후 해당상품 장바구니 목록에서 삭제 처리
-							deleteCart();
+//							deleteCart(rsp);
+							//저장 후 쿠폰 상태 변경
+//							updateCoupon();
 							
 							//일단 성공했을때 바로 결제취소를 위한 테스트(테스트 완료후 삭제할 것)
 							cancelPay(rsp);
-						
+							
 						//-------------------------------------------	
 						} else { //rsp.paid_amount != data.response.amount
 							alert("결제 실패");
@@ -283,13 +262,13 @@ $(document).ready(function() {
 			class_name : rsp.name,
 			mem_name : rsp.buyer_name,
 			price	: rsp.paid_amount,		
-			pay_method : rsp.paid_method,
+			pay_method : rsp.pay_method,
 			pay_status : rsp.status,		//주문상태: paid(결제완료), failed(결제실패), ready(미결제)
-			pay_date : new Date().toISOString(),
 			imp_uid : rsp.imp_uid,
 			card_name	: rsp.card_name,
 			card_num : rsp.card_number,
-			bank_name	: rsp.bank_name,
+			bank_name	: rsp.vbank_name,
+			bank_num	: rsp.vbank_num,
 			apply_num : rsp.apply_num,
 			receipt_url	: rsp.receipt_url
 			}
@@ -311,9 +290,17 @@ $(document).ready(function() {
 	//-------------------------------------------------------------------------------------
 	// 2. 주문정보 저장(주문 테이블에 저장)
 	function saveOrderinfo(rsp) {
-		// 선택된 쿠폰 정보 가져오기
+		//저장할 데이터 가져오기
+		let memId = $("#memberInfo").data("id");
+		let items = [];
+	    $(".class-box").each(function() {
+			items.push({
+				class_id: $(this).data("class-id"), // data-class-id에서 가져오기
+				class_price: $(this).data("class-price") // data-class-price에서 가져오기
+			});
+	    });
 		let couponData = $("#couponSelect").data();
-		let memId = memberInfo.data("mem_id");
+		
 		
 		let orderInfo = {
 //			order_idx : order_idx,				//상품별 주문 ID
@@ -323,18 +310,8 @@ $(document).ready(function() {
 //			class_id : classIds,				//상품별 id
 //			class_price : classPrices,			//상품별 가격
 			coupon_code : couponData.couponId,	//사용한쿠폰아이디 
-			price : rsp.paid_amount,			//결제 가격
-			pay_date : new Date().toISOString(),//결제 일시
-			pay_status : rsp.status				//주문 상태
 		}
-		
-		// classIds와 classPrices 배열을 묶어서 items 배열에 담기
-		for(let i = 0; i < classIds.length; i++) {
-			orderInfo.items.push({
-				class_id: classIds[i],
-				class_price: classPrices[i]
-			});
-		}	
+		console.log("저장할 주문 정보 : " + JSON.stringify(orderInfo));
 		
 		// 주문 정보를 AJAX 비동기로 서버 전송	
 		$.ajax({
@@ -351,7 +328,6 @@ $(document).ready(function() {
 			
 		});
 	} //saveOrderinfo()함수끝
-	//-------------------------------------------------------------------------------------
 	
 	
 	//-------------------------------------------------------------------------------------

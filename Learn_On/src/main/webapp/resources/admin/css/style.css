@@ -383,6 +383,18 @@ button:active {
 	display: none;
 }
 
+/*=================== Member ==================*/
+.form-select.gender {
+	pointer-events: none;
+	background-color: #fff;
+	background-image: none;
+}
+
+.form-control.member {
+	background-color: #fff;
+}
+
+
 /*=================== AdmNotice ==================*/
 .AdmNoticeDetail {
 	display: none;
@@ -394,7 +406,7 @@ button:active {
 	justify-content: center;
 }
 
-/*=================== 페이징 처리 ==================*/
+/*=================== Faq ==================*/
 .AdmfaqDetail {
 	display: none;
 }
@@ -450,12 +462,15 @@ button:active {
     font-weight: 600;
 }
 
+
+.notice-sch {display:flex;align-items: stretch;justify-content:center;gap: 10px;}
+
+
 /* 관리자 1:1문의 */
 .answer-st {font-weight:700;text-align:center;display: inline-block;padding: 4px 8px;border-radius: 50px;border: 1px solid #999;}
 .answer-st.status01 {background:#3f80ea; color:#fff;border-color:#3f80ea;}
 .answer-st.status02 {background:#a9a9a9; color:#fff;border-color:#a9a9a9;}
 .support-attach {margin-top:8px;}
-
 .supportDetailBox {display:none;}
 .answerDetailBox {display:none;}
 

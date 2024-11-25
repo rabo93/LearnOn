@@ -50,10 +50,10 @@
 	                                        <p class="c-name">${coupon.COUPON_NAME}</p>
 	                                        <p class="c-dis">
 	                                            <c:choose>
-	                                                <c:when test="${coupon.DISCOUNT_STATUS == 1}">
+	                                                <c:when test="${coupon.DISCOUNT_TYPE == 1}">
 	                                                    ${coupon.DISCOUNT_PERCENT} %
 	                                                </c:when>
-	                                                <c:when test="${coupon.DISCOUNT_STATUS == 2}">
+	                                                <c:when test="${coupon.DISCOUNT_TYPE == 2}">
 	                                                    ${coupon.DISCOUNT_AMOUNT} 원
 	                                                </c:when>
 	                                            </c:choose>
@@ -67,7 +67,7 @@
 <%-- 	                                        <button class="select-btn" data-coupon="${coupon}">사용하기</button> --%>
 	                                        <button class="select-btn" 
 	                                        data-coupon-id="${coupon.COUPON_ID}" 
-										    data-discount-status="${coupon.DISCOUNT_STATUS}" 
+										    data-discount-type="${coupon.DISCOUNT_TYPE}" 
 										    data-discount-amount="${coupon.DISCOUNT_AMOUNT}" 
 										    data-discount-percent="${coupon.DISCOUNT_PERCENT}" >
 	                                        사용하기</button>

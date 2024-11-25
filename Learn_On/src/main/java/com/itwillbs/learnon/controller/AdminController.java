@@ -382,25 +382,82 @@ public class AdminController {
 	
 	// 어드민 회원 목록 페이지 매핑
 	@GetMapping("AdmMemList")
-	public String admin_member_list(Model model) {
-		model.addAttribute("getMemberList", adminService.getMemberList());
+	public String admin_member_list(@RequestParam(defaultValue = "1") int pageNum,
+									@RequestParam(defaultValue = "latest") String sort,
+									@RequestParam(defaultValue = "") String searchKeyword,
+									@RequestParam(defaultValue = "") String searchType,
+									Model model) {
+		
+		int listLimit = 5;
+		int startRow = (pageNum - 1) * listLimit;
+		
+		int listCount = adminService.getNomalMemberListCount(searchKeyword, searchType);
+		
+		int pageListLimit = 5;
+		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+		
+		if (maxPage == 0) {
+			maxPage = 1;
+		}
+		
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		int endPage = startPage + pageListLimit - 1;
+		
+		if (endPage > maxPage) {
+			endPage = maxPage;
+		}
+		
+		if(pageNum < 1 || pageNum > maxPage) {
+			model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+			model.addAttribute("targetURL", "AdmMemList?pageNum=1");
+			return "result/fail";
+		}
+		
+		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
+		model.addAttribute("pageInfo", pageInfo);
+		model.addAttribute("getMemberList", adminService.getNomalMemberList(startRow, listLimit, searchKeyword, searchType));
 		return "admin/member_list";
 	}
 	
 	// 어드민 강사 회원 목록 페이지 매핑
 	@GetMapping("AdmMemInstructor")
 	public String admin_member_list_instructor(Model model) {
-		model.addAttribute("getMemberList", adminService.getMemberList());
+		model.addAttribute("getMemberList", adminService.getInstructorMemberList());
 		return "admin/member_list_instructor";
 	}
 	
 	// 어드민 탈퇴한 회원 목록 페이지 매핑
 	@GetMapping("AdmMemListDelete")
 	public String admin_member_list_delete(Model model) {
-		model.addAttribute("getMemberList", adminService.getMemberList());
+		model.addAttribute("getMemberList", adminService.getWithdrawMemberList());
 	return "admin/member_list_delete";
 	}
 
+	//	어드민 회원상태 변경
+	@ResponseBody
+	@PostMapping("AdmChangeMemStatus")
+	public String admChangeMemStatus(@RequestParam Map<String, String> map) {
+//		System.out.println("++++++++++++mem_status: " +  map.get("mem_status"));
+//		System.out.println("map? ==============" + map);
+		adminService.changeMemStatus(map);
+		
+		String mem_status = "";
+		switch (map.get("mem_status")) {
+		case "1": mem_status = "승인";break;
+		case "2": mem_status = "대기";break;
+		case "3": mem_status = "탈퇴";break;
+		}
+		
+		JSONObject json = new JSONObject();
+		json.put("mem_id", map.get("mem_id"));
+		json.put("mem_status", mem_status);
+		
+//		System.out.println("Response JSON: " + json.toString());
+		
+		return json.toString();
+	}
+	
+	
 	// =======================================================================
 	
 	// 어드민 결제 내역 관리 페이지 매핑
@@ -695,6 +752,22 @@ public class AdminController {
 	
 	
 	// =======================================================================
+	// 페이지 정보 저장
+	public PageInfo pageInfoMethod(int pageNum, int listLimit, int listCount , int pageListLimit) {
+		int startRow = (pageNum - 1) * listLimit;
+		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+		if (maxPage == 0) {
+			maxPage = 1;
+		}
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		int endPage = startPage + pageListLimit - 1;
+		if (endPage > maxPage) {
+			endPage = maxPage;
+		}
+		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
+		return pageInfo;
+	}
+	
 	// 이전 페이지 이동 저장
 	private void savePreviousUrl(HttpServletRequest request, HttpSession session) {
 		String prevURL = request.getServletPath();

@@ -128,11 +128,13 @@
 			});
 		};
 		
-		var link = document.location.href;
-	   	if (link.includes("board")) {
-	   		document.getElementById("board").classList.toggle("active");
-	   		document.getElementById("boardManage").classList.toggle("active");
-	   	};
+		let link = document.location.href;
+		if (link.includes("NoticeModify")) {
+			document.querySelector("#AdmNotice").parentElement.previousElementSibling.classList.add("show");
+			document.querySelector("#AdmNotice").parentElement.previousElementSibling.classList.add("active");
+			document.querySelector("#AdmNotice").parentElement.classList.add("show");
+			document.querySelector("#AdmNotice").classList.toggle("active");
+		};
 	</script>
 </body>
 </html>

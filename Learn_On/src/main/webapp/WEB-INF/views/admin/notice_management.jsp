@@ -50,8 +50,8 @@
 						<button type="button" class="btn btn-lg btn-primary ms-3" onclick="location.href='AdminNoticeWrite'">게시판 등록</button>
 						<button type="button" class="btn btn-lg btn-primary ms-3" onclick="deleteBoard()">게시판 삭제</button>
 					</div>
-					<div>
-						<form class="d-flex input-group mb-3" method="get">
+					<div class="notice-sch">
+						<form class="d-flex input-group mb-3 w-25"  method="get">
 							<select class="form-select" name= "sort" onchange="this.form.submit()" aria-label="Default select example">
 								<option value="latest"
 									<c:if test="${sort eq 'latest'}">selected</c:if>
@@ -65,7 +65,7 @@
 									</option>
 							</select>
 						</form>
-						<form class="d-flex input-group mb-3" method="get">
+						<form class="d-flex input-group mb-3 w-75" method="get">
 							<select class="form-select" name= "searchType" aria-label="Default select example">
 								<option value="subject" <c:if test="${param.searchType eq 'subject'}">selected</c:if>>제목</option>
 								<option value="content" <c:if test="${param.searchType eq 'content'}">selected</c:if>>내용</option>
@@ -94,11 +94,11 @@
 							</thead>
 							<tbody>
 								<c:forEach items="${noticeList}" var="noticeBoard" varStatus="status">
-									<tr>
+									<tr onclick="showNotice(${status.index})">
 										<th><input class="form-check-input" type="checkbox" id="gridCheck1" name="notice_idx" value="${noticeBoard.notice_idx}"></th>
-										<td><input class="form-control" type="text" aria-label="default input example" value="${noticeBoard.notice_idx}" onclick="showNotice(${status.index})"></td>
+										<td><input class="form-control" type="text" aria-label="default input example" value="${noticeBoard.notice_idx}"></td>
 										<td>
-											<input class="form-control" type="text" aria-label="default input example" value="${noticeBoard.notice_subject}" onclick="showNotice(${status.index})">
+											<input class="form-control" type="text" aria-label="default input example" value="${noticeBoard.notice_subject}">
 										</td>
 										<td><input class="form-control" type="text" aria-label="default input example" value="공지사항" readonly></td>
 										<td>

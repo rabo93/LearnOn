@@ -16,7 +16,8 @@ import com.itwillbs.learnon.vo.MyReviewVO;
 public interface CourseMapper {
 
 	List<CourseVO> selectCourseList(
-			@Param("searchType") String searchType,				
+			@Param("searchType") String searchType,
+			@Param("codetype") String codetype,
 			@Param("course") CourseVO course
 							);
 
@@ -37,7 +38,7 @@ public interface CourseMapper {
 		);
 
 
-	int selectCSupportListCount();
+	int selectCSupportListCount(int class_id);
 
 	CourseSupportVO selectCourseSupport(int class_id);
 
@@ -48,6 +49,14 @@ public interface CourseMapper {
 	int deleteBoardFile(Map<String, String> map);
 
 	int deleteCourseSupport(int c_support_idx);
+
+	List<CourseVO> selectCourseTeacher(
+			@Param("class_id") int class_id, 
+			@Param("teacher_id") String teacher_id);
+
+	int insertApplyForCourse(
+			@Param("class_id") int class_id, 
+			@Param("id") String id);
 
 
 }

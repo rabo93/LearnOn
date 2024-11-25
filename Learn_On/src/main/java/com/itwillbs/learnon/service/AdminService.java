@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.itwillbs.learnon.mapper.AdminMapper;
 import com.itwillbs.learnon.vo.AdminVO;
+import com.itwillbs.learnon.vo.CourseSupportVO;
 import com.itwillbs.learnon.vo.CourseVO;
 import com.itwillbs.learnon.vo.MemberVO;
 
@@ -109,8 +110,19 @@ public class AdminService {
 		return mapper.changeMemStatus(map);
 	}
 
+
 	
 	// =============== 1:1 문의
 	
+	
+	// 수강 문의 게시판
+	// 문의 목록 조회 (강의별 수강문의 게시판)
+	public List<CourseSupportVO> getCourserSupportListToAdm(int startRow, int listLimit) {
+		return mapper.selectCourseSupportList(startRow, listLimit);
+	}
+	// 문의 답변 작성/수정 업데이트
+	public int answerSupport(CourseSupportVO cSupport) {
+		return mapper.updateCourseSupport(cSupport);
+	}
 
 }

@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.itwillbs.learnon.vo.AdminVO;
+import com.itwillbs.learnon.vo.CourseSupportVO;
 import com.itwillbs.learnon.vo.CourseVO;
 import com.itwillbs.learnon.vo.MemberVO;
 
@@ -52,6 +53,14 @@ public interface AdminMapper {
 	List<MemberVO> getMemberList();
 	//	멤버 상태변경(정상, 휴먼, 탈퇴)
 	int changeMemStatus(Map<String, String> map);
+	
+	
+	// ===== 수강문의 게시판
+	// 강의 문의 조회 요청
+	List<CourseSupportVO> selectCourseSupportList(@Param("startRow") int startRow, @Param("listLimit") int listLimit);
+	
+	// 강의 답변 작성/수정
+	int updateCourseSupport(CourseSupportVO cSupport);
 	
 
 

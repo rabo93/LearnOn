@@ -39,49 +39,47 @@
 	
 	<insert id="insertMember">
 INSERT INTO MEMBER (
-    mem_idx,
-    mem_id,
-    mem_passwd,
-    mem_name,
-    mem_nick,
-    mem_birthday,
-    mem_email,
-    mem_gender,
-    mem_phone,
-    mem_post_code,
-    mem_address1,
-    mem_address2,
-    mem_grade,
-    mem_status,
-    mem_reg_date,
-    mem_withdraw_date,
-    mem_like1_class,
-    mem_like2_class,
-    file_pp,
-    mail_auth_status,
-    profile_image
+    mem_idx
+   , mem_id
+   , mem_passwd
+   , mem_name
+   , mem_nick
+   , mem_birthday
+   , mem_email
+   , mem_gender
+   , mem_phone
+   , mem_post_code
+   , mem_address1
+   , mem_address2
+   , mem_grade
+   , mem_status
+   , mem_reg_date
+   , mem_withdraw_date
+   , mem_like1_class
+   , mem_like2_class
+   , file_pp
+   , mail_auth_status
 ) VALUES (
-    null,
-    #{mem_id},
-    #{mem_passwd},
-    #{mem_name},
-    #{mem_nick},
-    #{mem_birthday},
-    CONCAT(#{mem_email1}, '@', #{mem_email2}),
-    #{mem_gender},
-    #{mem_phone},
-    #{mem_post_code},
-    #{mem_address1},
-    #{mem_address2},
-    'MEM01',
-    1,
-    now(),
-    null,
-    #{mem_like1_class},
-    #{mem_like2_class},
-    SUBSTR(#{file_pp}, INSTR(#{file_pp}, '_') + 1),
-    'N',
     null
+   , #{mem_id}
+   , #{mem_passwd}
+   , #{mem_name}
+   , #{mem_nick}
+   , #{mem_birthday}
+   , CONCAT(#{mem_email1}, '@', #{mem_email2})
+   , #{mem_gender}
+   , #{mem_phone}
+   , #{mem_post_code}
+   , #{mem_address1}
+   , #{mem_address2}
+   , 'MEM01'
+   , 1
+   , now()
+   , null
+   , #{mem_like1_class}
+   , #{mem_like2_class}
+   , SUBSTR(#{file_pp}, INSTR(#{file_pp}, '_') + 1)
+   , 'N'
 )
 </insert>
 	

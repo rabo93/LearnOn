@@ -392,12 +392,6 @@
 		WHERE
 			SUPPORT_IDX = #{support_idx}
 	</update>
-	<select id="selectAttendance" resultType="attendance">
-		-- 출석체크 현황
-		SELECT *
-		FROM ATTENDANCE
-		WHERE MEM_ID = #{id}
-	</select>
 	<select id="selectSupportListToAdm" resultType="mysupport">
 		-- 관리자 1:1문의 전체 목록 조회
 		SELECT S.SUPPORT_IDX
@@ -428,4 +422,30 @@
 		       , SUPPORT_ANSWER_CONTENT = #{support_answer_content}
 		  WHERE SUPPORT_IDX = #{support_idx}
 	</update>
+	
+<!-- 		 출석체크 현황 -->
+	<select id="selectAttendance" resultType="attendance">
+		SELECT *
+		FROM ATTENDANCE
+		WHERE MEM_ID = #{id}
+	</select>
+	<update id="insertAttendance">
+		update 
+			ATTENDANCE
+		set 	
+			check_in_date = now()
+			,mem_id = #{mem_id}
+			,streak_days = #{streak_days}+1
+		where mem_id = #{mem_id} 
+	</update>
+<!-- 	<insert id="insertAttendance"> -->
+<!-- 		INSERT  -->
+<!-- 		INTO  -->
+<!-- 			ATTENDANCE -->
+<!-- 		VALUES( -->
+<!-- 			now() -->
+<!-- 			,#{mem_id} -->
+<!-- 			,#{streak_days} -->
+<!-- 			) -->
+<!-- 	</insert> -->
 </mapper>

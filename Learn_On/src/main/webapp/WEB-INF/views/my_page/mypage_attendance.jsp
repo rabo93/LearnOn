@@ -25,7 +25,7 @@
 		<h2 class="page-ttl">마이페이지</h2>
 		<section class="my-wrap">
 			<aside class="my-menu">
-				<a href="MyInfo">계정정보</a>
+				<a href=MemberModify>계정정보</a>
 				<a href="MyFav">관심목록</a>
 				<a href="MyDashboard">나의 강의실</a>
 				<a href="MyReview">작성한 수강평</a>
@@ -37,12 +37,14 @@
 			<div class="my-container">
 				<div class="contents-ttl">출석체크</div>
 				<div class="contents">
-					<!-- contents -->
 					<div class="attendance-wrap">
 						<c:set var="today"><fmt:formatDate value="<%=new java.util.Date()%>" pattern="yyyy-MM-dd" /></c:set> 
+						${today}
+						${attendance.check_in_date} 
 						<c:choose>
 							<c:when test="${empty attendance.check_in_date || attendance.check_in_date != today}">
-								<button class="btn-att checked"><i class="fa-solid fa-check"></i> 출석하기</button>
+							
+								<button class="btn-att checked" onclick="location.href='attendanceButton?mem_id=${sId}'"><i class="fa-solid fa-check"></i> 출석하기</button>
 							</c:when>
 							<c:otherwise>
 								<button class="btn-att"><i class="fa-solid fa-check"></i> 출석완료</button>
@@ -59,7 +61,6 @@
 							</span>일 연속 출석하셨습니다.</p>
 						</div>
 					</div>
-					<!-- // contents -->
 				</div>
 			</div>
 		</section>
@@ -69,28 +70,27 @@
 	</footer>
 	
 	<script type="text/javascript">
-    document.addEventListener('DOMContentLoaded', function () {
-        const checkButton = document.querySelector('.btn-att.checked');
-        const streakDisplay = document.querySelector('.att-box span'); // 연속 출석 일 수를 표시하는 요소
+//     document.addEventListener("DOMContentLoaded", function () {
+//         // 출석 버튼 선택
+//         const attendanceButton = document.querySelector(".btn-att.checked");
 
-        if (checkButton) {
-            checkButton.addEventListener('click', function () {
-                // 연속 출석일 계산
-                let streakDays = parseInt(streakDisplay.textContent) || 0;
-                streakDays += 1; // 버튼 클릭 시 1 증가
-                
-                // UI 업데이트
-                streakDisplay.textContent = streakDays;
+//         if (attendanceButton) {
+//             // 버튼 클릭 이벤트
+//             attendanceButton.addEventListener("click", function () {
+//                 // 버튼 상태 변경
+//                 attendanceButton.classList.remove("checked");
+//                 attendanceButton.innerHTML = '<i class="fa-solid fa-check"></i> 출석완료';
 
-                // 알림 표시
-                alert("출석완료!");
-                
-                // 버튼 상태 변경
-                checkButton.textContent = '출석완료';
-                checkButton.classList.remove('checked'); // 버튼을 '출석완료' 상태로 변경
-            });
-        }
-    });
-</script>
+//                 // 연속 출석 일수 증가
+//                 const streakDaysElement = document.querySelector(".att-box span");
+//                 const currentStreak = parseInt(streakDaysElement.textContent, 10) || 0;
+//                 streakDaysElement.textContent = currentStreak + 1;
+
+//                 // 완료 메시지 표시
+//                 alert("출석이 완료되었습니다!");
+//             });
+//         }
+//     });
+    </script>		
 </body>
 </html>

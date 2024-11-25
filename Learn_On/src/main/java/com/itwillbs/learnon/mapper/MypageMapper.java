@@ -112,6 +112,11 @@ public interface MypageMapper {
 	// 관리자 - 1:1 답변 작성/수정
 	int updateSupportAnswer(SupportBoardVO support);
 
+	//출석체크
+	int insertAttendance(AttendanceVO attendance);
+//	int insertAttendance(String mem_id);
+
+
 	
 	
 

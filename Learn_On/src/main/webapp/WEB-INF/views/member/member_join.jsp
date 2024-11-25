@@ -35,20 +35,20 @@
 							onblur="checkNameLength()"> 
 						<label for="mem_id">아이디</label>
 						<div id="checkIdResult"></div>
-						<input type="text" name="mem_id" id="mem_id" placeholder="아이디"
-							onblur="checkId()"> 
+						<input type="text" name="mem_id" id="mem_id" placeholder="아이디" 
+							onblur="checkId()" required> 
 						<label for="mem_passwd1">비밀번호</label>
 						<div id="checkPasswd1"></div>
 						<input type="password" name="mem_passwd" id="mem_passwd1"
 							placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"
-							onblur="checkPasswdLength1()"> 
+							onblur="checkPasswdLength1()" required> 
 						<label for="mem_passwd2">비밀번호확인</label>
 						<div id="checkPasswd2"></div>
 						<input type="password" name="mem_passwd2" id="mem_passwd2"
-							placeholder="비밀번호 확인" onkeyup="checkPasswdResult()"> 
+							placeholder="비밀번호 확인" onkeyup="checkPasswdResult()" required> 
 						<label for="mem_nick">닉네임</label>
 						<div id="checkNic"></div>
-						<input type="text" name="mem_nick" id="mem_nick" placeholder="닉네임" onblur="ckNick()">
+						<input type="text" name="mem_nick" id="mem_nick" placeholder="닉네임" onblur="ckNick()" required>
 	
 						<label>성별</label>
 						<div id="gender-container">
@@ -75,9 +75,9 @@
 						<input type="date" min="1990-01-01" max="2000-12-31"
 							name="mem_birthday"> 
 							<br> <label for="mem_phone">연락처</label>
-						<div id="checkNumber"></div>
+						<div id="phoneCheckResult"></div>
 						<input type="text" name="mem_phone" id="mem_phone"
-							placeholder="'-'없이 입력해주세요" onblur="numberCk()"> 
+							placeholder="'-'없이 입력해주세요" onblur="phoneCheck()" required> 
 						
 						<label for="mem_ddress1">주소</label>
 						<div id="checkAddr"></div>

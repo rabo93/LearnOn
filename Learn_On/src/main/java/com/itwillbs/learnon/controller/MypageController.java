@@ -25,8 +25,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.learnon.service.AdminService;
+import com.itwillbs.learnon.service.MemberService;
 import com.itwillbs.learnon.service.MypageService;
 import com.itwillbs.learnon.vo.AttendanceVO;
+import com.itwillbs.learnon.vo.MemberVO;
 import com.itwillbs.learnon.vo.MyCourseVO;
 import com.itwillbs.learnon.vo.MyCurriculumVO;
 import com.itwillbs.learnon.vo.MyDashboardVO;
@@ -655,18 +657,26 @@ public class MypageController {
 		}
 		
 		AttendanceVO attendance = myService.getAttendance(id);
-		
 		model.addAttribute("attendance", attendance);
+//		System.out.println("@@@@@@@@@@@@@@@@@"+ attendance.getMem_id()); //hong1234
 		
 		return "my_page/mypage_attendance";
 	}
 	
-	// 출석체크
-	
-	
-	
-	
-	
+	// 출석체크 ******************************************************
+	@GetMapping("attendanceButton")
+	public String attendanceButton(Model model,AttendanceVO attendance,HttpSession session) {
+		String id = (String)session.getAttribute("sId");
+		AttendanceVO attendance2 = myService.getAttendance(id);
+//		int attend = myService.addDate(attendance.getMem_id());
+		int attend = myService.addDate(attendance);
+		if(attend > 0) {
+			model.addAttribute("msg", "출석체크 완료!");
+			return"result/fail";
+		}
+		model.addAttribute("msg", "출석체크 실패");
+		return"result/fail";
+	}
 	
 	
 	

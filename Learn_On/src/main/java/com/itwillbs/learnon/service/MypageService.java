@@ -127,7 +127,8 @@ public class MypageService {
 	public AttendanceVO getAttendance(String id) {
 		return myMapper.selectAttendance(id);
 	}
-
+	
+	
 	// 나의 강의실 - 강의 시청 조회
 	public MyDashboardVO getMyDashboard(MyDashboardVO myDashboard) {
 		return myMapper.selectMyDashboard(myDashboard);
@@ -155,7 +156,15 @@ public class MypageService {
 	public int answerSupport(SupportBoardVO support) {
 		return myMapper.updateSupportAnswer(support);
 	}
+	
+	//출석체크
+	public int addDate(AttendanceVO attendance) {
+		return myMapper.insertAttendance(attendance);
+	}
 
+//	public int addDate(String mem_id) {
+//		return myMapper.insertAttendance(mem_id);
+//	}
 
 
 }

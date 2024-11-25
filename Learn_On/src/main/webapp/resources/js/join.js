@@ -38,6 +38,7 @@ let checkCode = false;
 let checkIdResult = false;
 let checkNic = false;
 let isIdValid=false;
+let phoneCheckResult = false;
 
 // ************* 이름 null 검사**************
 function checkNameLength(){
@@ -56,6 +57,7 @@ function checkNameLength(){
 function checkId(){
 	let id = $("#mem_id").val();
 	let regex = /^[\d\w][\d\w_]{3,12}$/;
+//	let regex = /^(?=.*[!@#$%^&*].*[!@#$%^&*])[\d\w!@#$%^&*]{4,12}$/;
 	if(regex.exec(id)){
 		$.ajax({
 			type : "get" ,
@@ -70,12 +72,10 @@ function checkId(){
 					isIdValid = true;
 				}else{
 					$("#checkIdResult").text("이미 존재하는 아이디 입니다.").css("color","RED");
+					alert("아이디를 다시 확인해주세요");
 					isIdValid = false;
 				}
-			} ,
-			error : function(){
-				alert("이미 사용중인 아이디 입니다\n다시 입력해주세요")
-			}
+			} 
 		});
 	}else{
 		$("#checkIdResult").text("4~12글자만 사용가능");
@@ -102,7 +102,9 @@ function ckNick(){
 						checkNic = true;
 					}else {
 						$("#checkNic").text("이미 사용중인 닉네임 입니다").css("color","RED");
+						alert("닉네임을 다시 확인해주세요");
 						checkNic = false;
+					
 					}
 				} ,
 			error : function(){
@@ -112,7 +114,7 @@ function ckNick(){
 	}else{
 		$("#checkNic").text("4~12글자만 사용가능");
 		$("#checkNic").css("color", "red");
-		checkIdResult = false;
+		checkNic = false;
 	}
 }
 
@@ -135,24 +137,28 @@ function ckNick(){
 //}
 
 // ************* 비밀번호 길이검사**************
+function checkPasswdLength1() {
+    let passwd = $("#mem_passwd1").val();
+    let regex = /^(?=.*[\d])(?=.*[!@#$%^&*])[a-z\d!@#$%^&*]{8,}$/;
 
-function checkPasswdLength1(){
-	let passwd = $("#mem_passwd1").val();
-	if(passwd.length >= 4 && passwd.length <= 8){
-		$("#checkPasswd1").text("사용가능한 비밀번호 입니다");
-		$("#checkPasswd1").css("color","green");
-		checkPasswd1 = true;
-	}else if(passwd == "") {
-		$("#checkPasswd1").text("비밀번호를 입력해주세요.");
-		$("#checkPasswd1").css("color","red");
-		checkPasswd1 = false;
-	}else {
-		$("#checkPasswd1").text("4-8자리 이하 영문 대문자,숫자,특수문자 중 2종류 포함 해주세요");
-		$("#checkPasswd1").css("color","red");
-		checkPasswd1 = false;
-	}
+    if (regex.test(passwd)) {
+        $("#checkPasswd1").text("사용가능한 비밀번호 입니다");
+        $("#checkPasswd1").css("color", "green");
+        checkPasswd1 = true;
+    } else if (passwd === "") {
+        $("#checkPasswd1").text("비밀번호를 입력해주세요.");
+        $("#checkPasswd1").css("color", "red");
+        checkPasswd1 = false;
+    } else {
+        // 조건이 맞지 않는 경우
+        $("#checkPasswd1").text("8자리 이상,숫자/특수문자 중 2종류 포함 해주세요");
+        $("#checkPasswd1").css("color", "red");
+        alert("비밀번호를 확인해주세요");
+        checkPasswd1 = false;
+    }
 }
-// ************* 비밀번호 검사**************
+
+// ************* 비밀번호 같은지 검사**************
 
 function checkPasswdResult(){
 	let passwd1 = $("#mem_passwd1").val();
@@ -168,14 +174,20 @@ function checkPasswdResult(){
 		$("#checkPasswd2").css("color","red");
 	}
 }
-// *************연락처 null검사**************
-function numberCk(){
-	let number = $("#mem_number").val();
-	if(number == ""){
-		$("#checkNumber").text("핸드폰 번호를 입력해주세요");
-		$("#checkNumber").css("color","red");
-	}
+
+/**********전화전호 유효성 검사********* */
+function phoneCheck(){
+	let phone = $("#mem_phone").val();
+	let regex = /^[0-9]{11}$/;
 	
+	if (regex.test(phone)) {
+		$("#phoneCheckResult").text("");
+		phoneCheckResult = true;
+	}else {
+        $("#phoneCheckResult").css("color", "red");
+		$("#phoneCheckResult").text("전화번호가 올바르지 않습니다.");
+		phoneCheckResult = false;
+	}
 }
 // *************이용약관 체크**************
 $(document).ready(function() {
@@ -203,12 +215,23 @@ $("#profile_img").change(function (event) {
     }
 });
 
+
+
+
+
 /******************* */
 function submit() {
-    if (!isIdValid){
-	alert("아이디를 다시 확인해주세요");
-    return false;
-}
-    
-	return true;    
+	if (!isIdValid) {
+		$("#mem_id").focus();
+		return false;
+	} else if(!checkNic){
+		$("#mem_nick").focus();
+		return false;
+	} else if(!checkPasswd1) {
+		$("#mem_passwd").focus();
+		return false;
+	}else {
+		return true;
+	}
+
 }

@@ -35,22 +35,45 @@ $(document).ready(function(){
 		url: "TopMenu",
 		dataType: "json",
 		success : function(data) {
-			for(let i of data) {
+			for (let i of data) {
+
 				let code = i.CODEID;
+//					if(j.CODEID != i.CODEID){
+					for (let j of data) {
+							var sub_menu = "";
+//							console.log("code : " + code);
+//							console.log("j.SUB_MENU : " + j.SUB_MENU);
+							sub_menu += "<ul class='sub-dropdown'>" 
+//						    sub_menu += 	"<li><a href='Category?codetype=" + code  +"'>" + i.MAIN_MENU + "</a></li>"
+							sub_menu += 	"<li>" + j.SUB_MENU + "</li>"
+							sub_menu += "</ul>"
+					}
+//					}
+					console.log(sub_menu);
 				if(code != code_test){
 					$("#resultArea").append(
-							"<li><a href='Category?codetype=" + code + "'>"+ i.MAIN_MENU +"</a></li>"
+					    "<li>" 
+					    + "<a href='Category?codetype=" + code  +"'>" + i.MAIN_MENU + "</a>"
+					    	+ "<ul class='sub-dropdown'>"
+					    		+ "<li><a href='Category?codetype=" + code  +"'>" + i.MAIN_MENU + "</a></li>"
+					    		+ "<li>" + i.SUB_MENU + "</li>"
+					    		 
+					    + "</li>"
 					);
-					for(let j of data) {
-						if(code == 	j.CODEID) { 
-							$("#subResultArea").append(
-								"<li>code?"+code+", j.codeid?"+j.CODEID+"</li>"
-							);
-						}
-					}
 				}
+					
 				var code_test = code;
+
+				   				 
+
+//<li>
+//	<a href="Category?codetype=CATE01">IT/개발</a>
+//	<ul class="sub-dropdown">
+//		<li><a href="Category?codetype=CATE01&codetype_id=01">프로그래밍</a></li>
+//	</ul>
+//</li>
 			}
+			
 //				for(let sub of data) {
 //					if(arr = sub.MAIN_MENU) {
 //						$("#subResultArea").append(

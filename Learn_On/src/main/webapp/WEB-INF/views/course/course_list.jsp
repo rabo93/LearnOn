@@ -59,7 +59,6 @@
 						</script>
 					</div>
 				</div>
-				${courseList}
 				<div class="course-wrap">
 					<ul class="course-card">
 							<c:forEach var="course" items="${requestScope.courseList}" varStatus="status">

@@ -101,11 +101,16 @@ function logout() {
 				<ul class="dropdown">
 					<li>
 						<ul id="resultArea">
-							<ul class="sub-dropdown" id="subResultArea"></ul>							
+							<li>
+								<a href="Category?codetype=CATE01">IT/개발</a>
+								<ul class="sub-dropdown">
+									<li><a href="Category?codetype=CATE01">전체</a></li>
+									
+<!-- 							<ul class="sub-dropdown" id="subResultArea"></ul>							 -->
+								</ul>
+							</li>
 						</ul>
 					</li>
-				
-					
 				</ul>	
 			</li>						
 					

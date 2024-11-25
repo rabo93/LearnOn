@@ -62,11 +62,11 @@
 		                			<label for="floatingInput">강의 제목</label>
 		                		</div>
 								<div class="form-floating mb-3">
-									<input type="text" class="form-control" id="floatingInput" name="class_intro">
+									<textarea class="form-control" id="floatingInput" name="class_intro" style="height: 80px;" rows="3" ></textarea>
 									<label for="floatingInput">강의 소개</label>
 								</div>
 								<div class="form-floating mb-3">
-									<input type="text" class="form-control" id="floatingTextarea" style="height: 150px;" name="class_contents"/>
+									<textarea class="form-control" id="floatingTextarea" style="height: 150px;" name="class_contents" rows="5"></textarea>
 									<label for="floatingTextarea">강의 상세내용</label>
 								</div>
 								<div class="d-flex">

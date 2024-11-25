@@ -476,7 +476,6 @@ public class AdminController {
 	}
 	
 	//	어드민 회원정보 수정
-	//	************* 잠시 보류 *********************
 	@GetMapping("AdmMemberModify")
 	public String AdmMemberModifyForm(String mem_id, Model model) {
 		System.out.println("mem_id : " + mem_id);

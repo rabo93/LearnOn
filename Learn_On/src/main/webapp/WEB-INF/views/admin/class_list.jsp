@@ -52,10 +52,10 @@
 						<h5 class="me-auto tableSubject">클래스 목록</h5>
 						<button type="button" class="btn btn-lg btn-primary ms-3" onclick="location.href='AdmClassAdd'">클래스 등록</button>
 					</div>
-					<div class="d-flex input-group mb-3">
-						<input type="text" class="form-control" placeholder="클래스 제목 검색" aria-label="Recipient's username" aria-describedby="button-addon2">
-						<button class="btn btn-primary" type="button" id="button-addon2">검색</button>
-					</div>
+<!-- 					<div class="d-flex input-group mb-3"> -->
+<!-- 						<input type="text" class="form-control" placeholder="클래스 제목 검색" aria-label="Recipient's username" aria-describedby="button-addon2"> -->
+<!-- 						<button class="btn btn-primary" type="button" id="button-addon2">검색</button> -->
+<!-- 					</div> -->
 						<form name="${getClassList}">
 							<table class="table table-striped">
 								<thead>

@@ -690,6 +690,10 @@ public class AdminController {
 		return "admin/board_review";
 	}
 	
+	// 관리자 - 강의 문의
+	
+	
+	
 	// =======================================================================
 	// 이전 페이지 이동 저장
 	private void savePreviousUrl(HttpServletRequest request, HttpSession session) {

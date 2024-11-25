@@ -38,7 +38,7 @@ public interface CourseMapper {
 		);
 
 
-	int selectCSupportListCount();
+	int selectCSupportListCount(int class_id);
 
 	CourseSupportVO selectCourseSupport(int class_id);
 

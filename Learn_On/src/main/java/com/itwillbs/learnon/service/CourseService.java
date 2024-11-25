@@ -53,8 +53,8 @@ public class CourseService {
 		return mapper.selectCourseSupportList(class_id,startRow,listLimit);
 	}
 
-	public int getCSupportListCount() {
-		return mapper.selectCSupportListCount();
+	public int getCSupportListCount(int class_id) {
+		return mapper.selectCSupportListCount(class_id);
 	}
 
 	public CourseSupportVO getCourseSupport(int class_id) {

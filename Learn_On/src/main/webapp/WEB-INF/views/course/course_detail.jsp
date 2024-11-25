@@ -39,7 +39,17 @@
 			        <div class="cls-event-card-footer">
 
 			            <button class="apply-button" onclick="applyForCourse('${course[0].class_id}', '${param.codetype}')">수강신청 하기</button>
-			            <button class="cart-button">바구니에 담기</button>
+<!-- 			            <button class="cart-button">관심목록에 추가하기</button> -->
+						<div  id="${course[0].class_id}">
+				            <button class="fav-off" style="display:block;" onclick="addToWishList('${course[0].class_id}')">
+<!-- 								<i class="fa-regular fa-heart"></i> -->
+									관심목록에 추가
+							</button>
+							<button class="fav-on" style="display:none;" onclick="deleteToWishList('${course[0].class_id}')">
+<!-- 								<i class="fa-solid fa-heart"></i> -->
+									관심목록에서 삭제
+							</button>
+						</div>
 			        </div>
 			    </div>
 			
@@ -52,16 +62,16 @@
 		        </section>
 		        
 		        <section class="class-details">
-		        	<ul>
-			        	<li id="${course[0].class_id}">
-				        	<button class="fav-off" style="display:block;" onclick="addToWishList('${course[0].class_id}')">
-								<i class="fa-regular fa-heart"></i>
-							</button>
-							<button class="fav-on" style="display:none;" onclick="deleteToWishList('${course[0].class_id}')">
-								<i class="fa-solid fa-heart"></i>
-							</button>
-						</li>
-					</ul>
+<!-- 		        	<ul> -->
+<%-- 			        	<li id="${course[0].class_id}"> --%>
+<%-- 				        	<button class="fav-off" style="display:block;" onclick="addToWishList('${course[0].class_id}')"> --%>
+<!-- 								<i class="fa-regular fa-heart"></i> -->
+<!-- 							</button> -->
+<%-- 							<button class="fav-on" style="display:none;" onclick="deleteToWishList('${course[0].class_id}')"> --%>
+<!-- 								<i class="fa-solid fa-heart"></i> -->
+<!-- 							</button> -->
+<!-- 						</li> -->
+<!-- 					</ul> -->
 		            <h1>${course[0].class_title}</h1>
 					<p>${course[0].class_intro}</p>       
 		            <div class="cls_det_rating">
@@ -165,7 +175,6 @@
             </div>
         </section>
 		<script>
-		
 			window.onload = function() {
 				const wishList = ${wishList};
 				

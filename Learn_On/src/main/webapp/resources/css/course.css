@@ -207,7 +207,7 @@
 /*     background-color: #f8f8f8; */
 }
 
-.cls-event-card-footer button {
+.cls-event-card-footer button, .cls-event-card-footer div {
     border: none;
     padding: 10px 15px;
     font-size: 14px;
@@ -225,13 +225,17 @@
     background-color: #333;
 }
 
-.cart-button {
+.cart-button .fav-on{
     background-color: #f8f8f8;
     color: #444;
     border: 1px solid #ddd;
 }
 
 .cart-button:hover {
+    background-color: #eaeaea;
+}
+
+.fav-on {
     background-color: #eaeaea;
 }
 /* 이벤트 카드 css 끝 */

@@ -63,10 +63,10 @@
 								    			</p>
 								    			<p class="c-dis">
 								    				<c:choose>
-								    					<c:when test="${coupon.DISCOUNT_STATUS == 1}">
+								    					<c:when test="${coupon.DISCOUNT_TYPE == 1}">
 								    						${coupon.DISCOUNT_PERCENT} %
 								    					</c:when>
-								    					<c:when test="${coupon.DISCOUNT_STATUS == 2}">
+								    					<c:when test="${coupon.DISCOUNT_TYPE == 2}">
 								    						${coupon.DISCOUNT_AMOUNT} 원
 								    					</c:when>
 								    				</c:choose>

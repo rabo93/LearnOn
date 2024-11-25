@@ -11,7 +11,7 @@ $(document).ready(function() {
 		//클릭한 사용하기 버튼의 쿠폰 아이디 및 필요한 할인 정보 가져와서 coupon에 담기
 		let coupon = { 
 			COUPON_ID: $(this).data("coupon-id"),
-	        DISCOUNT_STATUS: $(this).data("discount-status"),
+	        DISCOUNT_TYPE: $(this).data("discount-type"),
 	        DISCOUNT_PERCENT: $(this).data("discount-percent"),
 	        DISCOUNT_AMOUNT: $(this).data("discount-amount")
 		};

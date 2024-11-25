@@ -132,11 +132,14 @@
     <!-- Template Javascript -->
     <script src="resources/admin/js/main.js"></script>
     <script type="text/javascript">
-    		var link = document.location.href;
-	    	if (link.includes("Adm")) {
-	    		document.getElementById("member").classList.toggle("active");
-	    		document.getElementById("memberIns").classList.toggle("active");
-	    	};
+		// 메뉴 활성화
+		let link = document.location.href;
+		if (link.includes("AdmMemInstructor")) {
+			document.querySelector("#memberIns").parentElement.previousElementSibling.classList.add("show");
+			document.querySelector("#memberIns").parentElement.previousElementSibling.classList.add("active");
+			document.querySelector("#memberIns").parentElement.classList.add("show");
+			document.querySelector("#memberIns").classList.toggle("active");
+		};
     </script>
 </body>
 </html>

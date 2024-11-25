@@ -61,14 +61,14 @@
 						<tr>
 							<th>쿠폰할인률</th>
 							<td>
-								<select class="form-select" name="discount_status" id="discount_status">
-									<option value="1" <c:if test="${coupon.discount_status eq 1}">selected</c:if>>%</option>
-									<option value="2" <c:if test="${coupon.discount_status eq 2}">selected</c:if>>금액</option>
+								<select class="form-select" name="discount_type" id="discount_type">
+									<option value="1" <c:if test="${coupon.discount_type eq 1}">selected</c:if>>%</option>
+									<option value="2" <c:if test="${coupon.discount_type eq 2}">selected</c:if>>금액</option>
 								</select>
 								<input type="text" class="form-control" id="discount_input" name="discount_value" pattern="^[0-9]{1,10}$" title="숫자만 입력하세요"
 									<c:choose>
-										<c:when test="${coupon.discount_status eq 1}">value='${coupon.discount_percent}'</c:when>
-										<c:when test="${coupon.discount_status eq 2}">value='${coupon.discount_amount}'</c:when>
+										<c:when test="${coupon.discount_type eq 1}">value='${coupon.discount_percent}'</c:when>
+										<c:when test="${coupon.discount_type eq 2}">value='${coupon.discount_amount}'</c:when>
 									</c:choose>
 								>
 							</td>
@@ -116,7 +116,7 @@
     <script src="resources/admin/js/main.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
-	        let discountStatus = $('#discount_status').val(); // 초기 선택값 확인
+	        let discountStatus = $('#discount_type').val(); // 초기 선택값 확인
 	        let discountInput = $('#discount_input');
 	
 	        if (discountStatus === '1') {
@@ -139,7 +139,7 @@
 	        
 	    });
 		
-		$('#discount_status').on('change', function() {
+		$('#discount_type').on('change', function() {
 	        let discountInput = $('#discount_input');
 	        let discountStatus = $(this).val();
 			
@@ -152,12 +152,14 @@
 	    });
 		
 		
-		
-		var link = document.location.href;
-	   	if (link.includes("board")) {
-	   		document.getElementById("board").classList.toggle("active");
-	   		document.getElementById("boardManage").classList.toggle("active");
-	   	};
+		// 메뉴 활성화
+		let link = document.location.href;
+    	if (link.includes("AdmCouponModify")) {
+    		document.querySelector("#paymentCoupon").parentElement.previousElementSibling.classList.add("show");
+    		document.querySelector("#paymentCoupon").parentElement.previousElementSibling.classList.add("active");
+    		document.querySelector("#paymentCoupon").parentElement.classList.add("show");
+    		document.querySelector("#paymentCoupon").classList.toggle("active");
+    	};
 	</script>
 </body>
 </html>

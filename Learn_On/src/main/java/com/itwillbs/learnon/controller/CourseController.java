@@ -66,16 +66,13 @@ public class CourseController {
 	}
 	
 	@PostMapping("CourseFind")
-	public String courseFind(String find_title, CourseVO course) {
+	public String courseFind(String find_title, Model model) {
 		
-		// 기존의 강의 목록 출력(course가 왜필요한거지??)
-//		List<CourseVO> courseList = courseService.getCourseList(course, codetype, searchType);
 		// 상단의 클래스 검색창 
-		List<CourseVO> courseList = courseService.getCourseList(course, find_title, find_title);
-		
+		List<CourseVO> courseList = courseService.getFindCourseList(find_title);
+		model.addAttribute("courseList", courseList);
 		return "course/course_list"; 
 	}
-	
 	
 	@GetMapping("Category")
 	public String courseList(
@@ -118,6 +115,8 @@ public class CourseController {
 		return "course/course_list"; 
 	}
 	
+	
+	
 	@GetMapping("CourseDetail")
 	public String courseDetail(
 				int class_id, 
@@ -135,8 +134,7 @@ public class CourseController {
 		// codetype으로 조회한 공통코드
 		List<CommonCodeTypeVO> codeType = courseService.getCodeType(codetype); 
 		// 강사의 다른 클래스 조회
-//		System.out.println("선생님 아이딛??????????@#$!@%!   :    "  + course.get(1).getTeacher_id());
-		List<CourseVO> courseTeacher = courseService.getCourseTeacher(class_id, course.get(1).getTeacher_id());
+		List<CourseVO> courseTeacher = courseService.getCourseTeacher(class_id, course.get(0).getTeacher_id());
 		
 		
 		// 관심목록 조회
@@ -221,41 +219,54 @@ public class CourseController {
 		cSupport.setC_class_id(class_id);
 
 		// --------------------------------------------------------
-		// [ 답글등록 과정에서 파일 업로드 처리 ]
-		String realPath = session.getServletContext().getRealPath(uploadPath); // request대신 session을 써도 똑같은 메서드가 존재함.
-		String subDir = "";// 서브 디렉토리명을 저장할 변수 선언
-		LocalDate today = LocalDate.now();//현재 시스템의 날짜 정보 생성
-		String datePattern ="yyyy/MM/dd"; // 날짜 포맷 변경에 사용할 패턴 문자열 지정
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern(datePattern);
-		subDir = today.format(dtf);  // LocalDate - DateTimeFormatter
+		// [ 파일 업로드 처리 ]
+//		String realPath = session.getServletContext().getRealPath(uploadPath); // request대신 session을 써도 똑같은 메서드가 존재함.
+//		String subDir = "";// 서브 디렉토리명을 저장할 변수 선언
+//		LocalDate today = LocalDate.now();//현재 시스템의 날짜 정보 생성
+//		String datePattern ="yyyy/MM/dd"; // 날짜 포맷 변경에 사용할 패턴 문자열 지정
+//		DateTimeFormatter dtf = DateTimeFormatter.ofPattern(datePattern);
+//		subDir = today.format(dtf);  // LocalDate - DateTimeFormatter
+//		realPath += "/" + subDir;
+//		
+//		try {
+//			Path path = Paths.get(realPath); // 파라미터로 실제 업로드 경로전달
+//			Files.createDirectories(path); // IOException 예외 처리 필요(임시로 현재 클래스에서 처리) - 이거쓰면 그냥 10월29일 날짜 폴더 만들어져 있으면 알아서 안만든다. exist*() 메서드로 폴더있나 없나 확인안해도 됨.
+//		} catch(Exception e) {
+//			e.printStackTrace();
+//		}
+//		// ------------------------------------
+//		// [업로드 되는 실제 파일 처리]
+//		// 실제 파일은 BoardVO 객체의 MultipartFile 타입 객체로 관리함(멤버변수명 fileXXX)
+//		MultipartFile mFile1 = cSupport.getFile(); 
+//		cSupport.setC_support_file("");
+//		
+//		String fileName1 = "";
+//		
+//		// 업로드 파일명이 널스트링이 아닐 경우를 판별하여 파일명 저장
+//		if(!mFile1.getOriginalFilename().equals("")) {
+//			fileName1 = UUID.randomUUID().toString().substring(0, 8) + "_" + mFile1.getOriginalFilename();
+//			cSupport.setC_support_file(fileName1);
+//		}
+//		
+		
+		
+		// 파일 업로드 처리 준비
+		String realPath = getRealPath(session); // 실제 경로 알아내기
+		String subDir = createDirectories(realPath); // 디렉토리 생성하기
+		// 기존 realPth 경로에 subDir 경로 결합
 		realPath += "/" + subDir;
 		
-		try {
-			Path path = Paths.get(realPath); // 파라미터로 실제 업로드 경로전달
-			Files.createDirectories(path); // IOException 예외 처리 필요(임시로 현재 클래스에서 처리) - 이거쓰면 그냥 10월29일 날짜 폴더 만들어져 있으면 알아서 안만든다. exist*() 메서드로 폴더있나 없나 확인안해도 됨.
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		// ------------------------------------
-		// [업로드 되는 실제 파일 처리]
-		// 실제 파일은 BoardVO 객체의 MultipartFile 타입 객체로 관리함(멤버변수명 fileXXX)
-		MultipartFile mFile1 = cSupport.getFile(); 
-		cSupport.setC_support_file("");
+		List<String> fileNames = processDuplicateFileNames(cSupport, subDir); // 중복 처리된 파일명 리턴
+		int updateCount = courseService.modifyCourseSupport(cSupport);
 		
-		String fileName1 = "";
-		
-		// 업로드 파일명이 널스트링이 아닐 경우를 판별하여 파일명 저장
-		if(!mFile1.getOriginalFilename().equals("")) {
-			fileName1 = UUID.randomUUID().toString().substring(0, 8) + "_" + mFile1.getOriginalFilename();
-			cSupport.setC_support_file(fileName1);
-		}
+		CourseSupportVO courseSupport = courseService.getCourseSupport(class_id);
 		
 		//----------------------------
 		 // BoradService - registReplyBoard() 메서드 호출하여 게시물 등록 작업요청
 		 // => 파라미터: BoardVO 객체, 리턴타입 : int(insrtCount)
 		int insertCount = courseService.registCourseSupport(cSupport);
 		if(insertCount > 0) { // 등록 성공
-			
+			completeUpload(cSupport, realPath, fileNames);
 			model.addAttribute("class_id", class_id);
 			return "redirect:/CourseSupportList?class_id="+ class_id;
 		} else {
@@ -313,9 +324,6 @@ public class CourseController {
 		}
 		
 		model.addAttribute("courseSupport", courseSupport);
-		// ----------------------------------------------------------------
-		// 뷰페이지에서 파일 목록의 효율적 처리를 위해 addFileListToModel() 메서드 활용
-		addFileListToModel(courseSupport, model);
 		return "course/course_support_modify_form"; 
 	}
 	
@@ -382,15 +390,12 @@ public class CourseController {
 		return "true";
 	}
 	@GetMapping("CourseSupportDelete")
-	public String courseSupportDelete(
-			int class_id,
-			int c_support_idx,
-			CourseSupportVO cSupport, 	
-			@RequestParam(defaultValue = "1") int pageNum, 
-			HttpSession session, 
-			HttpServletRequest request,
-			Model model) {
-
+	public String courseSupportDelete(CourseSupportVO cSupport,
+					@RequestParam(defaultValue = "1") int pageNum, 
+					HttpSession session, 
+					HttpServletRequest request,
+					Model model) {
+		
 		// 미 로그인 처리 
 		String id = (String)session.getAttribute("sId");
 		if(id == null) {
@@ -417,7 +422,7 @@ public class CourseController {
 		// -------------------------------------------------------------------
 		// 게시물 삭제 후 실제 업로드 된 파일도 서버상에서 삭제해야 하므로
 		// DB에서 게시물에 해당하는 레코드 삭제 전 파일명을 미리 조회해야 함
-		cSupport = courseService.getCourseSupport(c_support_idx); 
+		cSupport = courseService.getCourseSupport(cSupport.getC_support_idx()); 
 		
 		// 조회된 게시물이 존재하지 않거나, 조회된 게시물의 작성자가 세션 아이디와 다를 경우 
 		// "잘못된 접근입니다!" 처리하기 위해 "result/fail.jsp"페이지로 포워딩 처리
@@ -429,7 +434,7 @@ public class CourseController {
 		// -------------------------------------------------------------------
 		// BoardService - removeBoard() 메서드 호출하여 게시물 삭제 요청
 		// => 파라미터 : boardVO 객체 리턴타입 : int(deleteCount)
-		int deleteCount = courseService.removeCourseSupport(c_support_idx);
+		int deleteCount = courseService.removeCourseSupport(cSupport.getC_support_idx());
 		
 		// DB 게시물 정보 삭제 처리 결과 판별 후 성공시 파일 삭제 작업처리 
 		if(deleteCount > 0) {
@@ -448,8 +453,7 @@ public class CourseController {
 			}
 			
 			// ----------------------------------------------------------
-			return "redirect:/CourseSupportList?class_id="+ class_id + "&pageNum=" + pageNum;
-			
+			return "redirect:/CourseSupportList?class_id=" + cSupport.getC_class_id() + "&pageNum="+pageNum;
 			
 		} else {
 			model.addAttribute("msg", "삭제실패");
@@ -497,7 +501,7 @@ public class CourseController {
 		if(insertCount > 0) { // 등록 성공
 			
 			model.addAttribute("class_id", class_id);
-			return "redirect:/CourseDetail?class_id="+ class_id + "&codetype=" + codetype;
+			return "redirect:/Cart";
 		} else {
 			model.addAttribute("msg", "문의글쓰기실패");
 			return "result/fail";
@@ -641,52 +645,18 @@ public class CourseController {
 			e.printStackTrace();
 		}
 	}
-	private void addFileListToModel(CourseSupportVO cSupport, Model model) {
-		// 뷰 페이지에서 파일목록의 효율적 처리를 위해 별도의 가공 후 전달
-//		1. 파일명을 별도의 list 객체에 저장(제네릭 타입 : String)
-		List<String> fileList = new ArrayList<String>();
-		fileList.add(cSupport.getC_support_file());
-		System.out.println(fileList);
-		//----------------------
-		// 2. 만약, 컨트롤러 측에서 원본 파일명을 추출하여 전달할 경우
-		// => 파일명이 저장된 List 객체를 반복하면서 원본 파일명을 추출하여 별도의 List에 저장
-		List<String> originalFileList = new ArrayList<String>();
-		
-		for(String file : fileList) {
-//			System.out.println("file: " + file);
-			if(!file.equals("")) {
-				// 실제 파일명에서 "-" 기호 다음(인덱스값 + 1)부터 끝까지 추출하여 리스트에 추가
-//				originalFileList.add(file.substring(file.indexOf("_") + 1));
-				originalFileList.add(file);
-			} else {
-				// 파일이 존재하지 않을 경우 원본 파일명도 파일명과 동일하게 null 로 저장
-				originalFileList.add(file);
-			}
-		}
-		System.out.println("originalFileList" + originalFileList); // 자동적으로 위치도 구분해서 나온다.
-		//----------------
-		// Model 객체에 파일 목록 객체 2개 저장
-		model.addAttribute("fileList", fileList);
-		model.addAttribute("originalFileList", originalFileList); // model은 파라미터에서 보내주니까 void가 맞다. 같은 객체이므로
-		// Model 객체를 별도로 리턴하지 않아도 객체 자체를 전달받았으므로
-				// 메서드 호출한 곳에서 저장된 속성 그대로 공유 가능
-	}
-	
 	public PageInfo paging(@RequestParam(defaultValue = "1") int pageNum, int class_id) {
 		// -------------------------------------------------------------------
 		// [ 페이징 처리 ]
 		int listLimit = 5; // 페이지 당 게시물 수
 		int listCount = courseService.getCSupportListCount(class_id);
-//		System.out.println("listCount : " + listCount);
 		int pageListLimit = 5; 
 		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
-//		System.out.println("maxPage : " + maxPage);
 		if(maxPage == 0) {
 			maxPage = 1;
 		}
 		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
 		int endPage = startPage + pageListLimit - 1;
-//		System.out.println("endPage : " + endPage);
 		if(endPage > maxPage) {
 			endPage = maxPage;
 		}

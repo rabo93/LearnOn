@@ -86,6 +86,15 @@ function deleteSubCateRow() {
 	}
 }
 
+function searchInstructor() {
+	var child;
+	child = window.open("", "_blank", "height:300, width:300");
+}
+
+
+
+
+
 // 소분류 불러오기
 function selectMainCate() {
 	let mainCateId = document.querySelector("select[name=class_maincate]").value;

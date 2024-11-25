@@ -56,8 +56,8 @@ public class AdminService {
 	public int registClass(AdminVO vO) {
 		return mapper.insertClass(vO);
 	}
-	public int curriculum(AdminVO insertCur) {
-		return mapper.curriculum(insertCur);
+	public int insertCurriculum(AdminVO insertCur) {
+		return mapper.insertCurriculum(insertCur);
 	}
 	public List<AdminVO> getClassList() {
 		return mapper.getClassList();
@@ -65,7 +65,7 @@ public class AdminService {
 	public List<AdminVO> getClass(AdminVO vO) {
 		return mapper.getClass(vO);
 	}
-	public List<CourseVO> updateClass(AdminVO vO) {
+	public int updateClass(AdminVO vO) {
 		return mapper.updateClass(vO);
 	}
 	
@@ -137,6 +137,9 @@ public class AdminService {
 	}
 	public int deleteCurriculum(int i) {
 		return mapper.deleteCurriculum(i);
+	}
+	public int updateCurriculum(AdminVO vO) {
+		return mapper.updateCurriculum(vO);
 	}
 
 }

@@ -52,7 +52,7 @@
 							<li><a href="CourseDetail?class_id=${course[0].class_id}#tab01">클래스 소개</a></li>
 							<li><a href="CourseDetail?class_id=${course[0].class_id}#tab02">커리큘럼</a></li>
 							<li><a href="CourseDetail?class_id=${course[0].class_id}#tab03">수강평</a></li>
-							<li><a class="tab on" href="#" >문의(10)</a></li>
+							<li><a class="tab on" href="#" >문의()</a></li>
 						</ul>
 				
 						<div class="tabmenu" id="tab04">
@@ -107,17 +107,27 @@
 											</div>
 											
 											
-											<div class="question_a">
-											    <div class="r_header">
-											        <div class="profile-icon"></div>
-											        <div class="user-info">
-											            <div class="name"></div>
-											            <div class="date"></div>
-											        </div>
-											    </div>
-											    <div class="review-text">
-											    </div>
-											</div>
+											<c:if test="${not empty support.c_support_answer_subject }">
+												<div class="question_a">
+												    <div class="r_header">
+												        <div class="profile-icon"></div>
+												        <div class="user-info">
+												            <div class="name">
+												            	<c:if test="${not empty support.c_support_answer_subject}">
+												            		관리자
+												            	</c:if>
+												            </div>
+												            <div class="date">${support.c_support_answer_date}</div>
+												        </div>
+												    </div>
+												    <div class="review-title">
+												    	${support.c_support_answer_subject}
+												    </div>
+												    <div class="review-text">
+												    	${support.c_support_answer_content}
+												    </div>
+												</div>
+											</c:if>
 										</div> <!-- question_qna 문의사항 질문-답변 -->
 									</c:forEach>
 								</c:otherwise>

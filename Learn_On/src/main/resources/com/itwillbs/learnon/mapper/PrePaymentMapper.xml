@@ -6,7 +6,7 @@
 	
 	<!-- 사전 결제 정보 DB 저장 -->
 	<insert id="save">
-		INSERT INTO PAYTEST (
+		INSERT INTO PAY_INFO (
 			MERCHANT_UID
 			, CLASS_NAME
 			, MEM_NAME

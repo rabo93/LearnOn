@@ -42,7 +42,7 @@
 								<h5 class="box-ttl">주문상품</h5>
 								
 								<c:forEach var="item" items="${selectedCartList}">
-									<div class="class-box" data-class-title="${item.classTitle}" data-class-price="${item.classPrice}">
+									<div class="class-box" data-class-id="${item.classId}" data-class-title="${item.classTitle}" data-class-price="${item.classPrice}">
 										<div class="class-pic">
 											<img alt="클래스썸네일" src="/resources/images/thumb_01.webp">
 										</div>

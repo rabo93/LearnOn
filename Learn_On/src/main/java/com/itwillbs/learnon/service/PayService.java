@@ -4,13 +4,15 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.itwillbs.learnon.mapper.PayMapper;
 import com.itwillbs.learnon.mapper.PrePaymentMapper;
 import com.itwillbs.learnon.vo.MemberVO;
 import com.itwillbs.learnon.vo.PayVO;
-import com.itwillbs.learnon.vo.PurchaseVO;
+import com.itwillbs.learnon.vo.OrderVO;
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.request.PrepareData;
@@ -32,7 +34,7 @@ public class PayService {
 	private PayMapper mapper;
 	//------------------------------------------------------------------------
 	//결제 상품 목록 조회
-	public List<PurchaseVO> getSelectedCart(List<String> checkItems) {
+	public List<OrderVO> getSelectedCart(List<String> checkItems) {
 		System.out.println("Service checkItems: " + checkItems);  // checkItems 값 확인
 		return mapper.selectedCart(checkItems);
 	}
@@ -42,6 +44,24 @@ public class PayService {
 	public MemberVO getMemberInfo(String sId) {
 		return mapper.selectMember(sId);
 	}
+
+	//------------------------------------------------------------------------
+	//결제 정보 저장
+	@Transactional
+	public void savePayInfo(PayVO payVO) {
+		mapper.insertPayInfo(payVO);
+	}
+	//주문 정보 저장
+	@Transactional
+	public void saveOrderInfo(OrderVO orderVO) {
+		mapper.insertOrderInfo(orderVO);
+	}
+	//장바구니 내역 삭제
+	@Transactional
+	public void deleteCart(int cartItemIdx) {
+		mapper.deleteCart(cartItemIdx);
+	}
+
 	
 	//------------------------------------------------------------------------
 	//결제 사전 검증 - 결제예상 주문번호와 주문금액을 DB에 저장

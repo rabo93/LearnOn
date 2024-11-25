@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +20,7 @@ import com.itwillbs.learnon.vo.MemberVO;
 import com.itwillbs.learnon.vo.PayCancelVO;
 import com.itwillbs.learnon.vo.PayVO;
 import com.itwillbs.learnon.vo.PayVerificationVO;
-import com.itwillbs.learnon.vo.PurchaseVO;
+import com.itwillbs.learnon.vo.OrderVO;
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.request.CancelData;
@@ -54,7 +55,7 @@ public class PayController {
 		MemberVO member = payService.getMemberInfo(sId);
 	    
 		// List<String>으로 전달하여 getSelectedCarts 호출
-	    List<PurchaseVO> selectedItems = payService.getSelectedCart(checkItems);
+	    List<OrderVO> selectedItems = payService.getSelectedCart(checkItems);
 //	    System.out.println("selectedItems: " + selectedItems);
 	    
 	    
@@ -89,7 +90,7 @@ public class PayController {
 	// - 테스트 환경에서는 부분 환불이 불가능하므로 전체 환불 처리
 	@ResponseBody
 	@PostMapping("/payments/verification")
-	private IamportResponse<Payment> paymentByImpUid(@RequestBody PayVerificationVO payVerificationVO) throws IamportResponseException, IOException {
+	public IamportResponse<Payment> paymentByImpUid(@RequestBody PayVerificationVO payVerificationVO) throws IamportResponseException, IOException {
 		System.out.println("결제검증VO: " + payVerificationVO); //결제검증VO: PayVerificationVO(imp_uid=imp_600839946642, merchant_uid=2024112421267, amount=1004)
 	
 		//IamportClient클래스의 paymentByImpUid() 함수 호출
@@ -100,7 +101,7 @@ public class PayController {
 	// 결제 취소 비즈니즈 로직
 	@ResponseBody
 	@PostMapping("/payments/cancel")
-	private IamportResponse<Payment> cancelPaymentbyImpUid(@RequestBody PayCancelVO paycancelVO) throws IamportResponseException, IOException {
+	public IamportResponse<Payment> cancelPaymentbyImpUid(@RequestBody PayCancelVO paycancelVO) throws IamportResponseException, IOException {
 		System.out.println("결제 취소에 필요한 VO: " + paycancelVO); 
 		
 		String impUid = paycancelVO.getImp_uid();
@@ -114,11 +115,23 @@ public class PayController {
 	//--------------------------------------------------------
 	// 사후 처리 후 결제정보&주문정보 저장하기 => AJAX로 요청 후 서버응답
 	// 3. 아래 코드는 결제 테스트 검증 후 진행하기
-//	 @PostMapping("/save_buyerInfo")
-//	 @ResponseBody
-
-//    @PostMapping("/save_orderInfo")
-//    @ResponseBody
+	@ResponseBody
+	@PostMapping("payinfoSave")
+	public void  savePayInfo(@RequestBody PayVO payVO) throws IamportResponseException, IOException {
+		System.out.println("결제저장DTO" + payVO);
+		payService.savePayInfo(payVO);
+	}
+	
+	@ResponseBody
+    @PostMapping("orderinfoSave")
+	public String orderPayInfo(@RequestBody OrderVO orderVO) throws IamportResponseException, IOException {
+		System.out.println("주문저장DTO" + orderVO);
+		
+		payService.saveOrderInfo(orderVO);
+		payService.deleteCart(orderVO.getCartItemIdx());
+		
+		return orderVO.getMerchant_uid(); 
+	}
     
 	// OrderSerivce
 //    @Transactional
@@ -136,6 +149,9 @@ public class PayController {
 //        CartEntity cart = cartRepository.findByUseridAndCartid(userid, cartid);
 //        cartRepository.delete(cart);
 //    }
+	
+	
+	
 	
 	//=================================================================================
 	// "Terms" 이용약관 페이지 매핑 - GET

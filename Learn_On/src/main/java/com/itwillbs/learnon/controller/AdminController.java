@@ -32,11 +32,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.learnon.service.AdminService;
 import com.itwillbs.learnon.service.CouponService;
+import com.itwillbs.learnon.service.CourseService;
 import com.itwillbs.learnon.service.FaqService;
 import com.itwillbs.learnon.service.MypageService;
 import com.itwillbs.learnon.service.NoticeBoardService;
 import com.itwillbs.learnon.vo.AdminVO;
 import com.itwillbs.learnon.vo.CouponVO;
+import com.itwillbs.learnon.vo.CourseSupportVO;
 import com.itwillbs.learnon.vo.FaqVO;
 import com.itwillbs.learnon.vo.NoticeBoardVO;
 import com.itwillbs.learnon.vo.PageInfo;
@@ -54,6 +56,9 @@ public class AdminController {
 	private CouponService couponService;
 	@Autowired
 	private MypageService myService;
+	@Autowired
+	private CourseService courseService;
+	
 	
 	
 	private String uploadPath = "/resources/upload";
@@ -741,13 +746,95 @@ public class AdminController {
 		return "admin/board_faq";
 	}
 	
-	// 어드민 수강 후기 관리 페이지 매핑
-	@GetMapping("AdmReview")
-	public String admin_board_review() {
-		return "admin/board_review";
+	// 관리자 - 강의 별 문의 게시판 목록 
+	@GetMapping("AdmCourseSupport")
+	public String admCourseSupport(@RequestParam(defaultValue = "1") int pageNum, HttpServletRequest request, HttpSession session, Model model) {
+		// 세션아이디 체크
+		String id = (String)session.getAttribute("sId");
+//		if(id == null) {
+//			model.addAttribute("msg", "로그인 필수!\\n 로그인 페이지로 이동합니다!");
+//			model.addAttribute("targetURL", "MemberLogin");
+//			savePreviousUrl(request, session);
+//			
+//			return "result/fail";
+//		}
+		
+		// 페이징 설정
+		int listLimit = 10; // 한 페이지당 게시물 수
+		int startRow = (pageNum - 1) * listLimit;
+		int listCount = courseService.getCSupportListCount(0);
+		
+		int pageListLimit = 5; // 페이징 개수 
+		int maxPage = (listCount / listLimit) + (listCount % listLimit > 0 ? 1 : 0);
+		
+		if(maxPage == 0) {
+			maxPage = 1;
+		}
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		System.out.println("maxPage = " + maxPage);
+		int endPage = startPage + pageListLimit - 1;
+		
+		if(endPage > maxPage) {
+			endPage = maxPage;
+		}
+		
+		if(pageNum < 1 || pageNum > maxPage) {
+			model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+			model.addAttribute("targetURL", "MySupport?pageNum=1");
+			return "result/fail";
+		}
+		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
+		
+		// Model 객체에 페이징 정보 저장
+		model.addAttribute("pageInfo", pageInfo);
+		
+		// 게시물 목록 조회
+		List<CourseSupportVO> courseSupportList = adminService.getCourserSupportListToAdm(startRow, listLimit);
+		
+		
+		// 첨부파일 정보 저장
+		for(CourseSupportVO cSupport : courseSupportList) {
+			String originalFileName = "";
+			
+			if(cSupport.getC_support_file() != null) {
+				originalFileName = cSupport.getC_support_file().substring(cSupport.getC_support_file().indexOf("_") + 1);
+			} else {
+				originalFileName = null;
+			}
+			
+			cSupport.setC_support_file(originalFileName);
+		}
+		
+		System.out.println(courseSupportList);
+		
+		model.addAttribute("courseSupportList", courseSupportList);
+		
+		return "admin/course_support_list";
 	}
 	
-	// 관리자 - 강의 문의
+	// 관리자 - 강의 문의 답변 작성/수정(업데이트)
+	@PostMapping("AdmCourseSupportUpdate")
+	public String admCourseSupportUpdate(@RequestParam(defaultValue = "1") int pageNum, CourseSupportVO cSupport, HttpServletRequest request, HttpSession session, Model model) {
+		System.out.println("pageNum : " + pageNum);
+		// 세션아이디 체크
+		String id = (String)session.getAttribute("sId");
+//		if(id == null) {
+//			model.addAttribute("msg", "로그인 필수!\\n 로그인 페이지로 이동합니다!");
+//			model.addAttribute("targetURL", "MemberLogin");
+//			savePreviousUrl(request, session);
+//			
+//			return "result/fail";
+//		}
+		
+		int updateCount = adminService.answerSupport(cSupport);
+		
+		if(updateCount > 0) {
+			return "redirect:/AdmCourseSupport?pageNum=" + pageNum;
+		} else {
+			model.addAttribute("msg", "수정 실패!");
+			return "result/fail";
+		}
+	}
 	
 	
 	

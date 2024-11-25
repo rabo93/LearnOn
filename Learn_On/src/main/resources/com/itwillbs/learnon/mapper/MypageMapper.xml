@@ -269,6 +269,7 @@
 		  AND CLASS_ID = #{class_id}
 	</update>
 	<update id="updateCourseStatus">
+		-- 학습시간에 따른 상태 변경(학습중, 완강)
 		UPDATE MYCOURSE A
 		  JOIN CLASS C ON A.CLASS_ID = C.CLASS_ID
 		   SET A.COURSE_STATUS = 

@@ -192,7 +192,10 @@
 	<select id="selectCSupportListCount"  resultType="int">
 		SELECT COUNT(*)
 		  FROM CLASS_SUPPORT
-		 WHERE C_CLASS_ID = ${class_id}
+		 WHERE 1 = 1
+		 <if test="class_id != 0">
+		   AND C_CLASS_ID = ${class_id}
+		 </if>
 		  
 	</select>
 	

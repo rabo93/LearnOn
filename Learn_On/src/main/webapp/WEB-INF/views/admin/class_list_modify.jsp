@@ -80,7 +80,7 @@
 											<label for="floatingSelect">대분류</label>
 										</div>
 										<div class="form-floating flex-fill me-3">
-											<input type="hidden" value="${modi.name}" id="selectedSubCate">
+<%-- 											<input type="hidden" value="${modi.name}" id="selectedSubCate"> --%>
 											<select class="form-select" id="floatingSelect2" name="class_category">
 											</select>
 											<label for="floatingSelect2">소분류</label>
@@ -180,13 +180,6 @@
     		document.getElementById("classList").classList.toggle("active");
     		document.getElementById("classManage").classList.toggle("active");
     	};
-    	
-    	$(function () {
-    		let classSubCate = document.getElementById("selectedSubCate").value;
-    		let selectSubCate = document.getElementById("floatingSelect2");
-    		console.log(classSubCate);
-    		console.log(selectSubCate);
-    	})
     </script>
 </body>
 </html>

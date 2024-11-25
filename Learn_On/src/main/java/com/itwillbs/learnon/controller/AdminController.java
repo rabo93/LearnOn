@@ -32,11 +32,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.learnon.service.AdminService;
 import com.itwillbs.learnon.service.CouponService;
+import com.itwillbs.learnon.service.CourseService;
 import com.itwillbs.learnon.service.FaqService;
 import com.itwillbs.learnon.service.MypageService;
 import com.itwillbs.learnon.service.NoticeBoardService;
 import com.itwillbs.learnon.vo.AdminVO;
 import com.itwillbs.learnon.vo.CouponVO;
+import com.itwillbs.learnon.vo.CourseSupportVO;
+import com.itwillbs.learnon.vo.CourseVO;
 import com.itwillbs.learnon.vo.FaqVO;
 import com.itwillbs.learnon.vo.MemberVO;
 import com.itwillbs.learnon.vo.NoticeBoardVO;
@@ -55,6 +58,9 @@ public class AdminController {
 	private CouponService couponService;
 	@Autowired
 	private MypageService myService;
+	@Autowired
+	private CourseService courseService;
+	
 	
 	
 	private String uploadPath = "/resources/upload";
@@ -335,8 +341,8 @@ public class AdminController {
 	@ResponseBody
 	@GetMapping("SelectCategory")
 	public String selectCategory(AdminVO admin) {
+		System.out.println("=========================================================" + admin);
 		List<Map<String, Object>> adminArr = adminService.selectSubCate(admin);
-//		System.out.println("admin : " + adminArr);
 		
 		JSONArray joArr = new JSONArray(adminArr);
 		
@@ -355,11 +361,10 @@ public class AdminController {
 	
 	// 어드민 클래스 수정 페이지 매핑
 	@GetMapping("AdmClassListModify")
-	public String admin_class_list_modi(AdminVO VO, Model model) {
+	public String admin_class_list_modi(AdminVO VO, Model model, int class_id) {
 		model.addAttribute("getMainCate", adminService.getMainCate());
 		model.addAttribute("getCurriculum", adminService.getCurriculum(VO));
 		List<AdminVO> classLoad = adminService.getClass(VO);
-		System.out.println(VO);
 		model.addAttribute("getClass", classLoad);
 		
 		
@@ -376,7 +381,42 @@ public class AdminController {
 	public String admin_class_list_modi_submit(AdminVO VO, Model model) {
 		model.addAttribute("updateClass", adminService.updateClass(VO));
 		
-		return "redirect:/class_list";
+		return "redirect:/AdmClassList";
+	}
+	
+	// 클래스 삭제 페이징
+	@GetMapping("AdmClassListDelete")
+	public String admin_class_list_delete(AdminVO class_id, Model model, HttpSession session) {
+		
+		AdminVO classIndex = adminService.getClass(class_id).get(0);
+		List<CourseVO> curIndex = adminService.getCurriculum(class_id);
+		
+		String realPath = session.getServletContext().getRealPath(uploadPath);
+		if(!classIndex.getClass_pic1().equals("")) {
+			// 업로드 경로와 파일명(서브디렉토리 경로 포함) 결합하여 Path 객체 생성
+			for (int i = 0; i < curIndex.size(); i++) {
+				Path picPath = Paths.get(realPath, classIndex.getClass_pic1());
+				Path curPath = Paths.get(realPath, curIndex.get(i).getCur_video());
+				// java.nio.file 패키지의 Files 클래스의 deleteIfExists() 메서드 호출하여
+				// 해당 파일이 실제 서버 상에 존재할 경우에만 삭제 처리
+				try {
+					Files.deleteIfExists(picPath);
+					Files.deleteIfExists(curPath);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+			
+		int deleteCount = adminService.deleteClass(class_id.getClass_id());
+		int deleteCurriculum = adminService.deleteCurriculum(class_id.getClass_id());
+		
+		if (deleteCount < 0 || deleteCurriculum < 0) {
+			model.addAttribute("msg", "클래스 삭제 실패하였습니다");
+			return "admin/fail";
+		}
+		
+		return "redirect:/AdmClassList";
 	}
 	
 	// ======================================================================================================
@@ -786,12 +826,100 @@ public class AdminController {
 		return "admin/board_faq";
 	}
 	
-	// 어드민 수강 후기 관리 페이지 매핑
-	@GetMapping("AdmReview")
-	public String admin_board_review() {
-		return "admin/board_review";
+	// 관리자 - 강의 별 문의 게시판 목록 
+	@GetMapping("AdmCourseSupport")
+	public String admCourseSupport(@RequestParam(defaultValue = "1") int pageNum, HttpServletRequest request, HttpSession session, Model model) {
+		// 세션아이디 체크
+		String id = (String)session.getAttribute("sId");
+//		if(id == null) {
+//			model.addAttribute("msg", "로그인 필수!\\n 로그인 페이지로 이동합니다!");
+//			model.addAttribute("targetURL", "MemberLogin");
+//			savePreviousUrl(request, session);
+//			
+//			return "result/fail";
+//		}
+		
+		// 페이징 설정
+		int listLimit = 10; // 한 페이지당 게시물 수
+		int startRow = (pageNum - 1) * listLimit;
+		int listCount = courseService.getCSupportListCount(0);
+		
+		int pageListLimit = 5; // 페이징 개수 
+		int maxPage = (listCount / listLimit) + (listCount % listLimit > 0 ? 1 : 0);
+		
+		if(maxPage == 0) {
+			maxPage = 1;
+		}
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		System.out.println("maxPage = " + maxPage);
+		int endPage = startPage + pageListLimit - 1;
+		
+		if(endPage > maxPage) {
+			endPage = maxPage;
+		}
+		
+		if(pageNum < 1 || pageNum > maxPage) {
+			model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+			model.addAttribute("targetURL", "MySupport?pageNum=1");
+			return "result/fail";
+		}
+		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
+		
+		// Model 객체에 페이징 정보 저장
+		model.addAttribute("pageInfo", pageInfo);
+		
+		// 게시물 목록 조회
+		List<CourseSupportVO> courseSupportList = adminService.getCourserSupportListToAdm(startRow, listLimit);
+		
+		
+		// 첨부파일 정보 저장
+		for(CourseSupportVO cSupport : courseSupportList) {
+			String originalFileName = "";
+			
+			if(cSupport.getC_support_file() != null) {
+				originalFileName = cSupport.getC_support_file().substring(cSupport.getC_support_file().indexOf("_") + 1);
+			} else {
+				originalFileName = null;
+			}
+			
+			cSupport.setC_support_file(originalFileName);
+		}
+		
+		System.out.println(courseSupportList);
+		
+		model.addAttribute("courseSupportList", courseSupportList);
+		
+		return "admin/course_support_list";
 	}
 	
+	// 관리자 - 강의 문의 답변 작성/수정(업데이트)
+	@PostMapping("AdmCourseSupportUpdate")
+	public String admCourseSupportUpdate(@RequestParam(defaultValue = "1") int pageNum, CourseSupportVO cSupport, HttpServletRequest request, HttpSession session, Model model) {
+		System.out.println("pageNum : " + pageNum);
+		// 세션아이디 체크
+		String id = (String)session.getAttribute("sId");
+//		if(id == null) {
+//			model.addAttribute("msg", "로그인 필수!\\n 로그인 페이지로 이동합니다!");
+//			model.addAttribute("targetURL", "MemberLogin");
+//			savePreviousUrl(request, session);
+//			
+//			return "result/fail";
+//		}
+		
+		int updateCount = adminService.answerSupport(cSupport);
+		
+		if(updateCount > 0) {
+			return "redirect:/AdmCourseSupport?pageNum=" + pageNum;
+		} else {
+			model.addAttribute("msg", "수정 실패!");
+			return "result/fail";
+		}
+	}
+	
+	
+	
+	// =======================================================================
+	// 페이지 정보 저장
 	public PageInfo pageInfoMethod(int pageNum, int listLimit, int listCount , int pageListLimit) {
 		int startRow = (pageNum - 1) * listLimit;
 		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);

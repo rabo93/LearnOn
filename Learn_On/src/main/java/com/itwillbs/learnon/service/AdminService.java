@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.itwillbs.learnon.mapper.AdminMapper;
 import com.itwillbs.learnon.vo.AdminVO;
+import com.itwillbs.learnon.vo.CourseSupportVO;
 import com.itwillbs.learnon.vo.CourseVO;
 import com.itwillbs.learnon.vo.MemberVO;
 
@@ -56,14 +57,13 @@ public class AdminService {
 		return mapper.insertClass(vO);
 	}
 	public int curriculum(AdminVO insertCur) {
-		System.out.println("==================서비스 작동함");
 		return mapper.curriculum(insertCur);
 	}
 	public List<AdminVO> getClassList() {
 		return mapper.getClassList();
 	}
-	public List<AdminVO> getClass(AdminVO class_id) {
-		return mapper.getClass(class_id);
+	public List<AdminVO> getClass(AdminVO vO) {
+		return mapper.getClass(vO);
 	}
 	public List<CourseVO> updateClass(AdminVO vO) {
 		return mapper.updateClass(vO);
@@ -118,8 +118,25 @@ public class AdminService {
 		return mapper.getClassId();
 	}
 
+
 	
 	// =============== 1:1 문의
 	
+	
+	// 수강 문의 게시판
+	// 문의 목록 조회 (강의별 수강문의 게시판)
+	public List<CourseSupportVO> getCourserSupportListToAdm(int startRow, int listLimit) {
+		return mapper.selectCourseSupportList(startRow, listLimit);
+	}
+	// 문의 답변 작성/수정 업데이트
+	public int answerSupport(CourseSupportVO cSupport) {
+		return mapper.updateCourseSupport(cSupport);
+	}
+	public int deleteClass(int i) {
+		return mapper.deleteClass(i);
+	}
+	public int deleteCurriculum(int i) {
+		return mapper.deleteCurriculum(i);
+	}
 
 }

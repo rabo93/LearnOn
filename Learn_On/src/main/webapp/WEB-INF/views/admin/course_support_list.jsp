@@ -45,7 +45,7 @@
 			<div class="container-fluid pt-4 px-4">
 				<div class="bg-light rounded p-4">
 					<div class="d-flex mb-2">
-						<h5 class="me-auto tableSubject">1:1 문의 관리</h5>
+						<h5 class="me-auto tableSubject">강의별 수강문의 관리</h5>
 					</div>
 					<div class="d-flex input-group mb-3">
 						<input type="text" class="form-control" placeholder="게시글 검색" aria-label="Recipient's username" aria-describedby="button-addon2">
@@ -53,19 +53,15 @@
 					</div>
 						<table class="table table-striped">
 							<colgroup>
-<%-- 								<col width="3%"> --%>
-								<col width="10%">
-								<col width="13%">
-								<col width="40%">
-								<col width="10%">
+								<col width="5%">
+								<col width="50%">
+								<col width="20%">
 								<col width="15%">
-								<col width="12%">
+								<col width="15%">
 							</colgroup>
 							<thead>
 								<tr>
-<!-- 									<th scope="col">#</th> -->
 									<th scope="col">글번호</th>
-									<th scope="col">분류</th>
 									<th scope="col">제목</th>
 									<th scope="col">작성자</th>
 									<th scope="col">작성일</th>
@@ -78,33 +74,22 @@
 									<c:set var="pageNum" value="${param.pageNum}" />
 								</c:if>
 								<c:choose>
-									<c:when test="${empty supportList}">
+									<c:when test="${empty courseSupportList}">
 										<tr>
 											<td class="empty" colspan="4">작성된 문의내역이 없습니다.</td>
 										</tr>
 									</c:when>
 									<c:otherwise>
-										<c:forEach var="support" items="${supportList}" varStatus="status">
+										<c:forEach var="support" items="${courseSupportList}" varStatus="status">
 											<tr onclick="showDetail(${status.index})">
 <!-- 												<th><input class="form-check-input" type="checkbox" id="gridCheck1"></th> -->
-												<td>${support.support_idx}</td>
-												<td>
-													<c:if test="${support.support_category == 1}">
-														<span class="support_cate cate01">이용문의</span>
-													</c:if>
-													<c:if test="${support.support_category == 2}">
-														<span class="support_cate cate02">결제문의</span>
-													</c:if>
-													<c:if test="${support.support_category == 3}">
-														<span class="support_cate cate03">기타</span>
-													</c:if>
-												</td>
-												<td><input class="form-control" type="text" value="${support.support_subject}" readonly></td>
+												<td>${support.c_support_idx}</td>
+												<td><input class="form-control" type="text" value="${support.c_support_subject}" readonly></td>
 												<td><input class="form-control" type="text" value="${support.mem_id}" readonly></td>
-												<td><input class="form-control" type="text" value="<fmt:formatDate value='${support.support_date}' pattern='yy-MM-dd HH:mm' />" readonly></td>
+												<td><input class="form-control" type="text" value="<fmt:formatDate value='${support.c_support_date}' pattern='yy-MM-dd HH:mm' />" readonly></td>
 												<td>
 												<c:choose>
-													<c:when test="${support.support_answer_date != null}">
+													<c:when test="${support.c_support_answer_date != null}">
 														<span class="answer-st status01">답변완료</span>
 													</c:when>
 													<c:otherwise>
@@ -114,12 +99,12 @@
 												</td>
 			                             	</tr>
 			                             	<tr class="supportDetailBox" id="supportDetail${status.index}">
-			                             		<td colspan="5">
-			                             			<textarea class="form-control" rows="5" readonly>${support.support_content}</textarea>
-			                             			<c:if test="${not empty support.support_file1}">
+			                             		<td colspan="4">
+			                             			<textarea class="form-control" rows="5" readonly>${support.c_support_content}</textarea>
+			                             			<c:if test="${not empty support.c_support_file}">
 				                             			<div class="support-attach">
-					                             			${support.support_file1}
-							 								<a href="${pageContext.request.contextPath}/resources/upload/${support.support_file1}" download="${originalFileNames[status.index]}">
+					                             			${support.c_support_file}
+							 								<a href="${pageContext.request.contextPath}/resources/upload/${support.c_support_file}" download="${originalFileNames[status.index]}">
 							 									<input type="button" value="다운로드">
 							 								</a>
 						 								</div>
@@ -128,7 +113,7 @@
 			                             		<td colspan="1">
 			                             			<button class="btn btn-lg btn-primary ms-3" type="button" onclick="showAnswer(${status.index})">
 			                             				<c:choose>
-			                             					<c:when test="${empty support.support_answer_subject}">답변작성</c:when>
+			                             					<c:when test="${empty support.c_support_answer_subject}">답변작성</c:when>
 			                             					<c:otherwise>답변보기</c:otherwise>
 			                             				</c:choose>
 			                             			</button>
@@ -136,14 +121,14 @@
 			                             	</tr>
 			                             	<tr class="answerDetailBox" id="answerDetail${status.index}">
 			                             		<c:choose>
-			                             			<c:when test="${empty support.support_answer_subject}">
+			                             			<c:when test="${empty support.c_support_answer_subject}">
 				                             			<%-- 문의 답글 작성 --%>
-				                             			<form action="AdmSupportUpdate" method="post">
-				                             				<input type="hidden" name="support_idx" value="${support.support_idx}">
+				                             			<form action="AdmCourseSupportUpdate" method="post">
+				                             				<input type="hidden" name="c_support_idx" value="${support.c_support_idx}">
 				                             				<input type="hidden" name="pageNum" value="${pageNum}">
-						                             		<td colspan="5">
-						                             			<input class="form-control mb-2" type="text" placeholder="답글 제목" name="support_answer_subject">
-						                             			<textarea class="form-control" rows="5" placeholder="답글 내용" name="support_answer_content"></textarea>
+						                             		<td colspan="4">
+						                             			<input class="form-control mb-2" type="text" placeholder="답글 제목" name="c_support_answer_subject">
+						                             			<textarea class="form-control" rows="5" placeholder="답글 내용" name="c_support_answer_content"></textarea>
 						                             		</td>
 						                             		<td colspan="1">
 						                             			<button class="btn btn-lg btn-primary ms-3">작성하기</button>
@@ -152,12 +137,12 @@
 			                             			</c:when>
 			                             			<c:otherwise>
 			                             				<%-- 문의 답글 작성 후 --%>
-			                             				<form action="AdmSupportUpdate" method="post">
-			                             					<input type="hidden" name="support_idx" value="${support.support_idx}">
+			                             				<form action="AdmCourseSupportUpdate" method="post">
+			                             					<input type="hidden" name="c_support_idx" value="${support.c_support_idx}">
 			                             					<input type="hidden" name="pageNum" value="${pageNum}">
-				                             				<td colspan="5">
-						                             			<input class="form-control mb-2" type="text" placeholder="답글 제목" name="support_answer_subject" value="${support.support_answer_subject}">
-						                             			<textarea class="form-control" rows="5" placeholder="답글 내용" name="support_answer_content">${support.support_answer_content}</textarea>
+				                             				<td colspan="4">
+						                             			<input class="form-control mb-2" type="text" placeholder="답글 제목" name="c_support_answer_subject" value="${support.c_support_answer_subject}">
+						                             			<textarea class="form-control" rows="5" placeholder="답글 내용" name="c_support_answer_content">${support.c_support_answer_content}</textarea>
 						                             		</td>
 						                             		<td colspan="1">
 						                             			<button class="btn btn-lg btn-primary ms-3">수정하기</button>
@@ -174,12 +159,12 @@
 						
 						<section id="pagingArea">
 							<button
-							onclick="location.href='AdmSupport?pageNum=${pageInfo.startPage - pageInfo.pageListLimit}'"
+							onclick="location.href='AdmCourseSupport?pageNum=${pageInfo.startPage - pageInfo.pageListLimit}'"
 							<c:if test="${pageInfo.startPage eq 1}">disabled</c:if>>
 								<i class="fas fa-angle-double-left"></i>
 							</button>
 							<button
-							onclick="location.href='AdmSupport?pageNum=${pageNum - 1}'"
+							onclick="location.href='AdmCourseSupport?pageNum=${pageNum - 1}'"
 							<c:if test="${pageNum eq 1}">disabled</c:if>>
 								<i class="fas fa-chevron-left"></i>
 							</button>
@@ -189,7 +174,7 @@
 										<strong>${i}</strong>
 									</c:when>
 									<c:otherwise>
-										<a href="AdmSupport?pageNum=${i}">${i}</a>
+										<a href="AdmCourseSupport?pageNum=${i}">${i}</a>
 									</c:otherwise>
 								</c:choose>
 							</c:forEach>
@@ -254,11 +239,11 @@
     		
     		// 메뉴 활성화
     		let link = document.location.href;
-	    	if (link.includes("AdmSupport")) {
-	    		document.querySelector("#AdmSupport").parentElement.previousElementSibling.classList.add("show");
-	    		document.querySelector("#AdmSupport").parentElement.previousElementSibling.classList.add("active");
-	    		document.querySelector("#AdmSupport").parentElement.classList.add("show");
-	    		document.querySelector("#AdmSupport").classList.toggle("active");
+	    	if (link.includes("AdmCourseSupport")) {
+	    		document.querySelector("#AdmCourseSupport").parentElement.previousElementSibling.classList.add("show");
+	    		document.querySelector("#AdmCourseSupport").parentElement.previousElementSibling.classList.add("active");
+	    		document.querySelector("#AdmCourseSupport").parentElement.classList.add("show");
+	    		document.querySelector("#AdmCourseSupport").classList.toggle("active");
 	    	};
     </script>
 </body>

@@ -60,7 +60,7 @@
 												</div>
 											</div>
 											<div class="detail">
-												<p class="date">작성일시 : <span>${review.review_date}</span></p>
+												<p class="date">작성일시 : <span><fmt:formatDate value="${review.review_date}" pattern="yy-MM-dd HH:mm" /></span></p>
 												<div class="rating">
 													<i class="fa-solid fa-star"></i>
 													<span>${review.review_score}</span>

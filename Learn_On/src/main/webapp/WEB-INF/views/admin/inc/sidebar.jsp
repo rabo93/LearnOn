@@ -55,7 +55,7 @@
                             <a href="AdmNotice" id="AdmNotice" class="dropdown-item">공지사항 관리</a>
                             <a href="AdmSupport" id="AdmSupport" class="dropdown-item">1:1 문의 관리</a>
                             <a href="AdmFaq" id="AdmFaq" class="dropdown-item">FAQ 관리</a>
-                            <a href="AdmReview" id="AdmReview" class="dropdown-item">수강 문의 관리</a>
+                            <a href="AdmCourseSupport" id="AdmCourseSupport" class="dropdown-item">수강 문의 관리</a>
                         </div>
                     </div>
                     <div class="nav-item dropdown">

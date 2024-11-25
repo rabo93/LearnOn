@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.google.protobuf.DescriptorProtos.FieldDescriptorProto.Type;
 import com.itwillbs.learnon.service.AdminService;
 import com.itwillbs.learnon.service.CouponService;
 import com.itwillbs.learnon.service.CourseService;
@@ -229,10 +230,10 @@ public class AdminController {
 		int classId = adminService.getClassId();
 		VO.setClass_id(classId);
 		
-		System.out.println("!@#!@#");
-		for (int i = 0; i < VO.getCur_video_get().length; i++) {
-			System.out.println(VO.getCur_video_get()[i].getOriginalFilename());
-		}
+//		System.out.println("!@#!@#");
+//		for (int i = 0; i < VO.getCur_video_get().length; i++) {
+//			System.out.println(VO.getCur_video_get()[i].getOriginalFilename());
+//		}
 		
 //		AdminVO insertCur = new AdminVO();
 		
@@ -253,12 +254,12 @@ public class AdminController {
 			VO.setCur_title(arrCurTitle[i]);
 			VO.setCur_runtime(arrCurRunTime[i]);
 			totalRunTime += Integer.parseInt(arrCurRunTime[i]);
-			System.out.println("누적 ======" + totalRunTime);
-			adminService.curriculum(VO);
+//			System.out.println("누적 ======" + totalRunTime);
+			adminService.insertCurriculum(VO);
 			
 			adminService.insertCurVideo(VO);
 		}
-		System.out.println("결과 ======" + totalRunTime);
+//		System.out.println("결과 ======" + totalRunTime);
 		VO.setClass_runtime(totalRunTime);
 		
 		//	첨부파일 업로드
@@ -292,6 +293,7 @@ public class AdminController {
 		return Integer.toString(classId);
 	}
 	
+	// 클래스 썸네일 첨부파일 난수 이름 설정
 	public String addFileProcess(AdminVO VO, String realPath, String subDir) {
 		MultipartFile multis = VO.getClass_pic1_get();
 		
@@ -316,6 +318,7 @@ public class AdminController {
 		return fileName;
 	}
 	
+	// 클래스 커리큘럼 영상 첨부파일 난수 이름 설정
 	public String addVideoProcess(MultipartFile multi, String realPath, String subDir) {
 		String fileName = "";
 		String origin = multi.getOriginalFilename();
@@ -338,10 +341,11 @@ public class AdminController {
 		return fileName;
 	}
 	
+	// 서브카테고리 조회 & 설정
 	@ResponseBody
 	@GetMapping("SelectCategory")
 	public String selectCategory(AdminVO admin) {
-		System.out.println("=========================================================" + admin);
+//		System.out.println("=========================================================" + admin);
 		List<Map<String, Object>> adminArr = adminService.selectSubCate(admin);
 		
 		JSONArray joArr = new JSONArray(adminArr);
@@ -361,12 +365,12 @@ public class AdminController {
 	
 	// 어드민 클래스 수정 페이지 매핑
 	@GetMapping("AdmClassListModify")
-	public String admin_class_list_modi(AdminVO VO, Model model, int class_id) {
+	public String admin_class_list_modi(AdminVO VO, Model model) {
 		model.addAttribute("getMainCate", adminService.getMainCate());
 		model.addAttribute("getCurriculum", adminService.getCurriculum(VO));
 		List<AdminVO> classLoad = adminService.getClass(VO);
+//		System.out.println("========================classLoad : " + adminService.getCurriculum(VO));
 		model.addAttribute("getClass", classLoad);
-		
 		
 		if (classLoad == null) {
 			model.addAttribute("msg", "클래스 불러오기 실패!");
@@ -378,8 +382,63 @@ public class AdminController {
 	}
 	
 	@PostMapping("AdmClassListModify")
-	public String admin_class_list_modi_submit(AdminVO VO, Model model) {
-		model.addAttribute("updateClass", adminService.updateClass(VO));
+	public String adm_class_modify(int class_id, AdminVO adm, HttpSession session, Model model) {
+		
+//		int classId = adminService.getClassId();
+		adm.setClass_id(class_id);
+		
+//		for (int i = 0; i < adm.getCur_video_get().length; i++) {
+//			System.out.println(adm.getCur_video_get()[i].getOriginalFilename());
+//		}
+		System.out.println("================================================= " + adm.getCur_title());
+		String[] arrCurTitle = adm.getCur_title().split(",");
+		String[] arrCurRunTime = adm.getCur_runtime().split(",");
+		
+		int totalRunTime = adm.getClass_runtime();
+		// 실제 경로
+		String realPath = getRealPath(session);
+		//	서브 디렉토리 생성
+		String subDir = createDirectories(class_id, realPath);
+		realPath += "/" + subDir;
+		
+		List<CourseVO> curId = adminService.getCurriculum(adm);
+		
+		// 커리큘럼 업데이트 for
+		for (int i = 0; i < arrCurTitle.length; i++) {
+			String videoName = addVideoProcess(adm.getCur_video_get()[i], realPath, subDir);
+			if (i > arrCurTitle.length) {
+				adm.setCur_id(curId.get(i).getCur_id() + 1);
+				adm.setCur_video(videoName);
+				adm.setCur_title(arrCurTitle[i]);
+				adm.setCur_runtime(arrCurRunTime[i]);
+				adminService.insertCurriculum(adm);
+				totalRunTime += Integer.parseInt(arrCurRunTime[i]);
+				adminService.insertCurVideo(adm);
+				break;
+			} else {
+				adm.setCur_id(curId.get(i).getCur_id());
+				adm.setCur_video(videoName);
+				adm.setCur_title(arrCurTitle[i]);
+				adm.setCur_runtime(arrCurRunTime[i]);
+				totalRunTime += Integer.parseInt(arrCurRunTime[i]);
+				adminService.updateCurriculum(adm);
+				
+			}
+			
+		}
+		
+		adm.setClass_runtime(totalRunTime);
+		
+		//	첨부파일 업로드
+		String fileName = addFileProcess(adm, realPath, subDir);
+		adm.setClass_pic1(fileName);
+		
+		int updateCount = adminService.updateClass(adm);
+		
+		if (updateCount < 0) {
+			model.addAttribute("msg", "클래스 수정 실패!");
+			return "admin/fail";
+		}
 		
 		return "redirect:/AdmClassList";
 	}

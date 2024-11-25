@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>공지사항 수정</title>
+<title>회원정보</title>
 	<!-- Favicon -->
     <link href="resources/admin/img/favicon.ico" rel="icon">
 
@@ -36,56 +36,63 @@
 <body>
 	<%@include file="inc/sidebar.jsp"%>
 	<%@include file="inc/navbar.jsp"%>
-	
+	<%-- 잠시 보류 --%>
 	<div class="container-fluid pt-4 px-4">
 		<div class="bg-light rounded p-4">
 			<div class="d-flex mb-5">
-				<h5 class="me-auto tableSubject">글 수정하기</h5>
+				<h5 class="me-auto tableSubject">회원 정보 수정</h5>
 			</div>
 			<section class="tb-wrap">
-				<form action="AdminNoticeModify" class="d-flex input-group mb-3" method="post" enctype="multipart/form-data">
-					<input type="hidden" name="notice_idx" value="${param.notice_idx}">
+				<form action="AdmMemberModify" class="d-flex input-group mb-3" method="post" enctype="multipart/form-data">
+<%-- 					<input type="hidden" name="faq_idx" value="${param.faq_idx}"> --%>
 					<table class="table table-striped">
 						<colgroup>
 								<col width="20%">
 								<col width="80%">
 						</colgroup>
 						<tr>
-							<th>제목</th>
+							<td>이름</td>
+							<td><input class="form-control" type="text" name="mem_name" value="${member.mem_name}" required /></td>
+						</tr>
+						<tr>
+							<td>아이디</td>
+							<td><input class="form-control" type="text" name="mem_id" value="${member.mem_id}" readonly /></td>
+						</tr>
+						<tr>
+							<td>닉네임</td>
+							<td><input class="form-control" type="text" name="mem_nick" value="${member.mem_nick}" required /></td>
+						</tr>
+						<tr>
+							<td>성별</td>
 							<td>
-								<input type="text" class="form-control" name="notice_subject" value="${notice.notice_subject}" required />
+							<select class="form-select" name="mem_gender">
+									<option value="M" <c:if test="${member.mem_gender eq 'M'}">selected</c:if>>남</option>
+									<option value="F" <c:if test="${member.mem_gender eq 'F'}">selected</c:if>>여</option>
+							</select>
 							</td>
 						</tr>
 						<tr>
-							<th>내용</th>
-							<td>
-								<textarea name="notice_content" class="form-control" rows="15" cols="40" required>${notice.notice_content}</textarea>
-							</td>
+							<td>이메일</td>
+							<td><input class="form-control" type="text" name="mem_email" value="${member.mem_email}" readonly/></td>
 						</tr>
 						<tr>
-							<th>첨부파일</th>
+							<td>주소</td>
 							<td>
-							
-								<c:forEach var="file" items="${fileList}" varStatus="status">
-									<div class="board_file" id="file_${status.count}">
-										<c:choose>
-											<c:when test="${not empty file}">
-												<input class="form-control d-inline w-50 p-1" type="text" name="notice_file_get" value="${originalFileList[status.index]}" readonly>
-												<a href="${pageContext.request.contextPath}/resources/upload/${file}" download="${originalFileList[status.index]}"><i class="fa-solid fa-download fs-5"></i></a>
-												<a href="javascript:deleteFile(${notice.notice_idx}, '${file}', ${status.count})"><i class="fa-solid fa-trash fs-5"></i></a>
-											</c:when>
-										</c:choose>
-									</div>
-								</c:forEach>
+								<div class="memModifyAddress">
+									<input class="form-control w-50" type="text" name="mem_post_code" value="${member.mem_post_code}" required />
+									<button type="button" class="btn btn-lg btn-primary ms-3" onclick="searchAddress()">주소찾기</button>
+								</div>
 								<div>
-									<input class="form-control w-75" type="file" name="notice_file_get" multiple>
+									<input class="form-control w-75" type="text" name="mem_address1" value="${member.mem_address1}" required />
+									<input class="form-control w-75" type="text" name="mem_address2" value="${member.mem_address2}" required />
 								</div>
 							</td>
+								
 						</tr>
 					</table>
 					<section class="nt-btns">
-						<button class="btn btn-lg btn-primary ms-3" type="submit">수정</button>
-						<button class="btn btn-lg btn-primary ms-3" type="button" onclick="location.href='AdmNotice'">취소</button>
+						<button class="btn btn-lg btn-primary ms-3" type="submit">등록</button>
+						<button class="btn btn-lg btn-primary ms-3" type="button" onclick="location.href='AdmFaq'">취소</button>
 					</section>
 				</form>
 			</section>
@@ -109,31 +116,12 @@
     <!-- Template Javascript -->
     <script src="resources/admin/js/main.js"></script>
 	<script type="text/javascript">
-		function deleteFile(notice_idx, file, index) {
-			console.log(notice_idx + "," + file + "," + index);
-			$.ajax ({
-				type : "POST",
-				url : "/notice/deleteFile",
-				data : {
-					notice_idx : notice_idx,
-					file : file,
-					index : index - 1
-				},
-			}).done(function(result) {
-				console.log("파일 삭제 성공" , result);
-				$("#file_" + index).remove();
-			}).fail(function(jqXHR){
-				console.log("파일 삭제 실패 : " + jqXHR.status);
-				alert("파일삭제에 실패했습니다. 다시 시도해주세요");
-			});
-		};
-		
 		let link = document.location.href;
-		if (link.includes("NoticeModify")) {
-			document.querySelector("#AdmNotice").parentElement.previousElementSibling.classList.add("show");
-			document.querySelector("#AdmNotice").parentElement.previousElementSibling.classList.add("active");
-			document.querySelector("#AdmNotice").parentElement.classList.add("show");
-			document.querySelector("#AdmNotice").classList.toggle("active");
+		if (link.includes("AdminFaqModify")) {
+			document.querySelector("#AdmFaq").parentElement.previousElementSibling.classList.add("show");
+			document.querySelector("#AdmFaq").parentElement.previousElementSibling.classList.add("active");
+			document.querySelector("#AdmFaq").parentElement.classList.add("show");
+			document.querySelector("#AdmFaq").classList.toggle("active");
 		};
 	</script>
 </body>

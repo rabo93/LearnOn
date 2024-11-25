@@ -39,7 +39,9 @@ import com.itwillbs.learnon.service.NoticeBoardService;
 import com.itwillbs.learnon.vo.AdminVO;
 import com.itwillbs.learnon.vo.CouponVO;
 import com.itwillbs.learnon.vo.CourseSupportVO;
+import com.itwillbs.learnon.vo.CourseVO;
 import com.itwillbs.learnon.vo.FaqVO;
+import com.itwillbs.learnon.vo.MemberVO;
 import com.itwillbs.learnon.vo.NoticeBoardVO;
 import com.itwillbs.learnon.vo.PageInfo;
 import com.itwillbs.learnon.vo.SupportBoardVO;
@@ -339,8 +341,8 @@ public class AdminController {
 	@ResponseBody
 	@GetMapping("SelectCategory")
 	public String selectCategory(AdminVO admin) {
+		System.out.println("=========================================================" + admin);
 		List<Map<String, Object>> adminArr = adminService.selectSubCate(admin);
-//		System.out.println("admin : " + adminArr);
 		
 		JSONArray joArr = new JSONArray(adminArr);
 		
@@ -359,11 +361,10 @@ public class AdminController {
 	
 	// 어드민 클래스 수정 페이지 매핑
 	@GetMapping("AdmClassListModify")
-	public String admin_class_list_modi(AdminVO VO, Model model) {
+	public String admin_class_list_modi(AdminVO VO, Model model, int class_id) {
 		model.addAttribute("getMainCate", adminService.getMainCate());
 		model.addAttribute("getCurriculum", adminService.getCurriculum(VO));
 		List<AdminVO> classLoad = adminService.getClass(VO);
-		System.out.println(VO);
 		model.addAttribute("getClass", classLoad);
 		
 		
@@ -380,7 +381,42 @@ public class AdminController {
 	public String admin_class_list_modi_submit(AdminVO VO, Model model) {
 		model.addAttribute("updateClass", adminService.updateClass(VO));
 		
-		return "redirect:/class_list";
+		return "redirect:/AdmClassList";
+	}
+	
+	// 클래스 삭제 페이징
+	@GetMapping("AdmClassListDelete")
+	public String admin_class_list_delete(AdminVO class_id, Model model, HttpSession session) {
+		
+		AdminVO classIndex = adminService.getClass(class_id).get(0);
+		List<CourseVO> curIndex = adminService.getCurriculum(class_id);
+		
+		String realPath = session.getServletContext().getRealPath(uploadPath);
+		if(!classIndex.getClass_pic1().equals("")) {
+			// 업로드 경로와 파일명(서브디렉토리 경로 포함) 결합하여 Path 객체 생성
+			for (int i = 0; i < curIndex.size(); i++) {
+				Path picPath = Paths.get(realPath, classIndex.getClass_pic1());
+				Path curPath = Paths.get(realPath, curIndex.get(i).getCur_video());
+				// java.nio.file 패키지의 Files 클래스의 deleteIfExists() 메서드 호출하여
+				// 해당 파일이 실제 서버 상에 존재할 경우에만 삭제 처리
+				try {
+					Files.deleteIfExists(picPath);
+					Files.deleteIfExists(curPath);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+			
+		int deleteCount = adminService.deleteClass(class_id.getClass_id());
+		int deleteCurriculum = adminService.deleteCurriculum(class_id.getClass_id());
+		
+		if (deleteCount < 0 || deleteCurriculum < 0) {
+			model.addAttribute("msg", "클래스 삭제 실패하였습니다");
+			return "admin/fail";
+		}
+		
+		return "redirect:/AdmClassList";
 	}
 	
 	// ======================================================================================================
@@ -388,12 +424,12 @@ public class AdminController {
 	// 어드민 회원 목록 페이지 매핑
 	@GetMapping("AdmMemList")
 	public String admin_member_list(@RequestParam(defaultValue = "1") int pageNum,
-									@RequestParam(defaultValue = "latest") String sort,
+									@RequestParam(defaultValue = "reg_latest") String sort,
 									@RequestParam(defaultValue = "") String searchKeyword,
 									@RequestParam(defaultValue = "") String searchType,
 									Model model) {
 		
-		int listLimit = 5;
+		int listLimit = 10;
 		int startRow = (pageNum - 1) * listLimit;
 		
 		int listCount = adminService.getNomalMemberListCount(searchKeyword, searchType);
@@ -420,7 +456,8 @@ public class AdminController {
 		
 		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
 		model.addAttribute("pageInfo", pageInfo);
-		model.addAttribute("getMemberList", adminService.getNomalMemberList(startRow, listLimit, searchKeyword, searchType));
+		model.addAttribute("getMemberList", adminService.getNomalMemberList(startRow, listLimit, searchKeyword, searchType, sort));
+		model.addAttribute("sort", sort);
 		return "admin/member_list";
 	}
 	
@@ -437,7 +474,49 @@ public class AdminController {
 		model.addAttribute("getMemberList", adminService.getWithdrawMemberList());
 	return "admin/member_list_delete";
 	}
-
+	
+	//	어드민 회원정보 수정
+	@GetMapping("AdmMemberModify")
+	public String AdmMemberModifyForm(String mem_id, Model model) {
+		System.out.println("mem_id : " + mem_id);
+		MemberVO member = adminService.getMemberList(mem_id);
+		System.out.println("member : " + member);
+		model.addAttribute("member", member);
+		return "admin/member_modify_form";
+	}
+	
+	@GetMapping("AdminMemberDelete")
+	public String adminMemberDelete(String[] mem_ids, Model model) {
+		for(String mem_id : mem_ids) {
+			System.out.println(mem_id);
+			int deleteCount = adminService.removeMember(mem_id);
+			if(deleteCount < 0) {
+				model.addAttribute("msg", "회원 삭제 실패");
+				return "result/fail";
+			}
+		}
+		return "redirect:/AdmMemList";
+	}
+	
+	//	어드민 강사회원 승인
+	@GetMapping("AdmMemGradeChange")
+	public String admMemGradeChange(String mem_id, Model model) {
+//		System.out.println("mem_id : " + mem_id);
+		//	mem_id 파라미터로 받아와서 memberVO 에 저장
+		MemberVO member = adminService.getMemberList(mem_id);
+//		System.out.println(member);
+		//	MemberVO를 통해서 MEM_GRADE 여부에 따라 업데이트 처리
+		//	ex) MEM_GRADE = 'MEM01'일 시 'MEM02'로 업데이트
+		//	ex) MEM_GRADE = 'MEM02'일 시 'MEM01'로 업데이트
+		int updateCount = adminService.changeGradeMember(member);
+		if (updateCount < 0) {
+			model.addAttribute("msg", "회원 등급 변경 실패");
+			return "result/fail";
+		}
+		
+		return "redirect:/AdmMemInstructor";
+	}
+	
 	//	어드민 회원상태 변경
 	@ResponseBody
 	@PostMapping("AdmChangeMemStatus")

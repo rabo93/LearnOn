@@ -17,10 +17,10 @@
 		</div>
 		<div class="ft-link">
 			<a href="NoticeList">공지사항</a>
-			<a href="#">이용약관</a>
-			<a href="#">개인정보처리방침</a>
+			<a href="TermsOfService">이용약관</a>
+			<a href="PrivacyPolicy">개인정보처리방침</a>
 			<a href="FaqList">FAQ</a>
-			<a href="#">환불규정</a>
+			<a href="RefundPolicy">환불규정</a>
 		</div>
 		<div class="info2">
 			대표 : 김러닝 | 개인정보보호책임자 : 박책임 | 주소: 부산광역시 부산진구 동천로 109,

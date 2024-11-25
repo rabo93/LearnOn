@@ -33,6 +33,14 @@ function modifyClass(elem) {
 	location.href="AdmClassListModify?class_id=" + classId;
 }
 
+// 클래스 삭제 클래스 id값 가져오기
+function deleteClass(elem) {
+	let classId = $(elem).parent().parent().attr("id");
+	if (confirm("정말 삭제하시겠습니까?")) {
+		location.href="AdmClassListDelete?class_id=" + classId;
+	}
+}
+
 // 카테고리 수정
 function addMainCateRow() {
 	var mainCateTable = document.getElementById('mainCateTable');
@@ -81,30 +89,7 @@ function deleteSubCateRow() {
 // 소분류 불러오기
 function selectMainCate() {
 	let mainCateId = document.querySelector("select[name=class_maincate]").value;
-	
-	$.ajax({
-		type: "GET",
-		url: "SelectCategory",
-		data: {
-			codetype_id_subcate : mainCateId
-		},
-		dataType : "json"
-	}).done(function(data){
-		$("#floatingSelect2").empty();
-		for(let item of data) {
-			$("#floatingSelect2").append(
-				`<option value="${item.name}" ${item.selected}>${item.name}</option>`
-			);
-		}
-	}).fail(function(){
-		console.log("에러");
-	});
-		
-}
-
-// 소분류 실행
-$(function () {
-	let mainCateId = document.querySelector("select[name=class_maincate]").value;
+	console.log(mainCateId);
 	
 	$.ajax({
 		type: "GET",
@@ -114,17 +99,42 @@ $(function () {
 		},
 		dataType : "json"
 	}).done(function(data){
-		
-//		debugger;
-		
 		$("#floatingSelect2").empty();
 		for(let item of data) {
 			$("#floatingSelect2").append(
-				`<option value="${item.name}" ${item.selected}>${item.name}</option>`
+//				console.log(item)
+				`<option value="${item.NAME_SUBCATE}" ${item.SELECTED}>${item.NAME_SUBCATE}</option>`
 			);
 		}
 	}).fail(function(){
 		console.log("에러");
 	});
 		
-});
+}
+
+// 소분류 실행
+window.onload=function () {
+	let mainCateId = document.querySelector("select[name=class_maincate]").value;
+	let classId = window.location.search;
+	console.log(classId.substring(10));
+	
+	$.ajax({
+		type: "GET",
+		url: "SelectCategory",
+		data: {
+			codeid_maincate : mainCateId,
+			class_id : Number(classId.substring(10))
+		},
+		dataType : "json"
+	}).done(function(data){
+		$("#floatingSelect2").empty();
+		for(let item of data) {
+			$("#floatingSelect2").append(
+				`<option value="${item.NAME_SUBCATE}" ${item.SELECTED}>${item.NAME_SUBCATE}</option>`
+			);
+		}
+	}).fail(function(){
+		console.log("에러");
+	});
+		
+};

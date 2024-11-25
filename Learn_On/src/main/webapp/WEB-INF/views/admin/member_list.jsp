@@ -45,18 +45,24 @@
 				<div class="bg-light rounded p-4">
 					<div class="d-flex mb-5">
 						<h5 class="me-auto tableSubject">회원 목록</h5>
-						<button type="button" class="btn btn-lg btn-primary ms-3">회원 등록</button>
-						<button type="button" class="btn btn-lg btn-primary ms-3">회원 수정</button>
-						<button type="button" class="btn btn-lg btn-primary ms-3">회원 삭제</button>
+						<button type="button" class="btn btn-lg btn-primary ms-3" onclick="deleteMember()">회원 삭제</button>
 					</div>
-					<form class="d-flex input-group mb-3" method="get">
+					<div class="member-sch">
+						<form class="d-flex input-group mb-3 w-25" method="get">
+							<select class="form-select" name= "sort" onchange="this.form.submit()" aria-label="Default select example">
+								<option value="reg_latest" <c:if test="${param.sort eq 'reg_latest'}">selected</c:if>>최신가입순</option>
+								<option value="reg_oldest" <c:if test="${param.sort eq 'reg_oldest'}">selected</c:if>>오래된가입순</option>
+							</select>
+						</form>
+						<form class="d-flex input-group mb-3" method="get">
 							<select class="form-select" name= "searchType" aria-label="Default select example">
 								<option value="id" <c:if test="${param.searchType eq 'id'}">selected</c:if>>아이디</option>
 								<option value="name" <c:if test="${param.searchType eq 'name'}">selected</c:if>>이름</option>
 							</select>
-							<input type="text" class="form-control" name="searchKeyword" aria-label="Recipient's username" aria-describedby="button-addon2">
+							<input type="text" class="form-control w-50" name="searchKeyword" aria-label="Recipient's username" aria-describedby="button-addon2">
 							<button class="btn btn-primary" type="submit" id="button-addon2">검색</button>
 						</form>
+					</div>
 					<div>
 						<table class="table table-striped">
 							<thead>
@@ -72,13 +78,14 @@
 									<th scope="col">이메일</th>
 									<th scope="col">연락처</th>
 									<th scope="col">상태</th>
+									<th scope="col">수정</th>
 <!-- 									<th scope="col">권한</th> -->
 								</tr>
 							</thead>
 							<tbody>
 								<c:forEach items="${getMemberList}" var="ml" varStatus="mem">
 									<tr>
-										<th><input class="form-check-input" type="checkbox" id="gridCheck_${mem.index}"></th>
+										<th><input class="form-check-input" type="checkbox" id="gridCheck_${mem.index}" name="mem_id" value="${ml.mem_id}"></th>
 										<td class="col-1"><input id="idx_${mem.index}" class="form-control member" type="text" placeholder="회원 번호" aria-label="default input example" value="${ml.idx}" readonly></td>
 										<td class="col-1"><input id="memId_${mem.index}" class="form-control member" type="text" placeholder="아이디" aria-label="default input example" value="${ml.mem_id}" readonly></td>
 										<td class="col-1"><input id="memName_${mem.index}" class="form-control member" type="text" placeholder="이름" aria-label="default input example" value="${ml.mem_name}" readonly></td>
@@ -100,10 +107,11 @@
 										<td class="col-1">
 											<select id="status_${mem.index}" class="form-select status" aria-label="Default select example">
 												<option value="1" <c:if test="${ml.mem_status == 1}">selected</c:if>>승인</option>
-												<option value="2" <c:if test="${ml.mem_status == 2}">selected</c:if> hidden>승인</option>
+												<option value="2" <c:if test="${ml.mem_status == 2}">selected</c:if> hidden>대기</option>
 												<option value="3" <c:if test="${ml.mem_status == 3}">selected</c:if>>탈퇴</option>
 											</select>
 										</td>
+										<td><button type="button" class="btn btn-lg btn-primary ms-3" onclick="memberModify('${ml.mem_id}')">수정하기</button></td>
 	                             	</tr>
 								</c:forEach>
 							</tbody>
@@ -169,8 +177,8 @@
 	    if (performance.navigation.type === 1) {
 			location.href= "AdmMemList";
 		}
-   
-	 // 메뉴 활성화
+   		
+	 	// 메뉴 활성화
 		let link = document.location.href;
     	if (link.includes("AdmMemList")) {
     		document.querySelector("#memberList").parentElement.previousElementSibling.classList.add("show");

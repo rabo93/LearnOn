@@ -66,13 +66,13 @@
 									<th scope="col">성별</th>
 									<th scope="col">이메일</th>
 									<th scope="col">연락처</th>
-									<th scope="col">상태</th>
-									<th scope="col">승인여부</th>
+									<th scope="col">회원등급</th>
+<!-- 									<th scope="col">승인여부</th> -->
 								</tr>
 							</thead>
 							<tbody>
 								<c:forEach items="${getMemberList}" var="ml" varStatus="mem">
-									<tr>
+									<tr onclick="showFile(${mem.index})">
 										<th><input class="form-check-input" type="checkbox" id="gridCheck_${mem.index}"></th>
 										<td class="col-1"><input id="idx_${mem.index}" class="form-control member" type="text" placeholder="회원 번호" aria-label="default input example" value="${ml.idx}" readonly></td>
 										<td class="col-1"><input id="memId_${mem.index}" class="form-control member" type="text" placeholder="아이디" aria-label="default input example" value="${ml.mem_id}" readonly></td>
@@ -92,17 +92,25 @@
 	                          		 	</td>
 										<td><input id="memPhone_${mem.index}" class="form-control member" type="text" placeholder="연락처" aria-label="default input example" value="${ml.mem_phone}" readonly></td>
 										<td class="col-1">
-											<select id="status_${mem.index}" class="form-select status" aria-label="Default select example">
-												<option value="1" <c:if test="${ml.mem_status == 1}">selected</c:if>>정상</option>
-												<option value="2" <c:if test="${ml.mem_status == 2}">selected</c:if>>대기</option>
-												<option value="3" <c:if test="${ml.mem_status == 3}">selected</c:if>>탈퇴</option>
+											<select id="grade_${mem.index}" class="form-select grade" aria-label="Default select example">
+												<option value="1" <c:if test="${ml.mem_grade eq 'MEM01'}">selected</c:if>>일반회원</option>
+												<option value="2" <c:if test="${ml.mem_grade eq 'MEM02'}">selected</c:if>>강사회원</option>
 											</select>
 										</td>
-										<td class="d-flex">
-											<button type="button" class="btn btn-lg btn-primary row col-auto">승인</button>
-											<button type="button" class="btn btn-lg btn-primary row col-auto ms-3">반려</button>
-										</td>
 	                             	</tr>
+	                             	<tr class="AdmMemberDetail">
+										<td colspan="9">
+											<input id="memFile_${mem.index}" class="form-control member w-75" type="text" placeholder="파일" aria-label="default input example" value="${ml.file_pp}" readonly>
+										</td>
+										<td>
+											<button type="button" class="btn btn-lg btn-primary ms-3" onclick="changeMemGrade('${ml.mem_id}')"
+												<c:if test="${ml.mem_grade eq 'MEM02'}">hidden</c:if>>승인
+											</button>
+											<button type="button" class="btn btn-lg btn-primary ms-3" onclick="changeMemGrade('${ml.mem_id}')"
+												<c:if test="${ml.mem_grade eq 'MEM01'}">hidden</c:if>>승인취소
+											</button>
+										</td>
+                             		</tr>
 								</c:forEach>
 							</tbody>
 						</table>
@@ -132,6 +140,10 @@
     <!-- Template Javascript -->
     <script src="resources/admin/js/main.js"></script>
     <script type="text/javascript">
+    	if (performance.navigation.type === 1) {
+		location.href= "AdmMemInstructor";
+		}
+    
 		// 메뉴 활성화
 		let link = document.location.href;
 		if (link.includes("AdmMemInstructor")) {

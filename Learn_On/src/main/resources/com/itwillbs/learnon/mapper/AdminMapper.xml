@@ -27,7 +27,7 @@
 			, #{class_intro}
 			, #{class_price}
 			, #{class_category}
-			, curdate()
+			, DATE_FORMAT(now(), '%y-%m-%d')
 			, #{class_runtime}
 			, #{class_pic1}
 			, #{class_contents}
@@ -42,19 +42,19 @@
 		</selectKey>
 		UPDATE CLASS
 		SET class_pic1 = #{class_pic1}
-		WHERE  class_id = #{class_id}
+		WHERE  CLASS_ID = #{class_id}
 	</update>
 	
 	<!-- 클래스 등록시 커리큘럼 입력 -->
 	<insert id="curriculum">
 <!-- 		<selectKey keyProperty="class_id" resultType="int" order="BEFORE"> -->
-<!-- 			SELECT IFNULL(MAX(CLASS_ID), 0) -->
+<!-- 			SELECT IFNULL(MAX(CLASS_ID), 0) + 1 -->
 <!-- 			FROM CLASS -->
 <!-- 		</selectKey> -->
 		INSERT
 		INTO CURRICULUM
 		VALUES (
-			()
+			#{class_id}
 			, NULL
 			, #{cur_title}
 			, NULL
@@ -127,6 +127,18 @@
 		WHERE class_id = #{class_id}
 	</update>
 	
+	<delete id="deleteClass">
+		DELETE
+		FROM CLASS
+		WHERE CLASS_ID = #{class_id}
+	</delete>
+	
+	<delete id="deleteCurriculum">
+		DELETE
+		FROM CURRICULUM
+		WHERE CLASS_ID = #{class_id}
+	</delete>
+	
 <!-- ================================================================== -->
 <!-- 회원 -->	
 	
@@ -152,8 +164,6 @@
 			 , MEM_LIKE2_CLASS
 			 , FILE_PP
 			 , MAIL_AUTH_STATUS
-			 , profile_image
-			 , status
 		  FROM MEMBER
 		 WHERE 1=1
 		   AND MEM_GRADE = 'MEM01'
@@ -168,8 +178,16 @@
 				</when>
 			</choose>
 		</if>
-		 ORDER
-		    BY MEM_REG_DATE DESC
+		<choose>
+			<when test="sort.equals('reg_lastest')">
+			 ORDER
+			    BY MEM_REG_DATE DESC
+			</when>
+			<when test="sort.equals('reg_oldest')">
+			ORDER
+			    BY MEM_REG_DATE ASC
+			</when>
+		</choose>
 		 LIMIT #{startRow}
 		 	 , #{listLimit}
 	</select>
@@ -204,11 +222,10 @@
 			 , MEM_LIKE2_CLASS
 			 , FILE_PP
 			 , MAIL_AUTH_STATUS
-			 , profile_image
-			 , status
 		  FROM MEMBER
 		 WHERE 1=1
-		   AND MEM_GRADE = 'MEM02'
+		   AND MEM_GRADE IN ('MEM01', 'MEM02')
+		   AND LENGTH(FILE_PP) >= 1
 	</select>
 	<!-- 탈퇴회원 목록 조회 -->
 	<select id="getWithdrawMemberList">
@@ -232,11 +249,34 @@
 			 , MEM_LIKE2_CLASS
 			 , FILE_PP
 			 , MAIL_AUTH_STATUS
-			 , profile_image
-			 , status
 		  FROM MEMBER
 		 WHERE 1=1
 		   AND MEM_STATUS = '3'
+	</select>
+	<!-- mem_id로 회원목록 조회 -->
+	<select id="getMemberList" resultType="member">
+		SELECT MEM_IDX
+			 , MEM_ID
+			 , MEM_PASSWD
+			 , MEM_NAME
+			 , MEM_NICK
+			 , MEM_BIRTHDAY
+			 , MEM_EMAIL
+			 , MEM_GENDER
+			 , MEM_PHONE
+			 , MEM_POST_CODE
+			 , MEM_ADDRESS1
+			 , MEM_ADDRESS2
+			 , MEM_GRADE
+			 , MEM_STATUS
+			 , MEM_REG_DATE
+			 , MEM_WITHDRAW_DATE
+			 , MEM_LIKE1_CLASS
+			 , MEM_LIKE2_CLASS
+			 , FILE_PP
+			 , MAIL_AUTH_STATUS
+		  FROM MEMBER
+		 WHERE MEM_ID = #{mem_id}
 	</select>
 	
 	<!-- 회원 상태 변경 -->
@@ -252,7 +292,28 @@
 			</otherwise>
 		</choose>
 		WHERE MEM_ID = #{mem_id}
-	</update>	
+	</update>
+	
+	<!-- 회원 삭제 -->
+	<delete id="deleteMember">
+		DELETE
+		  FROM MEMBER
+		 WHERE MEM_ID = #{mem_id}
+	</delete>
+	
+	<!-- 회원 등급 변경 -->
+	<update id="updateGrade">
+		UPDATE MEMBER
+		<choose>
+			<when test="mem_grade.equals('MEM01')">
+			SET MEM_GRADE = 'MEM02'
+			</when>
+			<when test="mem_grade.equals('MEM02')">
+			SET MEM_GRADE = 'MEM01'
+			</when>
+		</choose>
+		WHERE MEM_ID = #{mem_id}
+	</update>
 <!-- ================================================================== -->
 <!-- 카테고리 -->	
 
@@ -264,13 +325,13 @@
 		     , T.NAME AS NAME_SUBCATE
 		     , CASE WHEN T.NAME = (SELECT CLASS_CATEGORY
 								   FROM CLASS
-								   WHERE CLASS_ID = #{CLASS_ID}) THEN 'selected'
+								   WHERE CLASS_ID = #{class_id}) THEN 'selected'
 																 ELSE '' 		END AS SELECTED
 		  FROM COMMONCODE C
 		  JOIN COMMONCODETYPE T
 			ON C.CODEID = T.CODETYPE
 		 WHERE 1 = 1
-		   AND C.CODEID = #{CODEID_MAINCATE}
+		   AND C.CODEID = #{codeid_maincate}
 	</select>
 	
 	<!-- 대분류 조회 -->

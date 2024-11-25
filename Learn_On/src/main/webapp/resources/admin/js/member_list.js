@@ -1,3 +1,5 @@
+
+
 $(function(){
 	$('.status').on("change", function() {
 		let index = this.id.split('_')[1];
@@ -19,3 +21,44 @@ $(function(){
 		})
 	});
 })
+
+function memberModify(mem_id) {
+	console.log("mem_id : " + mem_id);
+	location.href = "AdmMemberModify?mem_id=" + mem_id;
+}
+
+function showFile(index) {
+    const detailRows = document.querySelectorAll('.AdmMemberDetail');
+    detailRows.forEach(function(row) {
+        row.style.display = 'none';
+    });
+
+    const selectedSubject = document.querySelectorAll('.AdmMemberDetail')[index];
+    if (selectedSubject) {
+        selectedSubject.style.display = 'table-row';
+    }
+}
+
+function deleteMember() {
+	const checkedValues = $('input[name="mem_id"]:checked').map(function() {
+		return $(this).val();
+	}).get();
+	
+	if (checkedValues.length <= 0) {
+		alert("삭제할 회원을 선택하세요");
+		return;
+	}
+	
+	console.log("checkedValues : " + checkedValues);
+	location.href = "AdminMemberDelete?mem_ids=" + checkedValues;
+}
+
+function changeMemGrade(mem_id) {
+	console.log("mem_id : " + mem_id);
+	location.href = "AdmMemGradeChange?mem_id=" + mem_id;
+}
+
+
+
+
+

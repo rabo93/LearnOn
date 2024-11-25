@@ -76,11 +76,11 @@
 							</thead>
 							<tbody>
 								<c:forEach items="${faqList}" var="faqBoard" varStatus="status">
-									<tr>
+									<tr onclick="showFaq(${status.index})">
 										<th><input class="form-check-input" type="checkbox" id="gridCheck1" name="faq_idx" value="${faqBoard.faq_idx}"></th>
-										<td><input class="form-control" type="text" aria-label="default input example" value="${faqBoard.faq_idx}" onclick="showFaq(${status.index})"></td>
+										<td><input class="form-control" type="text" aria-label="default input example" value="${faqBoard.faq_idx}" ></td>
 										<td>
-											<input class="form-control" type="text" aria-label="default input example" value="${faqBoard.faq_subject}" onclick="showFaq(${status.index})">
+											<input class="form-control" type="text" aria-label="default input example" value="${faqBoard.faq_subject}">
 										</td>
 										<td><input class="form-control" type="text" aria-label="default input example"
 											<c:choose>
@@ -153,45 +153,46 @@
     <script src="resources/admin/lib/tempusdominus/js/moment.min.js"></script>
     <script src="resources/admin/lib/tempusdominus/js/moment-timezone.min.js"></script>
     <script src="resources/admin/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="resources/admin/js/faq_list.js"></script>
 
     <!-- Template Javascript -->
     <script src="resources/admin/js/main.js"></script>
     <script type="text/javascript">
-	    if (performance.navigation.type === 1) {
-			location.href= "AdmFaq";
-		}
+// 	    if (performance.navigation.type === 1) {
+// 			location.href= "AdmFaq";
+// 		}
     
-    	function showFaq(index) {
-	        const detailRows = document.querySelectorAll('.AdmfaqDetail');
-	        detailRows.forEach(function(row) {
-	            row.style.display = 'none';
-	        });
+//     	function showFaq(index) {
+// 	        const detailRows = document.querySelectorAll('.AdmfaqDetail');
+// 	        detailRows.forEach(function(row) {
+// 	            row.style.display = 'none';
+// 	        });
 	
-	        const selectedSubject = document.querySelectorAll('.AdmfaqDetail')[index];
-	        if (selectedSubject) {
-	            selectedSubject.style.display = 'table-row';
-	        }
-	    }
+// 	        const selectedSubject = document.querySelectorAll('.AdmfaqDetail')[index];
+// 	        if (selectedSubject) {
+// 	            selectedSubject.style.display = 'table-row';
+// 	        }
+// 	    }
     	
-    	function faqModify(faq_idx) {
-    		console.log("faq_idx : " + faq_idx);
-    		location.href = "AdminFaqModify?faq_idx=" + faq_idx;
-    	}
+//     	function faqModify(faq_idx) {
+//     		console.log("faq_idx : " + faq_idx);
+//     		location.href = "AdminFaqModify?faq_idx=" + faq_idx;
+//     	}
     	
-    	function deleteBoard() {
-	    	const checkedValues = $('input[name="faq_idx"]:checked').map(function() {
-	    		return $(this).val();
-	    	}).get();
+//     	function deleteBoard() {
+// 	    	const checkedValues = $('input[name="faq_idx"]:checked').map(function() {
+// 	    		return $(this).val();
+// 	    	}).get();
 	    	
-	    	if (checkedValues.length <= 0) {
-	    		alert("삭제할 게시물을 선택하세요");
-	    		return;
-	    	}
+// 	    	if (checkedValues.length <= 0) {
+// 	    		alert("삭제할 게시물을 선택하세요");
+// 	    		return;
+// 	    	}
 	    	
-	    	console.log("checkedValues : " + checkedValues);
-	    	location.href = "AdminFaqDelete?faq_idxs=" + checkedValues;
+// 	    	console.log("checkedValues : " + checkedValues);
+// 	    	location.href = "AdminFaqDelete?faq_idxs=" + checkedValues;
 	    	
-	    }
+// 	    }
     
     	// 메뉴 활성화
 		let link = document.location.href;

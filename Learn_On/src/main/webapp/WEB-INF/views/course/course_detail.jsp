@@ -71,17 +71,17 @@
 			            </div>
 						<div class="cls-det-text">            	
 			            	<i class="fa-regular fa-clock"></i>
-			            	
-			            	<h4>총  강 ( 분)</h4>
+			            	<c:set var="total_cur" value="${course}" />
+			            	<h4>총  ${fn:length(total_cur)}강 ( ${course[0].class_runtime}분)</h4>
 			            </div>
 		            </div>
 		        </section>
-		        	 <c:set var="count" value="${courseSupportList}" />
+		        	<c:set var="count" value="${courseSupportList}" />
 					<ul class="tabnav">
 						<li><a href="#tab01">클래스 소개</a></li>
 						<li><a href="#tab02">커리큘럼</a></li>
 						<li><a href="#tab03">수강평</a></li>
-						<li><a class="tab" href="CourseSupportList?class_id=${course[0].class_id}">문의(${fn:length(count)})</a></li>
+						<li><a class="tab" href="CourseSupportList?class_id=${course[0].class_id}&codetype=${param.codetype}">문의(${fn:length(count)})</a></li>
 					</ul>
 					<div class="tabcontent">
 						<div class="tabmenu" id="tab01">

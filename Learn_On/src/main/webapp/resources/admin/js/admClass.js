@@ -81,19 +81,20 @@ function deleteSubCateRow() {
 // 소분류 불러오기
 function selectMainCate() {
 	let mainCateId = document.querySelector("select[name=class_maincate]").value;
+	console.log(mainCateId);
 	
 	$.ajax({
 		type: "GET",
 		url: "SelectCategory",
 		data: {
-			codetype_id_subcate : mainCateId
+			codeid_maincate : mainCateId
 		},
 		dataType : "json"
 	}).done(function(data){
 		$("#floatingSelect2").empty();
 		for(let item of data) {
 			$("#floatingSelect2").append(
-				`<option value="${item.name}" ${item.selected}>${item.name}</option>`
+				`<option value="${item.NAME_SUBCATE}" ${item.SELECTED}>${item.NAME_SUBCATE}</option>`
 			);
 		}
 	}).fail(function(){
@@ -105,6 +106,7 @@ function selectMainCate() {
 // 소분류 실행
 $(function () {
 	let mainCateId = document.querySelector("select[name=class_maincate]").value;
+	console.log(mainCateId);
 	
 	$.ajax({
 		type: "GET",
@@ -115,12 +117,10 @@ $(function () {
 		dataType : "json"
 	}).done(function(data){
 		
-//		debugger;
-		
 		$("#floatingSelect2").empty();
 		for(let item of data) {
 			$("#floatingSelect2").append(
-				`<option value="${item.name}" ${item.selected}>${item.name}</option>`
+				`<option value="${item.NAME_SUBCATE}" ${item.SELECTED}>${item.NAME_SUBCATE}</option>`
 			);
 		}
 	}).fail(function(){

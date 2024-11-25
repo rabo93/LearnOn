@@ -27,7 +27,7 @@
 			, #{class_intro}
 			, #{class_price}
 			, #{class_category}
-			, curdate()
+			, DATE_FORMAT(now(), '%y-%m-%d')
 			, #{class_runtime}
 			, #{class_pic1}
 			, #{class_contents}
@@ -42,19 +42,19 @@
 		</selectKey>
 		UPDATE CLASS
 		SET class_pic1 = #{class_pic1}
-		WHERE  class_id = #{class_id}
+		WHERE  CLASS_ID = #{class_id}
 	</update>
 	
 	<!-- 클래스 등록시 커리큘럼 입력 -->
 	<insert id="curriculum">
 <!-- 		<selectKey keyProperty="class_id" resultType="int" order="BEFORE"> -->
-<!-- 			SELECT IFNULL(MAX(CLASS_ID), 0) -->
+<!-- 			SELECT IFNULL(MAX(CLASS_ID), 0) + 1 -->
 <!-- 			FROM CLASS -->
 <!-- 		</selectKey> -->
 		INSERT
 		INTO CURRICULUM
 		VALUES (
-			()
+			#{class_id}
 			, NULL
 			, #{cur_title}
 			, NULL
@@ -264,13 +264,13 @@
 		     , T.NAME AS NAME_SUBCATE
 		     , CASE WHEN T.NAME = (SELECT CLASS_CATEGORY
 								   FROM CLASS
-								   WHERE CLASS_ID = #{CLASS_ID}) THEN 'selected'
+								   WHERE CLASS_ID = #{class_id}) THEN 'selected'
 																 ELSE '' 		END AS SELECTED
 		  FROM COMMONCODE C
 		  JOIN COMMONCODETYPE T
 			ON C.CODEID = T.CODETYPE
 		 WHERE 1 = 1
-		   AND C.CODEID = #{CODEID_MAINCATE}
+		   AND C.CODEID = #{codeid_maincate}
 	</select>
 	
 	<!-- 대분류 조회 -->

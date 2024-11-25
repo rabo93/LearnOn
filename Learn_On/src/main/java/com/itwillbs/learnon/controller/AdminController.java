@@ -335,7 +335,6 @@ public class AdminController {
 	@GetMapping("SelectCategory")
 	public String selectCategory(AdminVO admin) {
 		List<Map<String, Object>> adminArr = adminService.selectSubCate(admin);
-//		System.out.println("admin : " + adminArr);
 		
 		JSONArray joArr = new JSONArray(adminArr);
 		

@@ -58,5 +58,7 @@ public interface CourseMapper {
 			@Param("class_id") int class_id, 
 			@Param("id") String id);
 
+	List<CourseVO> selectFindCourseList(String find_title);
+
 
 }

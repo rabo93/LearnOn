@@ -18,7 +18,7 @@
 			 , T.NAME
 			 , T.CODETYPE
 			 , T.DESCRIPTION
-			 , (SELECT CODENAME FROM COMMONCODE WHERE CODEID = #{course.codetype}) as CATENAME
+			 , (SELECT CODENAME FROM COMMONCODE WHERE CODEID = #{codetype}) as CATENAME
 			 , T.CODETYPE_ID
 			 , R.REVIEW_SCORE
 			 , C.MEM_ID AS TEACHER_ID
@@ -45,9 +45,27 @@
 		 	 ORDER BY REVIEW_SCORE DESC
 		 	</when>
 		 </choose>
-		  
 	</select>
-	
+	<select id="selectFindCourseList" resultType="course">
+		SELECT C.CLASS_TITLE 
+		     , M.MEM_NAME AS MEM_ID 
+		     , C.CLASS_INTRO
+		     , C.CLASS_PRICE
+		     , C.CLASS_CATEGORY
+		     , C.CLASS_REG_DATE
+		     , C.CLASS_RUNTIME
+		     , C.CLASS_PIC1
+		     , C.CLASS_CONTENTS
+			 , C.CLASS_STATUS
+			 , C.CLASS_ID
+			 , R.REVIEW_SCORE
+			 , C.MEM_ID AS TEACHER_ID
+		  FROM CLASS C
+	LEFT  JOIN MEMBER M ON C.MEM_ID = M.MEM_ID
+		  JOIN COMMONCODETYPE T ON C.CLASS_CATEGORY = T.NAME
+ 	 LEFT JOIN (SELECT TRUNCATE(AVG(REVIEW_SCORE), 1) AS REVIEW_SCORE, CLASS_ID FROM REVIEW GROUP BY CLASS_ID) R ON R.CLASS_ID  = C.CLASS_ID
+	     WHERE C.CLASS_TITLE LIKE CONCAT('%', #{find_title}, '%')
+	</select>
 	
 	
 	<select id="selectCommonCodeType" resultType="codeType" parameterType="string">

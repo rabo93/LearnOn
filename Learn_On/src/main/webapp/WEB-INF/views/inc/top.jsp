@@ -99,18 +99,6 @@ function logout() {
 				<a href="#">카테고리</a>
 				<div class="dropdown-bg"></div>
 				<ul class="dropdown">
-<!-- 					<li> -->
-<!-- 						<a href="Category?codetype=CATE01">IT/개발</a> -->
-<!-- 						<ul class="sub-dropdown"> -->
-<!-- 							<li><a href="Category?codetype=CATE01">전체</a></li> -->
-<!-- 							<li><a href="Category?codetype=CATE01&codetype_id=01">프로그래밍</a></li> -->
-<!-- 							<li><a href="Category?codetype=CATE01&codetype_id=02">WEB 개발</a></li> -->
-<!-- 							<li><a href="Category?codetype=CATE01&codetype_id=03">프론트엔드</a></li> -->
-<!-- 							<li><a href="Category?codetype=CATE01&codetype_id=04">백엔드</a></li> -->
-<!-- 							<li><a href="Category?codetype=CATE01&codetype_id=05">App</a></li> -->
-<!-- 						</ul> -->
-<!-- 					</li> -->
-
 					<li>
 						<ul id="resultArea">
 							<ul class="sub-dropdown" id="subResultArea"></ul>							

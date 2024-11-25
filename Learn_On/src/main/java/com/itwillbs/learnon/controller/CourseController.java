@@ -479,7 +479,7 @@ public class CourseController {
 		if(insertCount > 0) { // 등록 성공
 			
 			model.addAttribute("class_id", class_id);
-			return "redirect:/CourseDetail?class_id="+ class_id + "&codetype=" + codetype;
+			return "redirect:/Cart";
 		} else {
 			model.addAttribute("msg", "문의글쓰기실패");
 			return "result/fail";

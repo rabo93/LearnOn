@@ -187,7 +187,6 @@
 			}
 			
 			function applyForCourse(id, codetype){
-				var codetype = ${param.codetype};
 				location.href="ApplyForCourse?class_id=" + id + "&codetype=" + codetype;
 			}
 			

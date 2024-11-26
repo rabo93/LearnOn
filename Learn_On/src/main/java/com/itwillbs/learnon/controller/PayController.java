@@ -2,6 +2,7 @@ package com.itwillbs.learnon.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -25,6 +26,7 @@ import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.request.CancelData;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
+
 
 @Controller
 public class PayController {
@@ -58,7 +60,6 @@ public class PayController {
 	    List<OrderVO> selectedItems = payService.getSelectedCart(checkItems);
 //	    System.out.println("selectedItems: " + selectedItems);
 	    
-	    
 	    // 회원 정보 및 선택된 상품 정보를 Model에 추가하여 payment.jsp로 전달
 	    model.addAttribute("member", member);
 	    model.addAttribute("selectedCartList", selectedItems);
@@ -86,21 +87,34 @@ public class PayController {
 	// 2. 사후 처리 후 결제정보&주문정보 DB 저장
 	@ResponseBody
 	@PostMapping("payinfoSave")
-	public void  savePayInfo(@RequestBody PayVO payVO) throws IamportResponseException, IOException {
+	public String  savePayInfo(@RequestBody PayVO payVO) {
 		System.out.println("결제저장DTO : " + payVO);
 		
+		//결제정보 저장 호출
 		payService.savePayInfo(payVO);
+		
+		//ajax 응답 데이터로 넘겨줄 response 저장
+		String response = payVO.getMerchant_uid();
+		return  response;
 	}
 	
 	@ResponseBody
     @PostMapping("orderinfoSave")
-	public String orderPayInfo(@RequestBody OrderVO orderVO) throws IamportResponseException, IOException {
-		System.out.println("주문저장DTO : " + orderVO);
+	public String orderPayInfo(@RequestBody OrderVO orderVO) {
+		System.out.println("주문저장VO : " + orderVO);
+		//OrderVO(order_idx=0, merchant_uid=2024112528321, mem_id=bborara, items=[OrderItemVO(class_id=1, class_price=75000), OrderItemVO(class_id=2, class_price=1004)], coupon_id=2, price=0)
 		
+		//주문정보 저장 호출
 		payService.saveOrderInfo(orderVO);
-		payService.deleteCart(orderVO.getCartItemIdx());
 		
-		return orderVO.getMerchant_uid(); 
+//		//쿠폰 사용 상태 업데이트 호출
+		payService.couponUsed(orderVO.getCoupon_id());
+		
+		//결제 성공 페이지에 뿌릴 정보 다시 생각해서 리턴값 다시 생각하기
+		
+		//ajax 응답 데이터로 넘겨줄 response 저장
+		String response = orderVO.getMerchant_uid();
+		return  response;
 	}
     
 	//--------------------------------------------------------
@@ -117,6 +131,9 @@ public class PayController {
 		//CancelData(결제를 취소할때 사용하기위한 클래스) : 주의! 이름 맞춰줘야함!
 		return iamportClient.cancelPaymentByImpUid(new CancelData(impUid, true));
 	}
+	
+	
+	
 	
 	//=================================================================================
 	// "Terms" 이용약관 페이지 매핑 - GET

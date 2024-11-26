@@ -116,8 +116,8 @@
 
 /* 오른쪽 부분 */
 .cart-right {
-	flex: 0 1 260px; /* 오른쪽 섹션의 너비를 고정 */
-    max-width: 260px; /* 원하는 크기로 고정 */
+	flex: 0 1 300px; /* 오른쪽 섹션의 너비를 고정 */
+    max-width: 300px; /* 원하는 크기로 고정 */
 }
 .cart-right .price-box {
     background: var(--light-blue);

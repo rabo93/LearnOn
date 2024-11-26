@@ -6,7 +6,7 @@
 	<!-- resultMap을 사용한 MyBatis 자동 매핑 -->
 	<resultMap id="CartToOrderMap" type="order">
 		<result property="cartItemIdx" column="CARTITEM_IDX"/>
-	   <result property="classId" column="CLASS_ID"/>
+	   	<result property="classId" column="CLASS_ID"/>
 	    <result property="memId" column="MEM_ID"/>
 	    <result property="classTitle" column="CLASS_TITLE"/>
 	    <result property="teacherName" column="MEM_NAME"/>
@@ -94,10 +94,8 @@
 			, MEM_ID
 			, CLASS_ID
 			, CLASS_PRICE
-			, COUPON_CODE
+			, COUPON_ID
 			, PAY_PRICE
-			, PAY_DATE
-			, PAY_STATUS
 		)
 		VALUES
 		(
@@ -106,20 +104,19 @@
 			, #{mem_id}
 			, #{class_id}
 			, #{class_price}
-			, #{coupon_code}
+			, #{coupon_id}
 			, #{price}
 		)
 	</insert>
-	
-	
-	
-	
-	<!-- 장바구니 내역 삭제 -->
-    <delete id="deleteCart">
-    	DELETE FROM CART
-    	WHERE CARTITEM_IDX = #{cartItemIdx}
-    </delete>
     
 	<!-- 결제 완료시 사용한 쿠폰 상태 업데이트 -->
+	<update id="updateCoupon">
+		UPDATE MYCOUPON
+		SET COUPON_ISUSED = 2
+		WHERE COUPON_ID = #{coupon_id}
+	</update>
+	
+	
+	
 	
 </mapper>

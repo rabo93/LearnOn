@@ -16,7 +16,7 @@
 <!-- page 개별 CSS -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mycoupon.css">
 <!-- page 개별 JS -->
-<script src="${pageContext.request.contextPath}/resources/js/cart_payment/mycoupon.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/mycoupon.js"></script>
 <!-- 포트원 결제api sdk 추가 -->
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 

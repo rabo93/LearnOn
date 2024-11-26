@@ -25,9 +25,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.itwillbs.learnon.service.CartService;
 import com.itwillbs.learnon.service.CourseService;
 import com.itwillbs.learnon.service.MemberService;
 import com.itwillbs.learnon.service.MypageService;
+import com.itwillbs.learnon.vo.CartVO;
 import com.itwillbs.learnon.vo.CommonCodeTypeVO;
 import com.itwillbs.learnon.vo.CourseSupportVO;
 import com.itwillbs.learnon.vo.CourseVO;
@@ -42,24 +44,18 @@ public class CourseController {
 	MemberService memberService;
 	@Autowired
 	MypageService myService;
+	@Autowired
+	CartService cartService;
 	
 	
 	// 이클립스 상의 가상의 업로드 경로명 저장(프로젝트 상에서 보이는 경ㅇ로)
 	private String uploadPath = "/resources/upload";
 
+	// top.jsp에서 뿌릴 카테고리 공통메뉴
 	@ResponseBody
 	@GetMapping("TopMenu")
 	public String topMenu (Model model) {
-//		List<CommonCodeTypeVO> codeTypeAll = courseService.getCodeTypeAll();
-//		List<CommonCodeTypeVO> commonCode = courseService.getCommonCode();
-//
-//		model.addAttribute("commonCode", commonCode);
-//		model.addAttribute("codeTypeAll", codeTypeAll);
-		
-//		return "inc/top";
-		// =========================================
 		List<Map<String, String>> menuList = courseService.getMenuList();
-//		System.out.println(menuList);
 		JSONArray jo = new JSONArray(menuList);
 		
 		return jo.toString();
@@ -236,37 +232,6 @@ public class CourseController {
 		cSupport.setMem_id(id);
 		cSupport.setC_class_id(class_id);
 
-		// --------------------------------------------------------
-		// [ 파일 업로드 처리 ]
-//		String realPath = session.getServletContext().getRealPath(uploadPath); // request대신 session을 써도 똑같은 메서드가 존재함.
-//		String subDir = "";// 서브 디렉토리명을 저장할 변수 선언
-//		LocalDate today = LocalDate.now();//현재 시스템의 날짜 정보 생성
-//		String datePattern ="yyyy/MM/dd"; // 날짜 포맷 변경에 사용할 패턴 문자열 지정
-//		DateTimeFormatter dtf = DateTimeFormatter.ofPattern(datePattern);
-//		subDir = today.format(dtf);  // LocalDate - DateTimeFormatter
-//		realPath += "/" + subDir;
-//		
-//		try {
-//			Path path = Paths.get(realPath); // 파라미터로 실제 업로드 경로전달
-//			Files.createDirectories(path); // IOException 예외 처리 필요(임시로 현재 클래스에서 처리) - 이거쓰면 그냥 10월29일 날짜 폴더 만들어져 있으면 알아서 안만든다. exist*() 메서드로 폴더있나 없나 확인안해도 됨.
-//		} catch(Exception e) {
-//			e.printStackTrace();
-//		}
-//		// ------------------------------------
-//		// [업로드 되는 실제 파일 처리]
-//		// 실제 파일은 BoardVO 객체의 MultipartFile 타입 객체로 관리함(멤버변수명 fileXXX)
-//		MultipartFile mFile1 = cSupport.getFile(); 
-//		cSupport.setC_support_file("");
-//		
-//		String fileName1 = "";
-//		
-//		// 업로드 파일명이 널스트링이 아닐 경우를 판별하여 파일명 저장
-//		if(!mFile1.getOriginalFilename().equals("")) {
-//			fileName1 = UUID.randomUUID().toString().substring(0, 8) + "_" + mFile1.getOriginalFilename();
-//			cSupport.setC_support_file(fileName1);
-//		}
-//		
-		
 		
 		// 파일 업로드 처리 준비
 		String realPath = getRealPath(session); // 실제 경로 알아내기
@@ -385,7 +350,6 @@ public class CourseController {
 		// => 파라미터 : Map 객체   리턴타입 : int(deleteCount)
 		int deleteCount = courseService.removeBoardFile(map); 
 		
-//		System.out.println("map???@#!$@$      :   " + map);
 		// DB 에서 해당 파일명 삭제 성공 시 실제 파일 삭제 처리
 		if(deleteCount > 0) {
 			// 실제 업로드 경로 알아내기
@@ -489,7 +453,6 @@ public class CourseController {
 				HttpServletRequest request,
 				Model model
 				) {
-//		System.out.println("codetype ㄷ받아오나??" + codetype);
 		
 		// 미 로그인 처리 
 		String id = (String)session.getAttribute("sId");
@@ -514,17 +477,22 @@ public class CourseController {
 			return "result/fail";
 		}
 		
-		
-		int insertCount = courseService.registApplyForCourse(class_id, id);
-		if(insertCount > 0) { // 등록 성공
-			
-			model.addAttribute("class_id", class_id);
-			return "redirect:/Cart";
-		} else {
-			model.addAttribute("msg", "문의글쓰기실패");
-			return "result/fail";
-		}
-		
+		// CartService - getCartList() 메서드 호출하여 장바구니 목록 조회 요청
+	    List<CartVO> cartList = cartService.getCartList(id);
+	    System.out.println("장바구니!!! asdfASDF@#!%#@^@%^ ???      : "  +cartList.get(0).getClass_id());
+	    if(class_id !=  cartList.get(0).getClass_id() || cartList.get(0).getClass_id() == 0) {
+//	    	model.addAttribute("msg", "이미 장바구니에 담겨 있습니다.");
+//	    	return "result/fail";
+	    }
+	    // 장바구니 담기 
+    	int insertCount = courseService.registApplyForCourse(class_id, id);
+    	if(insertCount > 0) { // 등록 성공
+    		model.addAttribute("class_id", class_id);
+    		return "redirect:/Cart";
+    	} else {
+    		model.addAttribute("msg", "장바구니에 담기 실패");
+    		return "result/fail";
+    	}
 	}
 	
 	

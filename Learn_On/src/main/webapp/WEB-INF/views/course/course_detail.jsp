@@ -87,9 +87,6 @@
 						<div class="tabmenu" id="tab01">
 							<h2>클래스 소개</h2>
 				            <div class="intro_title">
-				            	사진 : 
-				            	
-				            	<img src="${pageContext.request.contextPath}/${course[0].class_pic1}">
 				            	${course[0].class_intro}
 <!-- 				            	<img data-drag-handle="true" class="resizable-media-img" src="https://cdn.inflearn.com/public/files/courses/335118/builder/01jbxgpm8ttbf91tdak2339ch6?w=960" title="image.png" alt="image" width="668" height="260"> -->
 			            	</div>

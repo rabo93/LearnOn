@@ -47,10 +47,10 @@
 					<div class="d-flex mb-2">
 						<h5 class="me-auto tableSubject">1:1 문의 관리</h5>
 					</div>
-					<div class="d-flex input-group mb-3">
-						<input type="text" class="form-control" placeholder="게시글 검색" aria-label="Recipient's username" aria-describedby="button-addon2">
-						<button class="btn btn-primary" type="button" id="button-addon2">검색</button>
-					</div>
+<!-- 					<div class="d-flex input-group mb-3"> -->
+<!-- 						<input type="text" class="form-control" placeholder="게시글 검색" aria-label="Recipient's username" aria-describedby="button-addon2"> -->
+<!-- 						<button class="btn btn-primary" type="button" id="button-addon2">검색</button> -->
+<!-- 					</div> -->
 						<table class="table table-striped">
 							<colgroup>
 <%-- 								<col width="3%"> --%>

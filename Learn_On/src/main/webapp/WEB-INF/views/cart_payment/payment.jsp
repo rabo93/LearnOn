@@ -16,7 +16,7 @@
 <!-- page 개별 CSS -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/payment.css">
 <!-- page 개별 JS -->
-<script src="${pageContext.request.contextPath}/resources/js/cart_payment/payment.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/payment.js"></script>
 <!-- 포트원 결제api sdk 추가 -->
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 
@@ -42,7 +42,7 @@
 								<h5 class="box-ttl">주문상품</h5>
 								
 								<c:forEach var="item" items="${selectedCartList}">
-									<div class="class-box" data-class-title="${item.classTitle}" data-class-price="${item.classPrice}">
+									<div class="class-box" data-class-id="${item.classId}" data-class-title="${item.classTitle}" data-class-price="${item.classPrice}">
 										<div class="class-pic">
 											<img alt="클래스썸네일" src="/resources/images/thumb_01.webp">
 										</div>
@@ -140,8 +140,7 @@
 					<!-- ----------------- 결제하기 버튼 ---------------->
 					<div class="btns-box">
 						<input type="button" value="결제하기" class="btnSubmit" id="btnSubmit" >
-<!-- 							onclick="kg_requestPay()"> -->
-						<!-- 결제에 넘길 데이터 (form태그가 없으므로 data속성 사용 > js에서 서버로 값 넘길 예정)-->
+						<!-- 결제에 넘길 데이터 (form태그가 없으므로 data속성 사용 js에서 서버로 값 넘길 예정)-->
 						<section id="memberInfo"
 							data-id="${member.mem_id}"
 							data-name="${member.mem_name}"

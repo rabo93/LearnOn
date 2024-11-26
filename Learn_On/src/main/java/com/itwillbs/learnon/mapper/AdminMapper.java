@@ -30,14 +30,15 @@ public interface AdminMapper {
 	List<AdminVO> getClass(AdminVO vO);
 	List<AdminVO> getClassList();
 	List<CourseVO> getCurriculum(AdminVO class_id);
-	List<CourseVO> updateClass(AdminVO vO);
-	int curriculum(AdminVO insertCur);
+	int insertCurriculum(AdminVO insertCur);
 	int insertClass(AdminVO vO);
 	int insertClassPic(AdminVO vO);
 	int insertCurVideo(AdminVO vO);
 	int getClassId();
 	int deleteClass(int i);
 	int deleteCurriculum(int i);
+	int updateClass(AdminVO vO);
+	int updateCurriculum(AdminVO vO);
 	
 	// ============== 멤버 ==========================
 	//	멤버 리스트 조회(일반회원)

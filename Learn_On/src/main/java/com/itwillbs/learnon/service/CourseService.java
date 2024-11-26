@@ -85,6 +85,10 @@ public class CourseService {
 		return mapper.insertApplyForCourse(class_id, id);
 	}
 
+	public List<CourseVO> getFindCourseList(String find_title) {
+		return mapper.selectFindCourseList(find_title);
+	}
+
 
 	
 

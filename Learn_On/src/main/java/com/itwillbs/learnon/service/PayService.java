@@ -1,39 +1,28 @@
 package com.itwillbs.learnon.service;
 
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.itwillbs.learnon.mapper.PayMapper;
-import com.itwillbs.learnon.mapper.PrePaymentMapper;
 import com.itwillbs.learnon.vo.MemberVO;
+import com.itwillbs.learnon.vo.OrderItemVO;
+import com.itwillbs.learnon.vo.OrderVO;
 import com.itwillbs.learnon.vo.PayVO;
-import com.itwillbs.learnon.vo.PurchaseVO;
-import com.siot.IamportRestClient.IamportClient;
-import com.siot.IamportRestClient.exception.IamportResponseException;
-import com.siot.IamportRestClient.request.PrepareData;
-import com.siot.IamportRestClient.response.Payment;
 
 @Service
 public class PayService {
-	//선언한 iamportClient를 이용하여 아임포트에서 제공되는 다양한 API 를 사용할 수 있음
-	private IamportClient iamportClient; 
-	public PayService() {
-//    	this.iamportClient = new IamportClient("REST API KEY", "REST API SECRET");
-		this.iamportClient = new IamportClient("1582333057803703", "Xeql20bTzSYAkeu3qPVXGoU3GEn0Ve4WKSmXsZViEAIrMFoJKE8n8q78DJlZMXkconSi5Nd3JpfpUX7h");
-	}
-	
-	@Autowired
-	private PrePaymentMapper prePaymentMapper;
-	
 	@Autowired
 	private PayMapper mapper;
+	
 	//------------------------------------------------------------------------
 	//결제 상품 목록 조회
-	public List<PurchaseVO> getSelectedCart(List<String> checkItems) {
-		System.out.println("Service checkItems: " + checkItems);  // checkItems 값 확인
+	public List<OrderVO> getSelectedCart(List<String> checkItems) {
+//		System.out.println("결제할 상품 : " + checkItems);
 		return mapper.selectedCart(checkItems);
 	}
 	
@@ -42,17 +31,75 @@ public class PayService {
 	public MemberVO getMemberInfo(String sId) {
 		return mapper.selectMember(sId);
 	}
-	
+
 	//------------------------------------------------------------------------
-	//결제 사전 검증 - 결제예상 주문번호와 주문금액을 DB에 저장
-//	public void postPrepare(PayVO pay) throws IamportResponseException, IOException {
-//		PrepareData prepareData = new PrepareData(pay.getMerchantUid(), pay.getPrice());
-//		System.out.println("서비스 넘겨줄 사전데이터: " + prepareData);
+	//결제 정보 저장
+	@Transactional
+	public void savePayInfo(PayVO payVO) {
+		mapper.insertPayInfo(payVO);
+	}
+	//주문 정보 저장
+	@Transactional
+	public void saveOrderInfo(OrderVO orderVO) {
+	    // 주문 정보 저장
+	    String merchantUid = orderVO.getMerchant_uid();
+	    String memId = orderVO.getMem_id();
+	    int couponId = orderVO.getCoupon_id(); // 쿠폰 코드
+
+	    // 상품 정보 저장할 리스트 생성
+	    List<OrderItemVO> items = new ArrayList<>();
+	    
+	    // items 배열을 반복 처리하여 주문 아이템 생성
+	    for (OrderItemVO item : orderVO.getItems()) {
+	        // OrderItemVO 객체에 데이터 저장 (class_id, class_price 등)
+	        OrderItemVO orderItem = new OrderItemVO();
+	        orderItem.setClass_id(item.getClass_id());
+	        orderItem.setClass_price(item.getClass_price());
+
+	        // items 리스트에 추가
+	        items.add(orderItem);
+	    }
+
+	    // orderVO에 상품 정보 추가
+	    orderVO.setItems(items);
+
+	    // DB에 주문 정보 저장
+	    mapper.insertOrderInfo(orderVO);
+	}
+//	public void saveOrderInfo(OrderVO orderVO) {
+//		String merchant_uid = orderVO.getMerchant_uid();
+//		String mem_id = orderVO.getMem_id();
+//		int coupon_id = orderVO.getCoupon_id();
 //		
-//		iamportClient.postPrepare(prepareData);  // 사전 등록 API 
+//		//상품별 주문 정보 담을 리스트 객체 생성
+//		List<OrderItemVO> items = new ArrayList<>();
 //		
-//		prePaymentMapper.save(pay); // 주문번호와 결제예정 금액 DB 저장
+//		//상품별 주문 내역을 저장하려면 items 배열에 대해 반복 처리
+//		for(Map<String, Object> item : orderVO.getItems()) {
+//			
+//			//Map에서 값을 꺼내 OrderItemVO 객체 생성 후 저장
+//			OrderItemVO orderItem = new OrderItemVO();
+//			orderItem.setClass_id((Integer) item.get("class_id"));
+//			orderItem.setClass_price((Integer) item.get("class_price"));
+//	        
+//			items.add(orderItem);
+//			
+//		}
+//		
+//		orderVO.setItems(items);
+//		
+//		
+//		// 각 상품 정보를 DB에 저장
+//		mapper.insertOrderInfo(orderVO);
+//		
 //	}
+	
+	//쿠폰 사용 상태 업데이트
+	@Transactional
+	public void couponUsed(int coupon_code) {
+		System.out.println("업데이트할 쿠폰코드: " + coupon_code);
+		mapper.updateCoupon(coupon_code);
+	}
 	
 	
 }

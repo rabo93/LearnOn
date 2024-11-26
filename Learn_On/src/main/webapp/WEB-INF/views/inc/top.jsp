@@ -44,7 +44,7 @@ function logout() {
 <!-- 				<a href="#">나의 강의실</a> -->
 <!-- 				<a href="#"><span>홍길동</span> 님</a> -->
 				<div class="login-menu">
-					<a href="MyInfo">마이페이지</a>
+					<a href="MemberModify">마이페이지</a>
 					<a href="#">관리자 홈</a>
 					<a href="#">로그아웃</a>
 				</div>
@@ -98,36 +98,9 @@ function logout() {
 			<li>
 				<a href="#">카테고리</a>
 				<div class="dropdown-bg"></div>
-				<ul class="dropdown">
-<!-- 					<li> -->
-<!-- 						<a href="Category?codetype=CATE01">IT/개발</a> -->
-<!-- 						<ul class="sub-dropdown"> -->
-<!-- 							<li><a href="Category?codetype=CATE01">전체</a></li> -->
-<!-- 							<li><a href="Category?codetype=CATE01&codetype_id=01">프로그래밍</a></li> -->
-<!-- 							<li><a href="Category?codetype=CATE01&codetype_id=02">WEB 개발</a></li> -->
-<!-- 							<li><a href="Category?codetype=CATE01&codetype_id=03">프론트엔드</a></li> -->
-<!-- 							<li><a href="Category?codetype=CATE01&codetype_id=04">백엔드</a></li> -->
-<!-- 							<li><a href="Category?codetype=CATE01&codetype_id=05">App</a></li> -->
-<!-- 						</ul> -->
-<!-- 					</li> -->
-
-					<li>
-						<ul id="resultArea">
-							<ul class="sub-dropdown" id="subResultArea"></ul>							
-						</ul>
-					</li>
-				
-					
+				<ul class="dropdown" id="resultArea">
 				</ul>	
 			</li>						
-					
-					
-					
-					
-					
-					
-					
-					
 			<li><a href="#">BEST</a></li>
 			<li><a href="#">얼리버드 특가</a></li>
 			<li><a href="#">이벤트</a></li>

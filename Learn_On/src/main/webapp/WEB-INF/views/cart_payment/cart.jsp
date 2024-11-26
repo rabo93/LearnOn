@@ -49,7 +49,7 @@
 						<c:choose>
 							<%--장바구니에 아무것도 담겨져 있지 않은 경우 --%>
 							<c:when test="${empty cartList}">
-								<p class="cart-item">장바구니에 담은 상품이 없습니다.</p>
+								<p class="cart-item no-item">장바구니에 담은 상품이 없습니다.</p>
 							</c:when>
 							
 							<c:otherwise>

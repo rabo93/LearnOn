@@ -580,8 +580,6 @@ public class AdminController {
 	@ResponseBody
 	@PostMapping("AdmChangeMemStatus")
 	public String admChangeMemStatus(@RequestParam Map<String, String> map) {
-//		System.out.println("++++++++++++mem_status: " +  map.get("mem_status"));
-//		System.out.println("map? ==============" + map);
 		adminService.changeMemStatus(map);
 		
 		String mem_status = "";
@@ -595,7 +593,6 @@ public class AdminController {
 		json.put("mem_id", map.get("mem_id"));
 		json.put("mem_status", mem_status);
 		
-//		System.out.println("Response JSON: " + json.toString());
 		
 		return json.toString();
 	}
@@ -678,10 +675,15 @@ public class AdminController {
 				model.addAttribute("msg", "존재하지 않는 쿠폰입니다");
 				return "result/fail";
 			}
-			
+			//	CouponInfo(쿠폰정보)에서 삭제
 			int deleteCount = couponService.removeCoupon(coupon.getCoupon_id());
-			
+			//	MyCoupon(가지고있는 쿠폰)에서 삭제
+			int deleteCount2 = couponService.removeMyCoupon(coupon.getCoupon_id());
 			if (deleteCount < 0) {
+				model.addAttribute("msg", "삭제 실패");
+				return "result/fail";
+			}
+			if (deleteCount2 < 0) {
 				model.addAttribute("msg", "삭제 실패");
 				return "result/fail";
 			}
@@ -701,6 +703,11 @@ public class AdminController {
 		System.out.println("coupon : " + coupon);
 		int updateCount = couponService.modifyCouponInfo(coupon);
 		if(updateCount < 0) {
+			model.addAttribute("msg", "수정에 실패했습니다");
+			return "result/fail";
+		}
+		int updateCount2 = couponService.changeStatus(coupon);
+		if(updateCount2 < 0) {
 			model.addAttribute("msg", "수정에 실패했습니다");
 			return "result/fail";
 		}

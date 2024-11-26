@@ -77,12 +77,12 @@
 							<tbody>
 								<c:forEach items="${faqList}" var="faqBoard" varStatus="status">
 									<tr onclick="showFaq(${status.index})">
-										<th><input class="form-check-input" type="checkbox" id="gridCheck1" name="faq_idx" value="${faqBoard.faq_idx}"></th>
-										<td><input class="form-control" type="text" aria-label="default input example" value="${faqBoard.faq_idx}" ></td>
+										<th><input class="form-check-input" type="checkbox" id="gridCheck1" name="faq_idx" value="${faqBoard.faq_idx}" readonly></th>
+										<td><input class="form-control faq" type="text" aria-label="default input example" value="${faqBoard.faq_idx}" readonly></td>
 										<td>
-											<input class="form-control" type="text" aria-label="default input example" value="${faqBoard.faq_subject}">
+											<input class="form-control faq" type="text" aria-label="default input example" value="${faqBoard.faq_subject}" readonly>
 										</td>
-										<td><input class="form-control" type="text" aria-label="default input example"
+										<td><input class="form-control faq" type="text" aria-label="default input example"
 											<c:choose>
 												<c:when test="${faqBoard.faq_cate eq 1}">value="강의수강"</c:when>
 												<c:when test="${faqBoard.faq_cate eq 2}">value="계정관리"</c:when>
@@ -93,7 +93,7 @@
                              		<tr class="AdmfaqDetail">
 	                                 	<td colspan="3">
 		                             		<div>
-												<textarea class="form-control" aria-label="default input example" rows="10" readonly>${faqBoard.faq_content}</textarea>
+												<textarea class="form-control faq" aria-label="default input example" rows="10" readonly>${faqBoard.faq_content}</textarea>
 											</div>
 	                                 	</td>
 	                                 	<td><button class="btn btn-primary" onclick="faqModify(${faqBoard.faq_idx})">수정하기</button></td>

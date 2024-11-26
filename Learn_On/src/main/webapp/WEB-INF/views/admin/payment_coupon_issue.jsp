@@ -76,19 +76,19 @@
 								<tbody>
 									<c:forEach items="${couponList}" var="couponBoard" varStatus="status">
 										<tr onclick="showMembers(${status.index})">
-											<td><input id="couponIdx_${status.index}" class="form-control couponIdx" type="text" aria-label="default input example" value="${couponBoard.coupon_id}"></td>
-											<td><input id="couponName_${status.index}" class="form-control couponName" type="text" aria-label="default input example" value="${couponBoard.coupon_name}"></td>
-											<td><input class="form-control" type="text" aria-label="default input example"
+											<td><input id="couponIdx_${status.index}" class="form-control couponIdx coupon" type="text" aria-label="default input example" value="${couponBoard.coupon_id}" readonly></td>
+											<td><input id="couponName_${status.index}" class="form-control couponName coupon" type="text" aria-label="default input example" value="${couponBoard.coupon_name}" readonly></td>
+											<td><input class="form-control coupon" type="text" aria-label="default input example"
 												<c:choose>
 													<c:when test="${couponBoard.discount_type eq 1}">value="-${couponBoard.discount_percent}%"</c:when>
 													<c:when test="${couponBoard.discount_type eq 2}">value="-${couponBoard.discount_amount}원"</c:when>
-												</c:choose>></td>
-											<td><input class="form-control" type="text" aria-label="default input example" value="${couponBoard.c_expiry_date}"></td>
-											<td><input class="form-control" type="text" aria-label="default input example"
+												</c:choose> readonly></td>
+											<td><input class="form-control coupon" type="text" aria-label="default input example" value="${couponBoard.c_expiry_date}" readonly></td>
+											<td><input class="form-control coupon" type="text" aria-label="default input example"
 												<c:choose>
 													<c:when test="${couponBoard.coupon_status eq 1}">value="사용가능"</c:when>
 													<c:when test="${couponBoard.coupon_status eq 2}">value="사용불가"</c:when>
-												</c:choose>></td>
+												</c:choose> readonly></td>
 	                            		</tr>
 	                              	</c:forEach>
 								</tbody>
@@ -111,8 +111,8 @@
 										<th scope="col" colspan="2">쿠폰 이름</th>
 									</tr>
 									<tr>
-										<th><input class="form-control couponIssueIdx" type="text" aria-label="default input example" value=""></th>
-										<td colspan="2"><input class="form-control couponIssueName" type="text" aria-label="default input example" value=""></td>
+										<th><input class="form-control couponIssueIdx coupon" type="text" aria-label="default input example" readonly></th>
+										<td colspan="2"><input class="form-control couponIssueName coupon" type="text" aria-label="default input example" readonly></td>
 									</tr>
 									<tr>
 										<th><input id="couponMemberCheckAll" class="form-check-input" type="checkbox" value="${couponBoard.coupon_id}"></th>
@@ -186,11 +186,11 @@
     	
     	// 메뉴 활성화
 		let link = document.location.href;
-    	if (link.includes("AdmPayListCoupon")) {
-    		document.querySelector("#paymentCoupon").parentElement.previousElementSibling.classList.add("show");
-    		document.querySelector("#paymentCoupon").parentElement.previousElementSibling.classList.add("active");
-    		document.querySelector("#paymentCoupon").parentElement.classList.add("show");
-    		document.querySelector("#paymentCoupon").classList.toggle("active");
+    	if (link.includes("AdmCouponIssue")) {
+    		document.querySelector("#CouponIssue").parentElement.previousElementSibling.classList.add("show");
+    		document.querySelector("#CouponIssue").parentElement.previousElementSibling.classList.add("active");
+    		document.querySelector("#CouponIssue").parentElement.classList.add("show");
+    		document.querySelector("#CouponIssue").classList.toggle("active");
     	};
     </script>
 </body>

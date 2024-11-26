@@ -83,20 +83,20 @@
 								<c:forEach items="${couponList}" var="couponBoard" varStatus="status">
 									<tr>
 										<th><input class="form-check-input" type="checkbox" id="gridCheck1" name="coupon_id" value="${couponBoard.coupon_id}"></th>
-										<td><input class="form-control" type="text" aria-label="default input example" value="${couponBoard.coupon_id}"></td>
-										<td><input class="form-control" type="text" aria-label="default input example" value="${couponBoard.coupon_name}"></td>
-										<td><input class="form-control" type="text" aria-label="default input example" value="${couponBoard.coupon_code}"></td>
-										<td><input class="form-control" type="text" aria-label="default input example"
+										<td><input class="form-control coupon" type="text" aria-label="default input example" value="${couponBoard.coupon_id}" readonly></td>
+										<td><input class="form-control coupon" type="text" aria-label="default input example" value="${couponBoard.coupon_name}" readonly></td>
+										<td><input class="form-control coupon" type="text" aria-label="default input example" value="${couponBoard.coupon_code}" readonly></td>
+										<td><input class="form-control coupon" type="text" aria-label="default input example"
 											<c:choose>
 												<c:when test="${couponBoard.discount_type eq 1}">value="-${couponBoard.discount_percent}%"</c:when>
 												<c:when test="${couponBoard.discount_type eq 2}">value="-${couponBoard.discount_amount}원"</c:when>
-											</c:choose>></td>
-										<td><input class="form-control" type="text" aria-label="default input example" value="${couponBoard.c_expiry_date}"></td>
-										<td><input class="form-control" type="text" aria-label="default input example"
+											</c:choose> readonly></td>
+										<td><input class="form-control coupon" type="text" aria-label="default input example" value="${couponBoard.c_expiry_date}" readonly></td>
+										<td><input class="form-control coupon" type="text" aria-label="default input example"
 											<c:choose>
 												<c:when test="${couponBoard.coupon_status eq 1}">value="사용가능"</c:when>
 												<c:when test="${couponBoard.coupon_status eq 2}">value="사용불가"</c:when>
-											</c:choose>></td>
+											</c:choose> readonly></td>
 										<td><button type="button" class="btn btn-lg btn-primary ms-3" onclick="couponModify(${couponBoard.coupon_id})">수정하기</button></td>
                              		</tr>
                                	</c:forEach>

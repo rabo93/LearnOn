@@ -425,6 +425,11 @@ button:active {
 .AdmfaqDetail {
 	display: none;
 }
+
+.form-control.faq {
+	background-color: #fff;
+}
+
 /*=================== Coupon ==================*/
 .couponIssueContainer {
 	display: flex;
@@ -461,6 +466,9 @@ button:active {
 	text-align: center;
 }
 
+.form-control.coupon {
+	background-color: #fff;
+}
 
 
 /*=================== 페이징 처리 ==================*/

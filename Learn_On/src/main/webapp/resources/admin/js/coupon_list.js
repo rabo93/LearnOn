@@ -1,6 +1,6 @@
 $(document).ready(function() {
 	$(".couponMemberForm").on('submit', function(event) {
-		if (!$("#couponMemberCheckAll").is(":checked")) {
+		if (!$(".couponMemberCheck").is(":checked")) {
 			alert("쿠폰을 발급할 회원을 선택해 주세요");
 			event.preventDefault();
 		} else {
@@ -53,8 +53,8 @@ function showMembers(index) {
 			$(".couponIssueMem > table").append(
 				'<tr class="couponMemberList">'
 				+ '<th><input class="form-check-input couponMemberCheck" type="checkbox" id="gridCheck1" name="mem_ids" value="' + member.mem_id + '"></th>'
-				+ '<td><input class="form-control couponMember" type="text" aria-label="default input example" value="' + member.mem_id + '"></td>'
-				+ '<td><input class="form-control couponMember" type="text" aria-label="default input example" value="' + member.mem_name + '"></td>'
+				+ '<td><input class="form-control couponMember coupon" type="text" aria-label="default input example" value="' + member.mem_id + '" readonly></td>'
+				+ '<td><input class="form-control couponMember coupon" type="text" aria-label="default input example" value="' + member.mem_name + '" readonly></td>'
 				+ '</tr>'
 			);
 		}

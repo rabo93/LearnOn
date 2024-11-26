@@ -21,4 +21,5 @@ public class MyPaymentVO {
 	private String pay_method;
 	private int pay_status;
 	private String receipt_url;
+	private int total_price; // 할인 전 합계금액
 }

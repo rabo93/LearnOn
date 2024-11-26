@@ -606,7 +606,9 @@ public class AdminController {
 	// 어드민 결제 내역 관리 페이지 매핑
 	@GetMapping("AdmPayList")
 	public String admin_payment_list() {
-	return "admin/payment_list";
+		
+		
+		return "admin/payment_list";
 	}
 	
 	// 어드민 쿠폰 관리 페이지 매핑

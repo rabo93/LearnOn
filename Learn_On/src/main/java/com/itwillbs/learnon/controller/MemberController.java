@@ -28,6 +28,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.itwillbs.learnon.handler.GenerateRandomCode;
 import com.itwillbs.learnon.service.MailService;
 import com.itwillbs.learnon.service.MemberService;
+import com.itwillbs.learnon.service.MypageService;
+import com.itwillbs.learnon.vo.AttendanceVO;
 import com.itwillbs.learnon.vo.MailAuthInfo;
 import com.itwillbs.learnon.vo.MemberVO;
 
@@ -38,6 +40,8 @@ public class MemberController {
 	private MemberService memberService;
 	@Autowired
 	private MailService mailService;
+	@Autowired
+	private MypageService mypageService;
 	
 	
 	private String uploadPath = "/resources/upload";
@@ -51,11 +55,11 @@ public class MemberController {
 	
 	@PostMapping("MemberLogin")
 	public String login(MemberVO member,Model model,HttpSession session
-			,BCryptPasswordEncoder passwordEncoder,@CookieValue(value="userId",required=false)String userId2,HttpServletResponse response) {
-		
-		System.out.println("가져온 쿠키아이디@@"+userId2); //on
+			,BCryptPasswordEncoder passwordEncoder, @RequestParam(value = "rememberId", required = false) String rememberId,@CookieValue(value="userId",required=false)String userId2,HttpServletResponse response) {
+//		System.out.println("가져온 쿠키아이디@@"+userId2);
+//		System.out.println("아이디 기억하기 체크@@"+rememberId); //on
 		Cookie cookie = new Cookie("userId",member.getMem_id()); //쿠키설정
-		if(userId2 != null) { //체크
+		if(rememberId != null) { //체크
 			cookie.setMaxAge(60*60*24*30);
 		} else {
 			cookie.setMaxAge(0);
@@ -98,7 +102,7 @@ public class MemberController {
 	}
 	
 	@PostMapping("MemberJoin")
-	public String join(MemberVO member, Model model, BCryptPasswordEncoder passwordEncoder, HttpSession session) {
+	public String join(MemberVO member, Model model, BCryptPasswordEncoder passwordEncoder, HttpSession session,AttendanceVO attendance) {
 	    System.out.println("member : " + member);
 	    // 비밀번호 암호화
 	    String securePasswd = passwordEncoder.encode(member.getMem_passwd());
@@ -122,12 +126,23 @@ public class MemberController {
 //	        MailAuthInfo mailAuthInfo = mailService.sendAuthMail(member);
 //		    System.out.println("인증정보 : " + mailAuthInfo);
 //		    memberService.registMemberAuthInfo(mailAuthInfo);
-
+	    
+	        
+	        //*****MemberJoin시 Attendance table에 mem_id insert 해야함******
+	        
+	        int addAttendance = mypageService.addMemId(member.getMem_id());
+	        
+	        
 	        return "redirect:/MemberJoinSuccess";
 	    } else {
 	        model.addAttribute("msg", "회원가입 실패\n항목을 다시 확인해주세요");
 	        return "result/fail";
 	    }
+	    
+	    
+	    
+	    
+	    
 	}
 
 	// 파일 업로드 처리 메서드
@@ -211,7 +226,6 @@ public class MemberController {
 		
 	
 	//****************************************
-	
 	//이메일 인증
 		@GetMapping ("MemberEmailAuth")
 		public String emailAuth(MailAuthInfo mailAuthInfo , Model model) {
@@ -226,8 +240,8 @@ public class MemberController {
 				return "result/fail";
 				
 			}else{
-				model.addAttribute("msg", "메일 인증 성공\\n홈페이지로 이동합니다");
-				model.addAttribute("targetURL", "/");
+				model.addAttribute("msg", "메일 인증 성공\\로그인 페이지로 이동합니다");
+				model.addAttribute("targetURL", "MemberLogin");
 				return "result/fail"; //fail로 가는이유는 문자 출력하기 위해서
 			}
 			
@@ -251,7 +265,6 @@ public class MemberController {
 	public String memberCheckNick(String mem_nick,MemberVO member) {
 		System.out.println("mem_nick : "+mem_nick);
 		member = memberService.getMemberNick(member);
-		System.out.println("가져온 member(get_nick) : "+member.getMem_nick());
 		boolean isDuplicate = false;
 		if(member != null) { //닉네임 중복
 			isDuplicate= true;
@@ -353,8 +366,6 @@ public class MemberController {
 	        	model.addAttribute("msg", "임시비밀번호 발급에 실패하였습니다.");
 	        	return "result/fail";
 	        }
-	        
-		    
 	      
 	    } catch (Exception e) {
 	        model.addAttribute("msg", "비밀번호 재설정 중 오류가 발생했습니다.");
@@ -415,6 +426,7 @@ public class MemberController {
 		}
 		
 	}
+	
 	
 	
 }

@@ -42,8 +42,7 @@
                <label for="mem_passwd">비밀번호</label>
                <input type="password" name="mem_passwd" id="mem_passwd" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;">
                <div class="checkbox-container">
-               <label for="rememberId"><input type="checkbox" name="rememberId" id="rememberId"<c:if test="${not empty cookie.rememberId}">checked</c:if>>아이디 기억하기</label>
-               <h3>userId쿠키값 : ${cookie.userId.value}</h3>
+              	 <label for="rememberId"><input type="checkbox" name="rememberId" id="rememberId"<c:if test="${not empty cookie.userId}">checked</c:if>>아이디 기억하기</label>
                </div>
                <div class="passwd_find">
 					<label for="passwd_find"><a href="PasswdFinder">비밀번호 찾기</a></label>

@@ -1,8 +1,11 @@
 package com.itwillbs.learnon.service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import java.time.LocalDate;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +16,7 @@ import com.itwillbs.learnon.vo.AttendanceVO;
 import com.itwillbs.learnon.vo.MyCourseVO;
 import com.itwillbs.learnon.vo.MyCurriculumVO;
 import com.itwillbs.learnon.vo.MyDashboardVO;
+import com.itwillbs.learnon.vo.MyPaymentVO;
 import com.itwillbs.learnon.vo.MyReviewVO;
 import com.itwillbs.learnon.vo.SupportBoardVO;
 import com.itwillbs.learnon.vo.WishlistVO;
@@ -78,6 +82,16 @@ public class MypageService {
 		return myMapper.deleteReview(review);
 	}
 
+	// 결제내역 목록 조회
+	public Map<String, List<MyPaymentVO>> getMyPaymentList(String id) {
+		
+		List<MyPaymentVO> list = myMapper.selectPaymentList(id);
+		
+		Map<String, List<MyPaymentVO>> result = list.stream()
+													.collect(Collectors.groupingBy(MyPaymentVO::getMerchant_uid));
+		return result;
+	}
+	
 	// 쿠폰 목록 조회
 	public List<Map<String, Object>> getMyCouponList(String id) {
 		return myMapper.selectCoupon(id);
@@ -127,7 +141,8 @@ public class MypageService {
 	public AttendanceVO getAttendance(String id) {
 		return myMapper.selectAttendance(id);
 	}
-
+	
+	
 	// 나의 강의실 - 강의 시청 조회
 	public MyDashboardVO getMyDashboard(MyDashboardVO myDashboard) {
 		return myMapper.selectMyDashboard(myDashboard);
@@ -155,7 +170,40 @@ public class MypageService {
 	public int answerSupport(SupportBoardVO support) {
 		return myMapper.updateSupportAnswer(support);
 	}
+	
+	// 회원가입시 attendance 테이블에 mem_id 추가
+	public int addMemId(String mem_id) {
+		return myMapper.insertMemId(mem_id);
+	}
 
 
+	//출석체크
+	public int addDate(AttendanceVO attendance) {
+		AttendanceVO lastAttendance = myMapper.selectAttendance(attendance.getMem_id());
+		System.out.println("@@@@@@@@@@@@"+attendance.getMem_id()); //아이디값 받아옴
+		
+		System.out.println("lastAttendance :       " + lastAttendance);
+		LocalDate today = LocalDate.now();
 
+		if(lastAttendance != null){ // mem_id 있으면 
+			LocalDate lastCheckIn = lastAttendance.getCheck_in_date();
+			if (lastCheckIn == null) {
+				attendance.setStreak_days(1); // 첫 출석
+				attendance.setCheck_in_date(today);
+			} 
+		
+			if(lastCheckIn.plusDays(1).equals(today)) { //연속출석 성공
+				attendance.setStreak_days(lastAttendance.getStreak_days()+1);
+				
+			}else if(!lastCheckIn.equals(today)) { //연속 출석 실패시 1로 초기화
+				attendance.setStreak_days(1);
+			}
+		} else {
+			return myMapper.insertAttendance(attendance);
+		}
+		
+		attendance.setCheck_in_date(today);
+		
+		return myMapper.updateAttendance(attendance);
+	}
 }

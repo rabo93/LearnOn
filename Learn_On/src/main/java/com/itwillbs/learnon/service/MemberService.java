@@ -87,11 +87,8 @@ public class MemberService {
 
 	//회원상태 탈퇴 요청
 	public int withdrawMember(String id) {
-		return mapper.updateMemberStatus(id,3);
+		return mapper.updateMemberStatus(id,3); //3 : 탈퇴
 	}
-
-
-
 
 	//비밀번호 찾기로 비밀번호 업데이트
 	public int setTempPasswd(String temPasswd, String mem_email) {

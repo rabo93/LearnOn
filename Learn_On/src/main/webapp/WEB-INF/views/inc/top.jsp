@@ -44,7 +44,7 @@ function logout() {
 <!-- 				<a href="#">나의 강의실</a> -->
 <!-- 				<a href="#"><span>홍길동</span> 님</a> -->
 				<div class="login-menu">
-					<a href="MyInfo">마이페이지</a>
+					<a href="MemberModify">마이페이지</a>
 					<a href="#">관리자 홈</a>
 					<a href="#">로그아웃</a>
 				</div>

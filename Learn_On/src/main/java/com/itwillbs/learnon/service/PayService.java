@@ -82,10 +82,21 @@ public class PayService {
 	}
 	
 	
+	
 	//------------------------------------------------------------------------
 	//결제완료 페이지에 전달할 결제 정보 조회
 	public PayVO getPayInfo(String merchant_uid) {
 		return mapper.selectPayInfo(merchant_uid);
+	}
+	
+	
+	
+	
+	//------------------------------------------------------------------------
+	//결제 취소 시 결제 상태값 변경
+	public void payStatusUpdate(String imp_uid) {
+		System.out.println("포트원 결제ID: " + imp_uid);
+		mapper.updatePayStatus(imp_uid);
 	}
 
 	

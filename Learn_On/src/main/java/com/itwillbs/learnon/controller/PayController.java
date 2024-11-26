@@ -112,14 +112,9 @@ public class PayController {
 		//쿠폰 사용 상태 업데이트
 		payService.couponUsed(orderVO.getCoupon_id());
 		
-		
 		//ajax 응답 데이터로 넘겨줄 response 저장
-		//=> 저장 완료되면 결제 결과 페이지로 이동하고, 주문고유번호를 가지고 가서 표출함.
+		//=> 저장 완료되면 결제 결과 페이지로 이동하고, 주문고유번호를 가지고가서 표출함.
 		String response = orderVO.getMerchant_uid();
-		
-//		PayResult 서블릿 주소에 결제된 내역 받아야함.
-		
-		
 		return response;
 	}
 	
@@ -133,7 +128,7 @@ public class PayController {
 		String impUid = paycancelVO.getImp_uid();
 		
 		//취소하면 결제 상태값 업데이트
-		
+		payService.payStatusUpdate(paycancelVO.getImp_uid());
 		
 		//IamportClient클래스의 cancelPaymentByImpUid() 함수 호출
 		//=> 파라미터: CancelData클래스 	/리턴: IamportResponse<Payment>
@@ -152,15 +147,16 @@ public class PayController {
 	//=================================================================================
 	// "PayResult" 매핑 - GET 
 	@GetMapping("PayResult")
-//	public String paySuccess() {
 	public String paySuccess(@RequestParam String merchant_uid, Model model) {
 		System.out.println("주문고유번호;" + merchant_uid);
 		
 		//결제 정보 조회
 		PayVO payinfo = payService.getPayInfo(merchant_uid);
+		System.out.println("결제완료시정보:" + payinfo);
 		
 		//뷰페이지에 전달
 		model.addAttribute("payinfo", payinfo);
+		
 		
 		return "cart_payment/pay_result";
 	}

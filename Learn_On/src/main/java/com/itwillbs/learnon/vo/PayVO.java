@@ -33,11 +33,10 @@ public class PayVO {
     private String card_num;					// 카드번호
     private String bank_name;					// 가상계좌은행명
     private String bank_num;					// 가상계좌번호
-    private String apply_num;					// 승인 번호
     private String receipt_url;					// 결제영수증 url주소
     
     private int discount_amount;				// 할인금액
-    private String vbank_due;					// 결제영수증 url주소
+//    private String vbank_due;					// 가상계좌 입금기한
 }
 
 

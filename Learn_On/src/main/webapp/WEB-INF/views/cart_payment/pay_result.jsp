@@ -7,7 +7,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>결제완료 - LearOn</title>
+<title>런 온 - 온라인 No.1 교육 플랫폼</title>
+<link rel="SHORTCUT ICON" href="${pageContext.request.contextPath}/resources/images/favicon.ico">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/reset.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
@@ -16,7 +17,7 @@
 <!-- page 개별 CSS -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/pay_result.css">
 <!-- page 개별 JS -->
-<script src="${pageContext.request.contextPath}/resources/js/pay_result.js"></script>
+<%-- <script src="${pageContext.request.contextPath}/resources/js/pay_result.js"></script> --%>
 
 </head>
 <body>
@@ -37,8 +38,7 @@
 							<span class="num">${payinfo.merchant_uid}</span>
 						</div>
 						<div class="products">
-							<span class="ttl" th:each="item : ${payinfo.orderItems}" th:text="${item.class_title}">
-							</span>
+							<span class="ttl">${payinfo.class_name}</span>
 						</div>
 					</div>
 					<div class="price">
@@ -58,22 +58,28 @@
 							<dd id="totalPrice">${payinfo.price}원</dd>
 						</dl>
 						<dl class="Method">
-							<dt>결제수단</dt>
 							<!-- 결제수단이 카드일경우 카드정보, 가상계좌일경우 가상계좌정보 표출 -->
-							<dd id="payMethod">${payinfo.pay_method}</dd>
-							
-							<dd id="payMethod1">국민카드+카드번호</dd>
-							<dd id="payMethod2">국민은행+가상계좌번호</dd>
+							<c:choose>
+								<c:when test="${payinfo.pay_method == 'card'}">
+									<dt>결제 카드</dt>
+									<dd class="payMethod">${payinfo.card_name} / ${payinfo.card_num}</dd>
+								</c:when>
+								<c:otherwise>
+									<dt>입금 계좌</dt>
+									<dd class="payMethod">${payinfo.bank_name} / ${payinfo.bank_num}</dd>
+								</c:otherwise>
+							</c:choose>
 						</dl>
 						<!-- 결제수단이 가상계좌일경우 표출 -->
-						<dl class="vBank-exp">
-							<dt>입금기한</dt>
-							<dd id="expDate">${payinfo.vbank_due}</dd>
-						</dl>
+<!-- 						<dl class="vBank-exp"> -->
+<!-- 							<dt>입금기한</dt> -->
+<%-- 							<dd id="expDate">${payinfo.vbank_due}</dd> --%>
+<!-- 						</dl> -->
 					</div>
 					<!-- 버튼 -->
 					<div class="btns-box">
 						<input type="button" value="메인 페이지" onclick="location.href='./'" class="btnHome">
+						<input type="button" value="영수증 조회" onclick="location.href='${payinfo.receipt_url}'" class="btnReceipt">
 						<input type="button" value="나의 강의실" onclick="location.href='MyDashboard'" class="btnMypage">
 					</div>
 				</article>

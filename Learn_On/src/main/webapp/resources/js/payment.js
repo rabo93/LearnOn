@@ -8,8 +8,11 @@
 	- (V) 결제하기 클릭시 이용약관 동의(필수) 체크 확인 : 클릭 안되어있으면 진행X
 	---------------------------------------------------------------------------
 	- (V) 결제하기 클릭시 결제 API에 데이터 넘겨주기 : 넘겨줄 데이터 (주문번호, 결제금액, 결제수단, 회원id, 회원연락처)
-	- () 결제 완료시 인서트 해야할 테이블 => 결제 내역(PAY_INFO), 주문 내역(ORDER_INFO), 마이페이지 
+	- (V) 결제 완료시 인서트 해야할 테이블 => 결제 내역(PAY_INFO), 주문 내역(ORDER_INFO), 나의클래스(MYCOURSE) 
 	- (V) 결제 완료시 장바구니 내역 삭제
+	- (V) 사용한 쿠폰 상태값 변경
+	- (V) 결제 취소시 결제 상태값 변경
+	
 */
 $(document).ready(function() {
 	
@@ -111,10 +114,9 @@ $(document).ready(function() {
 			}
 		});
 		
-	});
+	}); //쿠폰끝
 	
-	//=============================================================================
-	//=============================================================================
+	
 	//=============================================================================
 	// [결제 구현]
 	// "결제하기" 클릭시 '약관동의 필수' 체크 여부 확인
@@ -243,7 +245,7 @@ $(document).ready(function() {
 							saveOrderinfo(rsp);
 							
 							//테스트 진행을 위해 바로 결제취소(테스트 완료후 코드 지울것)
-							cancelPay(rsp);
+//							cancelPay(rsp);
 						//-------------------------------------------	
 						} else {
 							alert("결제 금액 오류로 결제 실패");
@@ -354,7 +356,7 @@ $(document).ready(function() {
 					title: '결제 완료!',
 					text: '결제 완료 페이지로 이동합니다.'
 				}).then(() => {
-					window.location.href = "PayResult?merchant_uid=" + response;
+					window.location.href = "PayResult?merchant_uid="+response;
 				});
 				
 			},
@@ -366,7 +368,7 @@ $(document).ready(function() {
 	}
 	
 	//-------------------------------------------------------------------------------------
-	//결제 완료 후 장바구니 내역 삭제
+	// 결제 완료 후 장바구니 내역 삭제
 	function deleteCart() {
 		//GET방식 주소로 받은 선택한 장바구니 파라미터값 추출하여 배열로 변환
 		let params = new URLSearchParams(window.location.search);
@@ -403,14 +405,19 @@ $(document).ready(function() {
 			contentType: "application/json; charset=utf-8",
 			data: JSON.stringify({
 				"imp_uid": rsp.imp_uid,
-				"reason": "결제 취소 요망",
-				"checksum": rsp.paid_amount
+				"amount": rsp.paid_amount, 	// 미입력시 전액 환불
+//				"checksum": rsp.paid_amount // 부분환불(환불가능금액)
 				//checksum을 넣어주는 이유 : 서버와 포트원 서버간의 환불 가능 금액을 검증하기 위해서 필수 입력(우리는 전체 환불만 가능하도록 설계)			
+				"reason": "테스트 결제 환불",	
+				
+//				"refund_holder": "홍길동",	// [가상계좌 환불시 필수입력] 환불 수령계좌 예금주
+//              "refund_bank": "88",		// [가상계좌 환불시 필수입력] 환불 수령계좌 은행코드(예: KG이니시스의 경우 신한은행은 88번)
+//              "refund_account": "56211105948400" // [가상계좌 환불시 필수입력] 환불 수령계좌 번호
 			})
-		}).done(function() {
-			alert("결제를 취소하였습니다.");
+		}).done(function(response) {
+			alert("환불 성공");
 		}).fail(function(error) {
-			console.log("취소 요청중 오류 발생", error);
+			console.log("환불 실패", error);
 		});
 	}
 	

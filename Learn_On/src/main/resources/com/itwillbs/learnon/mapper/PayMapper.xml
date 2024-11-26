@@ -58,8 +58,6 @@
 			, CARD_NUM
 			, BANK_NAME
 			, BANK_NUM
-			, VBANK_DUE
-			, APPLY_NUM
 			, RECEIPT_URL
 		)
 		VALUES 
@@ -82,8 +80,6 @@
 			, #{card_num}
 			, #{bank_name}
 			, #{bank_num}
-			, #{vbank_due}
-			, #{apply_num}
 			, #{receipt_url}
 		)
 	</insert>
@@ -152,21 +148,29 @@
 	
 	<!-- 결제 정보 조회 -->
 	<select id="selectPayInfo" resultType="pay">
-	 SELECT 	
-	 	  MERCHANT_UID
-		, CLASS_NAME
-        , PRICE+DISCOUNT_AMOUNT AS '총 상품 금액'
-        , DISCOUNT_AMOUNT AS '할인 금액'
-        , PRICE AS '총 결제 금액'
-        , PAY_METHOD
-		, CARD_NAME
-        , CARD_NUM
-        , BANK_NAME
-        , BANK_NUM
-        , VBANK_DUE
-        , RECEIPT_URL
-	FROM PAY_INFO
-	WHERE MERCHANT_UID = #{merchant_uid}
+		 SELECT 	
+		 	  MERCHANT_UID
+			, CLASS_NAME
+	        , PRICE+DISCOUNT_AMOUNT AS totalAmount
+	        , DISCOUNT_AMOUNT
+	        , PRICE
+	        , PAY_METHOD
+			, CARD_NAME
+	        , CARD_NUM
+	        , BANK_NAME
+	        , BANK_NUM
+	        , RECEIPT_URL
+		FROM PAY_INFO
+		WHERE MERCHANT_UID = #{merchant_uid}
 	</select>
+	
+	
+	<!-- 결제 취소 시 주문상태 변경 -->
+	<update id="updatePayStatus">
+		UPDATE PAY_INFO
+		SET PAY_STATUS = 2
+		WHERE IMP_UID = #{imp_uid}
+	</update>
+	
 	
 </mapper>

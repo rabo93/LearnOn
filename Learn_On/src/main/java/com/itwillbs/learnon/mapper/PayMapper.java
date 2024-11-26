@@ -29,6 +29,9 @@ public interface PayMapper {
 	//결제완료 페이지에 전달할 결제 정보 조회
 	PayVO selectPayInfo(String merchant_uid);
 	
+	//결제 취소 시 결제 상태값 변경
+	void updatePayStatus(String imp_uid);
+	
 
 	
 }

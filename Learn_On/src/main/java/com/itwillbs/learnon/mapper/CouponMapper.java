@@ -37,5 +37,9 @@ public interface CouponMapper {
 
 	int updateCouponInfo(CouponVO coupon);
 
+	int deleteAdmMyCoupon(int coupon_id);
+
+	int updateCouponStatus(CouponVO coupon);
+
 	
 }

@@ -10,6 +10,7 @@ import com.itwillbs.learnon.vo.AttendanceVO;
 import com.itwillbs.learnon.vo.MyCourseVO;
 import com.itwillbs.learnon.vo.MyCurriculumVO;
 import com.itwillbs.learnon.vo.MyDashboardVO;
+import com.itwillbs.learnon.vo.MyPaymentVO;
 import com.itwillbs.learnon.vo.MyReviewVO;
 import com.itwillbs.learnon.vo.SupportBoardVO;
 import com.itwillbs.learnon.vo.WishlistVO;
@@ -52,6 +53,9 @@ public interface MypageMapper {
 	// 수강 후기 삭제
 	int deleteReview(MyReviewVO review);
 
+	// 결제내역 목록 조회
+	List<MyPaymentVO> selectPaymentList(String id);
+	
 	// 쿠폰 목록 조회
 	List<Map<String, Object>> selectCoupon(String id);
 
@@ -82,8 +86,6 @@ public interface MypageMapper {
 	// 1:1 문의글 수정 - 첨부파일 삭제
 	int deleteSupportFile(Map<String, String> map);
 
-	// 출석체크 가져오기
-	AttendanceVO selectAttendance(String id);
 
 	// 나의 강의실 - 강의 수강 화면
 	MyDashboardVO selectMyDashboard(MyDashboardVO myDashboard);
@@ -111,6 +113,20 @@ public interface MypageMapper {
 
 	// 관리자 - 1:1 답변 작성/수정
 	int updateSupportAnswer(SupportBoardVO support);
+	
+	// ======================================================================
+	// 출석체크 가져오기
+	AttendanceVO selectAttendance(String id);
+
+	//출석체크
+	int updateAttendance(AttendanceVO attendance);
+	
+	//mem_id 추가
+	int insertMemId(String mem_id);
+
+	int insertAttendance(AttendanceVO attendance);
+
+
 
 	
 	

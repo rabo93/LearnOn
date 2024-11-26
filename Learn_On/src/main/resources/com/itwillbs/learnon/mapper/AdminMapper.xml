@@ -181,8 +181,8 @@
 			 , MAIL_AUTH_STATUS
 		  FROM MEMBER
 		 WHERE 1=1
-		   AND MEM_GRADE = 'MEM01'
 		   AND MEM_STATUS IN (1, 2)
+		   -- AND MEM_GRADE = 'MEM01'
 		 <if test="!searchKeyword.equals('')">
 			<choose>
 			<when test="searchType.equals('id')">
@@ -329,6 +329,44 @@
 		</choose>
 		WHERE MEM_ID = #{mem_id}
 	</update>
+	
+	<!-- 회원 모든 등급 변경 -->
+	<update id="updateAllGrade">
+		UPDATE MEMBER
+		   SET MEM_GRADE = #{mem_grade}
+		 WHERE MEM_ID = #{mem_id}
+	</update>
+	
+	<!-- 쿠폰 발급 -->
+	<insert id="insertCoupon">
+		INSERT
+		  INTO MYCOUPON(
+		  	   MEM_ID
+		  	 , COUPON_ID
+		  	 , ISSUE_DATE
+		  	 , COUPON_STATUS
+		  	 , COUPON_ISUSED
+		)
+		VALUES (
+			   #{mem_id}
+			 , #{coupon_id}
+			 , NOW()
+			 , 1
+			 , 1
+		)
+	</insert>
+	
+	<!-- 쿠폰 발급용 멤버 리스트 조회 -->
+	<select id="selectCouponMember" resultType="member">
+		SELECT m.MEM_ID
+			 , m.MEM_NAME
+		  FROM MEMBER m
+		  LEFT
+		  JOIN MYCOUPON c
+		    ON m.MEM_ID = c.MEM_ID
+		   AND c.COUPON_ID = #{coupon_id}
+		 WHERE c.MEM_ID IS NULL
+	</select>
 <!-- ================================================================== -->
 <!-- 카테고리 -->	
 
@@ -450,5 +488,38 @@
 		       , C_SUPPORT_ANSWER_CONTENT = #{c_support_answer_content}
 		  WHERE C_SUPPORT_IDX = #{c_support_idx}
 	</update>
+	<select id="selectPaymentListToAdm" resultType="mypayment">
+		-- 관리자 결제내역 전체 조회
+		SELECT P.MERCHANT_UID
+		       , P.PAY_DATE
+		       , P.MEM_ID
+		       , P.MEM_NAME
+		       , P.PRICE AS TOTAL_PRICE
+		       , P.BANK_NAME
+		       , P.CARD_NAME
+		       , P.PAY_STATUS
+		       , O.ORDER_IDX
+		       , O.CLASS_ID
+		       , C.CLASS_TITLE
+		       , O.CLASS_PRICE
+		       , O.COUPON_ID
+			, CU.COUPON_NAME
+		       , CU.DISCOUNT_TYPE
+		       , CU.DISCOUNT_PERCENT
+		       , CU.DISCOUNT_AMOUNT
+		FROM PAY_INFO P 
+		LEFT OUTER JOIN ORDER_INFO O ON P.MERCHANT_UID = O.MERCHANT_UID
+		LEFT OUTER JOIN CLASS C ON C.CLASS_ID = O.CLASS_ID
+		LEFT OUTER JOIN COUPONINFO CU ON CU.COUPON_ID = O.COUPON_ID
+		ORDER BY P.PAY_DATE DESC
+		LIMIT
+		 	#{startRow}
+		 	, #{listLimit}
+	</select>
+	<select id="selectPaymentListCount" resultType="int">
+		-- 관리자 전체 결제 내역 개수 조회
+		SELECT COUNT(MERCHANT_UID) AS PAYMENT_COUNT
+		FROM PAY_INFO
+	</select>
 
 </mapper>

@@ -43,6 +43,7 @@ import com.itwillbs.learnon.vo.CourseSupportVO;
 import com.itwillbs.learnon.vo.CourseVO;
 import com.itwillbs.learnon.vo.FaqVO;
 import com.itwillbs.learnon.vo.MemberVO;
+import com.itwillbs.learnon.vo.MyPaymentVO;
 import com.itwillbs.learnon.vo.NoticeBoardVO;
 import com.itwillbs.learnon.vo.PageInfo;
 import com.itwillbs.learnon.vo.SupportBoardVO;
@@ -595,12 +596,34 @@ public class AdminController {
 		return "redirect:/AdmMemInstructor";
 	}
 	
+	
+	//	어드민 회원등급 변경
+	@ResponseBody
+	@PostMapping("AdmChangeMemGrade")
+	public String admChangeMemGrade(@RequestParam Map<String, String> map) {
+		System.out.println("mem_id : " + map.get("mem_id"));
+		System.out.println("mem_grade : " + map.get("mem_grade"));
+		adminService.changeAllGradeMember(map);
+//		
+		String mem_grade = "";
+		switch (map.get("mem_grade")) {
+		case "MEM01": mem_grade = "일반회원";break;
+		case "MEM02": mem_grade = "강사회원";break;
+		case "MEM03": mem_grade = "관리자";break;
+		}
+		
+		JSONObject json = new JSONObject();
+		json.put("mem_id", map.get("mem_id"));
+		json.put("mem_grade", mem_grade);
+		
+		
+		return json.toString();
+	}
+	
 	//	어드민 회원상태 변경
 	@ResponseBody
 	@PostMapping("AdmChangeMemStatus")
 	public String admChangeMemStatus(@RequestParam Map<String, String> map) {
-//		System.out.println("++++++++++++mem_status: " +  map.get("mem_status"));
-//		System.out.println("map? ==============" + map);
 		adminService.changeMemStatus(map);
 		
 		String mem_status = "";
@@ -614,7 +637,6 @@ public class AdminController {
 		json.put("mem_id", map.get("mem_id"));
 		json.put("mem_status", mem_status);
 		
-//		System.out.println("Response JSON: " + json.toString());
 		
 		return json.toString();
 	}
@@ -624,8 +646,45 @@ public class AdminController {
 	
 	// 어드민 결제 내역 관리 페이지 매핑
 	@GetMapping("AdmPayList")
-	public String admin_payment_list() {
-	return "admin/payment_list";
+	public String admin_payment_list(@RequestParam(defaultValue = "1") int pageNum, Model model) {
+		
+		int listLimit = 10;
+		int startRow = (pageNum - 1) * listLimit;
+		
+		int listCount = adminService.getPaymentListCount();
+		
+		int pageListLimit = 5;
+		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+		
+		if (maxPage == 0) {
+			maxPage = 1;
+		}
+		
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		int endPage = startPage + pageListLimit - 1;
+		
+		if (endPage > maxPage) {
+			endPage = maxPage;
+		}
+		
+		if(pageNum < 1 || pageNum > maxPage) {
+			model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+			model.addAttribute("targetURL", "AdmPayList?pageNum=1");
+			return "result/fail";
+		}
+		
+		// 페이지 정보
+		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
+		
+		// 결제내역
+		Map<String, List<MyPaymentVO>> paymentList = adminService.getMyPaymentListToAdm(startRow, listLimit);
+		
+		model.addAttribute("pageNum", pageNum);
+		model.addAttribute("pageInfo", pageInfo);
+		
+		model.addAttribute("paymentList", paymentList);
+		
+		return "admin/payment_list";
 	}
 	
 	// 어드민 쿠폰 관리 페이지 매핑
@@ -697,10 +756,15 @@ public class AdminController {
 				model.addAttribute("msg", "존재하지 않는 쿠폰입니다");
 				return "result/fail";
 			}
-			
+			//	CouponInfo(쿠폰정보)에서 삭제
 			int deleteCount = couponService.removeCoupon(coupon.getCoupon_id());
-			
+			//	MyCoupon(가지고있는 쿠폰)에서 삭제
+			int deleteCount2 = couponService.removeMyCoupon(coupon.getCoupon_id());
 			if (deleteCount < 0) {
+				model.addAttribute("msg", "삭제 실패");
+				return "result/fail";
+			}
+			if (deleteCount2 < 0) {
 				model.addAttribute("msg", "삭제 실패");
 				return "result/fail";
 			}
@@ -723,8 +787,83 @@ public class AdminController {
 			model.addAttribute("msg", "수정에 실패했습니다");
 			return "result/fail";
 		}
+		int updateCount2 = couponService.changeStatus(coupon);
+		if(updateCount2 < 0) {
+			model.addAttribute("msg", "수정에 실패했습니다");
+			return "result/fail";
+		}
 		return "redirect:/AdmPayListCoupon";
 	}
+	
+	//	쿠폰 발급 페이지
+	@GetMapping("AdmCouponIssue")
+	public String admCouponIssue(@RequestParam(defaultValue = "1") int pageNum,
+								 @RequestParam(defaultValue = "latest") String sort,
+								 @RequestParam(defaultValue = "") String searchKeyword,
+								 @RequestParam(defaultValue = "") String searchType,
+								 Model model) {
+		
+		int listLimit = 5;
+		int startRow = (pageNum - 1) * listLimit;
+		
+		int listCount = couponService.getCouponListCount(searchKeyword, searchType);
+		
+		int pageListLimit = 5;
+		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+		
+		if (maxPage == 0) {
+			maxPage = 1;
+		}
+		
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		int endPage = startPage + pageListLimit - 1;
+		
+		if (endPage > maxPage) {
+			endPage = maxPage;
+		}
+		
+		if(pageNum < 1 || pageNum > maxPage) {
+			model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+			model.addAttribute("targetURL", "AdmNotice?pageNum=1");
+			return "result/fail";
+		}
+		
+		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
+		List<CouponVO> couponList = couponService.getAdmCoupon(startRow, listLimit, searchKeyword, searchType);
+		model.addAttribute("pageNum", pageNum);
+		model.addAttribute("pageInfo", pageInfo);
+		model.addAttribute("couponList", couponList);
+		
+		
+		return "admin/payment_coupon_issue";
+	}
+	
+	//	쿠폰 발급
+	@PostMapping("AdmCouponIssue")
+	public String admCouponIssue(int coupon_id, String[] mem_ids, Model model) {
+		
+		for(String mem_id : mem_ids) {
+			int insertCount = adminService.issueCoupon(coupon_id, mem_id);
+			if (insertCount < 0) {
+				model.addAttribute("msg", "쿠폰발급에 실패했습니다");
+				return "result/fail";
+			}
+		}
+		
+		return "redirect:/AdmCouponIssue";
+	}
+	
+	//	어드민 쿠폰발급 AJAX
+	@PostMapping("AdmShowCouponMembers")
+	@ResponseBody
+	public List<MemberVO> admShowCouponMembers(int coupon_id) {
+		
+		List<MemberVO> memberList = adminService.getMyCoupon(coupon_id);
+		
+		return memberList;
+	}
+	
+	
 	// =======================================================================
 	
 	// 어드민 공지사항 관리 페이지 매핑
@@ -806,7 +945,7 @@ public class AdminController {
 		
 		if(pageNum < 1 || pageNum > maxPage) {
 			model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
-			model.addAttribute("targetURL", "MySupport?pageNum=1");
+			model.addAttribute("targetURL", "AdmSupport?pageNum=1");
 			return "result/fail";
 		}
 		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
@@ -937,7 +1076,7 @@ public class AdminController {
 		
 		if(pageNum < 1 || pageNum > maxPage) {
 			model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
-			model.addAttribute("targetURL", "MySupport?pageNum=1");
+			model.addAttribute("targetURL", "AdmCourseSupport?pageNum=1");
 			return "result/fail";
 		}
 		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);

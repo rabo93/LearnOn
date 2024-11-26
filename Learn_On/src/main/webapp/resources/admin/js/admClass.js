@@ -52,7 +52,7 @@ function addMainCateRow() {
 	var cell4 = newRow.insertCell();
 	var cell5 = newRow.insertCell();
 	  
-	cell1.innerHTML = '<th><input class="form-check-input" type="checkbox" id="gridCheck1" name="mainCateRowCheck"></th>';
+	cell1.innerHTML = '<th><input class="form-check-input" type="checkbox" name="mainCateRowCheck"></th>';
 	cell2.innerHTML = '<td><input class="form-control" name="codeid_maincate" type="text" placeholder="아이디"></td>';
 	cell3.innerHTML = '<td><input class="form-control" name="codetype_maincate" type="text" placeholder="타입"></td>';
 	cell4.innerHTML = '<td><input class="form-control" name="codename_maincate" type="text" placeholder="이름"></td>';

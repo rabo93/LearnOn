@@ -281,6 +281,37 @@
 		WHERE C.CLASS_RUNTIME > 0
 		  AND A.MEM_ID = #{mem_id}
 	</update>
+	<select id="selectPaymentList" resultType="mypayment">
+		-- 마이페이지 결제내역 조회
+		SELECT O.MERCHANT_UID
+			   , O.ORDER_IDX
+			   , O.MEM_ID
+		       , O.CLASS_ID
+		       , C.CLASS_TITLE
+		       , C.CLASS_PRICE
+		       , O.CLASS_PRICE
+		       , O.COUPON_ID
+		       , CU.COUPON_NAME
+		       , CU.DISCOUNT_TYPE
+		       , CU.DISCOUNT_PERCENT
+		       , CU.DISCOUNT_AMOUNT
+		       , P.PRICE AS RESULT_PRICE
+		       , P.PAY_DATE
+		       , P.RECEIPT_URL
+		       , P.PAY_METHOD
+		       , P.PAY_STATUS
+		       , (SELECT SUM(CLASS_PRICE)
+					FROM ORDER_INFO
+				   GROUP BY MERCHANT_UID) AS TOTAL_PRICE
+		FROM ORDER_INFO O JOIN PAY_INFO P ON O.MERCHANT_UID = P.MERCHANT_UID
+		LEFT OUTER JOIN CLASS C ON C.CLASS_ID = O.CLASS_ID
+		LEFT OUTER JOIN COUPONINFO CU ON CU.COUPON_ID = O.COUPON_ID
+		WHERE 1 = 1
+			<if test="!id.equals('')">
+			  AND O.MEM_ID = #{id}
+			</if>
+		ORDER BY P.PAY_DATE DESC
+	</select>
 	<select id="selectCoupon" resultType="map">
 		-- 쿠폰 목록 조회
 		SELECT M.COUPON_ID
@@ -293,7 +324,7 @@
 		       , C.DISCOUNT_AMOUNT
 		       , C.C_EXPIRY_DATE
 		  FROM MYCOUPON M
-		  JOIN COUPONINFO C
+		  LEFT OUTER JOIN COUPONINFO C
 		    ON M.COUPON_ID = C.COUPON_ID
 		WHERE M.MEM_ID = #{mem_id}
 	</select>
@@ -303,6 +334,7 @@
 		  FROM MYCOUPON
 		 WHERE MEM_ID = #{mem_id}
 		   AND COUPON_STATUS != 2
+		   AND COUPON_ISUSED != 2
 	</select>
 	<insert id="insertSupport">
 		<selectKey keyProperty="support_idx" resultType="int" order="BEFORE">
@@ -393,12 +425,6 @@
 		WHERE
 			SUPPORT_IDX = #{support_idx}
 	</update>
-	<select id="selectAttendance" resultType="attendance">
-		-- 출석체크 현황
-		SELECT *
-		FROM ATTENDANCE
-		WHERE MEM_ID = #{id}
-	</select>
 	<select id="selectSupportListToAdm" resultType="mysupport">
 		-- 관리자 1:1문의 전체 목록 조회
 		SELECT S.SUPPORT_IDX
@@ -429,4 +455,44 @@
 		       , SUPPORT_ANSWER_CONTENT = #{support_answer_content}
 		  WHERE SUPPORT_IDX = #{support_idx}
 	</update>
+	
+<!-- 		 출석체크 현황 -->
+	<select id="selectAttendance" resultType="attendance">
+		SELECT *
+		FROM ATTENDANCE
+		WHERE MEM_ID = #{id}
+	</select>
+
+<!-- 	기존회원 출석체크  -->
+	<insert id="insertAttendance">
+	INSERT
+	INTO
+		ATTENDANCE(CHECK_IN_DATE,MEM_ID)
+	VALUES(
+		NOW() - INTERVAL 1 DAY
+		,#{mem_id}
+	)
+	</insert>
+	
+<!-- 	회원가입시 mem_id insert -->
+	<insert id="insertMemId">
+		INSERT 
+		INTO 
+			ATTENDANCE(CHECK_IN_DATE,MEM_ID)
+		VALUES(
+			NOW() - INTERVAL 1 DAY    -- null값이 들어가면 연속출석일 반영이 안돼서 now()-1 했습니다
+			,#{mem_id}
+			)
+	</insert>
+	
+	<update id="updateAttendance">
+		update 
+			ATTENDANCE
+		set 	
+			check_in_date = #{check_in_date}
+			,streak_days = #{streak_days}
+		where mem_id = #{mem_id} 
+	</update>
+	
+	
 </mapper>

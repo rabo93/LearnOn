@@ -42,10 +42,18 @@
 					<section class="info-set-wrap">
 						<form action="MemberModify" name="MemberInfo"class="my-frm" method="post" enctype="multipart/form-data">
 							<div class="set">
-								<label>프로필 변경</label>
+<!-- 								<label>프로필 변경</label> -->
+<!-- 								<div> -->
+<%-- 									<img src="${pageContext.request.contextPath}/resources/images/profile_thumb.svg" class="profile-thumb" alt="profile" id="preview_profile" height="100px"> --%>
+<!-- 									<input type="file"class="btn-frm" value="프로필변경" id="profile_img" name="profile_img"> -->
+<!-- 								</div> -->
+							</div>
+							<div class="set">
+								<label>
+									이름
+								</label>
 								<div>
-									<img src="${pageContext.request.contextPath}/resources/images/profile_thumb.svg" class="profile-thumb" alt="profile" id="preview_profile" height="100px">
-									<input type="file"class="btn-frm" value="프로필변경" id="profile_img" name="profile_img">
+									<input type="text" name="mem_name" id="name" value="${member.mem_name}" readonly>
 								</div>
 							</div>
 							<div class="set">
@@ -71,17 +79,17 @@
 							</div>
 							<div class="set">
 								<label>변경할 비밀번호</label>
+								<div id="checkPasswd1"></div>
 								<div>
-									<input type="password" id="passwd" name="mem_passwd" placeholder="8 ~ 16글자 사이 입력">
+									<input type="password" id="mem_passwd1" name="mem_passwd" onblur="checkPasswdLength1()" placeholder="변경할 비밀번호 8 ~ 16글자 사이 입력">
 								</div>
-								<div class="ip-tips" id="checkPasswd1Result">비밀번호는 최소 8글자 이상입니다</div>
 							</div>
 							<div class="set">	
 								<label>변경할 비밀번호 재입력</label>
+								<div id="checkPasswd2"></div>
 								<div>
-									<input type="password" id="passwd2">
+									<input type="password" id="mem_passwd2" onblur="checkPasswdResult()" placeholder="변경할 비밀번호 재입력">
 								</div>
-								<div id="checkPasswd2Result" class="ip-tips">비밀번호가 일치합니다</div>
 							</div>
 							<div class="set">
 								<label>주소</label>
@@ -97,7 +105,7 @@
 							<div class="set">
 								<label>이메일 </label>
 								<div>
-									<input type="text" size="15" name="mem_email1" id="mem_email1" placeholder="${member.mem_email1}">@<input type="text" size="10"  value="${member.mem_email2}" id=mem_email2" name="mem_email2">
+									<input type="text" size="15" name="mem_email1" id="mem_email1" value="${member.mem_email}" readonly>
 <!-- 									<select id="emailDomain" class="sel-frm"> -->
 <!-- 										<option value="">직접입력</option> -->
 <!-- 										<option value="naver.com">naver.com</option> -->
@@ -108,10 +116,10 @@
 							</div>
 							<div class="set">
 								<label>전화번호</label>
+								<div id="phoneCheckResult"></div>
 								<div>
-									<input type="text" size="10" id="phone" value="${member.mem_phone}" name="mem_phone" placeholder="'-'제외 후 입력해주세요">
+									<input type="text" size="10" id="mem_phone" value="${member.mem_phone}" name="mem_phone" placeholder="'-'제외 후 입력해주세요" onblur="phoneCheck()">
 								</div>
-								<div id="checkPhoneResult" class="ip-tips">전화번호를 올바르게 입력해주세요</div>
 							</div>
 							<div class="btns">
 								<input type="submit" class="btn-submit" value="수정">

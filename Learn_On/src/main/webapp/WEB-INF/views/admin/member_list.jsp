@@ -77,9 +77,9 @@
 									<th scope="col">가입일</th>
 									<th scope="col">이메일</th>
 									<th scope="col">연락처</th>
+									<th scope="col">권한</th>
 									<th scope="col">상태</th>
 									<th scope="col">수정</th>
-<!-- 									<th scope="col">권한</th> -->
 								</tr>
 							</thead>
 							<tbody>
@@ -104,6 +104,13 @@
 	                 		  				</div>
 	                          		 	</td>
 										<td><input id="memPhone_${mem.index}" class="form-control member" type="text" placeholder="연락처" aria-label="default input example" value="${ml.mem_phone}" readonly></td>
+										<td class="col-1">
+											<select id="memGrade_${mem.index}" class="form-select gradeChange" aria-label="Default select example">
+												<option value="MEM01" <c:if test="${ml.mem_grade eq 'MEM01'}">selected</c:if>>일반회원</option>
+												<option value="MEM02" <c:if test="${ml.mem_grade eq 'MEM02'}">selected</c:if>>강사회원</option>
+												<option value="MEM03" <c:if test="${ml.mem_grade eq 'MEM03'}">selected</c:if>>관리자</option>
+											</select>
+										</td>
 										<td class="col-1">
 											<select id="status_${mem.index}" class="form-select status" aria-label="Default select example">
 												<option value="1" <c:if test="${ml.mem_status == 1}">selected</c:if>>승인</option>

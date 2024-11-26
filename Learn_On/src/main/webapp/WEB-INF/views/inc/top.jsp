@@ -39,12 +39,12 @@ function logout() {
 			</div>
 			<div class="login-area">
 				<a href="MyDashboard">나의 강의실</a>
-				<a href="MemberModify"><span>${sessionScope.sId}</span> 님</a>
+				<a href="MyInfo"><span>${sessionScope.sId}</span> 님</a>
 				<a href="javascript:void(0)" onclick="logout()">로그아웃</a>
 <!-- 				<a href="#">나의 강의실</a> -->
 <!-- 				<a href="#"><span>홍길동</span> 님</a> -->
 				<div class="login-menu">
-					<a href="MyInfo">마이페이지</a>
+					<a href="MemberModify">마이페이지</a>
 					<a href="#">관리자 홈</a>
 					<a href="#">로그아웃</a>
 				</div>

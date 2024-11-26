@@ -153,9 +153,15 @@
   		WHERE	COUPON_ID = #{coupon_id}
   	</delete>
   	
+  	<delete id="deleteAdmMyCoupon">
+  		DELETE
+  		FROM	MYCOUPON
+  		WHERE	COUPON_ID = #{coupon_id}
+  	</delete>
+  	
   	<update id="updateCouponInfo">
   		UPDATE	COUPONINFO
-  		SET		COUPON_CODE = #{coupon_code}
+  		   SET	COUPON_CODE = #{coupon_code}
   				, COUPON_NAME = #{coupon_name}
   				, DISCOUNT_TYPE = #{discount_type}
   				, DISCOUNT_AMOUNT = #{discount_amount}
@@ -163,6 +169,12 @@
   				, C_EXPIRY_DATE = #{c_expiry_date}
   				, COUPON_STATUS = #{coupon_status}
   		WHERE	COUPON_ID = #{coupon_id}
+  	</update>
+  	
+  	<update id="updateCouponStatus">
+  		UPDATE MYCOUPON
+  		   SET COUPON_STATUS = #{coupon_status}
+  		 WHERE COUPON_ID = #{coupon_id}
   	</update>
   	
   </mapper>

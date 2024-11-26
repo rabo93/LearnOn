@@ -3,6 +3,7 @@ package com.itwillbs.learnon.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,15 +11,13 @@ import org.springframework.stereotype.Service;
 import com.itwillbs.learnon.mapper.AdminMapper;
 import com.itwillbs.learnon.vo.AdminVO;
 import com.itwillbs.learnon.vo.CourseSupportVO;
-import com.itwillbs.learnon.vo.CourseVO;
 import com.itwillbs.learnon.vo.MemberVO;
+import com.itwillbs.learnon.vo.MyPaymentVO;
 
 @Service
 public class AdminService {
 	@Autowired
 	private AdminMapper mapper;
-	
-	
 	
 	// 카테고리
 	public List<Map<String, String>> getCategory() {
@@ -103,6 +102,19 @@ public class AdminService {
 	public int changeGradeMember(MemberVO member) {
 		return mapper.updateGrade(member);
 	}
+	//	회원 등급 변경(member_list에서 모든 권한 변경 가능)
+	public int changeAllGradeMember(Map<String, String> map) {
+		return mapper.updateAllGrade(map);
+	}
+	//	쿠폰 발급
+	public int issueCoupon(int coupon_id, String mem_id) {
+		return mapper.insertCoupon(coupon_id, mem_id);
+	}
+	
+	//	쿠폰 발급용 멤버 리스트 조회
+	public List<MemberVO> getMyCoupon(int coupon_id) {
+		return mapper.selectCouponMember(coupon_id);
+	}
 	
 	public int insertClassPic(AdminVO vO) {
 		return mapper.insertClassPic(vO);
@@ -111,7 +123,7 @@ public class AdminService {
 	public int insertCurVideo(AdminVO vO) {
 		return mapper.insertCurVideo(vO);
 	}
-	public List<CourseVO> getCurriculum(AdminVO class_id) {
+	public List<Map<String, Object>> getCurriculum(int class_id) {
 		return mapper.getCurriculum(class_id);
 	}
 	public int getClassId() {
@@ -140,6 +152,27 @@ public class AdminService {
 	}
 	public int updateCurriculum(AdminVO vO) {
 		return mapper.updateCurriculum(vO);
+	}
+	
+	//	임시
+	public AdminVO getIdClass(int class_id) {
+		return mapper.selectClass(class_id);
+	}
+		
+	// 관리자 전체 결제내역 갯수 조회	
+	public int getPaymentListCount() {
+		return mapper.selectPaymentListCount();
+	}
+	
+	
+	// 관리자 전체 결제내역 관리
+	public Map<String, List<MyPaymentVO>> getMyPaymentListToAdm(int startRow, int listLimit) {
+		// 전체 결제내역 list에 담은 후
+		List<MyPaymentVO> list = mapper.selectPaymentListToAdm(startRow, listLimit);
+		// 결제번호를 key값으로 중복 제거 후 value 값으로 주문내역 배열 저장
+		Map<String, List<MyPaymentVO>> result = list.stream()
+													.collect(Collectors.groupingBy(MyPaymentVO::getMerchant_uid));
+		return result;
 	}
 
 }

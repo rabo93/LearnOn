@@ -43,6 +43,7 @@ import com.itwillbs.learnon.vo.CourseSupportVO;
 import com.itwillbs.learnon.vo.CourseVO;
 import com.itwillbs.learnon.vo.FaqVO;
 import com.itwillbs.learnon.vo.MemberVO;
+import com.itwillbs.learnon.vo.MyPaymentVO;
 import com.itwillbs.learnon.vo.NoticeBoardVO;
 import com.itwillbs.learnon.vo.PageInfo;
 import com.itwillbs.learnon.vo.SupportBoardVO;
@@ -365,73 +366,82 @@ public class AdminController {
 	
 	// 어드민 클래스 수정 페이지 매핑
 	@GetMapping("AdmClassListModify")
-	public String admin_class_list_modi(AdminVO VO, Model model) {
-		model.addAttribute("getMainCate", adminService.getMainCate());
-		model.addAttribute("getCurriculum", adminService.getCurriculum(VO));
-		List<AdminVO> classLoad = adminService.getClass(VO);
-//		System.out.println("========================classLoad : " + adminService.getCurriculum(VO));
+	public String admin_class_list_modi(int class_id, Model model) {
+		System.out.println("class_id : " + class_id);
+		AdminVO classLoad = adminService.getIdClass(class_id);
 		model.addAttribute("getClass", classLoad);
+		model.addAttribute("getMainCate", adminService.getMainCate());
+		model.addAttribute("getCurriculum", adminService.getCurriculum(class_id));
+//		List<AdminVO> classLoad = adminService.getClass(VO);
+//		System.out.println("========================classLoad : " + adminService.getCurriculum(VO));
+//		
+//		if (classLoad == null) {
+//			model.addAttribute("msg", "클래스 불러오기 실패!");
+//			return "admin/fail";
+//		} else {
+//			return "admin/class_list_modify";
+//		}
 		
-		if (classLoad == null) {
-			model.addAttribute("msg", "클래스 불러오기 실패!");
-			return "admin/fail";
-		} else {
-			return "admin/class_list_modify";
-		}
-		
+//		return "";
+		return "admin/class_list_modify";
 	}
 	
+	// 어드민 클래스 수정 로직
 	@PostMapping("AdmClassListModify")
 	public String adm_class_modify(int class_id, AdminVO adm, HttpSession session, Model model) {
 		
-//		int classId = adminService.getClassId();
-		adm.setClass_id(class_id);
+//		adm.setClass_id(class_id);
+		AdminVO classInfo = adminService.getIdClass(class_id);
+//		System.out.println("==========================" + classInfo.getClass_pic1());
+//		System.out.println("==========================" + adm.getClass_pic1());
+		List<Map<String, Object>> curIndex = adminService.getCurriculum(class_id);
+//		System.out.println("==========================" + adm.getCur_video());
+//		System.out.println("==========================" + curIndex.get(0).get("CUR_VIDEO"));
 		
-//		for (int i = 0; i < adm.getCur_video_get().length; i++) {
-//			System.out.println(adm.getCur_video_get()[i].getOriginalFilename());
-//		}
-		System.out.println("================================================= " + adm.getCur_title());
+		// 커리큘럼 내용 가져오기
 		String[] arrCurTitle = adm.getCur_title().split(",");
 		String[] arrCurRunTime = adm.getCur_runtime().split(",");
 		
 		int totalRunTime = adm.getClass_runtime();
-		// 실제 경로
+		
 		String realPath = getRealPath(session);
-		//	서브 디렉토리 생성
 		String subDir = createDirectories(class_id, realPath);
+		String delRealPath = session.getServletContext().getRealPath(uploadPath);
 		realPath += "/" + subDir;
 		
-		List<CourseVO> curId = adminService.getCurriculum(adm);
-		
 		// 커리큘럼 업데이트 for
+		adminService.deleteCurriculum(class_id);
 		for (int i = 0; i < arrCurTitle.length; i++) {
 			String videoName = addVideoProcess(adm.getCur_video_get()[i], realPath, subDir);
-			if (i > arrCurTitle.length) {
-				adm.setCur_id(curId.get(i).getCur_id() + 1);
-				adm.setCur_video(videoName);
-				adm.setCur_title(arrCurTitle[i]);
-				adm.setCur_runtime(arrCurRunTime[i]);
-				adminService.insertCurriculum(adm);
-				totalRunTime += Integer.parseInt(arrCurRunTime[i]);
-				adminService.insertCurVideo(adm);
-				break;
+			if (videoName.equals("")) {
+				adm.setCur_video(classInfo.getCur_video());
 			} else {
-				adm.setCur_id(curId.get(i).getCur_id());
 				adm.setCur_video(videoName);
-				adm.setCur_title(arrCurTitle[i]);
-				adm.setCur_runtime(arrCurRunTime[i]);
-				totalRunTime += Integer.parseInt(arrCurRunTime[i]);
-				adminService.updateCurriculum(adm);
-				
 			}
-			
+			adm.setCur_title(arrCurTitle[i]);
+			adm.setCur_runtime(arrCurRunTime[i]);
+			totalRunTime += Integer.parseInt(arrCurRunTime[i]);
+			adminService.insertCurriculum(adm);
+			adminService.insertCurVideo(adm);
 		}
 		
 		adm.setClass_runtime(totalRunTime);
 		
-		//	첨부파일 업로드
+		// 첨부파일 업로드
 		String fileName = addFileProcess(adm, realPath, subDir);
-		adm.setClass_pic1(fileName);
+		
+		if (fileName.equals("")) {
+			adm.setClass_pic1(classInfo.getClass_pic1());
+		} else {
+			adm.setClass_pic1(fileName);
+			Path picPath = Paths.get(delRealPath, classInfo.getClass_pic1());
+			System.out.println("==============================" + picPath);
+			try {
+				Files.deleteIfExists(picPath);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 		
 		int updateCount = adminService.updateClass(adm);
 		
@@ -442,24 +452,34 @@ public class AdminController {
 		
 		return "redirect:/AdmClassList";
 	}
-	
+
 	// 클래스 삭제 페이징
 	@GetMapping("AdmClassListDelete")
-	public String admin_class_list_delete(AdminVO class_id, Model model, HttpSession session) {
+	public String admin_class_list_delete(int class_id, Model model, HttpSession session) {
 		
-		AdminVO classIndex = adminService.getClass(class_id).get(0);
-		List<CourseVO> curIndex = adminService.getCurriculum(class_id);
-		
+//		AdminVO classIndex = adminService.getClass(class_id).get(0);
+		AdminVO classIndex = adminService.getIdClass(class_id);
+		List<Map<String, Object>> curIndex = adminService.getCurriculum(class_id);
 		String realPath = session.getServletContext().getRealPath(uploadPath);
-		if(!classIndex.getClass_pic1().equals("")) {
-			// 업로드 경로와 파일명(서브디렉토리 경로 포함) 결합하여 Path 객체 생성
+		
+		// 썸네일 실제 파일 삭제
+		if(!(classIndex.getClass_pic1() == null)) {
+			Path picPath = Paths.get(realPath, classIndex.getClass_pic1());
+			try {
+				Files.deleteIfExists(picPath);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		// 커리큘럼 실제 파일 삭제
+		if (!(curIndex.get(0).get("CUR_VIDEO") == null)) {
 			for (int i = 0; i < curIndex.size(); i++) {
-				Path picPath = Paths.get(realPath, classIndex.getClass_pic1());
-				Path curPath = Paths.get(realPath, curIndex.get(i).getCur_video());
-				// java.nio.file 패키지의 Files 클래스의 deleteIfExists() 메서드 호출하여
-				// 해당 파일이 실제 서버 상에 존재할 경우에만 삭제 처리
+				if (curIndex.get(i).get("CUR_VIDEO") == null) {
+					break;
+				}
+				Path curPath = Paths.get(realPath, curIndex.get(i).get("CUR_VIDEO").toString());
 				try {
-					Files.deleteIfExists(picPath);
 					Files.deleteIfExists(curPath);
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -467,13 +487,13 @@ public class AdminController {
 			}
 		}
 			
-		int deleteCount = adminService.deleteClass(class_id.getClass_id());
-		int deleteCurriculum = adminService.deleteCurriculum(class_id.getClass_id());
+//		int deleteCount = adminService.deleteClass(class_id.getClass_id());
+//		int deleteCurriculum = adminService.deleteCurriculum(class_id.getClass_id());
 		
-		if (deleteCount < 0 || deleteCurriculum < 0) {
-			model.addAttribute("msg", "클래스 삭제 실패하였습니다");
-			return "admin/fail";
-		}
+//		if (deleteCount < 0 || deleteCurriculum < 0) {
+//			model.addAttribute("msg", "클래스 삭제 실패하였습니다");
+//			return "admin/fail";
+//		}
 		
 		return "redirect:/AdmClassList";
 	}
@@ -576,12 +596,34 @@ public class AdminController {
 		return "redirect:/AdmMemInstructor";
 	}
 	
+	
+	//	어드민 회원등급 변경
+	@ResponseBody
+	@PostMapping("AdmChangeMemGrade")
+	public String admChangeMemGrade(@RequestParam Map<String, String> map) {
+		System.out.println("mem_id : " + map.get("mem_id"));
+		System.out.println("mem_grade : " + map.get("mem_grade"));
+		adminService.changeAllGradeMember(map);
+//		
+		String mem_grade = "";
+		switch (map.get("mem_grade")) {
+		case "MEM01": mem_grade = "일반회원";break;
+		case "MEM02": mem_grade = "강사회원";break;
+		case "MEM03": mem_grade = "관리자";break;
+		}
+		
+		JSONObject json = new JSONObject();
+		json.put("mem_id", map.get("mem_id"));
+		json.put("mem_grade", mem_grade);
+		
+		
+		return json.toString();
+	}
+	
 	//	어드민 회원상태 변경
 	@ResponseBody
 	@PostMapping("AdmChangeMemStatus")
 	public String admChangeMemStatus(@RequestParam Map<String, String> map) {
-//		System.out.println("++++++++++++mem_status: " +  map.get("mem_status"));
-//		System.out.println("map? ==============" + map);
 		adminService.changeMemStatus(map);
 		
 		String mem_status = "";
@@ -595,7 +637,6 @@ public class AdminController {
 		json.put("mem_id", map.get("mem_id"));
 		json.put("mem_status", mem_status);
 		
-//		System.out.println("Response JSON: " + json.toString());
 		
 		return json.toString();
 	}
@@ -605,8 +646,45 @@ public class AdminController {
 	
 	// 어드민 결제 내역 관리 페이지 매핑
 	@GetMapping("AdmPayList")
-	public String admin_payment_list() {
-	return "admin/payment_list";
+	public String admin_payment_list(@RequestParam(defaultValue = "1") int pageNum, Model model) {
+		
+		int listLimit = 10;
+		int startRow = (pageNum - 1) * listLimit;
+		
+		int listCount = adminService.getPaymentListCount();
+		
+		int pageListLimit = 5;
+		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+		
+		if (maxPage == 0) {
+			maxPage = 1;
+		}
+		
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		int endPage = startPage + pageListLimit - 1;
+		
+		if (endPage > maxPage) {
+			endPage = maxPage;
+		}
+		
+		if(pageNum < 1 || pageNum > maxPage) {
+			model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+			model.addAttribute("targetURL", "AdmPayList?pageNum=1");
+			return "result/fail";
+		}
+		
+		// 페이지 정보
+		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
+		
+		// 결제내역
+		Map<String, List<MyPaymentVO>> paymentList = adminService.getMyPaymentListToAdm(startRow, listLimit);
+		
+		model.addAttribute("pageNum", pageNum);
+		model.addAttribute("pageInfo", pageInfo);
+		
+		model.addAttribute("paymentList", paymentList);
+		
+		return "admin/payment_list";
 	}
 	
 	// 어드민 쿠폰 관리 페이지 매핑
@@ -678,10 +756,15 @@ public class AdminController {
 				model.addAttribute("msg", "존재하지 않는 쿠폰입니다");
 				return "result/fail";
 			}
-			
+			//	CouponInfo(쿠폰정보)에서 삭제
 			int deleteCount = couponService.removeCoupon(coupon.getCoupon_id());
-			
+			//	MyCoupon(가지고있는 쿠폰)에서 삭제
+			int deleteCount2 = couponService.removeMyCoupon(coupon.getCoupon_id());
 			if (deleteCount < 0) {
+				model.addAttribute("msg", "삭제 실패");
+				return "result/fail";
+			}
+			if (deleteCount2 < 0) {
 				model.addAttribute("msg", "삭제 실패");
 				return "result/fail";
 			}
@@ -704,8 +787,83 @@ public class AdminController {
 			model.addAttribute("msg", "수정에 실패했습니다");
 			return "result/fail";
 		}
+		int updateCount2 = couponService.changeStatus(coupon);
+		if(updateCount2 < 0) {
+			model.addAttribute("msg", "수정에 실패했습니다");
+			return "result/fail";
+		}
 		return "redirect:/AdmPayListCoupon";
 	}
+	
+	//	쿠폰 발급 페이지
+	@GetMapping("AdmCouponIssue")
+	public String admCouponIssue(@RequestParam(defaultValue = "1") int pageNum,
+								 @RequestParam(defaultValue = "latest") String sort,
+								 @RequestParam(defaultValue = "") String searchKeyword,
+								 @RequestParam(defaultValue = "") String searchType,
+								 Model model) {
+		
+		int listLimit = 5;
+		int startRow = (pageNum - 1) * listLimit;
+		
+		int listCount = couponService.getCouponListCount(searchKeyword, searchType);
+		
+		int pageListLimit = 5;
+		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+		
+		if (maxPage == 0) {
+			maxPage = 1;
+		}
+		
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		int endPage = startPage + pageListLimit - 1;
+		
+		if (endPage > maxPage) {
+			endPage = maxPage;
+		}
+		
+		if(pageNum < 1 || pageNum > maxPage) {
+			model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+			model.addAttribute("targetURL", "AdmNotice?pageNum=1");
+			return "result/fail";
+		}
+		
+		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
+		List<CouponVO> couponList = couponService.getAdmCoupon(startRow, listLimit, searchKeyword, searchType);
+		model.addAttribute("pageNum", pageNum);
+		model.addAttribute("pageInfo", pageInfo);
+		model.addAttribute("couponList", couponList);
+		
+		
+		return "admin/payment_coupon_issue";
+	}
+	
+	//	쿠폰 발급
+	@PostMapping("AdmCouponIssue")
+	public String admCouponIssue(int coupon_id, String[] mem_ids, Model model) {
+		
+		for(String mem_id : mem_ids) {
+			int insertCount = adminService.issueCoupon(coupon_id, mem_id);
+			if (insertCount < 0) {
+				model.addAttribute("msg", "쿠폰발급에 실패했습니다");
+				return "result/fail";
+			}
+		}
+		
+		return "redirect:/AdmCouponIssue";
+	}
+	
+	//	어드민 쿠폰발급 AJAX
+	@PostMapping("AdmShowCouponMembers")
+	@ResponseBody
+	public List<MemberVO> admShowCouponMembers(int coupon_id) {
+		
+		List<MemberVO> memberList = adminService.getMyCoupon(coupon_id);
+		
+		return memberList;
+	}
+	
+	
 	// =======================================================================
 	
 	// 어드민 공지사항 관리 페이지 매핑
@@ -787,7 +945,7 @@ public class AdminController {
 		
 		if(pageNum < 1 || pageNum > maxPage) {
 			model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
-			model.addAttribute("targetURL", "MySupport?pageNum=1");
+			model.addAttribute("targetURL", "AdmSupport?pageNum=1");
 			return "result/fail";
 		}
 		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
@@ -918,7 +1076,7 @@ public class AdminController {
 		
 		if(pageNum < 1 || pageNum > maxPage) {
 			model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
-			model.addAttribute("targetURL", "MySupport?pageNum=1");
+			model.addAttribute("targetURL", "AdmCourseSupport?pageNum=1");
 			return "result/fail";
 		}
 		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);

@@ -1,4 +1,25 @@
 
+$(function(){
+	$('.gradeChange').on("change", function() {
+		let index = this.id.split('_')[1];
+		let mem_grade = this.value;
+		let mem_id = $('#memId_' + index).val();
+		
+		$.ajax ({
+			type : "POST",
+			url : "AdmChangeMemGrade",
+			data : {
+				mem_id : mem_id,
+				mem_grade: mem_grade
+			},
+			dataType: "json",
+		}).done(function(result){
+//			result = JSON.parse(result);
+			alert(result.mem_id + '회원의 등급이 ' + result.mem_grade + '(으)로 변경되었습니다.');
+			window.location.reload();
+		})
+	});
+})
 
 $(function(){
 	$('.status').on("change", function() {

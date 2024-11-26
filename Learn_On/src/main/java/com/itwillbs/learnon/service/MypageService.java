@@ -84,9 +84,9 @@ public class MypageService {
 
 	// 결제내역 목록 조회
 	public Map<String, List<MyPaymentVO>> getMyPaymentList(String id) {
-		
+		// 전체 결제내역 list에 담은 후
 		List<MyPaymentVO> list = myMapper.selectPaymentList(id);
-		
+		// 결제번호를 key값으로 중복 제거 후 value 값으로 주문내역 배열 저장
 		Map<String, List<MyPaymentVO>> result = list.stream()
 													.collect(Collectors.groupingBy(MyPaymentVO::getMerchant_uid));
 		return result;
@@ -206,4 +206,5 @@ public class MypageService {
 		
 		return myMapper.updateAttendance(attendance);
 	}
+
 }

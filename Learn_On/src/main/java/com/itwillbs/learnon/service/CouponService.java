@@ -45,26 +45,42 @@ public class CouponService {
 	public List<CouponVO> getAdmCoupon(int startRow, int listLimit, String searchKeyword, String searchType) {
 		return mapper.selectAdmCoupon(startRow, listLimit, searchKeyword, searchType);
 	}
-
+	
+	//	쿠폰 리스트 카운트 조회
 	public int getCouponListCount(String searchKeyword, String searchType) {
 		return mapper.selectAdmCouponCount(searchKeyword, searchType);
 	}
-
+	
+	//	쿠폰 ID로 목록 조회
 	public CouponVO getIdxCoupon(int coupon_id) {
 		return mapper.selectAdmIdxCoupon(coupon_id);
 	}
-
+	
+	//	쿠폰 생성
 	public int createAdmCoupon(CouponVO coupon) {
 		return mapper.insertAdmCoupon(coupon);
 		
 	}
-
+	
+	//	CouponInfo 테이블 쿠폰 삭제
 	public int removeCoupon(int coupon_id) {
 		return mapper.deleteAdmCoupon(coupon_id);
 	}
-
+	
+	//	MyCoupon 테이블 쿠폰 삭제
+	public int removeMyCoupon(int coupon_id) {
+		return mapper.deleteAdmMyCoupon(coupon_id);
+	}
+	
+	//	쿠폰 정보 변경
 	public int modifyCouponInfo(CouponVO coupon) {
 		return mapper.updateCouponInfo(coupon);
+	}
+
+	
+	//	MyCoupon 테이블 쿠폰상태 변경
+	public int changeStatus(CouponVO coupon) {
+		return mapper.updateCouponStatus(coupon);
 	}
 	
 	

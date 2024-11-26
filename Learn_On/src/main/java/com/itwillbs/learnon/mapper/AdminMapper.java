@@ -10,6 +10,7 @@ import com.itwillbs.learnon.vo.AdminVO;
 import com.itwillbs.learnon.vo.CourseSupportVO;
 import com.itwillbs.learnon.vo.CourseVO;
 import com.itwillbs.learnon.vo.MemberVO;
+import com.itwillbs.learnon.vo.MyPaymentVO;
 
 @Mapper
 public interface AdminMapper {
@@ -29,7 +30,7 @@ public interface AdminMapper {
 	// 클래스
 	List<AdminVO> getClass(AdminVO vO);
 	List<AdminVO> getClassList();
-	List<CourseVO> getCurriculum(AdminVO class_id);
+	List<Map<String, Object>> getCurriculum(int class_id);
 	int insertCurriculum(AdminVO insertCur);
 	int insertClass(AdminVO vO);
 	int insertClassPic(AdminVO vO);
@@ -62,7 +63,13 @@ public interface AdminMapper {
 	int deleteMember(String mem_id);
 	//	회원 등급변경
 	int updateGrade(MemberVO member);
-	
+	//	회원 모든 등급 변경(일반회원, 강사회원, 관리자)
+	int updateAllGrade(Map<String, String> map);
+	//	쿠폰 발급
+	int insertCoupon(@Param("coupon_id") int coupon_id,
+					 @Param("mem_id") String mem_id);
+	//	쿠폰 발급용 회원 목록 조회
+	List<MemberVO> selectCouponMember(int coupon_id);
 	
 	// ===== 수강문의 게시판
 	// 강의 문의 조회 요청
@@ -70,6 +77,16 @@ public interface AdminMapper {
 	
 	// 강의 답변 작성/수정
 	int updateCourseSupport(CourseSupportVO cSupport);
+	
+	//	임시
+	AdminVO selectClass(int class_id);
+	
+	// 관리자 - 결제내역 개수 조회
+	int selectPaymentListCount();
+	
+	// 관리자 - 결제내역 전체 조회
+	List<MyPaymentVO> selectPaymentListToAdm(@Param("startRow") int startRow, @Param("listLimit") int listLimit);
+
 	
 
 

@@ -45,8 +45,9 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" id="payment" data-bs-toggle="dropdown"><i class="fas fa-credit-card" style="margin-right: 10px;"></i>결제 관리</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                            <a href="AdmPayList" id="paymentList" class="dropdown-item">결제 내역 관리</a>
+                            <a href="AdmPayList" id="AdmPayList" class="dropdown-item">결제 내역 관리</a>
                             <a href="AdmPayListCoupon" id="paymentCoupon" class="dropdown-item">쿠폰 관리</a>
+                            <a href="AdmCouponIssue" id="CouponIssue" class="dropdown-item">쿠폰 발급 관리</a>
                         </div>
                     </div>
                     <div class="nav-item dropdown">

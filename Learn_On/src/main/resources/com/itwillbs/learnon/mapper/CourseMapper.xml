@@ -160,6 +160,18 @@
 		  JOIN REVIEW R
 		  JOIN MEMBER M ON M.MEM_ID = R.MEM_ID
 		 WHERE R.CLASS_ID = #{class_id}
+	<choose>
+		<when test="searchType.equals('new')">
+		 ORDER BY R.REVIEW_DATE DESC
+		</when>
+		<when test="searchType.equals('old')">
+		 ORDER BY R.REVIEW_DATE ASC
+		</when>
+		<when test="searchType.equals('score')">
+		 ORDER BY R.REVIEW_SCORE DESC
+		</when>
+		
+	</choose>
 	</select>
 	
 	<select id="selectCourseSupportList" resultType="cSupport" parameterType="int">

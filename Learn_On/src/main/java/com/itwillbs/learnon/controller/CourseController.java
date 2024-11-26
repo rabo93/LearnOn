@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -118,16 +119,19 @@ public class CourseController {
 				@RequestParam(defaultValue = "1") int pageNum,
 				int class_id, 
 				String codetype,
+				@RequestParam(defaultValue = "") String searchType,
 				Model model,
 				HttpSession session,
 				HttpServletRequest request
 				) {
 		String id = (String)session.getAttribute("sId");
 		
+//		System.out.println("searchType 잘받아오나?? :  " + searchType);
+		
 		// 클래스 목록
 		List<CourseVO> course = courseService.getCourse(class_id);
 		// 수강평 목록 
-		List<MyReviewVO> myReviewList = courseService.getReviewList(class_id);
+		List<MyReviewVO> myReviewList = courseService.getReviewList(class_id, searchType);
 		// codetype으로 조회한 공통코드
 		List<CommonCodeTypeVO> codeType = courseService.getCodeType(codetype); 
 		// 강사의 다른 클래스 조회
@@ -479,50 +483,29 @@ public class CourseController {
 		
 		// CartService - getCartList() 메서드 호출하여 장바구니 목록 조회 요청
 	    List<CartVO> cartList = cartService.getCartList(id);
-	    System.out.println("장바구니!!! asdfASDF@#!%#@^@%^ ???      : "  +cartList.get(0).getClass_id());
-	    if(class_id !=  cartList.get(0).getClass_id() || cartList.get(0).getClass_id() == 0) {
-//	    	model.addAttribute("msg", "이미 장바구니에 담겨 있습니다.");
-//	    	return "result/fail";
+	    
+	 // getClass_id 값만 추출하여 배열 생성
+	    Integer[] classIdArray = cartList.stream()
+	    								 .map(cart -> cart.getClass_id())
+	    								 .toArray(size -> new Integer[size]);
+
+	    // 장바구니에 없거나 다른 것들만 있을 경우 담기 
+	    if (cartList == null || Arrays.binarySearch(classIdArray, class_id) < 0) {
+	    	// 장바구니 담기 
+	    	int insertCount = courseService.registApplyForCourse(class_id, id);
+	    	if(insertCount > 0) { // 등록 성공
+	    		model.addAttribute("class_id", class_id);
+	    		return "redirect:/Cart";
+	    	} else {
+	    		model.addAttribute("msg", "장바구니에 담기 실패");
+	    		return "result/fail";
+	    	}
+	    	
+	    } else { // 장바구니에 담겨있으면 튕겨내기 
+	    	model.addAttribute("msg", "이미 장바구니에 담겨 있습니다.");
+	    	return "result/fail";
 	    }
-	    // 장바구니 담기 
-    	int insertCount = courseService.registApplyForCourse(class_id, id);
-    	if(insertCount > 0) { // 등록 성공
-    		model.addAttribute("class_id", class_id);
-    		return "redirect:/Cart";
-    	} else {
-    		model.addAttribute("msg", "장바구니에 담기 실패");
-    		return "result/fail";
-    	}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	// 파일 업로드에 사용될 실제 업로드 디렉토리 경로를 리턴하는 메서드
 	public String getRealPath(HttpSession session) {

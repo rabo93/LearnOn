@@ -68,7 +68,7 @@
 												    </a>
 												</div>
 												<!-- 상품 정보 내역 클릭시 강의 상세 페이지로 이동(class_id 값 전달)-->
-												<a href='CourseDetail?CLASS_ID=${cart.class_id}' class="item-link">
+												<a href='CourseDetail?class_id=${cart.class_id}' class="item-link">
 													<div class="class-pic">
 														<!-- 썸네일 사진 나중에 바꿀것!! -->
 														<img src="${pageContext.request.contextPath}/resources/images/thumb_01.webp">

@@ -25,13 +25,13 @@
 	padding-bottom: 12px;
 }
 
-.cls-cate .cate-li {
+
+.review_title, .cls-cate .cate-li {
 	display:flex;
 	gap:0 10px;
-	
 }
-.cls-cate .cate-li button.on {background:var(--primary); color:var(--white);}
-.cls-cate .cate-li form {margin-left:auto;}
+.cls-cate .cate-li  button.on {background:var(--primary); color:var(--white);}
+.cls-cate .cate-li form, .review_title  form {margin-left:auto;}
 .cls-cate button {
 	padding: 8px 14px;
 	font-size: 1rem;
@@ -39,7 +39,7 @@
 	background: var(--light-gray);
 	font-weight: 500;
 }
-.cls-cate .cate-li form select {
+.cls-cate .cate-li form select, .review_title form select{
 	background: var(--white);
     border: 0;
     color: var(--gray);
@@ -51,7 +51,7 @@
     height: 36px;
     margin-left: auto;
 }	
-.cls-cate .cate-li form input[type=submit] {
+.cls-cate .cate-li form input[type=submit], .review_title form input[type=submit]{
 	border:0;
 	padding:4px 10px;
 	height:36px;
@@ -330,6 +330,7 @@
 	margin-bottom: 2rem;
 	color: var(--dark);
 }
+/*
 .review_title select {
     margin-left: auto;
     border: 1px solid #ddd;
@@ -340,7 +341,7 @@
     color: var(--dark);
     border-radius: 4px;
 }
-
+*/
  .question_title button {
 	margin-left: auto;
 	margin-bottom: 10px; 
@@ -375,7 +376,7 @@
 }
 
 
-.review_title, .question_title, .cls_det_rating {
+.question_title, .cls_det_rating {
 	display: flex;
 	justify-content: flex-end;
 }

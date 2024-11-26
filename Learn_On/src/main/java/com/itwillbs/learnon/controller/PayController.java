@@ -2,7 +2,6 @@ package com.itwillbs.learnon.controller;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -46,17 +45,18 @@ public class PayController {
 	@GetMapping("Payment")
 	public String payment(@RequestParam(value = "checkitem", required = false) List<String> checkItems,
 						 HttpSession session, Model model) {
-		// checkItems가 제대로 전달되었는지 확인
 //	    System.out.println("(Payment)선택한 장바구니 번호: " + checkItems); //[4, 3, 2, 1]
 		//------------------------------------------------------
 		// 로그인 정보 가져오기 (세션 아이디값 확인)
 		String sId = (String) session.getAttribute("sId");
 		System.out.println("결제할 로그인 아이디: " + sId);
 		//------------------------------------------------------
-		//sId를 이용해 주문정보 객체 호출
+		// PayService - getMemberInfo() 메서드 호출
+		// 파라미터 : sId  	리턴타입 : MemberVO
 		MemberVO member = payService.getMemberInfo(sId);
 	    
-		// List<String>으로 전달하여 getSelectedCarts 호출
+		// PayService - getSelectedCart() 메서드 호출
+		// 파라미터 : checkItems(List)  리턴타입 : OrderVO(List)
 	    List<OrderVO> selectedItems = payService.getSelectedCart(checkItems);
 //	    System.out.println("selectedItems: " + selectedItems);
 	    
@@ -84,7 +84,7 @@ public class PayController {
 	}
 	
 	//--------------------------------------------------------
-	// 2. 사후 처리 후 결제정보&주문정보 DB 저장
+	// 2. 결제 성공 후 결제정보&주문정보 DB 저장
 	@ResponseBody
 	@PostMapping("payinfoSave")
 	public String  savePayInfo(@RequestBody PayVO payVO) {
@@ -100,23 +100,24 @@ public class PayController {
 	
 	@ResponseBody
     @PostMapping("orderinfoSave")
-	public String orderPayInfo(@RequestBody OrderVO orderVO) {
-		System.out.println("주문저장VO : " + orderVO);
-		//OrderVO(order_idx=0, merchant_uid=2024112528321, mem_id=bborara, items=[OrderItemVO(class_id=1, class_price=75000), OrderItemVO(class_id=2, class_price=1004)], coupon_id=2, price=0)
+	public String orderPayInfo(@RequestBody OrderVO orderVO, Model model) {
+		System.out.println("컨트롤러에 넘겨받은 주문저장VO : " + orderVO);
+		//OrderVO(order_idx=0, merchant_uid=2024112528321, mem_id=bborara
+		//		, items=[OrderItemVO(class_id=1, class_price=75000), OrderItemVO(class_id=2, class_price=1004)]
+		//		, coupon_id=2, price=0)
 		
-		//주문정보 저장 호출
+		//주문정보 & 나의 클래스 저장 호출
 		payService.saveOrderInfo(orderVO);
 		
-//		//쿠폰 사용 상태 업데이트 호출
+		//쿠폰 사용 상태 업데이트 호출
 		payService.couponUsed(orderVO.getCoupon_id());
 		
-		//결제 성공 페이지에 뿌릴 정보 다시 생각해서 리턴값 다시 생각하기
 		
 		//ajax 응답 데이터로 넘겨줄 response 저장
 		String response = orderVO.getMerchant_uid();
 		return  response;
 	}
-    
+	
 	//--------------------------------------------------------
 	// 결제 취소
 	@ResponseBody
@@ -133,8 +134,6 @@ public class PayController {
 	}
 	
 	
-	
-	
 	//=================================================================================
 	// "Terms" 이용약관 페이지 매핑 - GET
 	@GetMapping("Terms")
@@ -143,7 +142,7 @@ public class PayController {
 	}
 	
 	//=================================================================================
-	// "PayResult" 매핑 - GET => 결제 완료 뷰페이지 포워딩
+	// "PayResult" 매핑 - GET 
 	@GetMapping("PayResult")
 	public String paySuccess() {
 		return "cart_payment/pay_result";

@@ -103,7 +103,8 @@ $(document).ready(function() {
 		
 	});
 	
-	
+	//=============================================================================
+	//=============================================================================
 	//=============================================================================
 	// [결제 구현]
 	// "결제하기" 클릭시 '약관동의 필수' 체크 여부 확인
@@ -122,7 +123,7 @@ $(document).ready(function() {
 	//https://developers.portone.io/opi/ko/integration/start/v1/auth?v=v1
 	function requestPay() {
 		//-----------------------------------------------------------------------------------
-		// 결제페이지에서 전달할 데이터값 (주문번호, 결제금액, 결제수단, 회원ID, 클래스ID 등등...) 가져와서 변수 저장
+		// 결제페이지에서 전달할 데이터값 (주문번호, 결제금액, 결제수단, 회원ID, 클래스ID 등등...) 가져오기
 		// * 주문고유번호 생성(형식: yyyyMMdd+랜덤숫자5개)
 		//- date() : 오늘날짜
 		//- toISOString() : 2024-11-21T00:00:00.000Z을 반환
@@ -152,12 +153,7 @@ $(document).ready(function() {
 		let classTitles = [];
 	    $(".class-box").each(function() {
 			classTitles.push($(this).data("class-title")); // data-class-title에서 가져오기
-//			items.push({
-//				class_id: $(this).data("class-id"), // data-class-id에서 가져오기
-//				class_price: $(this).data("class-price") // data-class-price에서 가져오기
-//			});
 	    });
-	    
 	    //결제 파라미터에 사용할 상품명 설정 
 	    //=> 상품이 여러개일 경우 '첫번째 상품명 외 n개'로 설정
 	    let className = "";
@@ -194,7 +190,7 @@ $(document).ready(function() {
 	    	}, 
 	    	//-------------결제 결과 처리-------------
 	    	function(rsp) {
-				console.log("결제성공시 응답 (JSON): "+ JSON.stringify(rsp)); //결제금액이 들어있음
+				console.log("결제 성공/실패 응답 (JSON): "+ JSON.stringify(rsp)); //결제금액이 들어있음
 				//{success: true, imp_uid: 'imp_598208212134', pay_method: 'card', merchant_uid: '2024112288980', name: '자바 고급 강의 1편', …}
 				
 				//결제완료후 후속 검증 실행(주문금액과 일치하는지 확인)
@@ -208,6 +204,7 @@ $(document).ready(function() {
 						merchant_uid: rsp.merchant_uid,	//주문 고유 번호
 						amount: rsp.paid_amount			//결제된 금액
 					}
+					
 					// 사후검증을 위한 AJAX 요청
 					$.ajax({
 						type: "Post",
@@ -232,15 +229,11 @@ $(document).ready(function() {
 							savePayinfo(rsp);
 							
 							//주문정보 저장
+							//=> 주문 저장 후 쿠폰상태 업데이트/나의클래스에 저장 같이
 							saveOrderinfo(rsp);
 							
-							//장바구니 목록 삭제
-//							deleteCart();
-							
-							//쿠폰 상태 변경
-//							updateCoupon();
-							
-							
+							//장바구니 목록에서 주문한 상품 삭제(CART)
+							deleteCart();
 							
 							//테스트 진행을 위해 바로 결제취소(테스트 완료후 삭제할 것)
 							cancelPay(rsp);
@@ -251,14 +244,11 @@ $(document).ready(function() {
 							//결제 취소
 							cancelPay(rsp);
 						}
-			    	
 					});
 				} else {
-					console.log("결제 응답 에러 내용: "+ rsp.error_msg);
-					alert("결제 응답이 실패하였습니다. (서버측 에러)");
+					alert("결제를 실패하였습니다. \n(실패사유: " + rsp.error_msg +")");
 				}
 			} //function(rsp) 함수 끝
-			
 	    );//IMP.request_pay끝
 	}//requestPay() 함수 끝
 	
@@ -309,18 +299,16 @@ $(document).ready(function() {
 	    });
 		let couponData = $("#couponSelect").data();
 		
+		//가져온 데이터 합치기
 		let orderInfo = {
-//			order_idx : order_idx,				//상품별 주문 ID
 			merchant_uid : rsp.merchant_uid,	
 			mem_id : memId,						
 			items : items,						//상품별 정보 배열			
-//			class_id : classIds,				//상품별 id
-//			class_price : classPrices,			//상품별 가격
 			coupon_id : couponData.couponId,	//사용한쿠폰아이디
 			price : rsp.paid_amount				//총 결제 금액
 		}
 		console.log("저장할 주문 정보 : " + JSON.stringify(orderInfo));
-		/* 저장할 주문 정보 JSON 타입
+		/* 저장할 주문 정보(JSON 타입)
 			{
 			    "merchant_uid": "2024112524071",
 			    "mem_id": "bborara",
@@ -328,7 +316,8 @@ $(document).ready(function() {
 			        { "class_id": 2, "class_price": 1004 },
 			        { "class_id": 1, "class_price": 1004 }
 			    ],
-			    "coupon_id": 6
+			    "coupon_id": 6,
+			    "price" : "2008"
 			}
 		*/
 		
@@ -340,13 +329,15 @@ $(document).ready(function() {
 			data: JSON.stringify(orderInfo),
 			success: function(response) {
 				console.log("주문정보 저장 완료", response);
+				
+				
 			},
 			error: function(error) {
 				console.log("주문정보 저장 실패", error);
 			}
 			
 		});
-	} //saveOrderinfo()함수끝
+	}
 	
 	//-------------------------------------------------------------------------------------
 	//결제 완료 후 장바구니 내역 삭제
@@ -396,121 +387,7 @@ $(document).ready(function() {
 		}).fail(function(error) {
 			alert(JSON.stringify(error));
 		});
-	}//canclePay() 함수 끝  
-	//-------------------------------------------------------------------------------------
-	  
-	  //결제 응답 파라미터 (callback)
-	  /*
-	  	success (boolean) : 결제승인 혹은 가상계좌발급이 성공한 경우 true(또는 imp_success)
-	  	error_code (string) : 결제 실패 코드
-	  	error_msg (string) : 결제 실패 메세지
-	  	imp_uid (string) : 포트원 고유번호 (success가 false이고 사전 validation에 실패한 경우, imp_uid는 null일 수 있음)
-	  	merchant_uid (string) : 주문번호
-	  	pay_method (string) : 결제수단
-	  	paid_amount (number) : 결제 금액
-	  	status (string) : 결제상태
-	  	 => ready(브라우저 창 이탈, 가상계좌 발급 완료 등 미결제 상태)
-			paid(결제완료)
-			failed(신용카드 한도 초과, 체크카드 잔액 부족, 브라우저 창 종료 또는 취소 버튼 클릭 등 결제실패 상태)
-		name (string) : 주문자명
-		pg_provider (string) : pg사 구분코드
-		...
-		https://developers.portone.io/sdk/ko/v1-sdk/javascript-sdk/payrt?v=v1
-		페이지 참고..
-	  */
-	  /*
-	  	결제 응답 sample object
-		{
-		  "apply_num": "42827474",
-		  "bank_name": null,
-		  "buyer_addr": "서울특별시 강남구 삼성동",
-		  "buyer_email": "test@portone.io",
-		  "buyer_name": "포트원 기술지원팀",
-		  "buyer_postcode": "123-456",
-		  "buyer_tel": "010-1234-5678",
-		  "CARD_NAME": "신한카드",
-		  "card_number": "5428790000000294",
-		  "card_quota": 0,
-		  "currency": "KRW",
-		  "custom_data": null,
-		  "imp_uid": "imp_347242536261",
-		  "merchant_uid": "57008833-33004",
-		  "name": "당근 10kg",
-		  "paid_amount": 1004,
-		  "paid_at": 1648344363,
-		  "pay_method": "card",
-		  "pg_provider": "kcp",
-		  "pg_tid": "22336466628585",
-		  "pg_type": "payment",
-		  "receipt_url": "https://admin8.kcp.co.kr/assist/bill.BillActionNew.do?cmd=card_bill&tno=22336466628585&order_no=imp_347242536261&trade_mony=1004",
-		  "status": "paid",
-		  "success": true
-		}
-	  */
-	
-	//결제 결과 처리하기
-	//IMP.request_pay(
-	//  {
-	//    /* 파라미터 생략 */
-	//  },
-	//  async (response) => {
-	//    if (response.error_code != null) {
-	//      return alert(`결제에 실패하였습니다. 에러 내용: ${response.error_msg}`);
-	//    }
-	//
-	//    // 고객사 서버에서 /payment/complete 엔드포인트를 구현해야 합니다.
-	//    // (다음 목차에서 설명합니다)
-	//    const notified = await fetch(`${SERVER_BASE_URL}/payment/complete`, {
-	//      method: "POST",
-	//      headers: { "Content-Type": "application/json" },
-	//      // imp_uid와 merchant_uid, 주문 정보를 서버에 전달합니다
-	//      body: JSON.stringify({
-	//        imp_uid: response.imp_uid,
-	//        merchant_uid: response.merchant_uid,
-	//        // 주문 정보...
-	//      }),
-	//    });
-	//  },
-	//);
-	
-	
-	//결제정보 저장
-	//IMP.request_pay({
-	//    ...
-	//}, function (rsp) {
-	//    if (rsp.success) {
-	//           ... 
-	//        }).done(function (data) {
-	//            let mesg = '결제가 완료되었습니다.';
-	//            let buyerInfo = {
-	//                "merchant_uid": rsp.merchant_uid,
-	//                "userid": rsp.buyer_name,
-	//                "pay_method": rsp.pay_method,
-	//                "name": rsp.name,
-	//                "amount": rsp.paid_amount,
-	//                "phone": rsp.buyer_tel,
-	//                "addr": rsp.buyer_addr,
-	//                "post": rsp.buyer_postcode,
-	//                "recipient": recipient
-	//            }
-	//
-	//            $.ajax({
-	//                type: "post",
-	//                url: "save_buyerInfo",
-	//                contentType: "application/json",
-	//                data: JSON.stringify(buyerInfo),
-	//                success: function (response) {
-	//                    console.log("결제정보 저장 완료");
-	//                }
-	//            });
-	//        });
-	//    } else {
-	//        let mesg = '결제를 실패하였습니다.';
-	//        alert(mesg);
-	//    }
-	//});
-	
-	
+	}
 	
 	
 });// 페이지 로드 이벤트 끝

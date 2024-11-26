@@ -3,15 +3,22 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itwillbs.learnon.mapper.PayMapper">
+    <!-- 주문회원 정보 조회 -->
+    <select id="selectMember" resultType="member">
+		SELECT *
+		FROM MEMBER
+		WHERE mem_id = #{sId}
+	</select>
+	
 	<!-- resultMap을 사용한 MyBatis 자동 매핑 -->
 	<resultMap id="CartToOrderMap" type="order">
-		<result property="cartItemIdx" column="CARTITEM_IDX"/>
-	   	<result property="classId" column="CLASS_ID"/>
-	    <result property="memId" column="MEM_ID"/>
-	    <result property="classTitle" column="CLASS_TITLE"/>
-	    <result property="teacherName" column="MEM_NAME"/>
-	    <result property="classPrice" column="CLASS_PRICE"/>
-	    <result property="classPic1" column="CLASS_PIC1"/>
+		<result property="cartitem_idx" column="CARTITEM_IDX"/>
+	   	<result property="class_id" column="CLASS_ID"/>
+	    <result property="mem_id" column="MEM_ID"/>
+	    <result property="class_title" column="CLASS_TITLE"/>
+	    <result property="teacher_name" column="MEM_NAME"/>
+	    <result property="class_price" column="CLASS_PRICE"/>
+	    <result property="class_pic1" column="CLASS_PIC1"/>
 	</resultMap>
 	<!-- 선택된 장바구니 상품 조회 -->
     <select id="selectedCart" parameterType="list" resultType="order" resultMap="CartToOrderMap">
@@ -33,12 +40,6 @@
 	    </foreach>
     </select>
     
-    <!-- 주문회원 정보 조회 -->
-    <select id="selectMember" resultType="member">
-		SELECT *
-		FROM MEMBER
-		WHERE mem_id = #{sId}
-	</select>
 	
 	<!-- 결제 정보 저장 -->
 	<insert id="insertPayInfo">
@@ -82,7 +83,7 @@
 	</insert>
 	
 	<!-- 주문 정보 저장 -->
-	<insert id="insertOrderInfo">
+	<insert id="insertOrderInfo" >
 		<selectKey keyProperty="order_idx" resultType="int" order="BEFORE">
 			SELECT IFNULL(MAX(order_idx), 0)
 			FROM ORDER_INFO
@@ -116,7 +117,30 @@
 		WHERE COUPON_ID = #{coupon_id}
 	</update>
 	
-	
-	
+	<!-- 결제 완료시 나의 클래스에 인서트 -->
+	<insert id="insertMycourse">
+		<selectKey keyProperty="course_idx" resultType="int" order="BEFORE">
+			SELECT IFNULL(MAX(course_idx), 0)
+			FROM MYCOURSE
+		</selectKey>
+		INSERT INTO MYCOURSE
+		(
+			COURSE_IDX
+			, MEM_ID
+			, CLASS_ID
+			, COURSE_STATUS
+			, ORDER_IDX
+			, CLASS_MARK
+		)
+		VALUES
+		(
+			#{course_idx} + 1
+			, #{mem_id}
+			, #{class_id}
+			, 0
+			, #{order_idx}
+			, 0
+		)	
+	</insert>
 	
 </mapper>

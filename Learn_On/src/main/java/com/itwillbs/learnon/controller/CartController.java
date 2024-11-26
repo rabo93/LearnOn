@@ -61,7 +61,7 @@ public class CartController {
 	public String deleteItem(@RequestParam("cartitem_idx") String cartitem,
 							  Model model) {
 		// CartService - deleteCart() 메서드 호출
-		// 파라미터 : CARTITEM_IDX    리턴타입 : int(삭제갯수)
+		// 파라미터 : cartitem(1개)    리턴타입 : int(삭제갯수)
 		int deleteCount = cartService.deleteCart(cartitem);
 		
 		//DB 삭제 결과 
@@ -79,16 +79,16 @@ public class CartController {
 	// DeleteItems 서블릿 주소 로드시 비즈니스 로직
 	// 2) '선택삭제' 버튼 클릭시 체크한 여러개의 cartitem_idx 확인 후 장바구니 상품 삭제
 	@GetMapping("DeleteItems")
-	public String deleteItems(@RequestParam("cartitem_idx") String cartItemsParam, Model model) {
+	public String deleteItems(@RequestParam("cartitem_idx") String cartitem, Model model) {
 		
 		// cartitem_idx를 콤마로 구분(분리)하여 각각의 요소를 List<Integer>객체(배열)에 묶어서 저장
-		List<Integer> cartItems = Arrays.stream(cartItemsParam.split(",")) //Arrays.stream()은 배열을 스트림으로 변환
+		List<Integer> cartItems = Arrays.stream(cartitem.split(",")) //Arrays.stream()은 배열을 스트림으로 변환
 								.map(Integer::parseInt) //map()은 스트림의 각 요소에 대해 변환 작업, 지금은 String 값을 Integer로 변환하는 작업 
 								.collect(Collectors.toList());//Stream<Integer>로 변환된 값을 다시 List<Integer>로 변환
 //		System.out.println(cartItems); //[8, 7, 6, 3]
 		
 		// CartService - deleteManyCart() 메서드 호출
-		// 파라미터 : CARTITEM_IDXS(List객체..?)    리턴타입 : int(삭제갯수)
+		// 파라미터 : cartItems(여러개)    리턴타입 : int(삭제갯수)
 		int deleteCounts = cartService.deleteManyCart(cartItems);
 		
 		//DB 삭제 결과 
@@ -111,7 +111,7 @@ public class CartController {
 		String sId = (String) session.getAttribute("sId");
 		System.out.println("로그인 아이디: " + sId);
 		
-		//JSON 형식으로 응답하기 위해 Map에 담아서 반환(일단 미리 생성)
+		//JSON 형식으로 응답하기 위해 Map에 담아서 반환
 		Map<String, Object> data = new HashMap<String, Object>();
 		
 		if(sId == null) { // 로그인하지 않은 경우

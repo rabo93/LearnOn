@@ -40,21 +40,23 @@
 						<div class="pay-list">
 							<div class="pay-item">
 								<h5 class="box-ttl">주문상품</h5>
-								
 								<c:forEach var="item" items="${selectedCartList}">
-									<div class="class-box" data-class-id="${item.classId}" data-class-title="${item.classTitle}" data-class-price="${item.classPrice}">
+									<div class="class-box" 
+									data-class-id="${item.class_id}" 
+									data-class-title="${item.class_title}" 
+									data-class-price="${item.class_price}">
 										<div class="class-pic">
-											<img alt="클래스썸네일" src="/resources/images/thumb_01.webp">
+											<img src="${pageContext.request.contextPath}/resources/images/thumb_01.webp">
 										</div>
 										<div class="item-info">
-											<p id="classTitle">${item.classTitle}</p>
-											<p id="teacherName">${item.teacherName}</p>
+											<p id="classTitle">${item.class_title}</p>
+											<p id="teacherName">${item.teacher_name}</p>
 										</div>
 									</div>
 									<!-- 상품 금액부분 -->
 									<div class="item-result">
 										<span class="price">
-											<fmt:formatNumber value="${item.classPrice}" type="number" />
+											<fmt:formatNumber value="${item.class_price}" type="number" />
 										</span>원
 									</div>
 								</c:forEach>
@@ -91,7 +93,7 @@
 								<dt>결제 상품 금액</dt>
 								<c:set var="totalAmount" value="0" />
 								<c:forEach var="cart" items="${selectedCartList}">
-								    <c:set var="totalAmount" value="${totalAmount + cart.classPrice}" />
+								    <c:set var="totalAmount" value="${totalAmount + cart.class_price}" />
 								</c:forEach>
 								<dd id="totalAmount" data-value="${totalAmount}">
 									<fmt:formatNumber value="${totalAmount}" type="number" /> 원

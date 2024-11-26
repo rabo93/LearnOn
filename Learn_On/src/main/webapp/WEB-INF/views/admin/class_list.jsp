@@ -94,10 +94,10 @@
 												</select>
 		                                 	</td>
 		                                 	<td>
-		                                 		<button type="button" class="btn-primary" onclick="modifyClass(this)">수정</button>
+		                                 		<button type="button" class="btn-primary" onclick="modifyClass(${li.class_id})">수정</button>
 		                                 	</td>
 		                                 	<td>
-		                                 		<button type="button" class="btn-primary" onclick="deleteClass(this)">삭제</button>
+		                                 		<button type="button" class="btn-primary" onclick="deleteClass(${li.class_id})">삭제</button>
 		                                 	</td>
 										</tr>
 									</c:forEach>

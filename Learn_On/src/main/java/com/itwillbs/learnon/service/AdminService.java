@@ -18,8 +18,6 @@ public class AdminService {
 	@Autowired
 	private AdminMapper mapper;
 	
-	
-	
 	// 카테고리
 	public List<Map<String, String>> getCategory() {
 		return mapper.getCategory();
@@ -111,7 +109,7 @@ public class AdminService {
 	public int insertCurVideo(AdminVO vO) {
 		return mapper.insertCurVideo(vO);
 	}
-	public List<CourseVO> getCurriculum(AdminVO class_id) {
+	public List<Map<String, Object>> getCurriculum(int class_id) {
 		return mapper.getCurriculum(class_id);
 	}
 	public int getClassId() {
@@ -140,6 +138,12 @@ public class AdminService {
 	}
 	public int updateCurriculum(AdminVO vO) {
 		return mapper.updateCurriculum(vO);
+	}
+	
+	
+	//	임시
+	public AdminVO getIdClass(int class_id) {
+		return mapper.selectClass(class_id);
 	}
 
 }

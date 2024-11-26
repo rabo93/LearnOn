@@ -62,5 +62,7 @@ public interface CourseMapper {
 
 	List<CourseVO> selectFindCourseList(String find_title);
 
+	List<CourseVO> selectCourseBestList();
+
 
 }

@@ -57,10 +57,19 @@
 								
 							}
 						</script>
-					</div>
-				</div>
+					</div><!-- cate-li -->
+				</div><!-- clas-cate -->
 				<div class="course-wrap">
-					<ul class="course-card">
+				<c:choose>
+					<c:when test="${empty requestScope.courseList}">
+						<div class="no-items-container">
+							<div class="icon">📋</div>
+							<h1>해당 클래스가 등록되어 있지 않습니다.</h1>
+							<p>곧 좋은 강의로 찾아 뵙겠습니다.</p>
+						</div>
+					</c:when>
+					<c:otherwise>
+						<ul class="course-card">
 							<c:forEach var="course" items="${requestScope.courseList}" varStatus="status">
 								<li id="${course.class_id}">
 									<button class="fav-off" style="display:block;" onclick="addToWishList('${course.class_id}')">
@@ -118,10 +127,12 @@
 									}
 								}
 							</script>									
-					</ul>
-				</div>
-			</div>
-		</div>
+						</ul>
+					</c:otherwise>
+				</c:choose>
+				</div><!-- course-wrap -->
+			</div><!-- cls-wrap -->
+		</div><!-- wrapper -->
 	</main>
 	<footer>
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>

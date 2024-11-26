@@ -89,6 +89,10 @@ public class CourseService {
 		return mapper.selectFindCourseList(find_title);
 	}
 
+	public List<CourseVO> getCourseBestList() {
+		return mapper.selectCourseBestList();
+	}
+
 
 	
 

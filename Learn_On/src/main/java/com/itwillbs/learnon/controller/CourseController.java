@@ -71,6 +71,15 @@ public class CourseController {
 		return "course/course_list"; 
 	}
 	
+	@GetMapping("BestCourse")
+	public String bestCourse(Model model) {
+		System.out.println("BestCourse 들어오나???");
+		// 강의 목록 출력
+		List<CourseVO> courseList = courseService.getCourseBestList();
+		model.addAttribute("courseList", courseList);
+		return "course/course_best_list";
+	}
+	
 	@GetMapping("Category")
 	public String courseList(
 							String codetype,
@@ -149,9 +158,6 @@ public class CourseController {
 		}
 		// 페이징 처리한 문의사항 항목가져옴. 
 		List<CourseSupportVO> courseSupportList = courseService.getCourseSupportList(class_id, startRow, paging(pageNum, class_id).getPageListLimit());
-				
-		
-		
 		
 		JSONArray jsonToWishList = new JSONArray(wishList);
 		model.addAttribute("wishList", jsonToWishList);
@@ -175,7 +181,8 @@ public class CourseController {
 	
 	
 	@GetMapping("CourseSupportList")
-	public String courseSupportList(@RequestParam(defaultValue = "1") int pageNum,
+	public String courseSupportList(
+			@RequestParam(defaultValue = "1") int pageNum,
 			int class_id, 
 			Model model) {
 		
@@ -192,6 +199,8 @@ public class CourseController {
 		List<CourseVO> course = courseService.getCourse(class_id);
 		// 강사의 다른 클래스 조회
 		List<CourseVO> courseTeacher = courseService.getCourseTeacher(class_id, course.get(0).getTeacher_id());
+		// 수강평 목록 
+				
 		// -------------------------------------------------------------------
 		// Model 객체에 페이징 정보 저장
 		model.addAttribute("pageInfo", paging(pageNum, class_id));
@@ -300,17 +309,28 @@ public class CourseController {
 			session.setAttribute("prevURL", prevURL);
 			return "result/fail";
 		}
+		CourseSupportVO courseSupport = courseService.getCourseSupport(c_support_idx);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		// 자기 아이디 아니면 수정 권한 없다고 하기
-		// 조회된 게시물이 존재하지 않거나, 조회된 게시물의 작성자가 세션 아이디와 다를 경우 
-		// "잘못된 접근입니다!" 처리하기 위해 "result/fail.jsp"페이지로 포워딩 처리
-		CourseSupportVO courseSupport = courseService.getCourseSupport(c_support_idx);
 		if(courseSupport == null || !id.equals(courseSupport.getMem_id())) {
 			model.addAttribute("msg", "잘못된 접근입니다!");
 			return "result/fail";
 		}
 		
 		model.addAttribute("courseSupport", courseSupport);
+		// ----------------------------------------------------------------
+		// 뷰페이지에서 파일 목록의 효율적 처리를 위해 addFileListToModel() 메서드 활용
+		addFileListToModel(courseSupport, model);
 		return "course/course_support_modify_form"; 
 	}
 	
@@ -586,7 +606,6 @@ public class CourseController {
 		cSupport.setC_support_file("");
 		
 		String fileName1 = "";
-		
 		// 업로드 파일명이 널스트링이 아닐 경우 판별하여 파일명 저장(각 파일을 별개의 if 문으로 판별)
 		if(!mFile1.getOriginalFilename().equals("")) {
 			fileName1 = UUID.randomUUID().toString().substring(0, 8) + "_" + mFile1.getOriginalFilename();
@@ -633,7 +652,38 @@ public class CourseController {
 		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
 		return pageInfo;
 	}
-	
+	// ========================================================
+		// 뷰페이지에서 파일 목록의 효율적 처리를 위해 별도의 가공하는 메서드
+		// => 파일 정보가 저장된 BoardVO 객체와 최종 결과를 저장할 Model 객체를 파라미터로 전달받기
+		private void addFileListToModel(CourseSupportVO cSupport, Model model) {
+			// 뷰 페이지에서 파일목록의 효율적 처리를 위해 별도의 가공 후 전달
+//			1. 파일명을 별도의 list 객체에 저장(제네릭 타입 : String)
+			List<String> fileList = new ArrayList<String>();
+			fileList.add(cSupport.getC_support_file());
+			System.out.println(fileList);
+			//----------------------
+			// 2. 만약, 컨트롤러 측에서 원본 파일명을 추출하여 전달할 경우
+			// => 파일명이 저장된 List 객체를 반복하면서 원본 파일명을 추출하여 별도의 List에 저장
+			List<String> originalFileList = new ArrayList<String>();
+			
+			for(String file : fileList) {
+//				System.out.println("file: " + file);
+				if(!file.equals("")) {
+					// 실제 파일명에서 "-" 기호 다음(인덱스값 + 1)부터 끝까지 추출하여 리스트에 추가
+					originalFileList.add(file.substring(file.indexOf("_") + 1));
+				} else {
+					// 파일이 존재하지 않을 경우 원본 파일명도 파일명과 동일하게 null 로 저장
+					originalFileList.add(file);
+				}
+			}
+			System.out.println("originalFileList" + originalFileList); // 자동적으로 위치도 구분해서 나온다.
+			//----------------
+			// Model 객체에 파일 목록 객체 2개 저장
+			model.addAttribute("fileList", fileList);
+			model.addAttribute("originalFileList", originalFileList); // model은 파라미터에서 보내주니까 void가 맞다. 같은 객체이므로
+			// Model 객체를 별도로 리턴하지 않아도 객체 자체를 전달받았으므로
+					// 메서드 호출한 곳에서 저장된 속성 그대로 공유 가능
+		}
 	
 	
 	

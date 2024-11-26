@@ -85,7 +85,7 @@ function logout() {
 							<li><a href="Category?codetype=CATE05">음료/술</a></li>
 						</ul>
 					</li>
-					<li class="gnb-menu"><a href="#">BEST</a></li>
+					<li class="gnb-menu"><a href="BestCourse">BEST</a></li>
 					<li class="gnb-menu"><a href="#">얼리버드 특가</a></li>
 					<li class="gnb-menu"><a href="#">이벤트</a></li>
 					<li class="gnb-menu"><a href="#">AI 추천</a></li>
@@ -101,7 +101,7 @@ function logout() {
 				<ul class="dropdown" id="resultArea">
 				</ul>	
 			</li>						
-			<li><a href="#">BEST</a></li>
+			<li><a href="BestCourse">BEST</a></li>
 			<li><a href="#">얼리버드 특가</a></li>
 			<li><a href="#">이벤트</a></li>
 			<li><a href="#">AI 추천</a></li>

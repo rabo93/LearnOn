@@ -64,7 +64,7 @@
 		            <h1>${course[0].class_title}</h1>
 					<p>${course[0].class_intro}</p>       
 		            <div class="cls_det_rating">
-		            	<span class="stars"></span>
+		            	<span class="stars"><i class="fa-solid fa-star"></i></span>
 		            	<h4>${course[0].review_score }</h4>
 						<div class="cls-det-text">            	
 			            	<i class="fa-sharp-duotone fa-solid fa-user"></i>
@@ -126,7 +126,7 @@
 								
 				            <div class="review-rating">
 				                <span class="rating-score" style="color:red;">수정요!! ${course[0].review_score}</span><br>
-				                <span class="stars"></span>
+				                <span class="stars"><i class="fa-solid fa-star"></i></span>
 				            </div>
 				            
 				            

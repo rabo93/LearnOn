@@ -576,11 +576,49 @@
     color: #555;
 }
 
+/* ------ class가 없을 경우 표시 ------- */
+
+.no-items-container {
+  text-align: center;
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.no-items-container .icon {
+  font-size: 14rem;
+  margin-bottom: 1rem;
+}
+
+.no-items-container h1 {
+  font-size: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+.no-items-container p {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.no-items-container button {
+  padding: 0.7rem 1.5rem;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.no-items-container button:hover {
+  background-color: #0056b3;
+}
 
 
-
-
-
+/* ------ class가 없을 경우 표시 끝------- */
 #pageList {
 	margin: auto;
 	width: 1024px;

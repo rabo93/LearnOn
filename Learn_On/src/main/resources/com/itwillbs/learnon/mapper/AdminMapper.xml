@@ -314,6 +314,36 @@
 		</choose>
 		WHERE MEM_ID = #{mem_id}
 	</update>
+	<!-- 쿠폰 발급 -->
+	<insert id="insertCoupon">
+		INSERT
+		  INTO MYCOUPON(
+		  	   MEM_ID
+		  	 , COUPON_ID
+		  	 , ISSUE_DATE
+		  	 , COUPON_STATUS
+		  	 , COUPON_ISUSED
+		)
+		VALUES (
+			   #{mem_id}
+			 , #{coupon_id}
+			 , NOW()
+			 , 1
+			 , 1
+		)
+	</insert>
+	
+	<!-- 쿠폰 발급용 멤버 리스트 조회 -->
+	<select id="selectCouponMember" resultType="member">
+		SELECT m.MEM_ID
+			 , m.MEM_NAME
+		  FROM MEMBER m
+		  LEFT
+		  JOIN MYCOUPON c
+		    ON m.MEM_ID = c.MEM_ID
+		   AND c.COUPON_ID = #{coupon_id}
+		 WHERE c.MEM_ID IS NULL
+	</select>
 <!-- ================================================================== -->
 <!-- 카테고리 -->	
 

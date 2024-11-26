@@ -61,7 +61,11 @@ public interface AdminMapper {
 	int deleteMember(String mem_id);
 	//	회원 등급변경
 	int updateGrade(MemberVO member);
-	
+	//	쿠폰 발급
+	int insertCoupon(@Param("coupon_id") int coupon_id,
+					 @Param("mem_id") String mem_id);
+	//	쿠폰 발급용 회원 목록 조회
+	List<MemberVO> selectCouponMember(int coupon_id);
 	
 	// ===== 수강문의 게시판
 	// 강의 문의 조회 요청

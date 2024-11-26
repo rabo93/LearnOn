@@ -648,6 +648,76 @@ public class AdminController {
 		}
 		return "redirect:/AdmPayListCoupon";
 	}
+	
+	//	쿠폰 발급 페이지
+	@GetMapping("AdmCouponIssue")
+	public String admCouponIssue(@RequestParam(defaultValue = "1") int pageNum,
+								 @RequestParam(defaultValue = "latest") String sort,
+								 @RequestParam(defaultValue = "") String searchKeyword,
+								 @RequestParam(defaultValue = "") String searchType,
+								 Model model) {
+		
+		int listLimit = 5;
+		int startRow = (pageNum - 1) * listLimit;
+		
+		int listCount = couponService.getCouponListCount(searchKeyword, searchType);
+		
+		int pageListLimit = 5;
+		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+		
+		if (maxPage == 0) {
+			maxPage = 1;
+		}
+		
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		int endPage = startPage + pageListLimit - 1;
+		
+		if (endPage > maxPage) {
+			endPage = maxPage;
+		}
+		
+		if(pageNum < 1 || pageNum > maxPage) {
+			model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+			model.addAttribute("targetURL", "AdmNotice?pageNum=1");
+			return "result/fail";
+		}
+		
+		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
+		List<CouponVO> couponList = couponService.getAdmCoupon(startRow, listLimit, searchKeyword, searchType);
+		model.addAttribute("pageNum", pageNum);
+		model.addAttribute("pageInfo", pageInfo);
+		model.addAttribute("couponList", couponList);
+		
+		
+		return "admin/payment_coupon_issue";
+	}
+	
+	//	쿠폰 발급
+	@PostMapping("AdmCouponIssue")
+	public String admCouponIssue(int coupon_id, String[] mem_ids, Model model) {
+		
+		for(String mem_id : mem_ids) {
+			int insertCount = adminService.issueCoupon(coupon_id, mem_id);
+			if (insertCount < 0) {
+				model.addAttribute("msg", "쿠폰발급에 실패했습니다");
+				return "result/fail";
+			}
+		}
+		
+		return "redirect:/AdmCouponIssue";
+	}
+	
+	//	어드민 쿠폰발급 AJAX
+	@PostMapping("AdmShowCouponMembers")
+	@ResponseBody
+	public List<MemberVO> admShowCouponMembers(int coupon_id) {
+		
+		List<MemberVO> memberList = adminService.getMyCoupon(coupon_id);
+		
+		return memberList;
+	}
+	
+	
 	// =======================================================================
 	
 	// 어드민 공지사항 관리 페이지 매핑

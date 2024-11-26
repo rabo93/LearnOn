@@ -103,6 +103,15 @@ public class AdminService {
 	public int changeGradeMember(MemberVO member) {
 		return mapper.updateGrade(member);
 	}
+	//	쿠폰 발급
+	public int issueCoupon(int coupon_id, String mem_id) {
+		return mapper.insertCoupon(coupon_id, mem_id);
+	}
+	
+	//	쿠폰 발급용 멤버 리스트 조회
+	public List<MemberVO> getMyCoupon(int coupon_id) {
+		return mapper.selectCouponMember(coupon_id);
+	}
 	
 	public int insertClassPic(AdminVO vO) {
 		return mapper.insertClassPic(vO);
@@ -138,5 +147,6 @@ public class AdminService {
 	public int deleteCurriculum(int i) {
 		return mapper.deleteCurriculum(i);
 	}
+	
 
 }

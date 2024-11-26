@@ -425,6 +425,44 @@ button:active {
 .AdmfaqDetail {
 	display: none;
 }
+/*=================== Coupon ==================*/
+.couponIssueContainer {
+	display: flex;
+	gap : 10px;
+}
+
+.couponIssueBox {
+	width: 50%;
+}
+
+.couponMemberForm {
+	width: 50%;
+}
+
+.couponIssueMem {
+	width: 100%;
+	display: none;
+}
+
+.couponMember-btn {
+	text-align: right;
+}
+
+.couponIssueMem th {
+	text-align: center;
+}
+
+.couponMember{
+	min-width: max-content;
+}
+
+.couponIdx,
+.couponIssueIdx {
+	text-align: center;
+}
+
+
+
 /*=================== 페이징 처리 ==================*/
 #pagingArea {
     display: flex;

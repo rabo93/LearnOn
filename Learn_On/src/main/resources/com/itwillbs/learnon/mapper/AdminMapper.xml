@@ -173,8 +173,8 @@
 			 , MAIL_AUTH_STATUS
 		  FROM MEMBER
 		 WHERE 1=1
-		   AND MEM_GRADE = 'MEM01'
 		   AND MEM_STATUS IN (1, 2)
+		   -- AND MEM_GRADE = 'MEM01'
 		 <if test="!searchKeyword.equals('')">
 			<choose>
 			<when test="searchType.equals('id')">
@@ -321,6 +321,14 @@
 		</choose>
 		WHERE MEM_ID = #{mem_id}
 	</update>
+	
+	<!-- 회원 모든 등급 변경 -->
+	<update id="updateAllGrade">
+		UPDATE MEMBER
+		   SET MEM_GRADE = #{mem_grade}
+		 WHERE MEM_ID = #{mem_id}
+	</update>
+	
 	<!-- 쿠폰 발급 -->
 	<insert id="insertCoupon">
 		INSERT

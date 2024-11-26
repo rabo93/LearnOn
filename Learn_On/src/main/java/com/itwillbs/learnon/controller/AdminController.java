@@ -577,6 +577,30 @@ public class AdminController {
 		return "redirect:/AdmMemInstructor";
 	}
 	
+	
+	//	어드민 회원등급 변경
+	@ResponseBody
+	@PostMapping("AdmChangeMemGrade")
+	public String admChangeMemGrade(@RequestParam Map<String, String> map) {
+		System.out.println("mem_id : " + map.get("mem_id"));
+		System.out.println("mem_grade : " + map.get("mem_grade"));
+		adminService.changeAllGradeMember(map);
+//		
+		String mem_grade = "";
+		switch (map.get("mem_grade")) {
+		case "MEM01": mem_grade = "일반회원";break;
+		case "MEM02": mem_grade = "강사회원";break;
+		case "MEM03": mem_grade = "관리자";break;
+		}
+		
+		JSONObject json = new JSONObject();
+		json.put("mem_id", map.get("mem_id"));
+		json.put("mem_grade", mem_grade);
+		
+		
+		return json.toString();
+	}
+	
 	//	어드민 회원상태 변경
 	@ResponseBody
 	@PostMapping("AdmChangeMemStatus")

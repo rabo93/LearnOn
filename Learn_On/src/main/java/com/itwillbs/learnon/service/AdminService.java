@@ -105,6 +105,10 @@ public class AdminService {
 	public int changeGradeMember(MemberVO member) {
 		return mapper.updateGrade(member);
 	}
+	//	회원 등급 변경(member_list에서 모든 권한 변경 가능)
+	public int changeAllGradeMember(Map<String, String> map) {
+		return mapper.updateAllGrade(map);
+	}
 	//	쿠폰 발급
 	public int issueCoupon(int coupon_id, String mem_id) {
 		return mapper.insertCoupon(coupon_id, mem_id);

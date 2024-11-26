@@ -43,7 +43,7 @@
 						마지막 출석일 : ${attendance.check_in_date} (나중에 삭제예정)<br>
 						<c:choose>
 							<c:when test="${empty attendance.check_in_date || attendance.check_in_date != today}">
-								<button class="btn-att checked" onclick="location.href='attendanceButton?mem_id=${sId}'"><i class="fa-solid fa-check"></i> 출석하기</button>
+								<button class="btn-att checked" onclick="clickAttendanceBtn('${sId}')"><i class="fa-solid fa-check"></i> 출석하기</button>
 							</c:when>
 							<c:otherwise>
 								<button class="btn-att"><i class="fa-solid fa-check"></i> 출석완료</button>
@@ -67,5 +67,11 @@
 	<footer>
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
 	</footer>
+	<script>
+		function clickAttendanceBtn(id){
+			alert("출석체크 완료!");
+			location.href='AttendanceButton?mem_id=' + id;
+		}
+	</script>
 </body>
 </html>

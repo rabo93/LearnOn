@@ -678,15 +678,15 @@ public class MypageController {
 	}
 	
 	// 출석체크 ******************************************************
-	@GetMapping("attendanceButton")
-	public String attendanceButton(Model model,AttendanceVO attendance,HttpSession session) {
+	@GetMapping("AttendanceButton")
+	public String attendanceButton(AttendanceVO attendance, Model model, HttpSession session) {
 		String id = (String)session.getAttribute("sId");
 		
 		int attend = myService.addDate(attendance);
 		if(attend > 0) {
-			model.addAttribute("msg", "출석체크 완료!");
+//			model.addAttribute("msg", "출석체크 완료!");
 			model.addAttribute("attendance", attendance);
-			return"result/fail";
+			return"redirect:/MyAttendance";
 		}
 		model.addAttribute("msg", "출석체크 실패");
 		return"result/fail";

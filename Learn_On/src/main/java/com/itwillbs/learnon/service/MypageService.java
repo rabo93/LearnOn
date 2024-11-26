@@ -181,6 +181,8 @@ public class MypageService {
 	public int addDate(AttendanceVO attendance) {
 		AttendanceVO lastAttendance = myMapper.selectAttendance(attendance.getMem_id());
 		System.out.println("@@@@@@@@@@@@"+attendance.getMem_id()); //아이디값 받아옴
+		
+		System.out.println("lastAttendance :       " + lastAttendance);
 		LocalDate today = LocalDate.now();
 		
 //		if (lastAttendance == null) {
@@ -210,6 +212,9 @@ public class MypageService {
 				attendance.setStreak_days(1);
 			}
 		} 
+//		else {
+//			return myMapper.insertAttendance();
+//		}
 		
 		attendance.setCheck_in_date(today);
 		

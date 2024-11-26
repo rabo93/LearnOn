@@ -430,23 +430,24 @@
 		FROM ATTENDANCE
 		WHERE MEM_ID = #{id}
 	</select>
-	<update id="insertAttendance">
+	
+<!-- 	회원가입시 mem_id insert -->
+	<insert id="insertMemId">
+		INSERT 
+		INTO 
+			ATTENDANCE(CHECK_IN_DATE,MEM_ID)
+		VALUES(
+			NOW() - INTERVAL 1 DAY    -- null값이 들어가면 연속출석일 반영이 안돼서 now()-1 했습니다
+			,#{mem_id}
+			)
+	</insert>
+	
+	<update id="updateAttendance">
 		update 
 			ATTENDANCE
 		set 	
-			check_in_date = now()
-			,mem_id = #{mem_id}
-			,streak_days = #{streak_days}+1
+			check_in_date = #{check_in_date}
+			,streak_days = #{streak_days}
 		where mem_id = #{mem_id} 
 	</update>
-<!-- 	<insert id="insertAttendance"> -->
-<!-- 		INSERT  -->
-<!-- 		INTO  -->
-<!-- 			ATTENDANCE -->
-<!-- 		VALUES( -->
-<!-- 			now() -->
-<!-- 			,#{mem_id} -->
-<!-- 			,#{streak_days} -->
-<!-- 			) -->
-<!-- 	</insert> -->
 </mapper>

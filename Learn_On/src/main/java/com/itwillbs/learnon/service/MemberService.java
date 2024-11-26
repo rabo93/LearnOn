@@ -90,9 +90,6 @@ public class MemberService {
 		return mapper.updateMemberStatus(id,3); //3 : 탈퇴
 	}
 
-
-
-
 	//비밀번호 찾기로 비밀번호 업데이트
 	public int setTempPasswd(String temPasswd, String mem_email) {
 		return mapper.updateTempPasswd(temPasswd,mem_email);

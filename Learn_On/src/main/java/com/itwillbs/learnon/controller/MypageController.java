@@ -658,7 +658,6 @@ public class MypageController {
 		
 		AttendanceVO attendance = myService.getAttendance(id);
 		model.addAttribute("attendance", attendance);
-//		System.out.println("@@@@@@@@@@@@@@@@@"+ attendance.getMem_id()); //hong1234
 		
 		return "my_page/mypage_attendance";
 	}
@@ -667,11 +666,11 @@ public class MypageController {
 	@GetMapping("attendanceButton")
 	public String attendanceButton(Model model,AttendanceVO attendance,HttpSession session) {
 		String id = (String)session.getAttribute("sId");
-		AttendanceVO attendance2 = myService.getAttendance(id);
-//		int attend = myService.addDate(attendance.getMem_id());
+		
 		int attend = myService.addDate(attendance);
 		if(attend > 0) {
 			model.addAttribute("msg", "출석체크 완료!");
+			model.addAttribute("attendance", attendance);
 			return"result/fail";
 		}
 		model.addAttribute("msg", "출석체크 실패");

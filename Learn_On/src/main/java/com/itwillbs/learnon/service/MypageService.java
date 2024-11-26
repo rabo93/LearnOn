@@ -1,5 +1,6 @@
 package com.itwillbs.learnon.service;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -157,14 +158,47 @@ public class MypageService {
 		return myMapper.updateSupportAnswer(support);
 	}
 	
-	//출석체크
-	public int addDate(AttendanceVO attendance) {
-		return myMapper.insertAttendance(attendance);
+	// 회원가입시 attendance 테이블에 mem_id 추가
+	public int addMemId(String mem_id) {
+		return myMapper.insertMemId(mem_id);
 	}
 
-//	public int addDate(String mem_id) {
-//		return myMapper.insertAttendance(mem_id);
-//	}
-
-
+	//출석체크
+	public int addDate(AttendanceVO attendance) {
+		AttendanceVO lastAttendance = myMapper.selectAttendance(attendance.getMem_id());
+		System.out.println("@@@@@@@@@@@@"+attendance.getMem_id()); //아이디값 받아옴
+		LocalDate today = LocalDate.now();
+		
+//		if (lastAttendance == null) {
+//			attendance.setStreak_days(1); // 첫 출석
+//			attendance.setCheck_in_date(today);
+//		} else{
+//			LocalDate lastCheckIn = lastAttendance.getCheck_in_date();
+//			
+//			if(lastCheckIn.plusDays(1).equals(today)) { //연속출석 성공
+//				attendance.setStreak_days(lastAttendance.getStreak_days()+1);
+//				
+//			}else if(!lastCheckIn.equals(today)) { //연속 출석 실패시 1로 초기화
+//				attendance.setStreak_days(1);
+//			}
+//		} 
+		if(lastAttendance != null){ // mem_id 있으면 
+			LocalDate lastCheckIn = lastAttendance.getCheck_in_date();
+			if (lastCheckIn == null) {
+				attendance.setStreak_days(1); // 첫 출석
+				attendance.setCheck_in_date(today);
+			} 
+		
+			if(lastCheckIn.plusDays(1).equals(today)) { //연속출석 성공
+				attendance.setStreak_days(lastAttendance.getStreak_days()+1);
+				
+			}else if(!lastCheckIn.equals(today)) { //연속 출석 실패시 1로 초기화
+				attendance.setStreak_days(1);
+			}
+		} 
+		
+		attendance.setCheck_in_date(today);
+		
+		return myMapper.updateAttendance(attendance);
+	}
 }

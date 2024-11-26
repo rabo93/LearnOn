@@ -39,11 +39,10 @@
 				<div class="contents">
 					<div class="attendance-wrap">
 						<c:set var="today"><fmt:formatDate value="<%=new java.util.Date()%>" pattern="yyyy-MM-dd" /></c:set> 
-						${today}
-						${attendance.check_in_date} 
+						오늘 날짜 : ${today} / 
+						마지막 출석일 : ${attendance.check_in_date} (나중에 삭제예정)<br>
 						<c:choose>
 							<c:when test="${empty attendance.check_in_date || attendance.check_in_date != today}">
-							
 								<button class="btn-att checked" onclick="location.href='attendanceButton?mem_id=${sId}'"><i class="fa-solid fa-check"></i> 출석하기</button>
 							</c:when>
 							<c:otherwise>
@@ -68,29 +67,5 @@
 	<footer>
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
 	</footer>
-	
-	<script type="text/javascript">
-//     document.addEventListener("DOMContentLoaded", function () {
-//         // 출석 버튼 선택
-//         const attendanceButton = document.querySelector(".btn-att.checked");
-
-//         if (attendanceButton) {
-//             // 버튼 클릭 이벤트
-//             attendanceButton.addEventListener("click", function () {
-//                 // 버튼 상태 변경
-//                 attendanceButton.classList.remove("checked");
-//                 attendanceButton.innerHTML = '<i class="fa-solid fa-check"></i> 출석완료';
-
-//                 // 연속 출석 일수 증가
-//                 const streakDaysElement = document.querySelector(".att-box span");
-//                 const currentStreak = parseInt(streakDaysElement.textContent, 10) || 0;
-//                 streakDaysElement.textContent = currentStreak + 1;
-
-//                 // 완료 메시지 표시
-//                 alert("출석이 완료되었습니다!");
-//             });
-//         }
-//     });
-    </script>		
 </body>
 </html>

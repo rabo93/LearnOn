@@ -28,6 +28,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.itwillbs.learnon.handler.GenerateRandomCode;
 import com.itwillbs.learnon.service.MailService;
 import com.itwillbs.learnon.service.MemberService;
+import com.itwillbs.learnon.service.MypageService;
+import com.itwillbs.learnon.vo.AttendanceVO;
 import com.itwillbs.learnon.vo.MailAuthInfo;
 import com.itwillbs.learnon.vo.MemberVO;
 
@@ -38,6 +40,8 @@ public class MemberController {
 	private MemberService memberService;
 	@Autowired
 	private MailService mailService;
+	@Autowired
+	private MypageService mypageService;
 	
 	
 	private String uploadPath = "/resources/upload";
@@ -98,7 +102,7 @@ public class MemberController {
 	}
 	
 	@PostMapping("MemberJoin")
-	public String join(MemberVO member, Model model, BCryptPasswordEncoder passwordEncoder, HttpSession session) {
+	public String join(MemberVO member, Model model, BCryptPasswordEncoder passwordEncoder, HttpSession session,AttendanceVO attendance) {
 	    System.out.println("member : " + member);
 	    // 비밀번호 암호화
 	    String securePasswd = passwordEncoder.encode(member.getMem_passwd());
@@ -122,12 +126,23 @@ public class MemberController {
 //	        MailAuthInfo mailAuthInfo = mailService.sendAuthMail(member);
 //		    System.out.println("인증정보 : " + mailAuthInfo);
 //		    memberService.registMemberAuthInfo(mailAuthInfo);
-
+	    
+	        
+	        //*****MemberJoin시 Attendance table에 mem_id insert 해야함******
+	        
+	        int addAttendance = mypageService.addMemId(member.getMem_id());
+	        
+	        
 	        return "redirect:/MemberJoinSuccess";
 	    } else {
 	        model.addAttribute("msg", "회원가입 실패\n항목을 다시 확인해주세요");
 	        return "result/fail";
 	    }
+	    
+	    
+	    
+	    
+	    
 	}
 
 	// 파일 업로드 처리 메서드

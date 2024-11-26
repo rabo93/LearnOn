@@ -82,8 +82,6 @@ public interface MypageMapper {
 	// 1:1 문의글 수정 - 첨부파일 삭제
 	int deleteSupportFile(Map<String, String> map);
 
-	// 출석체크 가져오기
-	AttendanceVO selectAttendance(String id);
 
 	// 나의 강의실 - 강의 수강 화면
 	MyDashboardVO selectMyDashboard(MyDashboardVO myDashboard);
@@ -112,9 +110,14 @@ public interface MypageMapper {
 	// 관리자 - 1:1 답변 작성/수정
 	int updateSupportAnswer(SupportBoardVO support);
 
+	// ======================================================================
+	// 출석체크 가져오기
+	AttendanceVO selectAttendance(String id);
+
 	//출석체크
-	int insertAttendance(AttendanceVO attendance);
-//	int insertAttendance(String mem_id);
+	int updateAttendance(AttendanceVO attendance);
+	//mem_id 추가
+	int insertMemId(String mem_id);
 
 
 	

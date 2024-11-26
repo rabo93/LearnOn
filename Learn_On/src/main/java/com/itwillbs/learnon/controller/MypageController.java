@@ -51,10 +51,10 @@ public class MypageController {
 	private String uploadPath = "/resources/upload";
 	
 	// 계정정보
-	@GetMapping("MyInfo")
-	public String mypageForm() {
-		return "my_page/mypage_info";
-	}
+//	@GetMapping("MyInfo")
+//	public String mypageForm() {
+//		return "my_page/mypage_info";
+//	}
 	
 	// 관심목록
 	@GetMapping("MyFav")

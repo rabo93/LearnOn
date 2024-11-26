@@ -119,30 +119,22 @@ public class MemberController {
 	    int insertCount = memberService.registMember(member);
 	    if (insertCount > 0) {
 	        session.setAttribute("sId", member.getMem_name());
-//	        session.setAttribute("sName", member.getMem_name());
+	        session.setAttribute("sMail", member.getMem_email());
+	        System.out.println("########################"+member.getMem_email());
+	        System.out.println("########################"+member.getMem_name());
 
 //	         이메일 인증 처리
 	        handleEmailAuth(member);
-//	        MailAuthInfo mailAuthInfo = mailService.sendAuthMail(member);
-//		    System.out.println("인증정보 : " + mailAuthInfo);
-//		    memberService.registMemberAuthInfo(mailAuthInfo);
-	    
 	        
 	        //*****MemberJoin시 Attendance table에 mem_id insert 해야함******
 	        
 	        int addAttendance = mypageService.addMemId(member.getMem_id());
-	        
 	        
 	        return "redirect:/MemberJoinSuccess";
 	    } else {
 	        model.addAttribute("msg", "회원가입 실패\n항목을 다시 확인해주세요");
 	        return "result/fail";
 	    }
-	    
-	    
-	    
-	    
-	    
 	}
 
 	// 파일 업로드 처리 메서드
@@ -281,7 +273,7 @@ public class MemberController {
 	}
 		
 	//*************회원정보 수정***************
-	@GetMapping("MemberModify")
+	@GetMapping("MyInfo")
 	public String memberModify(MemberVO member, HttpSession session,Model model) {
 		String id = (String)session.getAttribute("sId");
 		if(id == null) {
@@ -300,7 +292,7 @@ public class MemberController {
 		
 	}
 	
-	@PostMapping("MemberModify")
+	@PostMapping("MyInfo")
 	public String memberModifyForm(MemberVO member,Model model , BCryptPasswordEncoder passwordEncoder ,@RequestParam Map<String, String>map,HttpSession session ) {
 		System.out.println("MAP : "+map);
 		System.out.println("member : "+member);

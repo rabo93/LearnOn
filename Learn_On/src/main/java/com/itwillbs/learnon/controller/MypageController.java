@@ -30,6 +30,7 @@ import com.itwillbs.learnon.vo.AttendanceVO;
 import com.itwillbs.learnon.vo.MyCourseVO;
 import com.itwillbs.learnon.vo.MyCurriculumVO;
 import com.itwillbs.learnon.vo.MyDashboardVO;
+import com.itwillbs.learnon.vo.MyPaymentVO;
 import com.itwillbs.learnon.vo.MyReviewVO;
 import com.itwillbs.learnon.vo.SupportBoardVO;
 import com.itwillbs.learnon.vo.WishlistVO;
@@ -362,7 +363,21 @@ public class MypageController {
 		
 	// 결제내역
 	@GetMapping("MyPayment")
-	public String myPayment() {
+	public String myPayment(HttpServletRequest request, HttpSession session, Model model) {
+		// 세션아이디 체크
+		String id = (String)session.getAttribute("sId");
+		if(id == null) {
+			model.addAttribute("msg", "로그인 필수!\\n 로그인 페이지로 이동합니다!");
+			model.addAttribute("targetURL", "MemberLogin");
+			savePreviousUrl(request, session);
+			
+			return "result/fail";
+		}
+		
+		Map<String, List<MyPaymentVO>> paymentList = myService.getMyPaymentList(id);
+		
+		model.addAttribute("paymentList", paymentList);
+		
 		return "my_page/mypage_payment";
 	}
 	

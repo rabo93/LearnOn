@@ -33,5 +33,6 @@
 		<typeAlias type="com.itwillbs.learnon.vo.AttendanceVO" alias="attendance" />
 		<typeAlias type="com.itwillbs.learnon.vo.MyDashboardVO" alias="myDashboard" />
 		<typeAlias type="com.itwillbs.learnon.vo.MyCurriculumVO" alias="myCurriculum" />
+		<typeAlias type="com.itwillbs.learnon.vo.MyPaymentVO" alias="mypayment" />
 	</typeAliases>
 </configuration>

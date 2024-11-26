@@ -137,7 +137,7 @@
 .my-ord-li .ord-box .price dl.dis dt {opacity:0}
 .my-ord-li .ord-box .price dl.total {margin: 0.4rem 0;border-top:1px solid #ddd;padding: 0.4rem 0;}
 .my-ord-li .ord-box .btns {flex: 0 0 100px;}
-.my-ord-li .ord-box .btns button {font-size: 0.875rem;font-weight: 700;padding: 8px 4px;width: 100%;background: var(--white);border: 1px solid #ddd;border-radius: 4px;margin-bottom: 10px;font-size: 13px;color: var(--primary);}
+.my-ord-li .ord-box .btns a, .my-ord-li .ord-box .btns button {display:block; text-align:center; font-size: 0.875rem;font-weight: 700;padding: 8px 4px;width: 100%;background: var(--white);border: 1px solid #ddd;border-radius: 4px;margin-bottom: 10px;font-size: 13px;color: var(--primary);}
 
 @media screen and (max-width:968px){
     .my-ord-li .ord-box {display:block;gap:0;}

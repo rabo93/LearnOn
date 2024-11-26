@@ -281,6 +281,31 @@
 		WHERE C.CLASS_RUNTIME > 0
 		  AND A.MEM_ID = #{mem_id}
 	</update>
+	<select id="selectPaymentList" resultType="mypayment">
+		-- 마이페이지 결제내역 조회
+		SELECT O.MERCHANT_UID
+			   , O.ORDER_IDX
+			   , O.MEM_ID
+		       , O.CLASS_ID
+		       , C.CLASS_TITLE
+		       , C.CLASS_PRICE
+		       , O.CLASS_PRICE
+		       , CU.COUPON_ID
+		       , CU.DISCOUNT_TYPE
+		       , CU.DISCOUNT_PERCENT
+		       , CU.DISCOUNT_AMOUNT
+		       , P.PRICE AS RESULT_PRICE
+		       , P.PAY_DATE
+		       , P.PAY_METHOD
+		       , P.PAY_STATUS
+		       , P.RECEIPT_URL
+		FROM ORDER_INFO O JOIN PAY_INFO P ON O.MERCHANT_UID = P.MERCHANT_UID
+		JOIN CLASS C ON C.CLASS_ID = O.CLASS_ID
+		JOIN COUPONINFO CU ON CU.COUPON_ID = O.COUPON_ID
+		WHERE 1 = 1
+		  AND O.MEM_ID = #{id}
+		ORDER BY P.PAY_DATE DESC
+	</select>
 	<select id="selectCoupon" resultType="map">
 		-- 쿠폰 목록 조회
 		SELECT M.COUPON_ID

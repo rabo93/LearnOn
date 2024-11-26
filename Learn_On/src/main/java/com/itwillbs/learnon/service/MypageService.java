@@ -1,8 +1,8 @@
 package com.itwillbs.learnon.service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +13,7 @@ import com.itwillbs.learnon.vo.AttendanceVO;
 import com.itwillbs.learnon.vo.MyCourseVO;
 import com.itwillbs.learnon.vo.MyCurriculumVO;
 import com.itwillbs.learnon.vo.MyDashboardVO;
+import com.itwillbs.learnon.vo.MyPaymentVO;
 import com.itwillbs.learnon.vo.MyReviewVO;
 import com.itwillbs.learnon.vo.SupportBoardVO;
 import com.itwillbs.learnon.vo.WishlistVO;
@@ -78,6 +79,16 @@ public class MypageService {
 		return myMapper.deleteReview(review);
 	}
 
+	// 결제내역 목록 조회
+	public Map<String, List<MyPaymentVO>> getMyPaymentList(String id) {
+		
+		List<MyPaymentVO> list = myMapper.selectPaymentList(id);
+		
+		Map<String, List<MyPaymentVO>> result = list.stream()
+													.collect(Collectors.groupingBy(MyPaymentVO::getMerchant_uid));
+		return result;
+	}
+	
 	// 쿠폰 목록 조회
 	public List<Map<String, Object>> getMyCouponList(String id) {
 		return myMapper.selectCoupon(id);
@@ -155,7 +166,6 @@ public class MypageService {
 	public int answerSupport(SupportBoardVO support) {
 		return myMapper.updateSupportAnswer(support);
 	}
-
 
 
 }

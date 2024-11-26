@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -40,7 +42,69 @@
 					<!-- contents -->
 					<section class="payment-wrap">
 						<div class="my-ord-li">
-							<article class="ord-box">
+							<c:choose>
+								<c:when test="${empty paymentList}">
+									<article class="ord-box">
+										결제내역이 존재하지 않습니다.
+									</article>
+								</c:when>
+								<c:otherwise>
+									<c:forEach var="payment" items="${paymentList}">
+										<article class="ord-box">
+											<div class="infos">
+												<div class="info">
+													<span class="status">
+														<c:if test="${payment.value[0].pay_status == 1}">
+															결제완료
+														</c:if>
+														<c:if test="${payment.value[0].pay_status == 2}">
+															결제취소
+														</c:if>
+														<c:if test="${payment.value[0].pay_status == 3}">
+															입금대기
+														</c:if>
+													</span>
+													<span>결제번호</span>
+													<span class="num">${payment.key}</span>
+												</div>
+												<div class="products">
+													<c:forEach var="item" items="${payment.value}">
+														<span class="ttl">${item.class_title}</span>
+													</c:forEach>
+												</div>
+											</div>
+											<div class="price">
+												<dl class="pri">
+													<dt>금액</dt>
+													<c:forEach var="item" items="${payment.value}">
+													<dd>￦ ${item.class_price}</dd>
+													</c:forEach>
+												</dl>
+												<dl class="dis">
+													<dt>할인</dt>
+													<dd>- 
+<%-- 														<c:if test="${payment.value.discount_type == 1}"> --%>
+<%-- 															${payment.value.discount_percent} % --%>
+<%-- 														</c:if> --%>
+<%-- 														<c:if test="${payment.value.discount_type == 2}"> --%>
+<%-- 															￦ <fmt:formatNumber pattern="#,###">${payment.value[0].discount_amount}</fmt:formatNumber> --%>
+<%-- 														</c:if> --%>
+													</dd>
+												</dl>
+												<dl class="total">
+													<dt>합계</dt>
+<%-- 													<dd>￦ <fmt:formatNumber pattern="#,###">${payment.value[0].result_price}</fmt:formatNumber></dd> --%>
+												</dl>
+											</div>
+											<div class="btns">
+<%-- 												<a href="${payment.value.receipt_url}" target="_blank">영수증 보기</a> --%>
+											</div>
+										</article>
+									</c:forEach>
+								</c:otherwise>
+							</c:choose>	
+									
+							<%-- article class="ord-box">
 								<div class="infos">
 									<div class="info">
 										<span class="status">결제완료</span>
@@ -70,38 +134,7 @@
 									<button>영수증 보기</button>
 									<button>거래명세서 보기</button>
 								</div>
-							</article>
-							<article class="ord-box">
-								<div class="infos">
-									<div class="info">
-										<span class="status">결제완료</span>
-										<span>주문번호</span>
-										<span class="num">1230459</span>
-									</div>
-									<div class="products">
-										<span class="ttl">홍길동의 실전자바 - 고급1편, 멀티스레드와 동시성</span>
-										<span class="ttl">어쩌주저쩌구 2편</span>
-									</div>
-								</div>
-								<div class="price">
-									<dl class="pri">
-										<dt>금액</dt>
-										<dd>￦155,000</dd>
-									</dl>
-									<dl class="dis">
-										<dt>할인</dt>
-										<dd>- ￦ 55,000</dd>
-									</dl>
-									<dl class="total">
-										<dt>합계</dt>
-										<dd>￦ 100,000</dd>
-									</dl>
-								</div>
-								<div class="btns">
-									<button>영수증 보기</button>
-									<button>거래명세서 보기</button>
-								</div>
-							</article>
+							</article --%>
 						</div>
 					</section>
 					<!-- // contents -->

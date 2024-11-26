@@ -25,16 +25,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.learnon.service.AdminService;
+import com.itwillbs.learnon.service.MemberService;
 import com.itwillbs.learnon.service.MypageService;
 import com.itwillbs.learnon.vo.AttendanceVO;
+import com.itwillbs.learnon.vo.MemberVO;
 import com.itwillbs.learnon.vo.MyCourseVO;
 import com.itwillbs.learnon.vo.MyCurriculumVO;
 import com.itwillbs.learnon.vo.MyDashboardVO;
 import com.itwillbs.learnon.vo.MyPaymentVO;
 import com.itwillbs.learnon.vo.MyReviewVO;
+import com.itwillbs.learnon.vo.PageInfo;
 import com.itwillbs.learnon.vo.SupportBoardVO;
 import com.itwillbs.learnon.vo.WishlistVO;
-import com.itwillbs.learnon.vo.PageInfo;
 
 @Controller
 public class MypageController {
@@ -670,13 +672,26 @@ public class MypageController {
 		}
 		
 		AttendanceVO attendance = myService.getAttendance(id);
-		
 		model.addAttribute("attendance", attendance);
 		
 		return "my_page/mypage_attendance";
 	}
 	
-	// 출석체크
+	// 출석체크 ******************************************************
+	@GetMapping("attendanceButton")
+	public String attendanceButton(Model model,AttendanceVO attendance,HttpSession session) {
+		String id = (String)session.getAttribute("sId");
+		
+		int attend = myService.addDate(attendance);
+		if(attend > 0) {
+			model.addAttribute("msg", "출석체크 완료!");
+			model.addAttribute("attendance", attendance);
+			return"result/fail";
+		}
+		model.addAttribute("msg", "출석체크 실패");
+		return"result/fail";
+	}
+	
 	
 	
 	

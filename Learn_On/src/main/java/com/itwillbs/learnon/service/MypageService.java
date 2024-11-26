@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import java.time.LocalDate;
+import java.util.HashMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -138,7 +141,8 @@ public class MypageService {
 	public AttendanceVO getAttendance(String id) {
 		return myMapper.selectAttendance(id);
 	}
-
+	
+	
 	// 나의 강의실 - 강의 시청 조회
 	public MyDashboardVO getMyDashboard(MyDashboardVO myDashboard) {
 		return myMapper.selectMyDashboard(myDashboard);
@@ -166,6 +170,49 @@ public class MypageService {
 	public int answerSupport(SupportBoardVO support) {
 		return myMapper.updateSupportAnswer(support);
 	}
+	
+	// 회원가입시 attendance 테이블에 mem_id 추가
+	public int addMemId(String mem_id) {
+		return myMapper.insertMemId(mem_id);
+	}
 
 
+	//출석체크
+	public int addDate(AttendanceVO attendance) {
+		AttendanceVO lastAttendance = myMapper.selectAttendance(attendance.getMem_id());
+		System.out.println("@@@@@@@@@@@@"+attendance.getMem_id()); //아이디값 받아옴
+		LocalDate today = LocalDate.now();
+		
+//		if (lastAttendance == null) {
+//			attendance.setStreak_days(1); // 첫 출석
+//			attendance.setCheck_in_date(today);
+//		} else{
+//			LocalDate lastCheckIn = lastAttendance.getCheck_in_date();
+//			
+//			if(lastCheckIn.plusDays(1).equals(today)) { //연속출석 성공
+//				attendance.setStreak_days(lastAttendance.getStreak_days()+1);
+//				
+//			}else if(!lastCheckIn.equals(today)) { //연속 출석 실패시 1로 초기화
+//				attendance.setStreak_days(1);
+//			}
+//		} 
+		if(lastAttendance != null){ // mem_id 있으면 
+			LocalDate lastCheckIn = lastAttendance.getCheck_in_date();
+			if (lastCheckIn == null) {
+				attendance.setStreak_days(1); // 첫 출석
+				attendance.setCheck_in_date(today);
+			} 
+		
+			if(lastCheckIn.plusDays(1).equals(today)) { //연속출석 성공
+				attendance.setStreak_days(lastAttendance.getStreak_days()+1);
+				
+			}else if(!lastCheckIn.equals(today)) { //연속 출석 실패시 1로 초기화
+				attendance.setStreak_days(1);
+			}
+		} 
+		
+		attendance.setCheck_in_date(today);
+		
+		return myMapper.updateAttendance(attendance);
+	}
 }

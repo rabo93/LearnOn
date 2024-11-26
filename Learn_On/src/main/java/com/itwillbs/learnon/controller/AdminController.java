@@ -43,6 +43,7 @@ import com.itwillbs.learnon.vo.CourseSupportVO;
 import com.itwillbs.learnon.vo.CourseVO;
 import com.itwillbs.learnon.vo.FaqVO;
 import com.itwillbs.learnon.vo.MemberVO;
+import com.itwillbs.learnon.vo.MyPaymentVO;
 import com.itwillbs.learnon.vo.NoticeBoardVO;
 import com.itwillbs.learnon.vo.PageInfo;
 import com.itwillbs.learnon.vo.SupportBoardVO;
@@ -602,8 +603,43 @@ public class AdminController {
 	
 	// 어드민 결제 내역 관리 페이지 매핑
 	@GetMapping("AdmPayList")
-	public String admin_payment_list() {
+	public String admin_payment_list(@RequestParam(defaultValue = "1") int pageNum, Model model) {
 		
+		int listLimit = 10;
+		int startRow = (pageNum - 1) * listLimit;
+		
+		int listCount = adminService.getPaymentListCount();
+		
+		int pageListLimit = 5;
+		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+		
+		if (maxPage == 0) {
+			maxPage = 1;
+		}
+		
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		int endPage = startPage + pageListLimit - 1;
+		
+		if (endPage > maxPage) {
+			endPage = maxPage;
+		}
+		
+		if(pageNum < 1 || pageNum > maxPage) {
+			model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+			model.addAttribute("targetURL", "AdmPayList?pageNum=1");
+			return "result/fail";
+		}
+		
+		// 페이지 정보
+		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
+		
+		// 결제내역
+		Map<String, List<MyPaymentVO>> paymentList = adminService.getMyPaymentListToAdm(startRow, listLimit);
+		
+		model.addAttribute("pageNum", pageNum);
+		model.addAttribute("pageInfo", pageInfo);
+		
+		model.addAttribute("paymentList", paymentList);
 		
 		return "admin/payment_list";
 	}
@@ -866,7 +902,7 @@ public class AdminController {
 		
 		if(pageNum < 1 || pageNum > maxPage) {
 			model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
-			model.addAttribute("targetURL", "MySupport?pageNum=1");
+			model.addAttribute("targetURL", "AdmSupport?pageNum=1");
 			return "result/fail";
 		}
 		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
@@ -997,7 +1033,7 @@ public class AdminController {
 		
 		if(pageNum < 1 || pageNum > maxPage) {
 			model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
-			model.addAttribute("targetURL", "MySupport?pageNum=1");
+			model.addAttribute("targetURL", "AdmCourseSupport?pageNum=1");
 			return "result/fail";
 		}
 		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);

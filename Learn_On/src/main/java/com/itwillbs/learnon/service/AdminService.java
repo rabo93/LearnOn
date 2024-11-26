@@ -3,6 +3,7 @@ package com.itwillbs.learnon.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import com.itwillbs.learnon.vo.AdminVO;
 import com.itwillbs.learnon.vo.CourseSupportVO;
 import com.itwillbs.learnon.vo.CourseVO;
 import com.itwillbs.learnon.vo.MemberVO;
+import com.itwillbs.learnon.vo.MyPaymentVO;
 
 @Service
 public class AdminService {
@@ -149,6 +151,20 @@ public class AdminService {
 	}
 	public int updateCurriculum(AdminVO vO) {
 		return mapper.updateCurriculum(vO);
+	}
+	public int getPaymentListCount() {
+		return mapper.selectPaymentListCount();
+	}
+	
+	
+	// 관리자 전체 결제내역 관리
+	public Map<String, List<MyPaymentVO>> getMyPaymentListToAdm(int startRow, int listLimit) {
+		// 전체 결제내역 list에 담은 후
+		List<MyPaymentVO> list = mapper.selectPaymentListToAdm(startRow, listLimit);
+		// 결제번호를 key값으로 중복 제거 후 value 값으로 주문내역 배열 저장
+		Map<String, List<MyPaymentVO>> result = list.stream()
+													.collect(Collectors.groupingBy(MyPaymentVO::getMerchant_uid));
+		return result;
 	}
 
 }

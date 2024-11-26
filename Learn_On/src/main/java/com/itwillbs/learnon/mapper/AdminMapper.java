@@ -10,6 +10,7 @@ import com.itwillbs.learnon.vo.AdminVO;
 import com.itwillbs.learnon.vo.CourseSupportVO;
 import com.itwillbs.learnon.vo.CourseVO;
 import com.itwillbs.learnon.vo.MemberVO;
+import com.itwillbs.learnon.vo.MyPaymentVO;
 
 @Mapper
 public interface AdminMapper {
@@ -74,6 +75,12 @@ public interface AdminMapper {
 	
 	// 강의 답변 작성/수정
 	int updateCourseSupport(CourseSupportVO cSupport);
+	
+	// 관리자 - 결제내역 개수 조회
+	int selectPaymentListCount();
+	
+	// 관리자 - 결제내역 전체 조회
+	List<MyPaymentVO> selectPaymentListToAdm(@Param("startRow") int startRow, @Param("listLimit") int listLimit);
 	
 
 

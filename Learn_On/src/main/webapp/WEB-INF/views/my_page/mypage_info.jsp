@@ -26,7 +26,7 @@
 		<h2 class="page-ttl">마이페이지</h2>
 		<section class="my-wrap">
 			<aside class="my-menu">
-				<a href="MemberModify" class="active">계정정보</a>
+				<a href="MyInfo" class="active">계정정보</a>
 				<a href="MyFav">관심목록</a>
 				<a href="MyDashboard">나의 강의실</a>
 				<a href="MyReview">작성한 수강평</a>

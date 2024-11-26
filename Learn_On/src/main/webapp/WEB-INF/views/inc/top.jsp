@@ -39,7 +39,7 @@ function logout() {
 			</div>
 			<div class="login-area">
 				<a href="MyDashboard">나의 강의실</a>
-				<a href="MemberModify"><span>${sessionScope.sId}</span> 님</a>
+				<a href="MyInfo"><span>${sessionScope.sId}</span> 님</a>
 				<a href="javascript:void(0)" onclick="logout()">로그아웃</a>
 <!-- 				<a href="#">나의 강의실</a> -->
 <!-- 				<a href="#"><span>홍길동</span> 님</a> -->
@@ -85,7 +85,7 @@ function logout() {
 							<li><a href="Category?codetype=CATE05">음료/술</a></li>
 						</ul>
 					</li>
-					<li class="gnb-menu"><a href="#">BEST</a></li>
+					<li class="gnb-menu"><a href="BestCourse">BEST</a></li>
 					<li class="gnb-menu"><a href="#">얼리버드 특가</a></li>
 					<li class="gnb-menu"><a href="#">이벤트</a></li>
 					<li class="gnb-menu"><a href="#">AI 추천</a></li>
@@ -101,7 +101,7 @@ function logout() {
 				<ul class="dropdown" id="resultArea">
 				</ul>	
 			</li>						
-			<li><a href="#">BEST</a></li>
+			<li><a href="BestCourse">BEST</a></li>
 			<li><a href="#">얼리버드 특가</a></li>
 			<li><a href="#">이벤트</a></li>
 			<li><a href="#">AI 추천</a></li>

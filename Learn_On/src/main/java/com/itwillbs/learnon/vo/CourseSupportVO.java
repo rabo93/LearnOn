@@ -15,7 +15,7 @@ public class CourseSupportVO {
 	private String mem_id;
 	private String c_support_subject; 
 	private String c_support_content; 
-	private String c_support_answer_date; 
+	private Timestamp c_support_answer_date; 
 	private String c_support_answer_subject; 
 	private String c_support_answer_content;
 	

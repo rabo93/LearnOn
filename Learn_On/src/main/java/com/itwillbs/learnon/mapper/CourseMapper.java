@@ -27,7 +27,9 @@ public interface CourseMapper {
 	List<CommonCodeTypeVO> selectCommonCodeTypeAll();
 	List<CommonCodeTypeVO> selectCommonCode();
 
-	List<MyReviewVO> selectReviewList(int class_id);
+	List<MyReviewVO> selectReviewList(
+			@Param("class_id") int class_id, 
+			@Param("searchType") String searchType);
 
 	int insertCourseSupport(CourseSupportVO cSupport);
 
@@ -59,6 +61,8 @@ public interface CourseMapper {
 			@Param("id") String id);
 
 	List<CourseVO> selectFindCourseList(String find_title);
+
+	List<CourseVO> selectCourseBestList();
 
 
 }

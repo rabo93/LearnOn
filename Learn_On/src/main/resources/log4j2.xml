@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+	<Properties>
+		<Property name="layoutPattern">%d{yyyy-MM-dd HH:mm:ss} %5p [%c] %m%n</Property>
+	</Properties>
+	<Appenders>
+		<Console name="console" target="SYSTEM_OUT">
+			<PatternLayout pattern="${layoutPattern}" />
+		</Console>
+		
+		<RollingFile name="rollingFile" fileName="./my_log/learnon/rolling_log.log" filePattern="./my_log/learnon/rolling_log-%d{yyyy-MM-dd}_%i.log">
+			<PatternLayout pattern="${layoutPattern}" />
+			<Policies>
+				<SizeBasedTriggeringPolicy size="10KB" />
+			</Policies>
+		</RollingFile>
+		
+		<RollingFile name="rollingFileForSQL" fileName="./my_log/learnon/rolling_log_sql.log" filePattern="./my_log/learnon/rolling_log_sql-%d{yyyy-MM-dd}_%i.log">
+			<PatternLayout pattern="${layoutPattern}" />
+			<Policies>
+				<SizeBasedTriggeringPolicy size="1MB" />
+<!-- 				<TimeBasedTriggeringPolicy interval="1" /> -->
+			</Policies>
+		</RollingFile>
+	</Appenders>
+	
+	<Loggers>
+		<Root level="WARN">
+			<AppenderRef ref="console" />
+			<AppenderRef ref="rollingFile" />
+		</Root>
+		
+		<Logger name="com.itwillbs.learnon" level="INFO" additivity="false">
+			<AppenderRef ref="console" />
+		</Logger>
+		
+		<Logger name="jdbc.sqltiming" level="INFO" additivity="false">
+			<AppenderRef ref="console" />
+			<AppenderRef ref="rollingFileForSQL" />
+		</Logger>
+		
+		<Logger name="jdbc.resultsettable" level="INFO" additivity="false">
+			<AppenderRef ref="console" />
+			<AppenderRef ref="rollingFileForSQL" />
+		</Logger>
+	</Loggers>
+	
+</Configuration>

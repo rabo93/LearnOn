@@ -44,7 +44,7 @@
 						<div class="my-ord-li">
 							<c:choose>
 								<c:when test="${empty paymentList}">
-									<article class="ord-box">
+									<article class="ord-box empty">
 										결제내역이 존재하지 않습니다.
 									</article>
 								</c:when>
@@ -67,37 +67,39 @@
 													<span>결제번호</span>
 													<span class="num">${payment.key}</span>
 												</div>
-												<div class="products">
-													<c:forEach var="item" items="${payment.value}">
+												<c:forEach var="item" items="${payment.value}">
+													<div class="products">
 														<span class="ttl">${item.class_title}</span>
-													</c:forEach>
-												</div>
+														<span class="class_price"><fmt:formatNumber pattern="#,###">${item.class_price}</fmt:formatNumber> 원</span>
+													</div>
+												</c:forEach>
 											</div>
 											<div class="price">
 												<dl class="pri">
 													<dt>금액</dt>
-													<c:forEach var="item" items="${payment.value}">
-													<dd>￦ ${item.class_price}</dd>
-													</c:forEach>
+													<dd>￦ <fmt:formatNumber pattern="#,###">${payment.value[0].total_price}</fmt:formatNumber></dd>
 												</dl>
 												<dl class="dis">
 													<dt>할인</dt>
-													<dd>- 
-<%-- 														<c:if test="${payment.value.discount_type == 1}"> --%>
-<%-- 															${payment.value.discount_percent} % --%>
-<%-- 														</c:if> --%>
-<%-- 														<c:if test="${payment.value.discount_type == 2}"> --%>
-<%-- 															￦ <fmt:formatNumber pattern="#,###">${payment.value[0].discount_amount}</fmt:formatNumber> --%>
-<%-- 														</c:if> --%>
+													<dd>
+														<c:forEach var="item" items="${payment.value}">
+															<c:if test="${item.discount_type == 1}">
+																- ${item.discount_percent} %
+															</c:if>
+															<br>
+															<c:if test="${item.discount_type == 2}">
+																- ￦ <fmt:formatNumber pattern="#,###">${item.discount_amount}</fmt:formatNumber>
+															</c:if>
+														</c:forEach>
 													</dd>
 												</dl>
 												<dl class="total">
 													<dt>합계</dt>
-<%-- 													<dd>￦ <fmt:formatNumber pattern="#,###">${payment.value[0].result_price}</fmt:formatNumber></dd> --%>
+													<dd>￦ <fmt:formatNumber pattern="#,###">${payment.value[0].result_price}</fmt:formatNumber></dd>
 												</dl>
 											</div>
 											<div class="btns">
-<%-- 												<a href="${payment.value.receipt_url}" target="_blank">영수증 보기</a> --%>
+												<a href="${payment.value[0].receipt_url}" target="_blank">영수증 보기</a>
 											</div>
 										</article>
 									</c:forEach>

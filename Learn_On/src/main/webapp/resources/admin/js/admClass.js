@@ -29,15 +29,16 @@ function deleteRow() {
 
 // 클래스 수정 클래스 id값 가져오기
 function modifyClass(elem) {
-	let classId = $(elem).parent().parent().attr("id");
-	location.href="AdmClassListModify?class_id=" + classId;
+	console.log("elem : " + elem);
+//	let classId = $(elem).parent().parent().attr("id");
+	location.href="AdmClassListModify?class_id=" + elem;
 }
 
 // 클래스 삭제 클래스 id값 가져오기
 function deleteClass(elem) {
-	let classId = $(elem).parent().parent().attr("id");
+//	let classId = $(elem).parent().parent().attr("id");
 	if (confirm("정말 삭제하시겠습니까?")) {
-		location.href="AdmClassListDelete?class_id=" + classId;
+		location.href="AdmClassListDelete?class_id=" + elem;
 	}
 }
 
@@ -51,7 +52,7 @@ function addMainCateRow() {
 	var cell4 = newRow.insertCell();
 	var cell5 = newRow.insertCell();
 	  
-	cell1.innerHTML = '<th><input class="form-check-input" type="checkbox" id="gridCheck1" name="mainCateRowCheck"></th>';
+	cell1.innerHTML = '<th><input class="form-check-input" type="checkbox" name="mainCateRowCheck"></th>';
 	cell2.innerHTML = '<td><input class="form-control" name="codeid_maincate" type="text" placeholder="아이디"></td>';
 	cell3.innerHTML = '<td><input class="form-control" name="codetype_maincate" type="text" placeholder="타입"></td>';
 	cell4.innerHTML = '<td><input class="form-control" name="codename_maincate" type="text" placeholder="이름"></td>';
@@ -90,10 +91,6 @@ function searchInstructor() {
 	var child;
 	child = window.open("", "_blank", "height:300, width:300");
 }
-
-
-
-
 
 // 소분류 불러오기
 function selectMainCate() {

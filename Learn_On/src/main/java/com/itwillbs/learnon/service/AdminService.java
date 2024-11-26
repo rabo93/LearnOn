@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import com.itwillbs.learnon.mapper.AdminMapper;
 import com.itwillbs.learnon.vo.AdminVO;
 import com.itwillbs.learnon.vo.CourseSupportVO;
-import com.itwillbs.learnon.vo.CourseVO;
 import com.itwillbs.learnon.vo.MemberVO;
 import com.itwillbs.learnon.vo.MyPaymentVO;
 
@@ -19,8 +18,6 @@ import com.itwillbs.learnon.vo.MyPaymentVO;
 public class AdminService {
 	@Autowired
 	private AdminMapper mapper;
-	
-	
 	
 	// 카테고리
 	public List<Map<String, String>> getCategory() {
@@ -126,7 +123,7 @@ public class AdminService {
 	public int insertCurVideo(AdminVO vO) {
 		return mapper.insertCurVideo(vO);
 	}
-	public List<CourseVO> getCurriculum(AdminVO class_id) {
+	public List<Map<String, Object>> getCurriculum(int class_id) {
 		return mapper.getCurriculum(class_id);
 	}
 	public int getClassId() {
@@ -156,6 +153,13 @@ public class AdminService {
 	public int updateCurriculum(AdminVO vO) {
 		return mapper.updateCurriculum(vO);
 	}
+	
+	//	임시
+	public AdminVO getIdClass(int class_id) {
+		return mapper.selectClass(class_id);
+	}
+		
+	// 관리자 전체 결제내역 갯수 조회	
 	public int getPaymentListCount() {
 		return mapper.selectPaymentListCount();
 	}

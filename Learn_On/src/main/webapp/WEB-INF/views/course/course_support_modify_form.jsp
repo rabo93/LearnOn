@@ -56,7 +56,7 @@
 								</c:when>
 								<c:otherwise>
 								 	<input type="file" name="file">
-								 </c:otherwise>
+								</c:otherwise>
 							</c:choose>
 						</div>
 <%-- 					</c:forEach> --%>

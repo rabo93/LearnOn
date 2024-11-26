@@ -106,7 +106,7 @@
 	</select>
 	
 	<!-- 커리큘럼 조회 -->
-	<select id="getCurriculum">
+	<select id="getCurriculum" resultType="map">
 		SELECT *
 		FROM CURRICULUM
 		WHERE CLASS_ID = #{class_id}
@@ -131,6 +131,7 @@
 		UPDATE CURRICULUM
 		SET CUR_TITLE = #{cur_title}
 			, CUR_VIDEO = #{cur_video}
+			, CUR_RUNTIME = #{cur_runtime}
 		WHERE CUR_ID = #{cur_id}
 	</update>
 	
@@ -145,6 +146,13 @@
 		FROM CURRICULUM
 		WHERE CLASS_ID = #{class_id}
 	</delete>
+	
+	<!-- 임시 -->
+	<select id="selectClass">
+		SELECT	*
+		FROM	CLASS
+		WHERE	CLASS_ID = #{class_id}
+	</select>
 	
 <!-- ================================================================== -->
 <!-- 회원 -->	

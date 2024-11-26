@@ -60,11 +60,14 @@
 			 , C.CLASS_ID
 			 , R.REVIEW_SCORE
 			 , C.MEM_ID AS TEACHER_ID
+			 , CC.CODENAME AS CATENAME
 		  FROM CLASS C
 	LEFT  JOIN MEMBER M ON C.MEM_ID = M.MEM_ID
-		  JOIN COMMONCODETYPE T ON C.CLASS_CATEGORY = T.NAME
+		  JOIN COMMONCODETYPE CT ON C.CLASS_CATEGORY = CT.NAME
+		  JOIN COMMONCODE CC ON CC.CODEID = CT.CODETYPE
  	 LEFT JOIN (SELECT TRUNCATE(AVG(REVIEW_SCORE), 1) AS REVIEW_SCORE, CLASS_ID FROM REVIEW GROUP BY CLASS_ID) R ON R.CLASS_ID  = C.CLASS_ID
 	     WHERE C.CLASS_TITLE LIKE CONCAT('%', #{find_title}, '%')
+	        OR M.MEM_NAME LIKE CONCAT('%', #{find_title}, '%')
 	</select>
 	
 	
@@ -160,6 +163,18 @@
 		  JOIN REVIEW R
 		  JOIN MEMBER M ON M.MEM_ID = R.MEM_ID
 		 WHERE R.CLASS_ID = #{class_id}
+	<choose>
+		<when test="searchType.equals('new')">
+		 ORDER BY R.REVIEW_DATE DESC
+		</when>
+		<when test="searchType.equals('old')">
+		 ORDER BY R.REVIEW_DATE ASC
+		</when>
+		<when test="searchType.equals('score')">
+		 ORDER BY R.REVIEW_SCORE DESC
+		</when>
+		
+	</choose>
 	</select>
 	
 	<select id="selectCourseSupportList" resultType="cSupport" parameterType="int">
@@ -252,4 +267,24 @@
 			 , #{id}
 		)
 	</insert>
+	
+	<!-- Best 메뉴 클래스 목록 출력 -->
+	<select id="selectCourseBestList" resultType="course">
+		SELECT 
+			   BEST.CLASS_ID
+			 , BEST.CLASS_COUNT
+			 , C.CLASS_TITLE
+			 , C.MEM_ID AS NAME
+			 , C.CLASS_PRICE
+			 , R.REVIEW_SCORE
+			 , CC.CODENAME AS CATENAME
+		  FROM CLASS C
+		  JOIN (SELECT CLASS_ID, COUNT(*) AS CLASS_COUNT FROM ORDER_INFO GROUP BY CLASS_ID ORDER BY CLASS_COUNT DESC) BEST 
+		    ON C.CLASS_ID = BEST.CLASS_ID
+     LEFT JOIN (SELECT TRUNCATE(AVG(REVIEW_SCORE), 1) AS REVIEW_SCORE, CLASS_ID FROM REVIEW GROUP BY CLASS_ID) R ON R.CLASS_ID  = C.CLASS_ID
+          JOIN COMMONCODETYPE CT ON CT.NAME = C.CLASS_CATEGORY
+		  JOIN COMMONCODE CC ON CC.CODEID = CT.CODETYPE
+	</select>
+	
+	
 </mapper>

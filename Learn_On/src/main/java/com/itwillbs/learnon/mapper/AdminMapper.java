@@ -30,7 +30,7 @@ public interface AdminMapper {
 	// 클래스
 	List<AdminVO> getClass(AdminVO vO);
 	List<AdminVO> getClassList();
-	List<CourseVO> getCurriculum(AdminVO class_id);
+	List<Map<String, Object>> getCurriculum(int class_id);
 	int insertCurriculum(AdminVO insertCur);
 	int insertClass(AdminVO vO);
 	int insertClassPic(AdminVO vO);
@@ -78,11 +78,15 @@ public interface AdminMapper {
 	// 강의 답변 작성/수정
 	int updateCourseSupport(CourseSupportVO cSupport);
 	
+	//	임시
+	AdminVO selectClass(int class_id);
+	
 	// 관리자 - 결제내역 개수 조회
 	int selectPaymentListCount();
 	
 	// 관리자 - 결제내역 전체 조회
 	List<MyPaymentVO> selectPaymentListToAdm(@Param("startRow") int startRow, @Param("listLimit") int listLimit);
+
 	
 
 

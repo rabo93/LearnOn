@@ -184,20 +184,7 @@ public class MypageService {
 		
 		System.out.println("lastAttendance :       " + lastAttendance);
 		LocalDate today = LocalDate.now();
-		
-//		if (lastAttendance == null) {
-//			attendance.setStreak_days(1); // 첫 출석
-//			attendance.setCheck_in_date(today);
-//		} else{
-//			LocalDate lastCheckIn = lastAttendance.getCheck_in_date();
-//			
-//			if(lastCheckIn.plusDays(1).equals(today)) { //연속출석 성공
-//				attendance.setStreak_days(lastAttendance.getStreak_days()+1);
-//				
-//			}else if(!lastCheckIn.equals(today)) { //연속 출석 실패시 1로 초기화
-//				attendance.setStreak_days(1);
-//			}
-//		} 
+
 		if(lastAttendance != null){ // mem_id 있으면 
 			LocalDate lastCheckIn = lastAttendance.getCheck_in_date();
 			if (lastCheckIn == null) {
@@ -211,10 +198,9 @@ public class MypageService {
 			}else if(!lastCheckIn.equals(today)) { //연속 출석 실패시 1로 초기화
 				attendance.setStreak_days(1);
 			}
-		} 
-//		else {
-//			return myMapper.insertAttendance();
-//		}
+		} else {
+			return myMapper.insertAttendance(attendance);
+		}
 		
 		attendance.setCheck_in_date(today);
 		

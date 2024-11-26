@@ -462,6 +462,17 @@
 		FROM ATTENDANCE
 		WHERE MEM_ID = #{id}
 	</select>
+
+<!-- 	기존회원 출석체크  -->
+	<insert id="insertAttendance">
+	INSERT
+	INTO
+		ATTENDANCE(CHECK_IN_DATE,MEM_ID)
+	VALUES(
+		NOW() - INTERVAL 1 DAY
+		,#{mem_id}
+	)
+	</insert>
 	
 <!-- 	회원가입시 mem_id insert -->
 	<insert id="insertMemId">
@@ -482,4 +493,6 @@
 			,streak_days = #{streak_days}
 		where mem_id = #{mem_id} 
 	</update>
+	
+	
 </mapper>

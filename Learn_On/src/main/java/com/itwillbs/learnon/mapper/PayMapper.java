@@ -13,15 +13,13 @@ public interface PayMapper {
 	//주문자 정보 조회
 	MemberVO selectMember(String sId);
 	
-	
-	
 	//결제 정보 저장
 	void insertPayInfo(PayVO payVO);
 	
 	//주문 정보 저장
 	void insertOrderInfo(OrderVO orderVO);
 	
-	//장바구니 내역 삭제
-	void deleteCart(int cartItemIdx);
+	//쿠폰 사용 상태 업데이트
+	void updateCoupon(int coupon_code);
 	
 }

@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/cart.css">
 <!-- page 개별 JS 
 	 (defer 속성 : 페이지가 모두 로드된 후에 해당 외부 스크립트가 실행됨) --> 
-<script src="${pageContext.request.contextPath}/resources/js/cart_payment/cart.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/cart.js"></script>
 
 </head>
 <body>

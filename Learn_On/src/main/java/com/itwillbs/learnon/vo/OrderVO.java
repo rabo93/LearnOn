@@ -1,5 +1,7 @@
 package com.itwillbs.learnon.vo;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -18,11 +20,9 @@ public class OrderVO {
     private int order_idx;
     private String merchant_uid;
     private String mem_id;
-    private int class_id;
-    private int class_price;
-    private int coupon_code;
-    private int pay_price;
-    private String pay_date;
-    private String pay_status;
+    private List<OrderItemVO> items;	//상품별 정보
+    private int coupon_id;
+    private int price;
+    
 }
 

@@ -9,6 +9,7 @@
 	---------------------------------------------------------------------------
 	- (V) 결제하기 클릭시 결제 API에 데이터 넘겨주기 : 넘겨줄 데이터 (주문번호, 결제금액, 결제수단, 회원id, 회원연락처)
 	- () 결제 완료시 인서트 해야할 테이블 => 결제 내역(PAY_INFO), 주문 내역(ORDER_INFO), 마이페이지 
+	- (V) 결제 완료시 장바구니 내역 삭제
 */
 $(document).ready(function() {
 	console.log("초기 결제 상품 금액(totalAmount):", $("#totalAmount").data("value"));
@@ -207,7 +208,7 @@ $(document).ready(function() {
 						merchant_uid: rsp.merchant_uid,	//주문 고유 번호
 						amount: rsp.paid_amount			//결제된 금액
 					}
-					// 사후검증을 위한 AJAX 비동기 요청
+					// 사후검증을 위한 AJAX 요청
 					$.ajax({
 						type: "Post",
 						url: "/payments/verification",
@@ -226,28 +227,35 @@ $(document).ready(function() {
 							// 결제정보에는 '자바클래스 외 2개' 200000원 으로 저장하고 
 							// 주문정보에는 '자바클래스1', 100000원 , '자바클래스2', 100000원 
 							// 이렇게 주문한 상품 리스트를 하나씩 저장하기 위해 테이블을 2개를 두고 저장하는 로직으로 구성함
+							
+							//결제정보 저장
 							savePayinfo(rsp);
+							
+							//주문정보 저장
 							saveOrderinfo(rsp);
 							
-							//저장 후 해당상품 장바구니 목록에서 삭제 처리
-//							deleteCart(rsp);
-							//저장 후 쿠폰 상태 변경
+							//장바구니 목록 삭제
+//							deleteCart();
+							
+							//쿠폰 상태 변경
 //							updateCoupon();
 							
-							//일단 성공했을때 바로 결제취소를 위한 테스트(테스트 완료후 삭제할 것)
+							
+							
+							//테스트 진행을 위해 바로 결제취소(테스트 완료후 삭제할 것)
 							cancelPay(rsp);
 							
 						//-------------------------------------------	
-						} else { //rsp.paid_amount != data.response.amount
-							alert("결제 실패");
+						} else {
+							alert("결제 금액 오류로 결제 실패");
 							//결제 취소
 							cancelPay(rsp);
 						}
 			    	
 					});
 				} else {
-					console.log("결제 에러 내용: "+ rsp.error_msg);
-					alert("결제를 실패하였습니다.");
+					console.log("결제 응답 에러 내용: "+ rsp.error_msg);
+					alert("결제 응답이 실패하였습니다. (서버측 에러)");
 				}
 			} //function(rsp) 함수 끝
 			
@@ -261,14 +269,14 @@ $(document).ready(function() {
 			merchant_uid: rsp.merchant_uid,
 			class_name : rsp.name,
 			mem_name : rsp.buyer_name,
-			price	: rsp.paid_amount,		
+			price : rsp.paid_amount,		
 			pay_method : rsp.pay_method,
 			pay_status : rsp.status,		//주문상태: paid(결제완료), failed(결제실패), ready(미결제)
 			imp_uid : rsp.imp_uid,
-			card_name	: rsp.card_name,
+			card_name : rsp.card_name,
 			card_num : rsp.card_number,
-			bank_name	: rsp.vbank_name,
-			bank_num	: rsp.vbank_num,
+			bank_name : rsp.vbank_name,
+			bank_num : rsp.vbank_num,
 			apply_num : rsp.apply_num,
 			receipt_url	: rsp.receipt_url
 			}
@@ -301,26 +309,37 @@ $(document).ready(function() {
 	    });
 		let couponData = $("#couponSelect").data();
 		
-		
 		let orderInfo = {
 //			order_idx : order_idx,				//상품별 주문 ID
 			merchant_uid : rsp.merchant_uid,	
 			mem_id : memId,						
-			items : [],							//상품별 정보 배열			
+			items : items,						//상품별 정보 배열			
 //			class_id : classIds,				//상품별 id
 //			class_price : classPrices,			//상품별 가격
-			coupon_code : couponData.couponId,	//사용한쿠폰아이디 
+			coupon_id : couponData.couponId,	//사용한쿠폰아이디
+			price : rsp.paid_amount				//총 결제 금액
 		}
 		console.log("저장할 주문 정보 : " + JSON.stringify(orderInfo));
+		/* 저장할 주문 정보 JSON 타입
+			{
+			    "merchant_uid": "2024112524071",
+			    "mem_id": "bborara",
+			    "items": [
+			        { "class_id": 2, "class_price": 1004 },
+			        { "class_id": 1, "class_price": 1004 }
+			    ],
+			    "coupon_id": 6
+			}
+		*/
 		
-		// 주문 정보를 AJAX 비동기로 서버 전송	
+		// 주문 정보를 AJAX 요청
 		$.ajax({
 			type: "Post",
 			url: "orderinfoSave",
 			contentType: "application/json",
 			data: JSON.stringify(orderInfo),
 			success: function(response) {
-				console.log("주문정보 저장 및 장바구니 내역 삭제 완료", response);
+				console.log("주문정보 저장 완료", response);
 			},
 			error: function(error) {
 				console.log("주문정보 저장 실패", error);
@@ -329,6 +348,34 @@ $(document).ready(function() {
 		});
 	} //saveOrderinfo()함수끝
 	
+	//-------------------------------------------------------------------------------------
+	//결제 완료 후 장바구니 내역 삭제
+	function deleteCart() {
+		//GET방식 주소로 받은 선택한 장바구니 파라미터값 추출하여 배열로 변환
+		let params = new URLSearchParams(window.location.search);
+		let checkitems = params.getAll('checkitem');
+		
+		//삭제 AJAX 요청(장바구니 체크박스 선택삭제 코드 재사용)
+		//앞에서는 선택된 항목들을 콤마로 구분된 문자열로 결합했었어서 이번에도 똑같이 맞춰줄꺼임
+		let cartItemsParam = checkitems.join(",");
+		console.log("삭제할 장바구니 번호 : " + cartItemsParam);
+		
+		$.ajax({
+			type : "GET",
+			url : "DeleteItems",
+			data : { //넘겨줄 데이터들 작성
+				cartitem_idx : cartItemsParam //요청 파라미터
+			}, 
+			success : function(response) {
+				alert("선택한 상품이 삭제되었습니다." + response);
+			},
+			error : function(jqXHR) {
+				console.log("삭제 요청중 오류 발생 : " + jqXHR);
+				alert("삭제에 실패하였습니다. 다시 시도해주세요.");
+			}
+			
+		});
+	}
 	
 	//-------------------------------------------------------------------------------------
 	// 결제 취소 
@@ -342,16 +389,15 @@ $(document).ready(function() {
 				"imp_uid": rsp.imp_uid,
 				"reason": "결제 검증 실패",
 				"checksum": rsp.paid_amount
-				//checksum을 넣어주는 이유 : 서버와 포트원 서버간의 환불 가능 금액을 검증하기 위해서 필수 입력			
+				//checksum을 넣어주는 이유 : 서버와 포트원 서버간의 환불 가능 금액을 검증하기 위해서 필수 입력(우리는 전체환불만 가능하도록 설계)			
 			})
 		}).done(function() {
-			alert("결제 검증 실패로 결제가 취소되었습니다.");
+			alert("결제를 취소하였습니다.");
 		}).fail(function(error) {
 			alert(JSON.stringify(error));
 		});
 	}//canclePay() 함수 끝  
 	//-------------------------------------------------------------------------------------
-	  
 	  
 	  //결제 응답 파라미터 (callback)
 	  /*

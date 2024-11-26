@@ -124,6 +124,8 @@ public interface MypageMapper {
 	//mem_id 추가
 	int insertMemId(String mem_id);
 
+	int insertAttendance(AttendanceVO attendance);
+
 	
 	
 

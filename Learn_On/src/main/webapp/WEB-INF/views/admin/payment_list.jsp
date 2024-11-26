@@ -110,11 +110,14 @@
     <!-- Template Javascript -->
     <script src="resources/admin/js/main.js"></script>
     <script type="text/javascript">
-    		var link = document.location.href;
-	    	if (link.includes("Adm")) {
-	    		document.getElementById("payment").classList.toggle("active");
-	    		document.getElementById("paymentList").classList.toggle("active");
-	    	};
+		// 메뉴 활성화
+		let link = document.location.href;
+		if (link.includes("AdmPayList")) {
+			document.querySelector("#AdmPayList").parentElement.previousElementSibling.classList.add("show");
+			document.querySelector("#AdmPayList").parentElement.previousElementSibling.classList.add("active");
+			document.querySelector("#AdmPayList").parentElement.classList.add("show");
+			document.querySelector("#AdmPayList").classList.toggle("active");
+		};
     </script>
 </body>
 </html>

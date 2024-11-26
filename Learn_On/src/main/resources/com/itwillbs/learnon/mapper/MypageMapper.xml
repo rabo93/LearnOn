@@ -290,20 +290,26 @@
 		       , C.CLASS_TITLE
 		       , C.CLASS_PRICE
 		       , O.CLASS_PRICE
-		       , CU.COUPON_ID
+		       , O.COUPON_ID
+		       , CU.COUPON_NAME
 		       , CU.DISCOUNT_TYPE
 		       , CU.DISCOUNT_PERCENT
 		       , CU.DISCOUNT_AMOUNT
 		       , P.PRICE AS RESULT_PRICE
 		       , P.PAY_DATE
+		       , P.RECEIPT_URL
 		       , P.PAY_METHOD
 		       , P.PAY_STATUS
-		       , P.RECEIPT_URL
+		       , (SELECT SUM(CLASS_PRICE)
+					FROM ORDER_INFO
+				   GROUP BY MERCHANT_UID) AS TOTAL_PRICE
 		FROM ORDER_INFO O JOIN PAY_INFO P ON O.MERCHANT_UID = P.MERCHANT_UID
-		JOIN CLASS C ON C.CLASS_ID = O.CLASS_ID
-		JOIN COUPONINFO CU ON CU.COUPON_ID = O.COUPON_ID
+		LEFT OUTER JOIN CLASS C ON C.CLASS_ID = O.CLASS_ID
+		LEFT OUTER JOIN COUPONINFO CU ON CU.COUPON_ID = O.COUPON_ID
 		WHERE 1 = 1
-		  AND O.MEM_ID = #{id}
+			<if test="!id.equals('')">
+			  AND O.MEM_ID = #{id}
+			</if>
 		ORDER BY P.PAY_DATE DESC
 	</select>
 	<select id="selectCoupon" resultType="map">
@@ -318,7 +324,7 @@
 		       , C.DISCOUNT_AMOUNT
 		       , C.C_EXPIRY_DATE
 		  FROM MYCOUPON M
-		  JOIN COUPONINFO C
+		  LEFT OUTER JOIN COUPONINFO C
 		    ON M.COUPON_ID = C.COUPON_ID
 		WHERE M.MEM_ID = #{mem_id}
 	</select>
@@ -328,6 +334,7 @@
 		  FROM MYCOUPON
 		 WHERE MEM_ID = #{mem_id}
 		   AND COUPON_STATUS != 2
+		   AND COUPON_ISUSED != 2
 	</select>
 	<insert id="insertSupport">
 		<selectKey keyProperty="support_idx" resultType="int" order="BEFORE">

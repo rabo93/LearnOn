@@ -38,24 +38,27 @@ $(document).ready(function(){
 //			console.log(data);
 			let resultArea = document.querySelector("#resultArea");
 			
+			
 			const newData = data.reduce((acc, item) => {
 				const {MAIN_MENU, SUB_MENU, CODEID, CODETYPE_ID} = item;
 				
-				if(!acc[MAIN_MENU]) {
-					acc[MAIN_MENU] = {MAIN_MENU, sub_menus: []}; // 배열 생성
+				if(!acc[CODEID]) {
+					acc[CODEID] = {MAIN_MENU, CODEID, sub_menu: []}; // 배열 생성
 				}
-				acc[MAIN_MENU].sub_menus.push({SUB_MENU, CODEID, CODETYPE_ID});
+				acc[CODEID].sub_menu.push({CODETYPE_ID, SUB_MENU});
 				return acc;
 				
 			}, {});
 			
 			const dataArr = Object.values(newData);
 			
-			dataArr.forEach((item) => {
-				console.log("메인: " + item.MAIN_MENU);
-				item.sub_menus.forEach((sub) => {
-					console.log("sub: " + sub.SUB_MENU);
-				})
+			dataArr.forEach((item, i) => {
+				resultArea.innerHTML += `<li><a href="Category?codetype=${item.CODEID}">${item.MAIN_MENU}</a><ul class="sub-dropdown sub-dropdown${i}"></ul></li>`;
+				item.sub_menu.forEach((sub) => {
+					let subMenu = document.createElement("li");
+					subMenu.innerHTML += `<a href="Category?codetype=${item.CODEID}&codetype_id=${sub.CODETYPE_ID}">${sub.SUB_MENU}</a>`;
+					document.querySelector(`.sub-dropdown${i}`).append(subMenu);
+				});
 			}); 
 			
 			

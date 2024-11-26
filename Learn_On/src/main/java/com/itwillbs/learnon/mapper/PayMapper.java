@@ -25,7 +25,10 @@ public interface PayMapper {
 	
 	//나의클래스 인서트
 	void insertMycourse(Map<String, Object> mycourseData);
-
+	
+	//결제완료 페이지에 전달할 결제 정보 조회
+	PayVO selectPayInfo(String merchant_uid);
+	
 
 	
 }

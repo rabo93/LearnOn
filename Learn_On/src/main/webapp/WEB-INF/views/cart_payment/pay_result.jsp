@@ -34,11 +34,11 @@
 						<span class="status"><i class="fa-solid fa-check"></i>결제완료</span>
 						<div class="info">
 							<span>주문번호</span>
-							<span class="num">2024010112345</span>
+							<span class="num">${payinfo.merchant_uid}</span>
 						</div>
 						<div class="products">
-							<span class="ttl">홍길동의 실전자바 - 고급1편, 멀티스레드와 동시성</span>
-							<span class="ttl">어쩌주저쩌구 2편</span>
+							<span class="ttl" th:each="item : ${payinfo.orderItems}" th:text="${item.class_title}">
+							</span>
 						</div>
 					</div>
 					<div class="price">
@@ -47,26 +47,28 @@
 						</dl>
 						<dl class="pri">
 							<dt>총 상품 금액</dt>
-							<dd id="totalAmount">0원</dd>
+							<dd id="totalAmount">${payinfo.totalAmount}원</dd>
 						</dl>
 						<dl class="dis">
 							<dt>할인 금액</dt>
-							<dd id="discountAmount">0원</dd>
+							<dd id="discountAmount">${payinfo.discount_amount}원</dd>
 						</dl>
 						<dl class="total">
 							<dt>총 결제 금액</dt>
-							<dd id="totalPrice">0원</dd>
+							<dd id="totalPrice">${payinfo.price}원</dd>
 						</dl>
 						<dl class="Method">
 							<dt>결제수단</dt>
 							<!-- 결제수단이 카드일경우 카드정보, 가상계좌일경우 가상계좌정보 표출 -->
+							<dd id="payMethod">${payinfo.pay_method}</dd>
+							
 							<dd id="payMethod1">국민카드+카드번호</dd>
 							<dd id="payMethod2">국민은행+가상계좌번호</dd>
 						</dl>
 						<!-- 결제수단이 가상계좌일경우 표출 -->
 						<dl class="vBank-exp">
 							<dt>입금기한</dt>
-							<dd id="expDate">2024-11-31 00:00</dd>
+							<dd id="expDate">${payinfo.vbank_due}</dd>
 						</dl>
 					</div>
 					<!-- 버튼 -->

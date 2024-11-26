@@ -12,8 +12,13 @@
 	- (V) 결제 완료시 장바구니 내역 삭제
 */
 $(document).ready(function() {
+	
 	console.log("초기 결제 상품 금액(totalAmount):", $("#totalAmount").data("value"));
 	console.log("초기 결제 금액(totalPrice):", $("#totalPrice").data("value"));
+	
+	//쿠폰 할인금액 결제 완료 페이지로 넘기기 위해 전역변수 초기화
+	let discountAmount = 0;
+	
 	//=============================================================================
 	// [할인 구현]
 	function setCouponHandler(coupon) {
@@ -23,7 +28,6 @@ $(document).ready(function() {
 		let totalAmount = parseInt($("#totalAmount").data("value"), 10); //10진수 정수형으로 변환
 		console.log("결제상품금액: "+ totalAmount);
 		// 금액 초기화
-		let discountAmount = 0;
 		let payAmount = totalAmount;
 		
 		// 선택한 쿠폰 정보 저장(나중에 DB에 저장하기 위해)
@@ -63,7 +67,12 @@ $(document).ready(function() {
 		
 		console.log("쿠폰 적용 후 결제 금액(totalPrice):", $("#totalPrice").data("value"));
 		
+		//전역변수로 쓰기위해 return
+		return discountAmount;
+		
 	}//setCouponHandler() 함수 끝
+	
+
 	//-------------------------------------------------------------
 	// "쿠폰선택" 버튼 클릭 이벤트
 	$("#couponSelect").click(function() {
@@ -74,6 +83,7 @@ $(document).ready(function() {
 		window.setCoupon = setCouponHandler;
 		
 	});
+	
 	//-------------------------------------------------------------
 	// "쿠폰발급" 버튼 클릭 이벤트
 	$("#couponRegist").click(function() {
@@ -184,9 +194,6 @@ $(document).ready(function() {
 				buyer_name: memName,		// 주문자명
 				buyer_tel: phone,			// 전화번호
 				buyer_email: email,			// 이메일
-				
-				//아래는 추가적인 파라미터(가상계좌에 필요할 수도 있음)
-	//			vbank_due: "YYYY-MM-DD" //가상계좌 입금기한 : YYYY-MM-DD, YYYYMMDD, YYYY-MM-DD HH:mm:ss, YYYYMMDDHHmmss
 	    	}, 
 	    	//-------------결제 결과 처리-------------
 	    	function(rsp) {
@@ -216,7 +223,7 @@ $(document).ready(function() {
 					}).done(function(data) {
 						console.log("data: "+ JSON.stringify(data));//주문금액이 들어있음
 						if(rsp.paid_amount == data.response.amount) {
-							alert("결제가 완료되었습니다.");
+//							alert("결제가 완료되었습니다.");
 							
 							//검증 완료----------------------------------------------
 							// 결제&주문 결과 저장 
@@ -225,28 +232,30 @@ $(document).ready(function() {
 							// 주문정보에는 '자바클래스1', 100000원 , '자바클래스2', 100000원 
 							// 이렇게 주문한 상품 리스트를 하나씩 저장하기 위해 테이블을 2개를 두고 저장하는 로직으로 구성함
 							
-							//결제정보 저장
+							//결제정보 저장(PAY_INFO)
 							savePayinfo(rsp);
-							
-							//주문정보 저장
-							//=> 주문 저장 후 쿠폰상태 업데이트/나의클래스에 저장 같이
-							saveOrderinfo(rsp);
 							
 							//장바구니 목록에서 주문한 상품 삭제(CART)
 							deleteCart();
 							
-							//테스트 진행을 위해 바로 결제취소(테스트 완료후 삭제할 것)
-							cancelPay(rsp);
+							//주문정보 저장(ORDER_INFO)
+							//=> 주문 저장 후 쿠폰상태(MYCOUPON) 업데이트 및 나의클래스(MYCOURSE)에 인서트 처리
+							saveOrderinfo(rsp);
 							
+							//테스트 진행을 위해 바로 결제취소(테스트 완료후 코드 지울것)
+							cancelPay(rsp);
 						//-------------------------------------------	
 						} else {
 							alert("결제 금액 오류로 결제 실패");
 							//결제 취소
 							cancelPay(rsp);
+							location.reload();
 						}
 					});
 				} else {
-					alert("결제를 실패하였습니다. \n(실패사유: " + rsp.error_msg +")");
+					alert("결제를 실패하였습니다.");
+					console.log("실패사유: "+ rsp.error_msg);
+					location.reload();
 				}
 			} //function(rsp) 함수 끝
 	    );//IMP.request_pay끝
@@ -255,11 +264,17 @@ $(document).ready(function() {
 	//-------------------------------------------------------------------------------------
 	// 1. 결제정보 저장(결제 테이블에 저장)
 	function savePayinfo(rsp) {
+		//rsp로 받은 데이터에 없는 회원ID 데이터 가져오기
+		let mem_id = $("#memberInfo").data("id");
+		console.log("회원 ID:", mem_id);
+		
 		let payInfo = {
 			merchant_uid: rsp.merchant_uid,
 			class_name : rsp.name,
+			mem_id : mem_id,
 			mem_name : rsp.buyer_name,
-			price : rsp.paid_amount,		
+			price : rsp.paid_amount,
+			discount_amount : discountAmount,		
 			pay_method : rsp.pay_method,
 			pay_status : rsp.status,		//주문상태: paid(결제완료), failed(결제실패), ready(미결제)
 			imp_uid : rsp.imp_uid,
@@ -268,7 +283,8 @@ $(document).ready(function() {
 			bank_name : rsp.vbank_name,
 			bank_num : rsp.vbank_num,
 			apply_num : rsp.apply_num,
-			receipt_url	: rsp.receipt_url
+			receipt_url	: rsp.receipt_url,
+			vbank_due: rsp.vbank_due, //가상계좌 입금기한 : YYYY-MM-DD, YYYYMMDD, YYYY-MM-DD HH:mm:ss, YYYYMMDDHHmmss
 			}
 		
 		$.ajax({
@@ -299,6 +315,7 @@ $(document).ready(function() {
 	    });
 		let couponData = $("#couponSelect").data();
 		
+		
 		//가져온 데이터 합치기
 		let orderInfo = {
 			merchant_uid : rsp.merchant_uid,	
@@ -328,8 +345,17 @@ $(document).ready(function() {
 			contentType: "application/json",
 			data: JSON.stringify(orderInfo),
 			success: function(response) {
-				console.log("주문정보 저장 완료", response);
+				console.log("주문정보 저장 완료", response); //주문고유번호 리턴받음
 				
+				//저장 완료되면 결제 완료 페이지로 이동
+				//(alert창 SweetAlert2 라이브러리 사용함)
+				Swal.fire({
+					icon: 'success',
+					title: '결제 완료!',
+					text: '결제 완료 페이지로 이동합니다.'
+				}).then(() => {
+					window.location.href = "PayResult?merchant_uid=" + response;
+				});
 				
 			},
 			error: function(error) {
@@ -357,12 +383,11 @@ $(document).ready(function() {
 			data : { //넘겨줄 데이터들 작성
 				cartitem_idx : cartItemsParam //요청 파라미터
 			}, 
-			success : function(response) {
-				alert("선택한 상품이 삭제되었습니다." + response);
+			success : function() {
+				console.log("결제 후 해당상품 장바구니에도 삭제되었습니다.");
 			},
-			error : function(jqXHR) {
-				console.log("삭제 요청중 오류 발생 : " + jqXHR);
-				alert("삭제에 실패하였습니다. 다시 시도해주세요.");
+			error : function(error) {
+				console.log("삭제 요청중 오류 발생 : ", error);
 			}
 			
 		});
@@ -378,19 +403,16 @@ $(document).ready(function() {
 			contentType: "application/json; charset=utf-8",
 			data: JSON.stringify({
 				"imp_uid": rsp.imp_uid,
-				"reason": "결제 검증 실패",
+				"reason": "결제 취소 요망",
 				"checksum": rsp.paid_amount
-				//checksum을 넣어주는 이유 : 서버와 포트원 서버간의 환불 가능 금액을 검증하기 위해서 필수 입력(우리는 전체환불만 가능하도록 설계)			
+				//checksum을 넣어주는 이유 : 서버와 포트원 서버간의 환불 가능 금액을 검증하기 위해서 필수 입력(우리는 전체 환불만 가능하도록 설계)			
 			})
 		}).done(function() {
 			alert("결제를 취소하였습니다.");
 		}).fail(function(error) {
-			alert(JSON.stringify(error));
+			console.log("취소 요청중 오류 발생", error);
 		});
 	}
 	
 	
 });// 페이지 로드 이벤트 끝
-
-
-

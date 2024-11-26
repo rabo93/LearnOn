@@ -46,8 +46,10 @@
 		INSERT INTO PAY_INFO
 		( 	MERCHANT_UID
 			, CLASS_NAME
+			, MEM_ID
 			, MEM_NAME
 			, PRICE
+			, DISCOUNT_AMOUNT
 			, PAY_METHOD
 			, PAY_STATUS
 			, PAY_DATE
@@ -56,14 +58,17 @@
 			, CARD_NUM
 			, BANK_NAME
 			, BANK_NUM
+			, VBANK_DUE
 			, APPLY_NUM
 			, RECEIPT_URL
 		)
 		VALUES 
 		(	#{merchant_uid}
 			, #{class_name}
+			, #{mem_id}
 			, #{mem_name}
 			, #{price}
+			, #{discount_amount}
 			, #{pay_method}
 			, CASE
 				WHEN #{pay_status} = 'paid' THEN 1		-- 결제완료
@@ -77,6 +82,7 @@
 			, #{card_num}
 			, #{bank_name}
 			, #{bank_num}
+			, #{vbank_due}
 			, #{apply_num}
 			, #{receipt_url}
 		)
@@ -142,5 +148,25 @@
 			, 0
 		)	
 	</insert>
+	
+	
+	<!-- 결제 정보 조회 -->
+	<select id="selectPayInfo" resultType="pay">
+	 SELECT 	
+	 	  MERCHANT_UID
+		, CLASS_NAME
+        , PRICE+DISCOUNT_AMOUNT AS '총 상품 금액'
+        , DISCOUNT_AMOUNT AS '할인 금액'
+        , PRICE AS '총 결제 금액'
+        , PAY_METHOD
+		, CARD_NAME
+        , CARD_NUM
+        , BANK_NAME
+        , BANK_NUM
+        , VBANK_DUE
+        , RECEIPT_URL
+	FROM PAY_INFO
+	WHERE MERCHANT_UID = #{merchant_uid}
+	</select>
 	
 </mapper>

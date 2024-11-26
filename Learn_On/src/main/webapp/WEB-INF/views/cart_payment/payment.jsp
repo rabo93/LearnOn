@@ -15,8 +15,10 @@
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <!-- page 개별 CSS -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/payment.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 <!-- page 개별 JS -->
 <script src="${pageContext.request.contextPath}/resources/js/payment.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 <!-- 포트원 결제api sdk 추가 -->
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 
@@ -101,7 +103,7 @@
 							</dl>
 							<dl>
 								<dt>할인 금액</dt>
-								 <dd class="discount-amount">0 원</dd>
+								 <dd class="discount-amount" id="discount-amount" data-value="${discountAmount}">0 원</dd>
 							</dl>
 							<dl class="total">
 								<dt>결제 금액</dt>

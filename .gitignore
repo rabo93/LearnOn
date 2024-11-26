@@ -14,6 +14,7 @@ local.properties
 .loadpath
 .recommenders
 
+#--------------------------------
 # appdata.properties
 appdata.properties
 

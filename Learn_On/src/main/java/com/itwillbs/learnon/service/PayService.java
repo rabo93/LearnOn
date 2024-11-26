@@ -75,9 +75,17 @@ public class PayService {
 	}
 	
 	//쿠폰 사용 상태 업데이트
+	@Transactional
 	public void couponUsed(int coupon_id) {
 		System.out.println("업데이트할 쿠폰코드: " + coupon_id);
 		mapper.updateCoupon(coupon_id);
+	}
+	
+	
+	//------------------------------------------------------------------------
+	//결제완료 페이지에 전달할 결제 정보 조회
+	public PayVO getPayInfo(String merchant_uid) {
+		return mapper.selectPayInfo(merchant_uid);
 	}
 
 	

@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/cart.css">
 <!-- page 개별 JS 
 	 (defer 속성 : 페이지가 모두 로드된 후에 해당 외부 스크립트가 실행됨) --> 
-<script src="${pageContext.request.contextPath}/resources/js/cart_payment/cart.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/cart.js"></script>
 
 </head>
 <body>
@@ -49,7 +49,7 @@
 						<c:choose>
 							<%--장바구니에 아무것도 담겨져 있지 않은 경우 --%>
 							<c:when test="${empty cartList}">
-								<p class="cart-item">장바구니에 담은 상품이 없습니다.</p>
+								<p class="cart-item no-item">장바구니에 담은 상품이 없습니다.</p>
 							</c:when>
 							
 							<c:otherwise>

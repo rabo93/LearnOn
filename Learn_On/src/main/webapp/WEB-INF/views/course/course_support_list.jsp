@@ -51,7 +51,8 @@
 			
 				<div class="container">
 					 <section class="breadcrumb">
-			            <a href="#">카테고리</a> &gt; <a href="#">IT/프로그래밍</a> &gt; 백엔드
+<!-- 			            <a href="#">카테고리</a> &gt; <a href="#">IT/프로그래밍</a> &gt; 백엔드 -->
+			            <a href="#">카테고리</a> &gt; <a href="Category?codetype=${param.codetype}">${course[0].catename}</a> &gt;${course[0].class_category}
 			            
 			        </section>
 			
@@ -75,9 +76,9 @@
 			        </section>
 			        <c:set var="count" value="${courseSupportList}" />
 						<ul class="tabnav">
-							<li><a href="CourseDetail?class_id=${course[0].class_id}#tab01">클래스 소개</a></li>
-							<li><a href="CourseDetail?class_id=${course[0].class_id}#tab02">커리큘럼</a></li>
-							<li><a href="CourseDetail?class_id=${course[0].class_id}#tab03">수강평</a></li>
+							<li><a href="CourseDetail?class_id=${course[0].class_id}&codetype=${param.codetype}#tab01">클래스 소개</a></li>
+							<li><a href="CourseDetail?class_id=${course[0].class_id}&codetype=${param.codetype}#tab02">커리큘럼</a></li>
+							<li><a href="CourseDetail?class_id=${course[0].class_id}&codetype=${param.codetype}#tab03">수강평</a></li>
 							<li><a class="tab on" href="#" >문의(${fn:length(count)})</a></li>
 						</ul>
 						<div class="tabcontent">

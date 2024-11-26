@@ -25,7 +25,7 @@
 .cart-wrap .cart-ttl i {width: 40px;height: 40px;line-height: 40px;background: var(--light-blue);text-align:center;display: inline-block;border-radius: 50%;font-size: 1.4rem;margin-right: 5px;}
 
 
-.cart-select {margin-bottom: 10px;display: flex;align-items: center;gap: 0 10px;font-weight: 600;color: var(--dark);background: var(--light-blue);padding: 16px;border-radius: 10px;font-size: 1rem;}
+.cart-select {margin-bottom: 10px;display: flex;align-items: center;gap: 0 10px;font-weight: 600;color: var(--dark);background: var(--light-blue);padding: 16px;border-radius: 10px;font-size: 1rem;border: 1px solid #eee;}
 .cart-select .select-del {
 	display: flex;
 	align-items: center;
@@ -52,6 +52,7 @@
 	font-size: 1.1rem;
 	text-align: center;
 	font-size: 0.875rem;
+	border: 1px solid #eee;
 }
 .cart-list .cart-item.no-item {
 	background: url(/resources/images/no_data.svg) no-repeat center top 3rem var(--light-blue);
@@ -126,10 +127,11 @@
 .cart-right .price-box {
     background: var(--light-blue);
     border-radius: 10px;
-    padding: 16px;
+    padding: 2rem 1rem;
     font-size: 14px;
     font-weight: 500;
     color: var(--dark);
+    border: 1px solid #eee;
 }
 .cart-right .price-box dl {
     display: flex;

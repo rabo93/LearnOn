@@ -93,10 +93,21 @@ public class PayService {
 	
 	
 	//------------------------------------------------------------------------
+	//결제 취소에 필요한 impUid에 해당하는 회원ID 조회
+	public String getMem_id(String impUid) {
+		return mapper.selectMemId(impUid);
+	}
+	
 	//결제 취소 시 결제 상태값 변경
-	public void payStatusUpdate(String imp_uid) {
-		System.out.println("포트원 결제ID: " + imp_uid);
-		mapper.updatePayStatus(imp_uid);
+	public void payStatusUpdate(String imp_uid, String memId) {
+		System.out.println("포트원 결제ID 및 회원ID: " + imp_uid + ", "+ memId);
+		
+		//1. 결제 상태 업데이트
+		mapper.updatePayStatus(imp_uid, memId);
+		
+		//2. 쿠폰 복구
+		mapper.updateCouponUsed(imp_uid, memId);
+		
 	}
 
 	

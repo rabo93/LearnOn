@@ -29,8 +29,15 @@ public interface PayMapper {
 	//결제완료 페이지에 전달할 결제 정보 조회
 	PayVO selectPayInfo(String merchant_uid);
 	
+	//결제 취소에 필요한 impUid에 해당하는 회원ID 조회
+	String selectMemId(String impUid);
+	
 	//결제 취소 시 결제 상태값 변경
-	void updatePayStatus(String imp_uid);
+	void updatePayStatus(String imp_uid, String memId);
+	
+	//결제 취소 시 쿠폰 복구
+	void updateCouponUsed(String imp_uid, String memId);
+	
 	
 
 	

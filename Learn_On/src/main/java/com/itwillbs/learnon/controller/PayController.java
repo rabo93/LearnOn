@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,13 +41,17 @@ public class PayController {
 		this.iamportClient = new IamportClient("1582333057803703", "Xeql20bTzSYAkeu3qPVXGoU3GEn0Ve4WKSmXsZViEAIrMFoJKE8n8q78DJlZMXkconSi5Nd3JpfpUX7h");
 	}
 	
+	//Log4j 라이브러리
+	private Logger logger = LogManager.getLogger();
+	
 	//=================================================================================
 	// "Payment" 서블릿 주소 로드시 매핑 - GET
 	// 결제 목록 조회 비즈니스 로직
 	@GetMapping("Payment")
 	public String payment(@RequestParam(value = "checkitem", required = false) List<String> checkItems,
 						 HttpSession session, Model model) {
-//	    System.out.println("(Payment)선택한 장바구니 번호: " + checkItems); //[4, 3, 2, 1]
+		logger.info("장바구니에서 넘어온 체크한 장바구니 번호: " + checkItems);
+		
 		//------------------------------------------------------
 		// 로그인 정보 가져오기 (세션 아이디값 확인)
 		String sId = (String) session.getAttribute("sId");
@@ -123,12 +129,16 @@ public class PayController {
 	@ResponseBody
 	@PostMapping("/payments/cancel")
 	public IamportResponse<Payment> cancelPaymentbyImpUid(@RequestBody PayCancelVO paycancelVO) throws IamportResponseException, IOException {
-		System.out.println("결제 취소에 필요한 VO: " + paycancelVO); 
+		logger.info("결제 취소에 필요한 VO: " + paycancelVO); 
 		
 		String impUid = paycancelVO.getImp_uid();
 		
-		//취소하면 결제 상태값 업데이트
-		payService.payStatusUpdate(paycancelVO.getImp_uid());
+		// impUid에 해당하는 로그인 아이디 가져오기
+//		String memId = payService.getMem_id(impUid);
+//		logger.info("회원아이디:"+ memId);
+//		
+//		//취소하면 결제 상태값 업데이트 및 사용한 쿠폰 복구
+//		payService.payStatusUpdate(impUid, memId);
 		
 		//IamportClient클래스의 cancelPaymentByImpUid() 함수 호출
 		//=> 파라미터: CancelData클래스 	/리턴: IamportResponse<Payment>

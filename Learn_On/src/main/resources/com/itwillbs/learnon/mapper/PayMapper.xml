@@ -165,11 +165,35 @@
 	</select>
 	
 	
+	<!-- impUid에 해당하는 회원ID 조회 -->
+	<select id="selectMemId">
+		SELECT MEM_ID
+		FROM PAY_INFO
+		WHERE IMP_UID = #{imp_uid}
+	</select>
+	
 	<!-- 결제 취소 시 주문상태 변경 -->
 	<update id="updatePayStatus">
 		UPDATE PAY_INFO
 		SET PAY_STATUS = 2
-		WHERE IMP_UID = #{imp_uid}
+		WHERE 1=1
+		AND MEM_ID = #{memId}  
+		AND	IMP_UID = #{imp_uid}
+	</update>
+	
+	<!-- 결제 취소 시 쿠폰 미사용으로 변경 -->
+	<update id="updateCouponUsed">
+		UPDATE MYCOUPON
+		SET COUPON_ISUSED = 2
+		WHERE 1=1
+		AND MEM_ID = #{memId} 
+		AND COUPON_ID = (
+			SELECT OI.COUPON_ID
+			FROM PAY_INFO PI
+			JOIN ORDER_INFO OI ON PI.MERCHANT_UID = OI.MERCHANT_UID
+			WHERE PI.IMP_UID = #{imp_uid}
+		);
+	
 	</update>
 	
 	

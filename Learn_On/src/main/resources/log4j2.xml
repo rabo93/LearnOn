@@ -11,7 +11,7 @@
 		<RollingFile name="rollingFile" fileName="./my_log/learnon/rolling_log.log" filePattern="./my_log/learnon/rolling_log-%d{yyyy-MM-dd}_%i.log">
 			<PatternLayout pattern="${layoutPattern}" />
 			<Policies>
-				<SizeBasedTriggeringPolicy size="10KB" />
+				<SizeBasedTriggeringPolicy size="10MB" />
 			</Policies>
 		</RollingFile>
 		

@@ -37,11 +37,14 @@ function logout() {
 				<a href="MemberLogin" class="login-btn">로그인</a>
 			</div>
 			<div class="login-area">
-				<div class="login-info" onclick="toggleLoginMenu()"><span>${sessionScope.sId}</span> 님</div>
+				<div class="login-info" onclick="toggleLoginMenu()"><span>${sessionScope.sNick}</span> 님</div>
 				<div class="login-menu">
 					<a href="MyDashboard">나의 강의실</a>
-					<a href="MemberModify">마이페이지</a>
-					<c:if test="">
+					<a href="MyInfo">마이페이지</a>
+					<c:if test="${sessionScope.sGrade eq 'MEM02'}">
+						<a href="AdmIndex">클래스 관리</a>
+					</c:if>
+					<c:if test="${sessionScope.sGrade eq 'MEM03'}">
 						<a href="AdmIndex">관리자 홈</a>
 					</c:if>
 					<a href="javascript:void(0)" onclick="logout()">로그아웃</a>

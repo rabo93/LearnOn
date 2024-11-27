@@ -72,22 +72,45 @@ public class CourseController {
 	}
 	
 	@GetMapping("BestCourse")
-	public String bestCourse(Model model) {
+	public String bestCourse(
+			@RequestParam(defaultValue = "1") int pageNum			
+			, Model model) {
 		System.out.println("BestCourse 들어오나???");
 		// 강의 목록 출력
 		List<CourseVO> courseList = courseService.getCourseBestList();
+		
+		// ----------------------------------------------------------------
+		// [ 페이징 처리 ]	
+		int listLimit = 8; // 페이지 당 게시물 수
+		int listCount = courseService.getCourseBestList().size();
+		int pageListLimit = 5; 
+		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+		if(maxPage == 0) {
+			maxPage = 1;
+		}
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		int endPage = startPage + pageListLimit - 1;
+		if(endPage > maxPage) {
+			endPage = maxPage;
+		}
+		// 페이징 정보 관리하는 PageInfo 객체 생성 및 계산 결과 저장
+		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
+		model.addAttribute("pageInfo", pageInfo);
+		// ----------------------------------------------------------------
+		
 		model.addAttribute("courseList", courseList);
 		return "course/course_best_list";
 	}
 	
 	@GetMapping("Category")
 	public String courseList(
-							String codetype,
-							CourseVO course 
-							,@RequestParam(defaultValue = "") String searchType
-							, HttpSession session
-							, HttpServletRequest request
-							, Model model) {
+			@RequestParam(defaultValue = "1") int pageNum,
+			String codetype,
+			CourseVO course 
+			,@RequestParam(defaultValue = "") String searchType
+			, HttpSession session
+			, HttpServletRequest request
+			, Model model) {
 
 		System.out.println("codetype ??  "  + codetype); // CATE01
 		String id = (String)session.getAttribute("sId");
@@ -118,6 +141,25 @@ public class CourseController {
 		} 
 		session.setAttribute("prevURL", prevURL);
 		
+		// ----------------------------------------------------------------
+		// [ 페이징 처리 ]	
+		int listLimit = 8; // 페이지 당 게시물 수
+		int listCount = courseService.getCourseList(course, codetype, searchType).size();
+		int pageListLimit = 5; 
+		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+		if(maxPage == 0) {
+			maxPage = 1;
+		}
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		int endPage = startPage + pageListLimit - 1;
+		if(endPage > maxPage) {
+			endPage = maxPage;
+		}
+		// 페이징 정보 관리하는 PageInfo 객체 생성 및 계산 결과 저장
+		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
+		// ----------------------------------------------------------------
+		model.addAttribute("pageInfo", pageInfo);
+		
 		return "course/course_list"; 
 	}
 	
@@ -133,6 +175,8 @@ public class CourseController {
 				HttpSession session,
 				HttpServletRequest request
 				) {
+		
+		
 		String id = (String)session.getAttribute("sId");
 		
 //		System.out.println("searchType 잘받아오나?? :  " + searchType);
@@ -149,7 +193,13 @@ public class CourseController {
 		List<Map<String, Object>> wishList = myService.getWishlistForCategoryList(id);
 		
 		
-		// [ 페이징 처리 ]		
+		// ----------------------------------------------------------------
+		// 뷰페이지에서 썸네일 불러오기 위해서 배열 생성
+	    String[] coursePicArray = course.stream()
+				 						.map(pic -> pic.getClass_pic1())
+				 						.toArray(size -> new String[size]);
+		// ----------------------------------------------------------------
+		// [ 페이징 처리 ]	
 		int startRow = (pageNum - 1) * paging(pageNum, class_id).getPageListLimit();
 		if(pageNum < 1 || pageNum > paging(pageNum, class_id).getMaxPage()) {
 			model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
@@ -158,6 +208,8 @@ public class CourseController {
 		}
 		// 페이징 처리한 문의사항 항목가져옴. 
 		List<CourseSupportVO> courseSupportList = courseService.getCourseSupportList(class_id, startRow, paging(pageNum, class_id).getPageListLimit());
+		// ----------------------------------------------------------------
+		
 		
 		JSONArray jsonToWishList = new JSONArray(wishList);
 		model.addAttribute("wishList", jsonToWishList);
@@ -167,6 +219,7 @@ public class CourseController {
 		model.addAttribute("myReview", myReviewList);
 		model.addAttribute("codeType", codeType);
 		model.addAttribute("courseTeacher", courseTeacher);
+		model.addAttribute("coursePicArray", coursePicArray);
 		
 		// 현재페이지 prevURL로 저장
 		String prevURL = request.getServletPath();
@@ -175,6 +228,7 @@ public class CourseController {
 			prevURL += "?" + queryString;
 		} 
 		session.setAttribute("prevURL", prevURL);
+		
 		
 		return "course/course_detail";
 	}
@@ -240,7 +294,7 @@ public class CourseController {
 			@RequestParam(defaultValue = "1") String pageNum,
 			HttpSession session, 
 			Model model) {
-		System.out.println("CourseSupportWrite???" + cSupport);
+//		System.out.println("CourseSupportWrite???" + cSupport);
 		String id = (String)session.getAttribute("sId");
 		cSupport.setMem_id(id);
 		cSupport.setC_class_id(class_id);
@@ -251,6 +305,9 @@ public class CourseController {
 		String subDir = createDirectories(realPath); // 디렉토리 생성하기
 		// 기존 realPth 경로에 subDir 경로 결합
 		realPath += "/" + subDir;
+		System.out.println("이거는 writeForm 진짜 경로 realPath 알아보기 :   " + realPath);
+		
+		
 		
 		List<String> fileNames = processDuplicateFileNames(cSupport, subDir); // 중복 처리된 파일명 리턴
 		int updateCount = courseService.modifyCourseSupport(cSupport);
@@ -310,17 +367,6 @@ public class CourseController {
 			return "result/fail";
 		}
 		CourseSupportVO courseSupport = courseService.getCourseSupport(c_support_idx);
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		// 자기 아이디 아니면 수정 권한 없다고 하기
 		if(courseSupport == null || !id.equals(courseSupport.getMem_id())) {
 			model.addAttribute("msg", "잘못된 접근입니다!");
@@ -346,6 +392,8 @@ public class CourseController {
 		String subDir = createDirectories(realPath); // 디렉토리 생성하기
 		// 기존 realPth 경로에 subDir 경로 결합
 		realPath += "/" + subDir;
+		
+		System.out.println("진짜 경로 realPath 알아보기 :   " + realPath);
 		
 		List<String> fileNames = processDuplicateFileNames(cSupport, subDir); // 중복 처리된 파일명 리턴
 		int updateCount = courseService.modifyCourseSupport(cSupport);
@@ -504,7 +552,7 @@ public class CourseController {
 		// CartService - getCartList() 메서드 호출하여 장바구니 목록 조회 요청
 	    List<CartVO> cartList = cartService.getCartList(id);
 	    
-	 // getClass_id 값만 추출하여 배열 생성
+	    // getClass_id 값만 추출하여 배열 생성
 	    Integer[] classIdArray = cartList.stream()
 	    								 .map(cart -> cart.getClass_id())
 	    								 .toArray(size -> new Integer[size]);
@@ -684,23 +732,17 @@ public class CourseController {
 			// Model 객체를 별도로 리턴하지 않아도 객체 자체를 전달받았으므로
 					// 메서드 호출한 곳에서 저장된 속성 그대로 공유 가능
 		}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		
+		// 서브 디렉토리 생성
+		public String createDirectories(int classId, String realPath) {
+			
+			//	기존 실제 업로드 경로
+			realPath += "/" + classId;
+			//	실제 경로 전달
+//			Path path = Paths.get(realPath);
+			
+			return Integer.toString(classId);
+		}
 	
 	
 }

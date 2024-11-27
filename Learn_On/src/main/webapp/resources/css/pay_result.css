@@ -13,18 +13,15 @@ html, body {
 }
 
 .wrapper .ord-box {
+    width: 600px;
+    height: 800px;
 	margin: 3rem 0;
 	padding: 2rem;
 	background: var(--light-blue);
 	border: 1px solid #ddd;
 	border-radius: 16px;
 	box-shadow: 0 0 5px rgba(0,0,0,0.1);
-	/*     display: flex; */
-	/*     justify-content: center; */
-	/* gap: 1rem; */
-	width: 600px;
-	/* height: 800px; */
-	}
+}
 .wrapper .ord-box .infos {flex: 1 1 0;}
 .wrapper .ord-box .infos .status{    
 	display: flex;
@@ -63,13 +60,12 @@ html, body {
 	flex-direction: column;
 	margin: 30px;}
 .wrapper .ord-box .infos .products .ttl {
-	display: block;
 	display: flex;
-	justify-content: center;
-	padding-bottom: 6px;
-	font-size: 1.1rem;
-	font-weight: 700;
-	color: var(--dark);
+    justify-content: center;
+    padding-bottom: 6px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--dark);
 }
 
 
@@ -78,6 +74,7 @@ html, body {
 	font-size: 1rem;
 	font-weight: 500;
 	color: var(--gray);
+	margin-top: 50px;
 	}
 .wrapper .ord-box .price dl {
 	display: flex;

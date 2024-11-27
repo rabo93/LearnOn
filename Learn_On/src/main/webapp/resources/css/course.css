@@ -564,7 +564,7 @@
 }
 
 .cls_det_rating h4{padding: 0;margin: 0;}	
-.rating .star {
+.rating .star, .rating .fa-star {
     color: #f0a500;
     margin-right: 4px;
 }

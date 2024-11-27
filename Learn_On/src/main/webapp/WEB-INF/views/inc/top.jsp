@@ -34,19 +34,17 @@ function logout() {
 					<span class="cart-count" id="cartCount"></span>
 					<i class="fa-solid fa-cart-shopping"></i>
 				</a>
-<!-- 				<a href="#" class="login-btn">로그인</a> -->
 				<a href="MemberLogin" class="login-btn">로그인</a>
 			</div>
 			<div class="login-area">
-				<a href="MyDashboard">나의 강의실</a>
-				<a href="MyInfo"><span>${sessionScope.sId}</span> 님</a>
-				<a href="javascript:void(0)" onclick="logout()">로그아웃</a>
-<!-- 				<a href="#">나의 강의실</a> -->
-<!-- 				<a href="#"><span>홍길동</span> 님</a> -->
+				<div class="login-info" onclick="toggleLoginMenu()"><span>${sessionScope.sId}</span> 님</div>
 				<div class="login-menu">
+					<a href="MyDashboard">나의 강의실</a>
 					<a href="MemberModify">마이페이지</a>
-					<a href="#">관리자 홈</a>
-					<a href="#">로그아웃</a>
+					<c:if test="">
+						<a href="AdmIndex">관리자 홈</a>
+					</c:if>
+					<a href="javascript:void(0)" onclick="logout()">로그아웃</a>
 				</div>
 			</div>
 		</div>

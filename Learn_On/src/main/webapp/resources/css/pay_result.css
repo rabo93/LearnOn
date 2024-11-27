@@ -9,21 +9,19 @@ html, body {
     align-items: center; /* 수직 정렬 */
     flex-direction: column; /* 방향 설정 */
     gap: 1rem;
-    min-height: 100vh; /* 화면 전체 높이를 차지 */
+    /* min-height: 79vh; */ /* 화면 전체 높이를 차지 */
 }
 
 .wrapper .ord-box {
-	margin: 2rem;
-    padding: 3rem;
-    background: var(--white);
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    box-shadow: 0 0 5px rgba(0,0,0,0.1);
-/*     display: flex; */
-/*     justify-content: center; */
-    /* gap: 1rem; */
     width: 600px;
-    height: 800px;}
+    height: 800px;
+	margin: 3rem 0;
+	padding: 2rem;
+	background: var(--light-blue);
+	border: 1px solid #ddd;
+	border-radius: 16px;
+	box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
 .wrapper .ord-box .infos {flex: 1 1 0;}
 .wrapper .ord-box .infos .status{    
 	display: flex;
@@ -115,4 +113,18 @@ html, body {
 @media screen and (max-width:968px){
     .wrapper .ord-box {display:block;gap:0;}
     .wrapper .ord-box .infos .products {padding:1rem 0;}
+}
+
+.wrapper .ord-box .infos .result {
+	text-align:center;
+	display: block;
+	font-size: 2rem;
+	font-weight: 700;
+	color: var(--dark);
+	border-bottom:1px solid #ddd;
+	padding-bottom:1rem;
+}
+
+.wrapper .ord-box .infos .result i {
+	display:block;margin:0 auto 14px;
 }

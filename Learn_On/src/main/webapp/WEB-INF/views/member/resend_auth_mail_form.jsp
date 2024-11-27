@@ -14,6 +14,8 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/join.css">
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/join.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/passwd.css">
+
 
 </head>
 <body>
@@ -21,14 +23,16 @@
 		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>
 	</header>
 	<main>
-	
-	<form action="ReSendAuthMail" method="post">
-<%-- 		<input type="text" value="${sessionScope.sId}"><br> --%>
-		<input type="text" placeholder="이메일을 입력해주세요" required><br>
-		<input type="submit" value="인증메일 재발송"><br>
-	
-	</form>
-	
+	<div class="login-wrap">
+		<form action="ReSendAuthMail" method="post" class="passwdFinderForm" >
+			<h3 class="ttl">인증메일 다시 보내기</h3>
+<%-- 			<input type="text" value="${sessionScope.sMail}"><br> --%>
+			<input type="text" placeholder="이메일을 입력해주세요" required><br>
+			<div id="form-controls">
+				<button type="submit">인증메일 재발송📩</button><br>
+			</div>
+		</form>
+	</div>		
 	</main>
 	<footer id="ft">
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>

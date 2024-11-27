@@ -69,7 +69,26 @@ public class AdminController {
 	
 	// 어드민 메인페이지 매핑
 	@GetMapping("AdmIndex")
-	public String admin_home() {
+	public String admin_home(HttpSession session, Model model) {
+		String id = (String)session.getAttribute("sId");
+		String grade = (String)session.getAttribute("sGrade");
+		String nick = (String)session.getAttribute("sNick");
+		System.out.println("id : " + id);
+		System.out.println("grade : " + grade);
+		System.out.println("nick : " + nick);
+		if(id == null) {
+			model.addAttribute("msg", "로그인이 필요합니다");
+			model.addAttribute("targetURL", "MemberLogin");
+			return "admin/fail";
+		}
+		if(grade.equals("MEM01")) {
+			model.addAttribute("msg", "접근 권한이 없습니다");
+			model.addAttribute("targetURL", "/");
+			return "admin/fail";
+		}
+		if(grade.equals("MEM02")) {
+			return "admin/index_instructor";
+		}
 //	public String admin_home(HttpSession session, Model model, HttpServletRequest request) {
 		
 		//로그인 감지

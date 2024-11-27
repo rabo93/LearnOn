@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,12 +13,9 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/reset.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/course.css">
-    
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
-
 </head>
 <body>
-   
 	<header>
 		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>
 	</header>
@@ -42,6 +40,7 @@
 							<div class="cls-det-text">            	
 				            	<i class="fa-regular fa-hourglass-half"></i>
 				            	<c:set var="total_cur" value="${course}" />
+				            	<c:set var="total_re" value="${myReview}" />
 				            	<h4>총  ${fn:length(total_cur)}강 ( ${course[0].class_runtime}분)</h4>
 				            </div>
 			            </div>
@@ -50,7 +49,7 @@
 					<ul class="tabnav">
 						<li><a href="#tab01">클래스 소개</a></li>
 						<li><a href="#tab02">커리큘럼</a></li>
-						<li><a href="#tab03">수강평</a></li>
+						<li><a href="#tab03">수강평(${fn:length(total_re)})</a></li>
 						<li><a class="tab" href="CourseSupportList?class_id=${course[0].class_id}&codetype=${param.codetype}">문의(${fn:length(count)})</a></li>
 					</ul>
 					<div class="tabcontent">
@@ -61,7 +60,6 @@
 				            	
 				            	<img src="${pageContext.request.contextPath}/${course[0].class_pic1}">
 				            	${course[0].class_intro}
-	<!-- 				            	<img data-drag-handle="true" class="resizable-media-img" src="https://cdn.inflearn.com/public/files/courses/335118/builder/01jbxgpm8ttbf91tdak2339ch6?w=960" title="image.png" alt="image" width="668" height="260"> -->
 			            	</div>
 				            <div class="intro">
 				            	${course[0].class_contents}
@@ -81,19 +79,23 @@
 							
 						<div class="tabmenu" id="tab03">
 							<div class="review_title">
-								<h2>수강평</h2><h4>(전체 ???개)</h4>
-								<select>
-									<option>최신순</option>
-									<option>오래된순</option>
-									<option>평점순</option>
-								</select>
+								<h2>수강평</h2><h4>(전체 ${fn:length(total_re)}개)</h4>
+								<form action="CourseDetail">
+									<select name="searchType">
+										<option value="new" <c:if test="${param.searchType eq 'new'}">selected</c:if>>최신순</option>
+										<option value="old" <c:if test="${param.searchType eq 'old'}">selected</c:if>>오래된순</option>
+										<option value="score" <c:if test="${param.searchType eq 'score'}">selected</c:if>>평점순</option>
+									</select>
+										<input type="hidden" name="codetype" value="${param.codetype}"/>
+									<input type="hidden" name="class_id" value="${param.class_id}">
+									<input type="submit" value="검색" />
+								</form>
 							</div>	
 								
 				            <div class="review-rating">
-				                <span class="rating-score" style="color:red;">수정요!! ${course[0].review_score}</span><br>
-				                <span class="stars"></span>
+				                <span class="rating-score">${course[0].review_score}</span><br>
+				                <span class="stars"><i class="fa-solid fa-star"></i></span>
 				            </div>
-	<%-- 					            ${myReview} --%>
 				            <c:forEach var="review" items="${myReview}" varStatus="status">
 				            	<div class="review">
 								    <div class="r_header">
@@ -103,24 +105,26 @@
 								            <div class="date">${review.review_date}</div>
 								        </div>
 								    </div>
-						            <div class="stars">
-						            	<span style="width: 80%;"></span>
-						            	<h4>${review.review_score}</h4>
-						            </div>
+						            <div class=rating>
+										<i class="fa-solid fa-star" ></i>
+										<span><b>${review.review_score}</b></span>
+									</div>
 								    <div class="review-text">${review.review_content}</div>
 								</div>
 				            </c:forEach>
-						</div>
+						</div><!-- tabmenu 03 -->
 					</div><!-- tabcontent(클래스소개) 끝 -->
-			  	</div>
+			  	</div><!-- container -->
 				<div class="cls-event-card">
-					<div class="cls-event-card-header">얼리버드 할인 중</div>
+					<div class="cls-event-card-header">결제하기</div>
 					<div class="cls-event-card-body">
-						<div class="price">88,200 원</div>
-						<div>
-						    <span class="percentage">30%</span>
-						    <span class="discount">199,000원</span>
+						<div class="price">
+							<fmt:formatNumber pattern="#,###">${course[0].class_price}</fmt:formatNumber>원	
 						</div>
+<!-- 						<div> -->
+<!-- 						    <span class="percentage">30%</span> -->
+<!-- 						    <span class="discount">199,000원</span> -->
+<!-- 						</div> -->
 					</div>
 					<div class="cls-event-card-footer">
 						<button class="apply-button" onclick="applyForCourse('${course[0].class_id}', '${param.codetype}')"><i class="fa-solid fa-cart-arrow-down"></i> 수강신청 하기</button>
@@ -129,8 +133,9 @@
 							<button class="fav-on" style="display:none;" onclick="deleteToWishList('${course[0].class_id}')"><i class="fa-solid fa-heart-circle-minus"></i> 관심목록에서 삭제</button>
 						</div>
 					</div>
-				</div>
-			</div>
+				</div><!-- cls-event-card -->
+				
+			</div><!-- cls-wrap detail -->
 		        
 	        <section class="recommended-classes">
 	            <h2>강사의 다른 클래스 보기</h2>
@@ -139,7 +144,7 @@
 					    <div class="card">
 					        <img src="" alt="Class Image">
 				            <div class="rating">
-				                <span class="star">★</span>  (+ ???? )
+				                <span class="star"><i class="fa-solid fa-star"></i></span>  (+ ???? )
 				            </div>
 					        <div class="card-content">
 					            <div class="category">IT/개발</div>

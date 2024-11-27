@@ -32,7 +32,7 @@
 			<div class="pay-wrap">
 				<article class="ord-box">
 					<div class="infos">
-						<span class="status"><i class="fa-solid fa-check"></i>결제완료</span>
+						<span class="result"><i class="fa-solid fa-check"></i>결제완료</span>
 						<div class="info">
 							<span>주문번호</span>
 							<span class="num">${payinfo.merchant_uid}</span>

@@ -148,9 +148,11 @@
     <script src="resources/admin/js/admClass.js"></script>
     <script th:inline="javascript">
    		var link = document.location.href;
-    	if (link.includes("Adm")) {
-    		document.getElementById("classCategory").classList.toggle("active");
-    		document.getElementById("classManage").classList.toggle("active");
+    	if (link.includes("AdmClass")) {
+    		document.querySelector("#classCategory").parentElement.previousElementSibling.classList.add("show");
+    		document.querySelector("#classCategory").parentElement.previousElementSibling.classList.add("active");
+    		document.querySelector("#classCategory").parentElement.classList.add("show");
+    		document.querySelector("#classCategory").classList.toggle("active");
     	};
     	
     	function addSubCateRow() {

@@ -79,8 +79,8 @@
 							<td>주소</td>
 							<td>
 								<div class="memModifyAddress">
-									<input class="form-control w-50" type="text" name="mem_post_code" value="${member.mem_post_code}" required />
-									<button type="button" class="btn btn-lg btn-primary ms-3" onclick="searchAddress()">주소찾기</button>
+									<input class="form-control w-50" type="text" id="mem_post_code" name="mem_post_code" value="${member.mem_post_code}" required />
+									<button type="button" class="btn btn-lg btn-primary ms-3" onclick="search_address()">주소찾기</button>
 								</div>
 								<div>
 									<input class="form-control w-75" type="text" name="mem_address1" value="${member.mem_address1}" required />
@@ -115,6 +115,7 @@
 
     <!-- Template Javascript -->
     <script src="resources/admin/js/main.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script type="text/javascript">
 		let link = document.location.href;
 		if (link.includes("AdminFaqModify")) {
@@ -123,6 +124,25 @@
 			document.querySelector("#AdmFaq").parentElement.classList.add("show");
 			document.querySelector("#AdmFaq").classList.toggle("active");
 		};
+		
+		function search_address() {
+			new daum.Postcode({
+				oncomplete : function(data) {
+					console.log(data);
+					document.joinForm.mem_post_code.value = data.zonecode;
+
+					let address = data.address;
+					if (data.buildingName != "") {
+						address += " (" + data.buildingName + ")";
+					}
+
+					document.joinForm.mem_address1.value = address;
+
+					document.joinForm.mem_address2.focus();
+
+				}
+			}).open();
+		}
 	</script>
 </body>
 </html>

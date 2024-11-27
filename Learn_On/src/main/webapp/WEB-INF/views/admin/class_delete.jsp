@@ -126,8 +126,10 @@
     <script type="text/javascript">
     		var link = document.location.href;
 	    	if (link.includes("Adm")) {
-	    		document.getElementById("classDelete").classList.toggle("active");
-	    		document.getElementById("classManage").classList.toggle("active");
+	    		document.querySelector("#classCategory").parentElement.previousElementSibling.classList.add("show");
+	    		document.querySelector("#classCategory").parentElement.previousElementSibling.classList.add("active");
+	    		document.querySelector("#classCategory").parentElement.classList.add("show");
+	    		document.querySelector("#classCategory").classList.toggle("active");
 	    	};
     </script>
 </body>

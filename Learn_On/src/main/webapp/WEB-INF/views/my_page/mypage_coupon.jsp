@@ -54,7 +54,7 @@
 					    			</c:when>
 					    			<c:otherwise>
 						    			<c:forEach var="coupon" items="${myCoupon}">
-							    			<li class="<c:if test='${coupon.COUPON_STATUS >= 2}'>end</c:if>">
+							    			<li class="<c:if test='${coupon.COUPON_STATUS >= 2 or coupon.COUPON_ISUSED >= 2}'>end</c:if>">
 								    			<p class="c-name">${coupon.COUPON_NAME}</p>
 								    			<p class="c-exp-date">
 								    				사용기한 : ~ 

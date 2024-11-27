@@ -100,7 +100,7 @@ html, body {
     justify-content: center;
     gap: 20px;
 }
-.btns-box .btnHome, .btns-box .btnMypage {
+.btns-box .btnHome, .btns-box .btnMypage, .btns-box .btnReceipt{
     border-radius: 6px;
     background-color: var(--primary);
     font-weight: 600;

@@ -14,10 +14,9 @@ local.properties
 .loadpath
 .recommenders
 
-#------------------
+#--------------------------------
 # appdata.properties
 appdata.properties
-#------------------
 
 # External tool builders
 .externalToolBuilders/

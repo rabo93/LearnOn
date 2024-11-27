@@ -174,5 +174,8 @@ public class AdminService {
 													.collect(Collectors.groupingBy(MyPaymentVO::getMerchant_uid));
 		return result;
 	}
+	public int deleteCurHistory(Object cur_id) {
+		return mapper.deleteCurHistory(cur_id);
+	}
 
 }

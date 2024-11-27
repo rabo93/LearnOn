@@ -147,6 +147,12 @@
 		WHERE CLASS_ID = #{class_id}
 	</delete>
 	
+	<delete id="deleteCurHistory">
+		DELETE
+		FROM CURRICULUM
+		WHERE CUR_id = #{cur_id}
+	</delete>
+	
 	<!-- 임시 -->
 	<select id="selectClass">
 		SELECT	*
@@ -397,6 +403,7 @@
 	<select id="getSubCate" resultType="map">
 		SELECT *
 		FROM COMMONCODETYPE
+		ORDER BY CODETYPE, CODETYPE_ID
 	</select>
 	
 	<!-- 대분류 인서트 -->

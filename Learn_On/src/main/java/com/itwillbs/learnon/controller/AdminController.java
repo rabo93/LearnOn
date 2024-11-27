@@ -242,6 +242,7 @@ public class AdminController {
 	@GetMapping("AdmClassAdd")
 	public String admin_class_add(Model model) {
 		model.addAttribute("getMainCate", adminService.getMainCate());
+		model.addAttribute("getInstructor", adminService.getInstructorMemberList());
 		return "admin/class_add";
 	}
 	
@@ -394,28 +395,20 @@ public class AdminController {
 //		List<AdminVO> classLoad = adminService.getClass(VO);
 //		System.out.println("========================classLoad : " + adminService.getCurriculum(VO));
 //		
-//		if (classLoad == null) {
-//			model.addAttribute("msg", "클래스 불러오기 실패!");
-//			return "admin/fail";
-//		} else {
-//			return "admin/class_list_modify";
-//		}
-		
-//		return "";
-		return "admin/class_list_modify";
+		if (classLoad == null) {
+			model.addAttribute("msg", "클래스 불러오기 실패!");
+			return "admin/fail";
+		} else {
+			return "admin/class_list_modify";
+		}
 	}
 	
 	// 어드민 클래스 수정 로직
 	@PostMapping("AdmClassListModify")
 	public String adm_class_modify(int class_id, AdminVO adm, HttpSession session, Model model) {
 		
-//		adm.setClass_id(class_id);
 		AdminVO classInfo = adminService.getIdClass(class_id);
-//		System.out.println("==========================" + classInfo.getClass_pic1());
-//		System.out.println("==========================" + adm.getClass_pic1());
-		List<Map<String, Object>> curIndex = adminService.getCurriculum(class_id);
-//		System.out.println("==========================" + adm.getCur_video());
-//		System.out.println("==========================" + curIndex.get(0).get("CUR_VIDEO"));
+//		List<Map<String, Object>> curIndex = adminService.getCurriculum(class_id);
 		
 		// 커리큘럼 내용 가져오기
 		String[] arrCurTitle = adm.getCur_title().split(",");
@@ -454,7 +447,6 @@ public class AdminController {
 		} else {
 			adm.setClass_pic1(fileName);
 			Path picPath = Paths.get(delRealPath, classInfo.getClass_pic1());
-			System.out.println("==============================" + picPath);
 			try {
 				Files.deleteIfExists(picPath);
 			} catch (IOException e) {
@@ -476,7 +468,6 @@ public class AdminController {
 	@GetMapping("AdmClassListDelete")
 	public String admin_class_list_delete(int class_id, Model model, HttpSession session) {
 		
-//		AdminVO classIndex = adminService.getClass(class_id).get(0);
 		AdminVO classIndex = adminService.getIdClass(class_id);
 		List<Map<String, Object>> curIndex = adminService.getCurriculum(class_id);
 		String realPath = session.getServletContext().getRealPath(uploadPath);
@@ -506,13 +497,21 @@ public class AdminController {
 			}
 		}
 			
-//		int deleteCount = adminService.deleteClass(class_id.getClass_id());
-//		int deleteCurriculum = adminService.deleteCurriculum(class_id.getClass_id());
+		int deleteCount = adminService.deleteClass(class_id);
+		int deleteCurriculum = adminService.deleteCurriculum(class_id);
+		if (deleteCount < 0 || deleteCurriculum < 0) {
+			model.addAttribute("msg", "클래스 삭제 실패하였습니다");
+			return "admin/fail";
+		}
 		
-//		if (deleteCount < 0 || deleteCurriculum < 0) {
-//			model.addAttribute("msg", "클래스 삭제 실패하였습니다");
-//			return "admin/fail";
-//		}
+		for (int i = 0; i < curIndex.size(); i++) {
+			Object cur_id = curIndex.get(i).get("CUR_ID");
+			int deleteCurHistory = adminService.deleteCurHistory(cur_id);
+			if (deleteCurHistory < 0) {
+				model.addAttribute("msg", "클래스 삭제 실패하였습니다");
+				return "admin/fail";
+			}
+		}
 		
 		return "redirect:/AdmClassList";
 	}

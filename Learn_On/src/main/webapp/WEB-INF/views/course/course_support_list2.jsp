@@ -23,14 +23,42 @@
 	</header>
 	<main>
 		<div class="wrapper">
-			<div class="cls-wrap detail">
+			<div class="cls-wrap">
+				<div class="cls-event-card">
+			        <div class="cls-event-card-header">
+			            얼리버드 할인 중
+			        </div>
+			        <div class="cls-event-card-body">
+			            <div class="price">88,200 원</div>
+			            <div>
+			                <span class="percentage">30%</span>
+			                <span class="discount">199,000원</span>
+			            </div>
+			        </div>
+			        <div class="cls-event-card-footer">
+
+			            <button class="apply-button" onclick="applyForCourse('${course[0].class_id}', '${param.codetype}')">수강신청 하기</button>
+						<div  id="${course[0].class_id}">
+				            <button class="fav-off" style="display:block;" onclick="addToWishList('${course[0].class_id}')">
+									관심목록에 추가
+							</button>
+							<button class="fav-on" style="display:none;" onclick="deleteToWishList('${course[0].class_id}')">
+									관심목록에서 삭제
+							</button>
+						</div>
+			        </div>
+			    </div>
+			
+			
 				<div class="container">
-					<section class="breadcrumb">
-						<a href="#">카테고리</a> <i class="fa-solid fa-angle-right"></i>
-						<a href="Category?codetype="></a> <i class="fa-solid fa-angle-right"></i>
-						<span>${course[0].class_category}</span>
+					 <section class="breadcrumb">
+<!-- 			            <a href="#">카테고리</a> &gt; <a href="#">IT/프로그래밍</a> &gt; 백엔드 -->
+			            <a href="#">카테고리</a> &gt; <a href="Category?codetype=${param.codetype}">${course[0].catename}</a> &gt;${course[0].class_category}
+			            
 			        </section>
+			
 			        <section class="class-details">
+			       
 			            <h1>${course[0].class_title}</h1>
 						<p>${course[0].class_intro}</p>       
 			            <div class="cls_det_rating">
@@ -46,7 +74,7 @@
 				            	<h4>총  ${fn:length(total_cur)}강 (  ${course[0].class_runtime}분)</h4>
 				            </div>
 			            </div>
-			        </section><!-- class-details -->
+			        </section>
 			        <c:set var="count" value="${courseSupportList}" />
 					<c:set var="total_re" value="${myReview}" />
 					<ul class="tabnav">
@@ -58,12 +86,16 @@
 					<div class="tabcontent">
 						<div class="tabmenu" id="tab04">
 							<div class="question_title">
+								
+								
 								<h2>문의</h2><h4>(전체 ${fn:length(count)} 개)</h4>
 <%-- 										<p>총 개수: ${fn:length(numbers)}</p> --%>
 					            <button onclick="window.location.href='CourseSupport?class_id=${course[0].class_id}'">
 					            	문의작성하기
 					            </button>
 				            </div>
+					            
+					            
 					            
 				            <c:set var="pageNum" value="1"/>
 				            <%-- pageNum 파라미터가 존재할 경우 pageNum 변수에 ㅎ ㅐ당 파라미터값 저장 --%>
@@ -186,54 +218,32 @@
 								>			
 							</section>
 							<!-- 페이징 처리 끝 -->
-						</div><!-- tabmenu -->
+							</div>
 						
 					</div><!-- tabcontent(클래스소개) 끝 -->
-				</div><!-- container -->
-				<div class="cls-event-card">
-			        <div class="cls-event-card-header">
-			            클래스 가격
-			        </div>
-			        <div class="cls-event-card-body">
-			            <div class="price">88,200 원</div>
-			            <div>
-			                <span class="percentage">30%</span>
-			                <span class="discount">199,000원</span>
-			            </div>
-			        </div>
-			        <div class="cls-event-card-footer">
-	
-			            <button class="apply-button" onclick="applyForCourse('${course[0].class_id}', '${param.codetype}')">수강신청 하기</button>
-						<div  id="${course[0].class_id}">
-				            <button class="fav-off" style="display:block;" onclick="addToWishList('${course[0].class_id}')">
-									관심목록에 추가
-							</button>
-							<button class="fav-on" style="display:none;" onclick="deleteToWishList('${course[0].class_id}')">
-									관심목록에서 삭제
-							</button>
-						</div>
-			        </div>
-			    </div>
-			</div><!-- cls-wrap detail -->
-			<section class="recommended-classes">
-	            <h2>강사의 다른 클래스 보기</h2>
-				<div class="card-container">
-					<c:forEach var="others" items="${requestScope.courseTeacher}">
-					    <div class="card">
-					        <img src="" alt="Class Image">
-				            <div class="rating">
-				                <span class="star">★</span>  (+ ???? )
-				            </div>
-					        <div class="card-content">
-					            <div class="category">IT/개발</div>
-					            <div class="title">${others.class_title}</div>
-					            <div class="description">${others.mem_id}</div>
-					        </div>
-					    </div>
-					</c:forEach>
-	            </div>
-	     	</section>
-		</div><!-- wrapper -->
+				</div>
+				<section class="recommended-classes">
+		            <h2>강사의 다른 클래스 보기</h2>
+					<div class="card-container">
+						<c:forEach var="others" items="${requestScope.courseTeacher}">
+						    <div class="card">
+						        <img src="" alt="Class Image">
+					            <div class="rating">
+					                <span class="star">★</span>  (+ ???? )
+					            </div>
+						        <div class="card-content">
+						            <div class="category">IT/개발</div>
+						            <div class="title">${others.class_title}</div>
+						            <div class="description">${others.mem_id}</div>
+						        </div>
+						    </div>
+						</c:forEach>
+		            </div>
+       		 	</section>
+			  </div>
+
+			</div>
+		</div>
 	</main>
 	<footer>
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>

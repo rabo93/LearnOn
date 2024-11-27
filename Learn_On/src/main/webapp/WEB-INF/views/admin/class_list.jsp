@@ -130,9 +130,11 @@
     <script src="resources/admin/js/admClass.js"></script>
     <script type="text/javascript">
     		var link = document.location.href;
-	    	if (link.includes("Adm")) {
-	    		document.getElementById("classList").classList.toggle("active");
-	    		document.getElementById("classManage").classList.toggle("active");
+	    	if (link.includes("AdmClass")) {
+	    		document.querySelector("#classList").parentElement.previousElementSibling.classList.add("show");
+	    		document.querySelector("#classList").parentElement.previousElementSibling.classList.add("active");
+	    		document.querySelector("#classList").parentElement.classList.add("show");
+	    		document.querySelector("#classList").classList.toggle("active");
 	    	};
     </script>
 </body>

@@ -27,18 +27,32 @@ public interface AdminMapper {
 	int insertMainCate(AdminVO vO);
 	int insertSubCate(AdminVO vO);
 
-	// 클래스
+	// ============== 클래스 ==============
+	// 클래스 조회
 	List<AdminVO> getClass(AdminVO vO);
+	//클래스 목록 조회
 	List<AdminVO> getClassList();
+	// 커리큘럼 조회
 	List<Map<String, Object>> getCurriculum(int class_id);
+	// 커리큘럼 등록
 	int insertCurriculum(AdminVO insertCur);
+	// 클래스 등록
 	int insertClass(AdminVO vO);
+	// 클래스 썸네일 등록
 	int insertClassPic(AdminVO vO);
+	// 커리큘럼 영상 등록
 	int insertCurVideo(AdminVO vO);
+	// 클래스 아이디 조회
 	int getClassId();
+	// 클래스 삭제
 	int deleteClass(int i);
+	// 커리큘럼 삭제
 	int deleteCurriculum(int i);
+	// 커리큘럼 히스토리 삭제
+	int deleteCurHistory(Object cur_id);
+	// 클래스 수정
 	int updateClass(AdminVO vO);
+	// 커리큘럼 수정
 	int updateCurriculum(AdminVO vO);
 	
 	// ============== 멤버 ==========================

@@ -40,7 +40,7 @@
 				<div class="contents">
 					<!-- contents -->
 					<section class="info-set-wrap">
-						<form action="MemberModify" name="MemberInfo"class="my-frm" method="post" enctype="multipart/form-data">
+						<form action="MyInfo" name="MemberInfo"class="my-frm" method="post" enctype="multipart/form-data">
 							<div class="set">
 <!-- 								<label>프로필 변경</label> -->
 <!-- 								<div> -->

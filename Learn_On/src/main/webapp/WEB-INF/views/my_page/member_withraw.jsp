@@ -14,6 +14,7 @@
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/modal.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/rating.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/passwd.css">
 
 </head>
 <body>
@@ -21,12 +22,15 @@
 		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>
 	</header>
 	<main>
-		<form action="MemberWithdraw" method="post">
-			<h3>탈퇴 확인을 위해 비밀번호를 입력해주세요</h3>
-			<input type="password" id="mem_passwd" name="mem_passwd" placeholder="비밀번호를 입력해주세요" required>
-			<input type="submit" value="회원탈퇴">
+	<div class="login-wrap">
+		<form action="MemberWithdraw" method="post" class="passwdFinderForm">
+			<h3 class="ttl">탈퇴 확인을 위해 비밀번호를 입력해주세요 <span style="color: red;">*</span></h3>
+			<input type="password" id="mem_passwd" name="mem_passwd" placeholder="비밀번호를 입력" required>
+			<div id="form-controls">		
+				<button type="submit">회원탈퇴</button>
+			</div>
 		</form>
-		
+	</div>	
 	</main>
 	<footer>
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>

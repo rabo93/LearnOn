@@ -317,9 +317,10 @@ public class MemberController {
 		}
 		
 		int updateCount = memberService.modifyMember(map);
-		
+		System.out.println("@@@@@@@@@@수정 왜안돼????");
 		if(updateCount > 0) {
 			model.addAttribute("msg", "회원정보 수정성공");
+			System.out.println("@@@@@@@@@@수정 왜안돼222222222222????");
 			
 			return"result/fail";
 		}else {

@@ -53,7 +53,7 @@
 									이름
 								</label>
 								<div>
-									<input type="text" name="mem_name" id="name" value="${member.mem_name}" readonly>
+									<input type="text" name="mem_name" id="name" placeholder="${member.mem_name}" readonly>
 								</div>
 							</div>
 							<div class="set">
@@ -61,7 +61,7 @@
 									아이디
 								</label>
 								<div>
-									<input type="text" name="mem_id" id="id" value="${member.mem_id}" readonly>
+									<input type="text" name="mem_id" id="id" placeholder="${member.mem_id}" readonly>
 								</div>
 							</div>
 							<div class="set">
@@ -105,7 +105,7 @@
 							<div class="set">
 								<label>이메일 </label>
 								<div>
-									<input type="text" size="15" name="mem_email1" id="mem_email1" value="${member.mem_email}" readonly>
+									<input type="text" size="15" name="mem_email1" id="mem_email1" placeholder="${member.mem_email}" readonly>
 <!-- 									<select id="emailDomain" class="sel-frm"> -->
 <!-- 										<option value="">직접입력</option> -->
 <!-- 										<option value="naver.com">naver.com</option> -->

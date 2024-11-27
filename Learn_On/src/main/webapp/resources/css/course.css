@@ -133,6 +133,8 @@
 .cls-cate .cate-li button.on a {color:var(--white);font-weight:600;}
 .cls-cate button a {color:var(--dark);font-weight:500;}
 
+.cls-wrap .container {flex:0 0 calc(100% - 250px);}
+
 /*    course_detail.jsp     */
 
 .search-bar {

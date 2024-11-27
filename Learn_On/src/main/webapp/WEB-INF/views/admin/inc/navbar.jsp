@@ -45,7 +45,7 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                             <i class="fas fa-user" alt="" style="width: 40px; height: 40px;"></i>
-                            <span class="d-none d-lg-inline-flex">user</span>
+                            <span class="d-none d-lg-inline-flex">${sessionScope.sNick}</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
                             <a href="#" class="dropdown-item">내 프로필</a>

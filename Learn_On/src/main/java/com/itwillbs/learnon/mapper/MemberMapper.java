@@ -48,12 +48,12 @@ public interface MemberMapper {
 			@Param("mem_id") String id
 			, @Param("mem_status") int mem_status);
 
+	//새로운 비번 올리기
 	int updateTempPasswd(
-			@Param("temPasswd") String temPasswd , 
+			@Param("heshePasswd") String heshePasswd , 
 			@Param("mem_email") String mem_email);
 
 
-	//새로운 비번 올리기
 
 
 	

@@ -78,8 +78,9 @@ public class MemberController {
 			model.addAttribute("msg", "탈퇴한 회원입니다!");
 			return "result/fail";
 		}else { //로그인 성공
-			session.setAttribute("sId", dbMember.getMem_name());
-			session.setAttribute("sId", member.getMem_id());
+			session.setAttribute("sId", dbMember.getMem_id());
+			session.setAttribute("sNick", dbMember.getMem_nick());
+			session.setAttribute("sGrade", dbMember.getMem_grade());
 			session.setMaxInactiveInterval(60 * 120);
 //			return "redirect:/";
 			
@@ -104,6 +105,7 @@ public class MemberController {
 	@PostMapping("MemberJoin")
 	public String join(MemberVO member, Model model, BCryptPasswordEncoder passwordEncoder, HttpSession session,AttendanceVO attendance) {
 	    System.out.println("member : " + member);
+	    
 	    // 비밀번호 암호화
 	    String securePasswd = passwordEncoder.encode(member.getMem_passwd());
 	    member.setMem_passwd(securePasswd);
@@ -114,20 +116,19 @@ public class MemberController {
 	        model.addAttribute("msg", "파일 업로드 중 오류가 발생했습니다.");
 	        return "result/fail";
 	    }
-
+	    
 	    // 회원 가입 처리
 	    int insertCount = memberService.registMember(member);
 	    if (insertCount > 0) {
+	    	String email = member.getMem_email1() + "@" + member.getMem_email2();
 	        session.setAttribute("sId", member.getMem_name());
-	        session.setAttribute("sMail", member.getMem_email());
-	        System.out.println("########################"+member.getMem_email());
-	        System.out.println("########################"+member.getMem_name());
+	        session.setAttribute("sMail", email);
 
 //	         이메일 인증 처리
 	        handleEmailAuth(member);
+
 	        
 	        //*****MemberJoin시 Attendance table에 mem_id insert 해야함******
-	        
 	        int addAttendance = mypageService.addMemId(member.getMem_id());
 	        
 	        return "redirect:/MemberJoinSuccess";
@@ -334,7 +335,7 @@ public class MemberController {
 	
 	/******************비밀번호 찾기******************/
 	@PostMapping("PasswdFinder")
-	public String passwdFinderForm(String mem_email,String mem_name,MemberVO member, Model model,HttpSession session) {
+	public String passwdFinderForm(String mem_email,String mem_name,MemberVO member, Model model,HttpSession session,BCryptPasswordEncoder passwordEncoder) {
 	    try {
 	        MemberVO DBmember = memberService.getMemberEmail(mem_email);
 	        if (DBmember == null || !member.getMem_name().equals(mem_name)) {
@@ -342,9 +343,10 @@ public class MemberController {
 	            return "result/fail";
 	        }
 	        
-	        String temPasswd = GenerateRandomCode.getRandomCode(5);
-	        System.out.println(temPasswd);
-	        int updateCount = memberService.setTempPasswd(temPasswd,mem_email);
+	        String temPasswd = GenerateRandomCode.getRandomCode(8);
+	        String heshePasswd = passwordEncoder.encode(temPasswd); //임시비밀번호 해싱처리
+	        System.out.println(heshePasswd);
+	        int updateCount = memberService.setTempPasswd(heshePasswd,mem_email);
 	        System.out.println("@@@@@@@@@@@@@@@@@@@@"+member);
 	        
 	        if(updateCount > 0) {
@@ -365,24 +367,7 @@ public class MemberController {
 	    }
 	}
 	
-//	@PostMapping("UpdatePassword")
-//	public String updatePassword(String mem_passwd,HttpSession session,Model model,BCryptPasswordEncoder passwordEncoder) {
-//	    Boolean isVerified = (Boolean) session.getAttribute("isVerified");
-//	    if(isVerified == null || !isVerified) {
-//	    	model.addAttribute("msg", "본인확인이 필요합니다");
-//	    	return "result/fail";
-//	    }
-//	    String email = (String) session.getAttribute("email");
-//	   
-//	    // 비밀번호 암호화 및 저장
-//        String encodedPassword = passwordEncoder.encode(mem_passwd);
-//        memberService.updatePasswd(email, encodedPassword);
-//        
-//        session.invalidate();
-//        
-//        model.addAttribute("msg", "비밀번호가 성공적으로 변경되었습니다.");
-//        return "result/success";
-//	}
+
 	/***********회원탈퇴*************/
 	@GetMapping("MemberWithdraw")
 	public String memberWithdraw(HttpSession session , Model model) {

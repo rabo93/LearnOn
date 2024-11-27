@@ -113,7 +113,7 @@ public interface MypageMapper {
 
 	// 관리자 - 1:1 답변 작성/수정
 	int updateSupportAnswer(SupportBoardVO support);
-
+	
 	// ======================================================================
 	// 출석체크 가져오기
 	AttendanceVO selectAttendance(String id);
@@ -125,6 +125,8 @@ public interface MypageMapper {
 	int insertMemId(String mem_id);
 
 	int insertAttendance(AttendanceVO attendance);
+
+
 
 	
 	

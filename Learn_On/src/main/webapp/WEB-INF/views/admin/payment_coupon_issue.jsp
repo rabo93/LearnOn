@@ -44,9 +44,7 @@
 			<div class="container-fluid pt-4 px-4">
 				<div class="bg-light rounded p-4">
 					<div class="d-flex mb-5">
-						<h5 class="me-auto tableSubject">쿠폰 관리</h5>
-						<button type="button" class="btn btn-lg btn-primary ms-3" onclick="location.href='AdmCouponWrite'">쿠폰 등록</button>
-						<button type="button" class="btn btn-lg btn-primary ms-3" onclick="deleteCoupon()">쿠폰 삭제</button>
+						<h5 class="me-auto tableSubject">쿠폰 발급</h5>
 					</div>
 					<form class="d-flex input-group mb-3" method="get">
 						<select class="form-select" name= "searchType" aria-label="Default select example">
@@ -56,52 +54,75 @@
 						<input type="text" class="form-control" name="searchKeyword" placeholder="쿠폰 제목 검색" aria-label="Recipient's username" aria-describedby="button-addon2">
 						<button class="btn btn-primary" type="submit" id="button-addon2">검색</button>
 					</form>
-						<table class="table table-striped">
-							<colgroup>
-								<col width="5%">
-								<col width="5%">
-								<col width="30%">
-								<col width="20%">
-								<col width="10%">
-								<col width="10%">
-								<col width="10%">
-								<col width="10%">
-							</colgroup>
-							<thead>
-								<tr>
-									<th scope="col">#</th>
-									<th scope="col">쿠폰 번호</th>
-									<th scope="col">쿠폰 이름</th>
-									<th scope="col">쿠폰 코드</th>
-									<th scope="col">쿠폰 할인률</th>
-									<th scope="col">쿠폰 유효기간</th>
-									<th scope="col">쿠폰 상태</th>
-									<th scope="col">수정</th>
-								</tr>
-							</thead>
-							<tbody>
-								<c:forEach items="${couponList}" var="couponBoard" varStatus="status">
+					<div class="couponIssueContainer">
+						<div class="couponIssueBox">
+							<table class="table table-striped">
+								<colgroup>
+									<col width="10%">
+									<col width="30%">
+									<col width="20%">
+									<col width="20%">
+									<col width="20%">
+								</colgroup>
+								<thead>
 									<tr>
-										<th><input class="form-check-input" type="checkbox" id="gridCheck1" name="coupon_id" value="${couponBoard.coupon_id}"></th>
-										<td><input class="form-control coupon" type="text" aria-label="default input example" value="${couponBoard.coupon_id}" readonly></td>
-										<td><input class="form-control coupon" type="text" aria-label="default input example" value="${couponBoard.coupon_name}" readonly></td>
-										<td><input class="form-control coupon" type="text" aria-label="default input example" value="${couponBoard.coupon_code}" readonly></td>
-										<td><input class="form-control coupon" type="text" aria-label="default input example"
-											<c:choose>
-												<c:when test="${couponBoard.discount_type eq 1}">value="-${couponBoard.discount_percent}%"</c:when>
-												<c:when test="${couponBoard.discount_type eq 2}">value="-${couponBoard.discount_amount}원"</c:when>
-											</c:choose> readonly></td>
-										<td><input class="form-control coupon" type="text" aria-label="default input example" value="${couponBoard.c_expiry_date}" readonly></td>
-										<td><input class="form-control coupon" type="text" aria-label="default input example"
-											<c:choose>
-												<c:when test="${couponBoard.coupon_status eq 1}">value="사용가능"</c:when>
-												<c:when test="${couponBoard.coupon_status eq 2}">value="사용불가"</c:when>
-											</c:choose> readonly></td>
-										<td><button type="button" class="btn btn-lg btn-primary ms-3" onclick="couponModify(${couponBoard.coupon_id})">수정하기</button></td>
-                             		</tr>
-                               	</c:forEach>
-							</tbody>
-						</table>
+										<th scope="col">쿠폰 번호</th>
+										<th scope="col">쿠폰 이름</th>
+										<th scope="col">쿠폰 할인률</th>
+										<th scope="col">쿠폰 유효기간</th>
+										<th scope="col">쿠폰 상태</th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach items="${couponList}" var="couponBoard" varStatus="status">
+										<tr onclick="showMembers(${status.index})">
+											<td><input id="couponIdx_${status.index}" class="form-control couponIdx coupon" type="text" aria-label="default input example" value="${couponBoard.coupon_id}" readonly></td>
+											<td><input id="couponName_${status.index}" class="form-control couponName coupon" type="text" aria-label="default input example" value="${couponBoard.coupon_name}" readonly></td>
+											<td><input class="form-control coupon" type="text" aria-label="default input example"
+												<c:choose>
+													<c:when test="${couponBoard.discount_type eq 1}">value="-${couponBoard.discount_percent}%"</c:when>
+													<c:when test="${couponBoard.discount_type eq 2}">value="-${couponBoard.discount_amount}원"</c:when>
+												</c:choose> readonly></td>
+											<td><input class="form-control coupon" type="text" aria-label="default input example" value="${couponBoard.c_expiry_date}" readonly></td>
+											<td><input class="form-control coupon" type="text" aria-label="default input example"
+												<c:choose>
+													<c:when test="${couponBoard.coupon_status eq 1}">value="사용가능"</c:when>
+													<c:when test="${couponBoard.coupon_status eq 2}">value="사용불가"</c:when>
+												</c:choose> readonly></td>
+	                            		</tr>
+	                              	</c:forEach>
+								</tbody>
+							</table>
+						</div>
+						<form action="AdmCouponIssue" class="couponMemberForm d-flex mb-3" method="post">
+							<div class="couponIssueMem">
+								<div class="couponMember-btn">
+									<input class="couponIdHidden" type="text" name="coupon_id" hidden>
+									<button type="submit" class="btn btn-lg btn-primary">쿠폰 발급</button>
+								</div>
+								<table class="table table-striped-columns">
+									<colgroup>
+										<col width="20%">
+										<col width="40%">
+										<col width="40%">
+									</colgroup>
+									<tr>
+										<th scope="col">쿠폰 번호</th>
+										<th scope="col" colspan="2">쿠폰 이름</th>
+									</tr>
+									<tr>
+										<th><input class="form-control couponIssueIdx coupon" type="text" aria-label="default input example" readonly></th>
+										<td colspan="2"><input class="form-control couponIssueName coupon" type="text" aria-label="default input example" readonly></td>
+									</tr>
+									<tr>
+										<th><input id="couponMemberCheckAll" class="form-check-input" type="checkbox" value="${couponBoard.coupon_id}"></th>
+										<th class="couponMemberTitle">아이디</th>
+										<th class="couponMemberTitle">이름</th>
+									</tr>
+								</table>
+							</div>
+						</form>
+					</div>
 						<section id="pagingArea">
 							<button
 							onclick="location.href='AdmPayListCoupon?pageNum=${pageInfo.startPage - pageInfo.pageListLimit}&searchType=${searchType}&searchKeyword=${searchKeyword}'"
@@ -160,16 +181,16 @@
     <script src="resources/admin/js/main.js"></script>
     <script type="text/javascript">
     	if (performance.navigation.type === 1) {
-			location.href= "AdmPayListCoupon";
+			location.href= "AdmCouponIssue";
 		}
     	
     	// 메뉴 활성화
 		let link = document.location.href;
-    	if (link.includes("AdmPayListCoupon")) {
-    		document.querySelector("#paymentCoupon").parentElement.previousElementSibling.classList.add("show");
-    		document.querySelector("#paymentCoupon").parentElement.previousElementSibling.classList.add("active");
-    		document.querySelector("#paymentCoupon").parentElement.classList.add("show");
-    		document.querySelector("#paymentCoupon").classList.toggle("active");
+    	if (link.includes("AdmCouponIssue")) {
+    		document.querySelector("#CouponIssue").parentElement.previousElementSibling.classList.add("show");
+    		document.querySelector("#CouponIssue").parentElement.previousElementSibling.classList.add("active");
+    		document.querySelector("#CouponIssue").parentElement.classList.add("show");
+    		document.querySelector("#CouponIssue").classList.toggle("active");
     	};
     </script>
 </body>

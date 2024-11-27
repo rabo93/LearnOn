@@ -22,4 +22,7 @@ public class MyPaymentVO {
 	private int pay_status;
 	private String receipt_url;
 	private int total_price; // 할인 전 합계금액
+	private String bank_name;
+	private String card_name;
+	private String imp_uid;
 }

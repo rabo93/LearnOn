@@ -25,13 +25,13 @@
 	padding-bottom: 12px;
 }
 
-.cls-cate .cate-li {
+
+.review_title, .cls-cate .cate-li {
 	display:flex;
 	gap:0 10px;
-	
 }
-.cls-cate .cate-li button.on {background:var(--primary); color:var(--white);}
-.cls-cate .cate-li form {margin-left:auto;}
+.cls-cate .cate-li  button.on {background:var(--primary); color:var(--white);}
+.cls-cate .cate-li form, .review_title  form {margin-left:auto;}
 .cls-cate button {
 	padding: 8px 14px;
 	font-size: 1rem;
@@ -39,7 +39,7 @@
 	background: var(--light-gray);
 	font-weight: 500;
 }
-.cls-cate .cate-li form select {
+.cls-cate .cate-li form select, .review_title form select{
 	background: var(--white);
     border: 0;
     color: var(--gray);
@@ -51,7 +51,7 @@
     height: 36px;
     margin-left: auto;
 }	
-.cls-cate .cate-li form input[type=submit] {
+.cls-cate .cate-li form input[type=submit], .review_title form input[type=submit]{
 	border:0;
 	padding:4px 10px;
 	height:36px;
@@ -132,6 +132,8 @@
 .cls-wrap .course-wrap {margin-bottom:20px;}
 .cls-cate .cate-li button.on a {color:var(--white);font-weight:600;}
 .cls-cate button a {color:var(--dark);font-weight:500;}
+
+.cls-wrap .container {flex:0 0 calc(100% - 250px);}
 
 /*    course_detail.jsp     */
 
@@ -330,6 +332,7 @@
 	margin-bottom: 2rem;
 	color: var(--dark);
 }
+/*
 .review_title select {
     margin-left: auto;
     border: 1px solid #ddd;
@@ -340,7 +343,7 @@
     color: var(--dark);
     border-radius: 4px;
 }
-
+*/
  .question_title button {
 	margin-left: auto;
 	margin-bottom: 10px; 
@@ -375,7 +378,7 @@
 }
 
 
-.review_title, .question_title, .cls_det_rating {
+.question_title, .cls_det_rating {
 	display: flex;
 	justify-content: flex-end;
 }
@@ -575,11 +578,49 @@
     color: #555;
 }
 
+/* ------ class가 없을 경우 표시 ------- */
+
+.no-items-container {
+  text-align: center;
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.no-items-container .icon {
+  font-size: 14rem;
+  margin-bottom: 1rem;
+}
+
+.no-items-container h1 {
+  font-size: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+.no-items-container p {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.no-items-container button {
+  padding: 0.7rem 1.5rem;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.no-items-container button:hover {
+  background-color: #0056b3;
+}
 
 
-
-
-
+/* ------ class가 없을 경우 표시 끝------- */
 #pageList {
 	margin: auto;
 	width: 1024px;

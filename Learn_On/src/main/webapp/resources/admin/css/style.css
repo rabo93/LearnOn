@@ -32,8 +32,11 @@
 /*** Button ***/
 .btn {
     transition: .5s;
-    font-size: 16px;
-/*     height: auto; */
+    font-size: 15px;
+    font-weight:600;
+    /*     height: auto; */
+    height: 38px;
+    padding: 0 10px;
 }
 
 .btn.btn-primary {
@@ -425,6 +428,52 @@ button:active {
 .AdmfaqDetail {
 	display: none;
 }
+
+.form-control.faq {
+	background-color: #fff;
+}
+
+/*=================== Coupon ==================*/
+.couponIssueContainer {
+	display: flex;
+	gap : 10px;
+}
+
+.couponIssueBox {
+	width: 50%;
+}
+
+.couponMemberForm {
+	width: 50%;
+}
+
+.couponIssueMem {
+	width: 100%;
+	display: none;
+}
+
+.couponMember-btn {
+	text-align: right;
+}
+
+.couponIssueMem th {
+	text-align: center;
+}
+
+.couponMember{
+	min-width: max-content;
+}
+
+.couponIdx,
+.couponIssueIdx {
+	text-align: center;
+}
+
+.form-control.coupon {
+	background-color: #fff;
+}
+
+
 /*=================== 페이징 처리 ==================*/
 #pagingArea {
     display: flex;
@@ -480,12 +529,27 @@ button:active {
 
 .notice-sch {display:flex;align-items: stretch;justify-content:center;gap: 10px;}
 
-
 /* 관리자 1:1문의 */
 .answer-st {font-weight:700;text-align:center;display: inline-block;padding: 4px 8px;border-radius: 50px;border: 1px solid #999;}
 .answer-st.status01 {background:#3f80ea; color:#fff;border-color:#3f80ea;}
 .answer-st.status02 {background:#a9a9a9; color:#fff;border-color:#a9a9a9;}
 .support-attach {margin-top:8px;}
-.supportDetailBox {display:none;}
-.answerDetailBox {display:none;}
+.supportDetailBox,
+.answerDetailBox,
+.paymentDetailBox {display:none;}
+.payment-item {padding: 10px;background: #fff;border-radius: 10px;border: 1px solid #ddd;display: flex;gap: 1rem;align-items: center;justify-content: space-between;max-width: 800px;margin: 4px auto;}
+.payment-item .ttl {font-weight: 700;font-size: 1rem;color: #17202b;}
+.payment-item .price {font-size: 15px;font-weight: 700;color: var(--primary);}
+.discount-item {padding: 10px;background: #fbd4e1;border-radius: 10px;border: 1px solid #ddd;display: flex;gap: 1rem;align-items: center;font-weight: 700;color: var(--bs-red);justify-content: space-between;max-width: 800px;margin: 4px auto;}
+.discount-item .ttl {font-weight: 700;font-size: 1rem;color: #17202b;}
+.discount-item .price {font-size: 15px;font-weight: 700;color: var(--bs-red);}
+.total-item {padding: 10px;background: #009cff;border-radius: 10px;border: 1px solid #009cff;display: flex;gap: 1rem;align-items: center;justify-content: space-between;max-width: 800px;margin: 4px auto;color: #fff;}
+.total-item .ttl {font-weight: 700;font-size: 1rem;color: #fff;}
+.total-item .price {font-size: 15px;font-weight: 700;color: #fff;}
 
+.payment-status {padding: 10px 20px;border-radius: 50px;background: #ccc;font-weight: 700;}
+.payment-status.st01 {background: #2196F3;color: #fff;}
+.payment-status.st02 {background: #f39db8;color: #dd1b4e;}
+.payment-status.st03 {background: #3d4753;color: #fff;}
+
+.table td.empty {padding:2rem;text-align:center;font-weight:600;}

@@ -26,36 +26,35 @@
 		
 		<form action="CourseSupportWrite" method="post" enctype="multipart/form-data">
  			<input type="hidden" name="class_id" value="${param.class_id}">
- 			<select name="c_support_category">
- 				<option value=''>카테고리 선택</option>
- 				<option value="01" <c:if test="${param.c_support_cate eq '01'}">selected</c:if>>수강/영상</option>
- 				<option value="02" <c:if test="${param.c_support_cate eq '02'}">selected</c:if>>결제/환불</option>
- 				<option value="03" <c:if test="${param.c_support_cate eq '03'}">selected</c:if>>기타</option>
- 			</select>
  			
-			<table>
-				<tr>
-					<td>제목</td>
-					<td><input type="text" name="c_support_subject"/></td>
-				</tr>
-				<tr>
-					<td>내용</td>
-					<td>
-						<textarea name="c_support_content" rows="15" cols="40" required="required" placeholder="문의할 내용"></textarea>
-					</td>
-				</tr>
-				<tr>
-					<td class=""><label for="board_file">첨부파일</label></td>
-					<td class="">
+ 			<section class="tb-con">
+ 				<div class="tb-hd">
+					제목 : <input type="text" name="c_support_subject"/><br><br>
+					작성자 : <span>${sId}</span><br><br>
+					문의사항 카테고리 선택 : 
+					<select name="c_support_category">
+		 				<option value=''>카테고리 선택</option>
+		 				<option value="01" <c:if test="${param.c_support_cate eq '01'}">selected</c:if>>수강/영상</option>
+		 				<option value="02" <c:if test="${param.c_support_cate eq '02'}">selected</c:if>>결제/환불</option>
+		 				<option value="03" <c:if test="${param.c_support_cate eq '03'}">selected</c:if>>기타</option>
+		 			</select>
+				</div>
+				<div class="tb-details">
+					<textarea name="c_support_content" rows="15" cols="40" required="required" placeholder="문의할 내용"></textarea>
+				</div>
+				<section class="tb-btns">
+					<div class="tb-files">
+						<label for="board_file">첨부파일</label>
 						<input type="file" name="file">
-					</td>
-				</tr>
-				
-			</table>
-			<input type="submit" value="작성하기">&nbsp;&nbsp;
-			<input type="button" value="취소" onclick="history.back()">
+					</div>
+				</section>
+				<section id="commandCell">
+					<input type="submit" value="작성하기">&nbsp;&nbsp;
+					<input type="button" value="취소" onclick="history.back()">
+				</section>
+			</section>
 		</form>
-	</article>
+	</div>
 </body>
 </html>
 

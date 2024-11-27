@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -25,9 +26,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.itwillbs.learnon.service.CartService;
 import com.itwillbs.learnon.service.CourseService;
 import com.itwillbs.learnon.service.MemberService;
 import com.itwillbs.learnon.service.MypageService;
+import com.itwillbs.learnon.vo.CartVO;
 import com.itwillbs.learnon.vo.CommonCodeTypeVO;
 import com.itwillbs.learnon.vo.CourseSupportVO;
 import com.itwillbs.learnon.vo.CourseVO;
@@ -42,24 +45,18 @@ public class CourseController {
 	MemberService memberService;
 	@Autowired
 	MypageService myService;
+	@Autowired
+	CartService cartService;
 	
 	
 	// 이클립스 상의 가상의 업로드 경로명 저장(프로젝트 상에서 보이는 경ㅇ로)
 	private String uploadPath = "/resources/upload";
 
+	// top.jsp에서 뿌릴 카테고리 공통메뉴
 	@ResponseBody
 	@GetMapping("TopMenu")
 	public String topMenu (Model model) {
-//		List<CommonCodeTypeVO> codeTypeAll = courseService.getCodeTypeAll();
-//		List<CommonCodeTypeVO> commonCode = courseService.getCommonCode();
-//
-//		model.addAttribute("commonCode", commonCode);
-//		model.addAttribute("codeTypeAll", codeTypeAll);
-		
-//		return "inc/top";
-		// =========================================
 		List<Map<String, String>> menuList = courseService.getMenuList();
-//		System.out.println(menuList);
 		JSONArray jo = new JSONArray(menuList);
 		
 		return jo.toString();
@@ -72,6 +69,15 @@ public class CourseController {
 		List<CourseVO> courseList = courseService.getFindCourseList(find_title);
 		model.addAttribute("courseList", courseList);
 		return "course/course_list"; 
+	}
+	
+	@GetMapping("BestCourse")
+	public String bestCourse(Model model) {
+		System.out.println("BestCourse 들어오나???");
+		// 강의 목록 출력
+		List<CourseVO> courseList = courseService.getCourseBestList();
+		model.addAttribute("courseList", courseList);
+		return "course/course_best_list";
 	}
 	
 	@GetMapping("Category")
@@ -122,16 +128,19 @@ public class CourseController {
 				@RequestParam(defaultValue = "1") int pageNum,
 				int class_id, 
 				String codetype,
+				@RequestParam(defaultValue = "") String searchType,
 				Model model,
 				HttpSession session,
 				HttpServletRequest request
 				) {
 		String id = (String)session.getAttribute("sId");
 		
+//		System.out.println("searchType 잘받아오나?? :  " + searchType);
+		
 		// 클래스 목록
 		List<CourseVO> course = courseService.getCourse(class_id);
 		// 수강평 목록 
-		List<MyReviewVO> myReviewList = courseService.getReviewList(class_id);
+		List<MyReviewVO> myReviewList = courseService.getReviewList(class_id, searchType);
 		// codetype으로 조회한 공통코드
 		List<CommonCodeTypeVO> codeType = courseService.getCodeType(codetype); 
 		// 강사의 다른 클래스 조회
@@ -149,9 +158,6 @@ public class CourseController {
 		}
 		// 페이징 처리한 문의사항 항목가져옴. 
 		List<CourseSupportVO> courseSupportList = courseService.getCourseSupportList(class_id, startRow, paging(pageNum, class_id).getPageListLimit());
-				
-		
-		
 		
 		JSONArray jsonToWishList = new JSONArray(wishList);
 		model.addAttribute("wishList", jsonToWishList);
@@ -175,7 +181,8 @@ public class CourseController {
 	
 	
 	@GetMapping("CourseSupportList")
-	public String courseSupportList(@RequestParam(defaultValue = "1") int pageNum,
+	public String courseSupportList(
+			@RequestParam(defaultValue = "1") int pageNum,
 			int class_id, 
 			Model model) {
 		
@@ -192,6 +199,8 @@ public class CourseController {
 		List<CourseVO> course = courseService.getCourse(class_id);
 		// 강사의 다른 클래스 조회
 		List<CourseVO> courseTeacher = courseService.getCourseTeacher(class_id, course.get(0).getTeacher_id());
+		// 수강평 목록 
+				
 		// -------------------------------------------------------------------
 		// Model 객체에 페이징 정보 저장
 		model.addAttribute("pageInfo", paging(pageNum, class_id));
@@ -236,37 +245,6 @@ public class CourseController {
 		cSupport.setMem_id(id);
 		cSupport.setC_class_id(class_id);
 
-		// --------------------------------------------------------
-		// [ 파일 업로드 처리 ]
-//		String realPath = session.getServletContext().getRealPath(uploadPath); // request대신 session을 써도 똑같은 메서드가 존재함.
-//		String subDir = "";// 서브 디렉토리명을 저장할 변수 선언
-//		LocalDate today = LocalDate.now();//현재 시스템의 날짜 정보 생성
-//		String datePattern ="yyyy/MM/dd"; // 날짜 포맷 변경에 사용할 패턴 문자열 지정
-//		DateTimeFormatter dtf = DateTimeFormatter.ofPattern(datePattern);
-//		subDir = today.format(dtf);  // LocalDate - DateTimeFormatter
-//		realPath += "/" + subDir;
-//		
-//		try {
-//			Path path = Paths.get(realPath); // 파라미터로 실제 업로드 경로전달
-//			Files.createDirectories(path); // IOException 예외 처리 필요(임시로 현재 클래스에서 처리) - 이거쓰면 그냥 10월29일 날짜 폴더 만들어져 있으면 알아서 안만든다. exist*() 메서드로 폴더있나 없나 확인안해도 됨.
-//		} catch(Exception e) {
-//			e.printStackTrace();
-//		}
-//		// ------------------------------------
-//		// [업로드 되는 실제 파일 처리]
-//		// 실제 파일은 BoardVO 객체의 MultipartFile 타입 객체로 관리함(멤버변수명 fileXXX)
-//		MultipartFile mFile1 = cSupport.getFile(); 
-//		cSupport.setC_support_file("");
-//		
-//		String fileName1 = "";
-//		
-//		// 업로드 파일명이 널스트링이 아닐 경우를 판별하여 파일명 저장
-//		if(!mFile1.getOriginalFilename().equals("")) {
-//			fileName1 = UUID.randomUUID().toString().substring(0, 8) + "_" + mFile1.getOriginalFilename();
-//			cSupport.setC_support_file(fileName1);
-//		}
-//		
-		
 		
 		// 파일 업로드 처리 준비
 		String realPath = getRealPath(session); // 실제 경로 알아내기
@@ -331,17 +309,28 @@ public class CourseController {
 			session.setAttribute("prevURL", prevURL);
 			return "result/fail";
 		}
+		CourseSupportVO courseSupport = courseService.getCourseSupport(c_support_idx);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		// 자기 아이디 아니면 수정 권한 없다고 하기
-		// 조회된 게시물이 존재하지 않거나, 조회된 게시물의 작성자가 세션 아이디와 다를 경우 
-		// "잘못된 접근입니다!" 처리하기 위해 "result/fail.jsp"페이지로 포워딩 처리
-		CourseSupportVO courseSupport = courseService.getCourseSupport(c_support_idx);
 		if(courseSupport == null || !id.equals(courseSupport.getMem_id())) {
 			model.addAttribute("msg", "잘못된 접근입니다!");
 			return "result/fail";
 		}
 		
 		model.addAttribute("courseSupport", courseSupport);
+		// ----------------------------------------------------------------
+		// 뷰페이지에서 파일 목록의 효율적 처리를 위해 addFileListToModel() 메서드 활용
+		addFileListToModel(courseSupport, model);
 		return "course/course_support_modify_form"; 
 	}
 	
@@ -385,7 +374,6 @@ public class CourseController {
 		// => 파라미터 : Map 객체   리턴타입 : int(deleteCount)
 		int deleteCount = courseService.removeBoardFile(map); 
 		
-//		System.out.println("map???@#!$@$      :   " + map);
 		// DB 에서 해당 파일명 삭제 성공 시 실제 파일 삭제 처리
 		if(deleteCount > 0) {
 			// 실제 업로드 경로 알아내기
@@ -489,7 +477,6 @@ public class CourseController {
 				HttpServletRequest request,
 				Model model
 				) {
-//		System.out.println("codetype ㄷ받아오나??" + codetype);
 		
 		// 미 로그인 처리 
 		String id = (String)session.getAttribute("sId");
@@ -514,47 +501,31 @@ public class CourseController {
 			return "result/fail";
 		}
 		
-		
-		int insertCount = courseService.registApplyForCourse(class_id, id);
-		if(insertCount > 0) { // 등록 성공
-			
-			model.addAttribute("class_id", class_id);
-			return "redirect:/Cart";
-		} else {
-			model.addAttribute("msg", "문의글쓰기실패");
-			return "result/fail";
-		}
-		
+		// CartService - getCartList() 메서드 호출하여 장바구니 목록 조회 요청
+	    List<CartVO> cartList = cartService.getCartList(id);
+	    
+	 // getClass_id 값만 추출하여 배열 생성
+	    Integer[] classIdArray = cartList.stream()
+	    								 .map(cart -> cart.getClass_id())
+	    								 .toArray(size -> new Integer[size]);
+
+	    // 장바구니에 없거나 다른 것들만 있을 경우 담기 
+	    if (cartList == null || Arrays.binarySearch(classIdArray, class_id) < 0) {
+	    	// 장바구니 담기 
+	    	int insertCount = courseService.registApplyForCourse(class_id, id);
+	    	if(insertCount > 0) { // 등록 성공
+	    		model.addAttribute("class_id", class_id);
+	    		return "redirect:/Cart";
+	    	} else {
+	    		model.addAttribute("msg", "장바구니에 담기 실패");
+	    		return "result/fail";
+	    	}
+	    	
+	    } else { // 장바구니에 담겨있으면 튕겨내기 
+	    	model.addAttribute("msg", "이미 장바구니에 담겨 있습니다.");
+	    	return "result/fail";
+	    }
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	// 파일 업로드에 사용될 실제 업로드 디렉토리 경로를 리턴하는 메서드
 	public String getRealPath(HttpSession session) {
@@ -635,7 +606,6 @@ public class CourseController {
 		cSupport.setC_support_file("");
 		
 		String fileName1 = "";
-		
 		// 업로드 파일명이 널스트링이 아닐 경우 판별하여 파일명 저장(각 파일을 별개의 if 문으로 판별)
 		if(!mFile1.getOriginalFilename().equals("")) {
 			fileName1 = UUID.randomUUID().toString().substring(0, 8) + "_" + mFile1.getOriginalFilename();
@@ -682,7 +652,38 @@ public class CourseController {
 		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
 		return pageInfo;
 	}
-	
+	// ========================================================
+		// 뷰페이지에서 파일 목록의 효율적 처리를 위해 별도의 가공하는 메서드
+		// => 파일 정보가 저장된 BoardVO 객체와 최종 결과를 저장할 Model 객체를 파라미터로 전달받기
+		private void addFileListToModel(CourseSupportVO cSupport, Model model) {
+			// 뷰 페이지에서 파일목록의 효율적 처리를 위해 별도의 가공 후 전달
+//			1. 파일명을 별도의 list 객체에 저장(제네릭 타입 : String)
+			List<String> fileList = new ArrayList<String>();
+			fileList.add(cSupport.getC_support_file());
+			System.out.println(fileList);
+			//----------------------
+			// 2. 만약, 컨트롤러 측에서 원본 파일명을 추출하여 전달할 경우
+			// => 파일명이 저장된 List 객체를 반복하면서 원본 파일명을 추출하여 별도의 List에 저장
+			List<String> originalFileList = new ArrayList<String>();
+			
+			for(String file : fileList) {
+//				System.out.println("file: " + file);
+				if(!file.equals("")) {
+					// 실제 파일명에서 "-" 기호 다음(인덱스값 + 1)부터 끝까지 추출하여 리스트에 추가
+					originalFileList.add(file.substring(file.indexOf("_") + 1));
+				} else {
+					// 파일이 존재하지 않을 경우 원본 파일명도 파일명과 동일하게 null 로 저장
+					originalFileList.add(file);
+				}
+			}
+			System.out.println("originalFileList" + originalFileList); // 자동적으로 위치도 구분해서 나온다.
+			//----------------
+			// Model 객체에 파일 목록 객체 2개 저장
+			model.addAttribute("fileList", fileList);
+			model.addAttribute("originalFileList", originalFileList); // model은 파라미터에서 보내주니까 void가 맞다. 같은 객체이므로
+			// Model 객체를 별도로 리턴하지 않아도 객체 자체를 전달받았으므로
+					// 메서드 호출한 곳에서 저장된 속성 그대로 공유 가능
+		}
 	
 	
 	

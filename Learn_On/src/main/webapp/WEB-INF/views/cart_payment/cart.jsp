@@ -7,7 +7,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>장바구니 - LearOn</title>
+<title>런 온 - 온라인 No.1 교육 플랫폼</title>
+<link rel="SHORTCUT ICON" href="${pageContext.request.contextPath}/resources/images/favicon.ico">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/reset.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
@@ -68,7 +69,7 @@
 												    </a>
 												</div>
 												<!-- 상품 정보 내역 클릭시 강의 상세 페이지로 이동(class_id 값 전달)-->
-												<a href='CourseDetail?CLASS_ID=${cart.class_id}' class="item-link">
+												<a href='CourseDetail?class_id=${cart.class_id}' class="item-link">
 													<div class="class-pic">
 														<!-- 썸네일 사진 나중에 바꿀것!! -->
 														<img src="${pageContext.request.contextPath}/resources/images/thumb_01.webp">

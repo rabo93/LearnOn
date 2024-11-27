@@ -47,6 +47,7 @@
                         <div class="dropdown-menu bg-transparent border-0">
                             <a href="AdmPayList" id="AdmPayList" class="dropdown-item">결제 내역 관리</a>
                             <a href="AdmPayListCoupon" id="paymentCoupon" class="dropdown-item">쿠폰 관리</a>
+                            <a href="AdmCouponIssue" id="CouponIssue" class="dropdown-item">쿠폰 발급 관리</a>
                         </div>
                     </div>
                     <div class="nav-item dropdown">

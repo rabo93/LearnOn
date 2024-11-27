@@ -41,8 +41,8 @@ public class CourseService {
 		return mapper.selectCommonCode();
 	}
 
-	public  List<MyReviewVO> getReviewList(int class_id) {
-		return mapper.selectReviewList(class_id);
+	public  List<MyReviewVO> getReviewList(int class_id, String searchType) {
+		return mapper.selectReviewList(class_id, searchType);
 	}
 
 	public int registCourseSupport(CourseSupportVO cSupport) {
@@ -87,6 +87,10 @@ public class CourseService {
 
 	public List<CourseVO> getFindCourseList(String find_title) {
 		return mapper.selectFindCourseList(find_title);
+	}
+
+	public List<CourseVO> getCourseBestList() {
+		return mapper.selectCourseBestList();
 	}
 
 

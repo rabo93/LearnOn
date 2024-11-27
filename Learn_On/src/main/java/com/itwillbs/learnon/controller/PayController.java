@@ -28,7 +28,6 @@ import com.siot.IamportRestClient.request.CancelData;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
 
-
 @Controller
 public class PayController {
 	@Autowired
@@ -36,7 +35,6 @@ public class PayController {
 	
 	//IamportClient 객체 생성 - 포트원에서 제공
 	private IamportClient iamportClient;
-	
 	public PayController() {
 		this.iamportClient = new IamportClient("1582333057803703", "Xeql20bTzSYAkeu3qPVXGoU3GEn0Ve4WKSmXsZViEAIrMFoJKE8n8q78DJlZMXkconSi5Nd3JpfpUX7h");
 	}
@@ -50,12 +48,12 @@ public class PayController {
 	@GetMapping("Payment")
 	public String payment(@RequestParam(value = "checkitem", required = false) List<String> checkItems,
 						 HttpSession session, Model model) {
-		logger.info("장바구니에서 넘어온 체크한 장바구니 번호: " + checkItems);
+		logger.info("장바구니에서 넘어온 체크한 장바구니 번호 : " + checkItems);
 		
 		//------------------------------------------------------
 		// 로그인 정보 가져오기 (세션 아이디값 확인)
 		String sId = (String) session.getAttribute("sId");
-		System.out.println("결제할 로그인 아이디: " + sId);
+		logger.info("결제할 로그인 아이디 : " + sId);
 		//------------------------------------------------------
 		// PayService - getMemberInfo() 메서드 호출
 		// 파라미터 : sId  	리턴타입 : MemberVO
@@ -82,7 +80,8 @@ public class PayController {
 	@ResponseBody
 	@PostMapping("/payments/verification")
 	public IamportResponse<Payment> paymentByImpUid(@RequestBody PayVerificationVO payVerificationVO) throws IamportResponseException, IOException {
-		System.out.println("결제검증VO : " + payVerificationVO); //결제검증VO: PayVerificationVO(imp_uid=imp_600839946642, merchant_uid=2024112421267, amount=1004)
+		logger.info("결제검증VO : " + payVerificationVO); 
+		//결제검증VO: PayVerificationVO(imp_uid=imp_600839946642, merchant_uid=2024112421267, amount=1004)
 	
 		//IamportClient클래스의 paymentByImpUid() 함수 호출
 		//=> 파라미터: PayVerificationVO(imp_uid) 	/리턴: IamportResponse<Payment>
@@ -94,7 +93,7 @@ public class PayController {
 	@ResponseBody
 	@PostMapping("payinfoSave")
 	public String  savePayInfo(@RequestBody PayVO payVO) {
-		System.out.println("결제저장DTO : " + payVO);
+		logger.info("결제저장DTO : " + payVO);
 		
 		//결제정보 저장 호출
 		payService.savePayInfo(payVO);
@@ -107,7 +106,7 @@ public class PayController {
 	@ResponseBody
     @PostMapping("orderinfoSave")
 	public String orderPayInfo(@RequestBody OrderVO orderVO, Model model) {
-		System.out.println("컨트롤러에 넘겨받은 주문저장VO : " + orderVO);
+		logger.info("컨트롤러에 넘겨받은 주문저장VO : " + orderVO);
 		//OrderVO(order_idx=0, merchant_uid=2024112528321, mem_id=bborara
 		//		, items=[OrderItemVO(class_id=1, class_price=75000), OrderItemVO(class_id=2, class_price=1004)]
 		//		, coupon_id=2, price=0)
@@ -129,16 +128,16 @@ public class PayController {
 	@ResponseBody
 	@PostMapping("/payments/cancel")
 	public IamportResponse<Payment> cancelPaymentbyImpUid(@RequestBody PayCancelVO paycancelVO) throws IamportResponseException, IOException {
-		logger.info("결제 취소에 필요한 VO: " + paycancelVO); 
+		logger.info("결제 취소에 필요한 VO : " + paycancelVO); 
 		
 		String impUid = paycancelVO.getImp_uid();
 		
 		// impUid에 해당하는 로그인 아이디 가져오기
-//		String memId = payService.getMem_id(impUid);
-//		logger.info("회원아이디:"+ memId);
+		String memId = payService.getMem_id(impUid);
+		logger.info("회원아이디:"+ memId);
 //		
 //		//취소하면 결제 상태값 업데이트 및 사용한 쿠폰 복구
-//		payService.payStatusUpdate(impUid, memId);
+		payService.payStatusUpdate(impUid, memId);
 		
 		//IamportClient클래스의 cancelPaymentByImpUid() 함수 호출
 		//=> 파라미터: CancelData클래스 	/리턴: IamportResponse<Payment>
@@ -146,6 +145,21 @@ public class PayController {
 		return iamportClient.cancelPaymentByImpUid(new CancelData(impUid, true));
 	}
 	
+	//=================================================================================
+	// "PayResult" 매핑 - GET 
+	@GetMapping("PayResult")
+	public String paySuccess(@RequestParam String merchant_uid, Model model) {
+		logger.info("주문고유번호: " + merchant_uid);
+		
+		//결제 정보 조회
+		PayVO payinfo = payService.getPayInfo(merchant_uid);
+		logger.info("결제완료시정보:" + payinfo);
+		
+		//뷰페이지에 전달
+		model.addAttribute("payinfo", payinfo);
+
+		return "cart_payment/pay_result";
+	}
 	
 	//=================================================================================
 	// "Terms" 이용약관 페이지 매핑 - GET
@@ -153,22 +167,4 @@ public class PayController {
 	public String termPage() {
 		return "info/terms";
 	}
-	
-	//=================================================================================
-	// "PayResult" 매핑 - GET 
-	@GetMapping("PayResult")
-	public String paySuccess(@RequestParam String merchant_uid, Model model) {
-		System.out.println("주문고유번호;" + merchant_uid);
-		
-		//결제 정보 조회
-		PayVO payinfo = payService.getPayInfo(merchant_uid);
-		System.out.println("결제완료시정보:" + payinfo);
-		
-		//뷰페이지에 전달
-		model.addAttribute("payinfo", payinfo);
-		
-		
-		return "cart_payment/pay_result";
-	}
-	
 }

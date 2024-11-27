@@ -108,3 +108,8 @@ $(document).ready(function(){
 	});	
 	
 });
+//	닉네임 클릭 시 나의강의실/마이페이지/관리자홈/로그아웃 표시
+function toggleLoginMenu(){
+	let loginMenu = document.querySelector(".login-menu");
+	loginMenu.classList.toggle("on");
+}

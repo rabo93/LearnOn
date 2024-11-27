@@ -45,11 +45,14 @@
 #hd_right .login-btn {padding-top:0.12rem;}
 #hd_right.on .login-btn {display:none;}
 #hd_right .login-area {display: none;}
-#hd_right.on .login-area {display: flex;align-items: center;gap: 1rem;padding-top: 0.12rem;}
-#hd_right .login-area a {display:block;color: var(--dark);font-size: 0.875rem;font-weight: 600}
-#hd_right .login-area a span {}
-#hd_right .login-menu {display: none;}
-#hd_right .login-menu a {}
+#hd_right.on .login-area {display: flex;align-items: center;gap: 1rem;padding-top: 0.12rem;position: relative;}
+#hd_right .login-area .login-info,
+#hd_right .login-area a {cursor: pointer;display:block;color: var(--dark);font-size: 0.875rem;font-weight: 600}
+#hd_right .login-area .login-info span,
+#hd_right .login-area a span {color:var(--primary)}
+#hd_right .login-menu {display: none;position: absolute;right: 0;top: 28px;background: var(--light-blue);padding: 1rem 2rem;z-index: 9999;border-radius: 10px;border: 1px solid #ccc;width: 140px;}
+#hd_right .login-menu.on {display:block;}
+#hd_right .login-menu a {display:block;margin:4px 0;padding:4px 0;}
 
 #nav {width: 100%;}
 .navbar {display: flex;max-width: 1320px;margin: auto;align-items: center;justify-content: center;gap: 4rem;}

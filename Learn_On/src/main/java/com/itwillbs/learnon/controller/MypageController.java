@@ -377,6 +377,7 @@ public class MypageController {
 		}
 		
 		Map<String, List<MyPaymentVO>> paymentList = myService.getMyPaymentList(id);
+		System.out.println("결제 내역 리스트: "+ paymentList);
 		
 		model.addAttribute("paymentList", paymentList);
 		

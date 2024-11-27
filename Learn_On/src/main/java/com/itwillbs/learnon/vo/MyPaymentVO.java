@@ -9,6 +9,7 @@ public class MyPaymentVO {
 	private String merchant_uid;
 	private int order_idx;
 	private String mem_id;
+	private String mem_name;
 	private int class_id;
 	private String class_title;
 	private int class_price;

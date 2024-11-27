@@ -21,7 +21,7 @@
 	
 	<div class="success-container">
 		<h1>안녕하세요 ${sessionScope.sId}님🥳</h1><br>
-		<h1>인증메일이 ${sessionScope.sMail}으로 발송 되었습니다</h1><br>
+		<h1>인증메일이 [${sessionScope.sMail}]으로 발송 되었습니다!</h1><br>
 		<h1>📩지금 바로 이메일 인증 후 강의를 시작 해보세요!</h1><br>
 		
 		<div id="controls">

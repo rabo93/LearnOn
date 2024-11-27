@@ -47,15 +47,15 @@
 						</dl>
 						<dl class="pri">
 							<dt>총 상품 금액</dt>
-							<dd id="totalAmount">${payinfo.totalAmount}원</dd>
+							<dd id="totalAmount"><fmt:formatNumber value="${payinfo.totalAmount}" type="number" />원</dd>
 						</dl>
 						<dl class="dis">
 							<dt>할인 금액</dt>
-							<dd id="discountAmount">${payinfo.discount_amount}원</dd>
+							<dd id="discountAmount"><fmt:formatNumber value="${payinfo.discount_amount}" type="number" />원</dd>
 						</dl>
 						<dl class="total">
 							<dt>총 결제 금액</dt>
-							<dd id="totalPrice">${payinfo.price}원</dd>
+							<dd id="totalPrice"><fmt:formatNumber value="${payinfo.price}" type="number" />원</dd>
 						</dl>
 						<dl class="Method">
 							<!-- 결제수단이 카드일경우 카드정보, 가상계좌일경우 가상계좌정보 표출 -->

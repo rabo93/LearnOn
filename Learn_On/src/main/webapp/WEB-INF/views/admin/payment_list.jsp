@@ -206,9 +206,9 @@
 				dataType: "json",
 				contentType: "application/json; charset=utf-8",
 				data: JSON.stringify({
-					"imp_uid": imp_uid,
-					"reason": "결제 검증 실패",
-					"checksum": paid_amount
+					"imp_uid": imp_uid,		//포트원 거래 고유 번호
+// 					"amount" : paid_amount	//누락시 전체환불(일단 전체환불만 가능하도록 했으므로 주석처리)
+// 					"reason": "테스트 결제 환불",
 				})
 			}).done(function() {
 				alert("결제를 취소하였습니다.");

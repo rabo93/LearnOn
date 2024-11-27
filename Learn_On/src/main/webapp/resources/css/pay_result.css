@@ -14,7 +14,7 @@ html, body {
 
 .wrapper .ord-box {
 	margin: 2rem;
-    padding: 2rem;
+    padding: 3rem;
     background: var(--white);
     border: 1px solid #ddd;
     border-radius: 10px;
@@ -62,13 +62,12 @@ html, body {
 	flex-direction: column;
 	margin: 30px;}
 .wrapper .ord-box .infos .products .ttl {
-	display: block;
 	display: flex;
-	justify-content: center;
-	padding-bottom: 6px;
-	font-size: 1.1rem;
-	font-weight: 700;
-	color: var(--dark);
+    justify-content: center;
+    padding-bottom: 6px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--dark);
 }
 
 
@@ -77,6 +76,7 @@ html, body {
 	font-size: 1rem;
 	font-weight: 500;
 	color: var(--gray);
+	margin-top: 50px;
 	}
 .wrapper .ord-box .price dl {
 	display: flex;

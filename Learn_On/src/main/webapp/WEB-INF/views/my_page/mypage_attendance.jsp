@@ -39,8 +39,6 @@
 				<div class="contents">
 					<div class="attendance-wrap">
 						<c:set var="today"><fmt:formatDate value="<%=new java.util.Date()%>" pattern="yyyy-MM-dd" /></c:set> 
-						오늘 날짜 : ${today} / 
-						마지막 출석일 : ${attendance.check_in_date} (나중에 삭제예정)<br>
 						<c:choose>
 							<c:when test="${empty attendance.check_in_date || attendance.check_in_date != today}">
 								<button class="btn-att checked" onclick="clickAttendanceBtn('${sId}')"><i class="fa-solid fa-check"></i> 출석하기</button>
@@ -51,6 +49,9 @@
 						</c:choose>
 						
 						<div class="att-box">
+							<p>나의 마지막 출석일📅${attendance.check_in_date}</p>
+							<br>
+							<br>
 							<i class="fa-solid fa-calendar-check"></i>
 							<p><span>
 								<c:choose>
@@ -58,6 +59,7 @@
 									<c:otherwise>${attendance.streak_days}</c:otherwise>
 								</c:choose>
 							</span>일 연속 출석하셨습니다.</p>
+							
 						</div>
 					</div>
 				</div>

@@ -498,12 +498,13 @@
 		       , P.BANK_NAME
 		       , P.CARD_NAME
 		       , P.PAY_STATUS
+		       , P.IMP_UID
 		       , O.ORDER_IDX
 		       , O.CLASS_ID
 		       , C.CLASS_TITLE
 		       , O.CLASS_PRICE
 		       , O.COUPON_ID
-			, CU.COUPON_NAME
+				, CU.COUPON_NAME
 		       , CU.DISCOUNT_TYPE
 		       , CU.DISCOUNT_PERCENT
 		       , CU.DISCOUNT_AMOUNT

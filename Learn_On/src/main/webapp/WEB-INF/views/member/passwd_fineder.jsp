@@ -20,21 +20,26 @@
 	src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <%-- <script src="${pageContext.request.contextPath}/resources/js/index.js"></script> --%>
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/login.css">
+	href="${pageContext.request.contextPath}/resources/css/passwd.css">
 
-</head>
+<header id="hd">
+    <jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>
+</header>
 <main>
-	<body>
-		<header id="hd">
-			<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>
-		</header>
-			<form action="PasswdFinder" method="post">
-				<h3>비밀번호 찾기</h3>
-				<input type="text" placeholder="이름을 입력해주세요" id="name" name="mem_name" required><br> 
-				<input type="text" placeholder="이메일 입력" id="email" name="mem_email" required>
-				<input type="submit" value="본인확인"><br> 
-			</form>
-		</body>
+	<div class="login-wrap">
+	    <form action="PasswdFinder" method="post" class="passwdFinderForm">
+	        <h3 class="ttl">비밀번호 찾기</h3>
+	        <label for="name">이름</label>
+	        <input type="text" placeholder="이름을 입력해주세요" id="name" name="mem_name" required><br> 
+	        
+	        <label for="email">이메일</label>
+	        <input type="text" placeholder="이메일 입력" id="email" name="mem_email" required>
+	        
+	        <div id="form-controls">
+	            <button type="submit">임시비밀번호 전송</button><br>
+	        </div>
+	    </form>
+	</div>
 </main>
 <footer id="ft">
 	<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>

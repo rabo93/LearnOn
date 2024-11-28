@@ -116,7 +116,8 @@
 	<update id="updateCoupon">
 		UPDATE MYCOUPON
 		SET COUPON_ISUSED = 2
-		WHERE COUPON_ID = #{coupon_id}
+		WHERE MEM_ID = #{mem_id}
+		AND COUPON_ID = #{coupon_id}
 	</update>
 	
 	<!-- 결제 완료시 나의 클래스에 인서트 -->
@@ -145,6 +146,27 @@
 		)	
 	</insert>
 	
+	<!-- 결제 완료시 커리큘럼 시청기록 인서트(초기값) -->
+	<insert id="insertCurHistory">
+		<selectKey keyProperty="history_idx" resultType="int" order="BEFORE">
+			SELECT IFNULL(MAX(history_idx), 0)
+			FROM CURHISTORY
+		</selectKey>
+		INSERT INTO CURHISTORY
+		( 
+			 HISTORY_IDX
+		    , MEM_ID
+		    , CUR_ID
+		    , COMPLETED_STATUS	
+		)
+		SELECT
+			#{history_idx} + ROW_NUMBER() OVER(ORDER BY CUR_ID)
+			, #{mem_id}
+		    , CUR_ID
+			, 0 -- 시청여부 (0 : 시청전 / 1: 시청완료) 최종에는 default값 0이라 누락해도됨
+		FROM CURRICULUM
+		WHERE CLASS_ID = #{class_id}
+	</insert>
 	
 	<!-- 결제 정보 조회 -->
 	<select id="selectPayInfo" resultType="pay">
@@ -189,12 +211,32 @@
 		WHERE 1=1
 		AND MEM_ID = #{memId} 
 		AND COUPON_ID = (
-			SELECT OI.COUPON_ID
+			SELECT DISTINCT(OI.COUPON_ID)
 			FROM PAY_INFO PI
 			JOIN ORDER_INFO OI ON PI.MERCHANT_UID = OI.MERCHANT_UID
 			WHERE PI.IMP_UID = #{imp_uid}
-		);
+		)
 	</update>
 	
-	
+	<!-- 나의클래스 & 커리큘럼시청기록 데이터 삭제하기 -->
+	<delete id="deleteMycourse">
+		DELETE FROM MYCOURSE
+		WHERE MEM_ID = #{memId}
+		AND ORDER_IDX = (SELECT ORDER_IDX
+						 FROM PAY_INFO
+						 WHERE IMP_UID = #{imp_uid})
+	</delete>
+	<delete id="deleteCurhistory">
+		DELETE FROM CURHISTORY
+		WHERE MEM_ID = #{memId}
+		AND CUR_ID IN ( SELECT CUR_ID 
+						FROM CURRICULUM
+						WHERE CLASS_ID IN (
+											SELECT O.CLASS_ID
+											FROM ORDER_INFO O JOIN PAY_INFO P
+											ON O.MERCHANT_UID = P.MERCHANT_UID
+											WHERE P.IMP_UID = #{imp_uid}
+										  )
+						)
+	</delete>
 </mapper>

@@ -20,22 +20,20 @@ public class PayService {
 	private PayMapper mapper;
 	
 	//------------------------------------------------------------------------
-	//주문 정보 조회
+	//주문자정보 조회
 	public MemberVO getMemberInfo(String sId) {
 		return mapper.selectMember(sId);
 	}
 	
-	//------------------------------------------------------------------------
-	//결제 상품 목록 조회
+	//결제할 상품 정보 조회
 	public List<OrderVO> getSelectedCart(List<String> checkItems) {
 //		System.out.println("결제할 상품 : " + checkItems);
 		return mapper.selectedCart(checkItems);
 	}
-	
 
 	//------------------------------------------------------------------------
+	//결제 완료시)
 	//결제 정보 저장
-	@Transactional
 	public void savePayInfo(PayVO payVO) {
 		mapper.insertPayInfo(payVO);
 	}
@@ -60,6 +58,7 @@ public class PayService {
 			//위에서 인서트된 order_idx를 저장
 			int order_idx = (int) orderData.get("order_idx");
 			
+			//----------------------
 			//나의 클래스 데이터 생성
 			Map<String, Object> mycourseData = new HashMap<String, Object>();
 			mycourseData.put("mem_id", orderVO.getMem_id());
@@ -69,19 +68,22 @@ public class PayService {
 			//나의 클래스 인서트
 			mapper.insertMycourse(mycourseData);
 			
+			//----------------------
+			//커리큘럼 시청기록 데이터 생성
+			Map<String, Object> curHistory = new HashMap<String, Object>();
+			curHistory.put("mem_id", orderVO.getMem_id());
+			curHistory.put("class_id", orderitemVO.getClass_id());
+			
+			//커리큘럼 시청기록 인서트
+			mapper.insertCurHistory(curHistory);
+			
 		}
 		
-		
 	}
-	
 	//쿠폰 사용 상태 업데이트
-	@Transactional
-	public void couponUsed(int coupon_id) {
-		System.out.println("업데이트할 쿠폰코드: " + coupon_id);
-		mapper.updateCoupon(coupon_id);
+	public void couponUsed(String mem_id, int coupon_id) {
+		mapper.updateCoupon(mem_id, coupon_id);
 	}
-	
-	
 	
 	//------------------------------------------------------------------------
 	//결제완료 페이지에 전달할 결제 정보 조회
@@ -89,28 +91,26 @@ public class PayService {
 		return mapper.selectPayInfo(merchant_uid);
 	}
 	
-	
-	
-	
 	//------------------------------------------------------------------------
+	//결제 취소)
 	//결제 취소에 필요한 impUid에 해당하는 회원ID 조회
+	@Transactional
 	public String getMem_id(String impUid) {
 		return mapper.selectMemId(impUid);
 	}
 	
-	//결제 취소 시 결제 상태값 변경
-	public void payStatusUpdate(String imp_uid, String memId) {
-		System.out.println("포트원 결제ID 및 회원ID: " + imp_uid + ", "+ memId);
-		
+	//결제 취소 후 결제상태 변경 및 쿠폰 복구
+	public void cancelAddProcess(String imp_uid, String memId) {
 		//1. 결제 상태 업데이트
 		mapper.updatePayStatus(imp_uid, memId);
 		
 		//2. 쿠폰 복구
 		mapper.updateCouponUsed(imp_uid, memId);
 		
+		//3. 나의클래스 & 커리큘럼시청기록 데이터 삭제하기
+		mapper.deleteMycourse(imp_uid, memId);
+		mapper.deleteCurhistory(imp_uid, memId);
+		
 	}
-
-	
-	
 	
 }

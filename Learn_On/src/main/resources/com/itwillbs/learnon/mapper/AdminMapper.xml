@@ -72,6 +72,13 @@
 		WHERE CUR_ID = #{cur_id}
 	</update>
 	
+	<!-- 클래스 등록 시 강사명 찾기 -->
+	<select id="selectClassIns">
+		SELECT MEM_NAME
+		     , MEM_ID
+		  FROM MEMBER
+		 WHERE MEM_GRADE = 'MEM02'
+	</select>
 	
 	<!-- 클래스 목록 조회 -->
 	<select id="getClassList">

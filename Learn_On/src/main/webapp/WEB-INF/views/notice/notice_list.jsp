@@ -112,9 +112,11 @@
 			   		<i class="fa-solid fa-angles-right"></i>
 			   	</button>
 			</section>
-				<div class="nt-writebtn">
-					<input type="button" value="글쓰기" onclick="location.href='NoticeWrite'">
-				</div>
+				<c:if test="${sessionScope.sGrade eq 'MEM03'}">
+					<div class="nt-writebtn">
+						<input type="button" value="글쓰기" onclick="location.href='NoticeWrite'">
+					</div>
+				</c:if>
 		</div>
 	</main>
 	<footer>

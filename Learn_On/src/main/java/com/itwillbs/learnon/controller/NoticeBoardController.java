@@ -44,6 +44,7 @@ public class NoticeBoardController {
 	@GetMapping("NoticeWrite")
 	public String noticeWriteForm(HttpSession session, Model model, HttpServletRequest request) {
 		String id = (String)session.getAttribute("sId");
+		String grade = (String)session.getAttribute("sGrade");
 		//	미 로그인 시
 		if (id == null) {
 			model.addAttribute("msg", "로그인이 필요합니다\\n로그인 페이지로 이동합니다.");
@@ -63,32 +64,20 @@ public class NoticeBoardController {
 			return "result/fail";
 		}
 		
+		if(!grade.equals("MEM03")) {
+			model.addAttribute("msg", "접근권한이 없습니다");
+			model.addAttribute("targetURL", "NoticeList");
+			
+			return "result/fail";
+		}
+		
+		
 		return "notice/notice_write_form";
 	}
 	
 	//	글쓰기 로직
 	@PostMapping("NoticeWrite")
 	public String noticeWrite(NoticeBoardVO board, Model model, HttpSession session, HttpServletRequest request) {
-		String id = (String)session.getAttribute("sId");
-			//	미 로그인 시
-			if (id == null) {
-				model.addAttribute("msg", "로그인이 필요합니다\\n로그인 페이지로 이동합니다.");
-				model.addAttribute("targetURL", "MemberLogin");
-				
-				String prevURL = request.getServletPath();
-				String queryString = request.getQueryString();
-				System.out.println("prevURL : " + prevURL);
-				System.out.println("queryString : " + queryString);
-				
-				if (queryString != null) {
-					prevURL += "?" + queryString;
-				}
-				
-				session.setAttribute("prevURL", prevURL);
-				
-				return "result/fail";
-			}
-			
 		//	실제 경로
 		String realPath = getRealPath(session);
 		//	서브 디렉토리 생성
@@ -114,15 +103,11 @@ public class NoticeBoardController {
 							  @RequestParam(defaultValue = "") String searchKeyword,
 							  @RequestParam(defaultValue = "") String searchType,
 							  Model model) {
-//		System.out.println("페이지번호 : " + pageNum);
-//		System.out.println("검색어 : " + searchKeyword);
-//		System.out.println("검색타입 : " + searchType);
 		
 		int listLimit = 10;	//	페이지당 게시물 수
 		int startRow = (pageNum - 1) * listLimit;
 		
 		int listCount = noticeService.getBoardListCount(searchKeyword, searchType);
-//		System.out.println("게시물 수 : " + listCount);
 		
 		int pageListLimit = 5;
 		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
@@ -190,6 +175,7 @@ public class NoticeBoardController {
 							   HttpSession session,
 							   HttpServletRequest request) {
 		String id = (String)session.getAttribute("sId");
+		String grade = (String)session.getAttribute("sGrade");
 		//	미 로그인 시
 		if (id == null) {
 			model.addAttribute("msg", "로그인이 필요합니다\\n로그인 페이지로 이동합니다.");
@@ -208,17 +194,21 @@ public class NoticeBoardController {
 			
 			return "result/fail";
 		}
+		
+		if(!grade.equals("MEM03")) {
+			model.addAttribute("msg", "잘못된 접근입니다");
+			model.addAttribute("targetURL", "NoticeList");
 			
-		board = noticeService.getNoticeBoard(board.getNotice_idx() , false);
-		//	게시물이 존재하지 않을 때
-		if(board == null) {
-			model.addAttribute("msg", "잘못된 접근입니다!");
 			return "result/fail";
 		}
 		
-//		System.out.println("board : " + board.getNotice_idx());
-//		System.out.println("pageNum : " + pageNum);
 		
+		board = noticeService.getNoticeBoard(board.getNotice_idx() , false);
+		//	게시물이 존재하지 않을 때
+		if(board == null) {
+			model.addAttribute("msg", "잘못된 접근입니다");
+			return "result/fail";
+		}
 		
 		int deleteCount = noticeService.removeNotice(board.getNotice_idx());
 		
@@ -263,9 +253,7 @@ public class NoticeBoardController {
 			return "result/fail";
 		}
 		
-//		System.out.println("notice_idx : " + notice_idx);
 		NoticeBoardVO board = noticeService.getNoticeBoard(notice_idx, false);
-//		System.out.println("board : " + board);
 		
 		String[] fileSplit = board.getNotice_file().split(",");
 		

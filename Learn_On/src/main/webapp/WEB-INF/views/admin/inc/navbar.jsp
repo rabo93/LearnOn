@@ -3,8 +3,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+	<meta charset="UTF-8">
+	<title>런 온 - 온라인 No.1 교육 플랫폼</title>
+	<link rel="SHORTCUT ICON" href="${pageContext.request.contextPath}/resources/images/favicon.ico">
 </head>
 <body>
 	<!-- Content Start -->
@@ -50,11 +51,18 @@
                         <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
                             <a href="#" class="dropdown-item">내 프로필</a>
                             <a href="#" class="dropdown-item">계정 설정</a>
-                            <a href="#" class="dropdown-item">로그아웃</a>
+                            <a href="javascript:void(0)" class="dropdown-item" onclick="logout()">로그아웃</a>
                         </div>
                     </div>
                 </div>
             </nav>
             <!-- Navbar End -->
 </body>
+<script type="text/javascript">
+	function logout() {
+		if(confirm("로그아웃하시겠습니까?")){
+			location.href = "MemberLogout"
+		}
+	}
+</script>
 </html>

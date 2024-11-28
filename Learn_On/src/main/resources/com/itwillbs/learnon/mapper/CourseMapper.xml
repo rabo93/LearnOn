@@ -12,6 +12,7 @@
  	 LEFT JOIN (SELECT TRUNCATE(AVG(REVIEW_SCORE), 1) AS REVIEW_SCORE, CLASS_ID FROM REVIEW GROUP BY CLASS_ID) R ON R.CLASS_ID  = C.CLASS_ID
 		 WHERE 1 = 1
 		  AND T.CODETYPE = #{codetype}
+<!-- 		   AND CLASS_ID = #{class_id} -->
   		 <if test="course.CODETYPE_ID != null"> 
 		  AND T.CODETYPE_ID = #{course.codetype_id}
 		 </if>
@@ -160,6 +161,7 @@
 					) AS REVIEW_SCORE
 			   , M.MEM_ID 		AS TEACHER_ID	
 			   , CC.CODENAME AS CATENAME
+			   , CT.CODETYPE
 			FROM CLASS C
 			JOIN MEMBER M ON M.MEM_ID = C.MEM_ID
 			JOIN CURRICULUM CR ON CR.CLASS_ID = C.CLASS_ID
@@ -245,8 +247,6 @@
 		   AND C_CLASS_ID = ${class_id}
 		 </if>
 	</select>
-	
-	
 	<select id="selectCourseSupport" resultType="cSupport" parameterType="int">
 		SELECT *
 		  FROM CLASS_SUPPORT

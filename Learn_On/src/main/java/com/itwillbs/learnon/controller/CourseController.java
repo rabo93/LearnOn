@@ -30,12 +30,14 @@ import com.itwillbs.learnon.service.CartService;
 import com.itwillbs.learnon.service.CourseService;
 import com.itwillbs.learnon.service.MemberService;
 import com.itwillbs.learnon.service.MypageService;
+import com.itwillbs.learnon.service.PayService;
 import com.itwillbs.learnon.vo.CartVO;
 import com.itwillbs.learnon.vo.CommonCodeTypeVO;
 import com.itwillbs.learnon.vo.CourseSupportVO;
 import com.itwillbs.learnon.vo.CourseVO;
 import com.itwillbs.learnon.vo.MyReviewVO;
 import com.itwillbs.learnon.vo.PageInfo;
+import com.itwillbs.learnon.vo.PayVO;
 
 @Controller
 public class CourseController {
@@ -47,6 +49,8 @@ public class CourseController {
 	MypageService myService;
 	@Autowired
 	CartService cartService;
+	@Autowired
+	PayService payService;
 	
 	
 	// 이클립스 상의 가상의 업로드 경로명 저장(프로젝트 상에서 보이는 경ㅇ로)
@@ -231,7 +235,9 @@ public class CourseController {
 		
 		String id = (String)session.getAttribute("sId");
 		
-//		System.out.println("searchType 잘받아오나?? :  " + searchType);
+		
+		
+		System.out.println("class_id 잘받아오나?? :  " + class_id);
 		
 		// 클래스 목록
 		List<CourseVO> course = courseService.getCourse(class_id);
@@ -638,6 +644,16 @@ public class CourseController {
 		
 		// CartService - getCartList() 메서드 호출하여 장바구니 목록 조회 요청
 	    List<CartVO> cartList = cartService.getCartList(id);
+	    // payService.getPayInfo 메서드 호출하여 수강목록 조회 요청
+//	    PayVO pay =  payService.getPayInfo(id);
+//	    System.out.println("수강목록 조회 : " + pay);
+	    // 수강목록은 order_info에서 조회하는데 
+	    
+	    
+	    
+	    
+	    
+	    
 	    
 	    // getClass_id 값만 추출하여 배열 생성
 	    Integer[] classIdArray = cartList.stream()

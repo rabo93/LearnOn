@@ -23,9 +23,10 @@
 		<div class="wrapper">
 			<div class="cls-wrap detail">
 				<div class="container">
+				
 					<section class="breadcrumb">
 			            <a href="#">카테고리</a> <i class="fa-solid fa-angle-right"></i>
-			            <a href="Category?codetype=${codeType[0].codetype}">${codeType[0].codename}</a> <i class="fa-solid fa-angle-right"></i>
+			            <a href="Category?codetype=${course[0].codetype}">${course[0].catename}</a> <i class="fa-solid fa-angle-right"></i>
 			            <span>${course[0].class_category}</span>
 			        </section>
 			        <section class="class-details">

@@ -63,7 +63,37 @@ public class CourseController {
 	}
 	
 	@PostMapping("CourseFind")
-	public String courseFind(String find_title, Model model) {
+	public String courseFind(
+			@RequestParam(defaultValue = "1") int pageNum	,
+			String find_title, 
+			Model model) {
+		
+		// ----------------------------------------------------------------
+		// [ 페이징 처리 ]	
+		int listLimit = 8; // 페이지 당 게시물 수
+		int startRow = (pageNum - 1) * listLimit; // ????
+		int listCount = courseService.getCourseBestListCount();
+		
+		int pageListLimit = 8; 
+		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+		if(maxPage == 0) {
+			maxPage = 1;
+		}
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		int endPage = startPage + pageListLimit - 1;
+		if(endPage > maxPage) {
+			endPage = maxPage;
+		}
+		if(pageNum < 1 || pageNum > maxPage) {
+			model.addAttribute("msg", "해당페이지 없음");
+			model.addAttribute("targetURL", "BestCourse?pageNum=1");
+			return "result/fail";
+		}
+		// 페이징 정보 관리하는 PageInfo 객체 생성 및 계산 결과 저장
+		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
+		// ----------------------------------------------------------------
+		
+		
 		
 		// 상단의 클래스 검색창 
 		List<CourseVO> courseList = courseService.getFindCourseList(find_title);

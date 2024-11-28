@@ -59,6 +59,7 @@ INSERT INTO MEMBER (
    , mem_like2_class
    , file_pp
    , mail_auth_status
+   , hashtag
 ) VALUES (
     null
    , #{mem_id}
@@ -80,6 +81,7 @@ INSERT INTO MEMBER (
    , #{mem_like2_class}
    , SUBSTR(#{file_pp}, INSTR(#{file_pp}, '_') + 1)
    , 'N'
+   , #{hashtag}
 )
 </insert>
 	

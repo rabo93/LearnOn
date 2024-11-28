@@ -40,6 +40,7 @@ import lombok.Data;
 		private MultipartFile mem_pp_file; //강사 포트폴리오 파일
 		private String file_pp; //강사 포트폴리오 이름
 		private String profile_image; //기본값 null
+		private String hashtag;
 		
 		
 

@@ -228,13 +228,6 @@ public class AdminController {
 		int classId = adminService.getClassId();
 		VO.setClass_id(classId);
 		
-//		System.out.println("!@#!@#");
-//		for (int i = 0; i < VO.getCur_video_get().length; i++) {
-//			System.out.println(VO.getCur_video_get()[i].getOriginalFilename());
-//		}
-		
-//		AdminVO insertCur = new AdminVO();
-		
 		String[] arrCurTitle = VO.getCur_title().split(",");
 		String[] arrCurRunTime = VO.getCur_runtime().split(",");
 		int totalRunTime = VO.getClass_runtime();
@@ -252,12 +245,10 @@ public class AdminController {
 			VO.setCur_title(arrCurTitle[i]);
 			VO.setCur_runtime(arrCurRunTime[i]);
 			totalRunTime += Integer.parseInt(arrCurRunTime[i]);
-//			System.out.println("누적 ======" + totalRunTime);
 			adminService.insertCurriculum(VO);
 			
 			adminService.insertCurVideo(VO);
 		}
-//		System.out.println("결과 ======" + totalRunTime);
 		VO.setClass_runtime(totalRunTime);
 		
 		//	첨부파일 업로드
@@ -345,7 +336,6 @@ public class AdminController {
 	public String selectCategory(AdminVO admin) {
 //		System.out.println("=========================================================" + admin);
 		List<Map<String, Object>> adminArr = adminService.selectSubCate(admin);
-		System.out.println("========================== " + adminArr);
 		JSONArray joArr = new JSONArray(adminArr);
 		
 		return joArr.toString();

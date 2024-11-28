@@ -182,9 +182,10 @@
 	</update>
 	
 	<!-- 결제 취소 시 쿠폰 미사용으로 변경 -->
+	<!-- COUPON_ISUSED : 쿠폰사용여부(1:미사용,2:사용완료) -->
 	<update id="updateCouponUsed">
 		UPDATE MYCOUPON
-		SET COUPON_ISUSED = 2
+		SET COUPON_ISUSED = 1
 		WHERE 1=1
 		AND MEM_ID = #{memId} 
 		AND COUPON_ID = (
@@ -193,7 +194,6 @@
 			JOIN ORDER_INFO OI ON PI.MERCHANT_UID = OI.MERCHANT_UID
 			WHERE PI.IMP_UID = #{imp_uid}
 		);
-	
 	</update>
 	
 	

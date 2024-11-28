@@ -110,9 +110,9 @@
 											<td><button type="button" class="btn btn-lg btn-primary" onclick="cancelPay('${payment.value[0].imp_uid}', '${payment.value[0].total_price}')"  formmethod="post">결제취소</button></td>
 											<td><button type="button" class="btn btn-lg btn-primary" onclick="showDetail(${status.index})">상세정보</button></td>
 										</tr>
-                           				<c:forEach var="item" items="${payment.value}">	
-											<tr class="paymentDetailBox" id="paymentDetail${status.index}">
-												<td colspan="8">
+										<tr class="paymentDetailBox" id="paymentDetail${status.index}">
+											<td colspan="8">
+		                           				<c:forEach var="item" items="${payment.value}">	
 	                             					<div class="payment-item">
 														<span class="ttl">${item.class_title}</span>
 														<span class="price"><fmt:formatNumber pattern="#,###">${item.class_price}</fmt:formatNumber> 원</span>
@@ -129,13 +129,13 @@
 															<span class="price"> - <fmt:formatNumber pattern="#,###">${item.discount_amount}</fmt:formatNumber> 원  </span>
 														</div>
 													</c:if>
-													<div class="total-item">
-														<span class="ttl">총 결제금액</span>
-														<span class="price"> <fmt:formatNumber pattern="#,###">${payment.value[0].total_price}</fmt:formatNumber> 원</span>
-	                             					</div>
-												</td>
-			                             	</tr>
-										</c:forEach>
+												</c:forEach>
+												<div class="total-item">
+													<span class="ttl">총 결제금액</span>
+													<span class="price"> <fmt:formatNumber pattern="#,###">${payment.value[0].total_price}</fmt:formatNumber> 원</span>
+                             					</div>
+											</td>
+		                             	</tr>
 									</c:forEach>
 								</c:otherwise>
 							</c:choose>

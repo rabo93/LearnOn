@@ -1,6 +1,8 @@
 package com.itwillbs.learnon.service;
 
 
+import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -171,7 +173,8 @@ public class AdminService {
 		List<MyPaymentVO> list = mapper.selectPaymentListToAdm(startRow, listLimit);
 		// 결제번호를 key값으로 중복 제거 후 value 값으로 주문내역 배열 저장
 		Map<String, List<MyPaymentVO>> result = list.stream()
-													.collect(Collectors.groupingBy(MyPaymentVO::getMerchant_uid));
+													.sorted(Comparator.comparing(MyPaymentVO::getPay_date).reversed())
+													.collect(Collectors.groupingBy(MyPaymentVO::getMerchant_uid, LinkedHashMap::new, Collectors.toList()));
 		return result;
 	}
 	public int deleteCurHistory(Object cur_id) {

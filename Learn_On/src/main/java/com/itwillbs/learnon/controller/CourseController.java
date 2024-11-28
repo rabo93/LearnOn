@@ -68,22 +68,24 @@ public class CourseController {
 		// 상단의 클래스 검색창 
 		List<CourseVO> courseList = courseService.getFindCourseList(find_title);
 		model.addAttribute("courseList", courseList);
-		return "course/course_list"; 
+		return "course/course_find_list"; 
 	}
 	
 	@GetMapping("BestCourse")
 	public String bestCourse(
-			@RequestParam(defaultValue = "1") int pageNum			
+			@RequestParam(defaultValue = "1") int pageNum	
+			,@RequestParam(defaultValue = "") String searchType
 			, Model model) {
-		System.out.println("BestCourse 들어오나???");
-		// 강의 목록 출력
-		List<CourseVO> courseList = courseService.getCourseBestList();
+		System.out.println("searchType 들어오나???");
+		
 		
 		// ----------------------------------------------------------------
 		// [ 페이징 처리 ]	
 		int listLimit = 8; // 페이지 당 게시물 수
-		int listCount = courseService.getCourseBestList().size();
-		int pageListLimit = 5; 
+		int startRow = (pageNum - 1) * listLimit; // ????
+		int listCount = courseService.getCourseBestListCount();
+		
+		int pageListLimit = 8; 
 		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
 		if(maxPage == 0) {
 			maxPage = 1;
@@ -93,11 +95,18 @@ public class CourseController {
 		if(endPage > maxPage) {
 			endPage = maxPage;
 		}
+		if(pageNum < 1 || pageNum > maxPage) {
+			model.addAttribute("msg", "해당페이지 없음");
+			model.addAttribute("targetURL", "BestCourse?pageNum=1");
+			return "result/fail";
+		}
 		// 페이징 정보 관리하는 PageInfo 객체 생성 및 계산 결과 저장
 		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
-		model.addAttribute("pageInfo", pageInfo);
 		// ----------------------------------------------------------------
+		// 강의 목록 출력
+		List<CourseVO> courseList = courseService.getCourseBestList(startRow, pageListLimit, searchType);
 		
+		model.addAttribute("pageInfo", pageInfo);
 		model.addAttribute("courseList", courseList);
 		return "course/course_best_list";
 	}
@@ -117,10 +126,11 @@ public class CourseController {
 		// ----------------------------------------------------------------
 		// [ 페이징 처리 ]	
 		int listLimit = 8; // 페이지 당 게시물 수
+		int startRow = (pageNum - 1) * listLimit; // ????
 		int listCount = courseService.getCourseListCount(course, codetype, searchType);
-		System.out.println("리스트 카운트 몇개?? : " + listCount);
+//		System.out.println("리스트 카운트 몇개?? : " + listCount);
 		
-		int pageListLimit = 5; 
+		int pageListLimit = 8; 
 		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
 		if(maxPage == 0) {
 			maxPage = 1;
@@ -129,6 +139,11 @@ public class CourseController {
 		int endPage = startPage + pageListLimit - 1;
 		if(endPage > maxPage) {
 			endPage = maxPage;
+		}
+		if(pageNum < 1 || pageNum > maxPage) {
+			model.addAttribute("msg", "해당페이지 없음");
+			model.addAttribute("targetURL", "Category?pageNum=1");
+			return "result/fail";
 		}
 		// 페이징 정보 관리하는 PageInfo 객체 생성 및 계산 결과 저장
 		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
@@ -142,7 +157,7 @@ public class CourseController {
 		// codetype group by 해서 CATE타입만 출력
 		List<CommonCodeTypeVO> commonCode = courseService.getCommonCode();
 		// 강의 페이징 처리한 목록 출력
-		List<CourseVO> courseList = courseService.getCourseList(course, codetype, searchType, startPage, pageListLimit);
+		List<CourseVO> courseList = courseService.getCourseList(course, codetype, searchType, startRow, pageListLimit);
 				
 		
 		
@@ -206,18 +221,35 @@ public class CourseController {
 				 						.map(pic -> pic.getClass_pic1())
 				 						.toArray(size -> new String[size]);
 		// ----------------------------------------------------------------
-		// [ 페이징 처리 ]	
-		int startRow = (pageNum - 1) * paging(pageNum, class_id).getPageListLimit();
-		if(pageNum < 1 || pageNum > paging(pageNum, class_id).getMaxPage()) {
-			model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
-			model.addAttribute("targetURL", "CourseDetail?pageNum=1");
-			return "result/fail";
-		}
+	    // [ 페이징 처리 ]	
+ 		int listLimit = 8; // 페이지 당 게시물 수
+ 		int startRow = (pageNum - 1) * listLimit; // ????
+ 		int listCount = courseService.getCourseSupportListCount(class_id);
+ 		// System.out.println("리스트 카운트 몇개?? : " + listCount);
+ 		
+ 		int pageListLimit = 8; 
+ 		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+ 		if(maxPage == 0) {
+ 			maxPage = 1;
+ 		}
+ 		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+ 		int endPage = startPage + pageListLimit - 1;
+ 		if(endPage > maxPage) {
+ 			endPage = maxPage;
+ 		}
+ 		if(pageNum < 1 || pageNum > maxPage) {
+ 			model.addAttribute("msg", "해당페이지 없음");
+ 			model.addAttribute("targetURL", "Category?pageNum=1");
+ 			return "result/fail";
+ 		}
+ 		// 페이징 정보 관리하는 PageInfo 객체 생성 및 계산 결과 저장
+ 		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
+	    // ----------------------------------------------------------------
 		// 페이징 처리한 문의사항 항목가져옴. 
-		List<CourseSupportVO> courseSupportList = courseService.getCourseSupportList(class_id, startRow, paging(pageNum, class_id).getPageListLimit());
+		List<CourseSupportVO> courseSupportList 
+			= courseService.getCourseSupportList(class_id,startRow,listLimit);
+		model.addAttribute("pageInfo", pageInfo);
 		// ----------------------------------------------------------------
-		
-		
 		JSONArray jsonToWishList = new JSONArray(wishList);
 		model.addAttribute("wishList", jsonToWishList);
 		model.addAttribute("courseSupportList", courseSupportList);
@@ -248,28 +280,46 @@ public class CourseController {
 			Model model) {
 		
 		
-		// [ 페이징 처리 ]		
-		int startRow = (pageNum - 1) * paging(pageNum, class_id).getPageListLimit();
-		if(pageNum < 1 || pageNum > paging(pageNum, class_id).getMaxPage()) {
-			model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
-			model.addAttribute("targetURL", "CourseDetail?pageNum=1");
-			return "result/fail";
-		}
-		// 페이징 처리한 문의사항 항목가져옴. 
-		List<CourseSupportVO> courseSupportList = courseService.getCourseSupportList(class_id, startRow, paging(pageNum, class_id).getPageListLimit());
+		// ----------------------------------------------------------------
+	    // [ 페이징 처리 ]	
+ 		int listLimit = 8; // 페이지 당 게시물 수
+ 		int startRow = (pageNum - 1) * listLimit; // ????
+ 		int listCount = courseService.getCourseSupportListCount(class_id);
+ 		// System.out.println("리스트 카운트 몇개?? : " + listCount);
+ 		
+ 		int pageListLimit = 8; 
+ 		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+ 		if(maxPage == 0) {
+ 			maxPage = 1;
+ 		}
+ 		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+ 		int endPage = startPage + pageListLimit - 1;
+ 		if(endPage > maxPage) {
+ 			endPage = maxPage;
+ 		}
+ 		if(pageNum < 1 || pageNum > maxPage) {
+ 			model.addAttribute("msg", "해당페이지 없음");
+ 			model.addAttribute("targetURL", "Category?pageNum=1");
+ 			return "result/fail";
+ 		}
+ 		// 페이징 정보 관리하는 PageInfo 객체 생성 및 계산 결과 저장
+ 		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
+
+ 		// 페이징 처리한 문의사항 항목가져옴. 
+		List<CourseSupportVO> courseSupportList = courseService.getCourseSupportList(class_id,startRow,listLimit);
+		model.addAttribute("pageInfo", pageInfo);
+		
+		
+		// ----------------------------------------------------------------
 		List<CourseVO> course = courseService.getCourse(class_id);
 		// 강사의 다른 클래스 조회
 		List<CourseVO> courseTeacher = courseService.getCourseTeacher(class_id, course.get(0).getTeacher_id());
 		// 수강평 목록 
 				
-		// -------------------------------------------------------------------
-		// Model 객체에 페이징 정보 저장
-		model.addAttribute("pageInfo", paging(pageNum, class_id));
-		// -------------------------------------------------------------------
 		
 		model.addAttribute("course", course);
-		model.addAttribute("courseSupportList", courseSupportList);
 		model.addAttribute("courseTeacher", courseTeacher);
+		model.addAttribute("courseSupportList", courseSupportList);
 		return "course/course_support_list"; 
 	}
 	
@@ -688,68 +738,50 @@ public class CourseController {
 			e.printStackTrace();
 		}
 	}
-	public PageInfo paging(@RequestParam(defaultValue = "1") int pageNum, int class_id) {
-		// -------------------------------------------------------------------
-		// [ 페이징 처리 ]
-		int listLimit = 5; // 페이지 당 게시물 수
-		int listCount = courseService.getCSupportListCount(class_id);
-		int pageListLimit = 5; 
-		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
-		if(maxPage == 0) {
-			maxPage = 1;
-		}
-		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
-		int endPage = startPage + pageListLimit - 1;
-		if(endPage > maxPage) {
-			endPage = maxPage;
-		}
-		// 페이징 정보 관리하는 PageInfo 객체 생성 및 계산 결과 저장
-		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
-		return pageInfo;
-	}
-	// ========================================================
-		// 뷰페이지에서 파일 목록의 효율적 처리를 위해 별도의 가공하는 메서드
-		// => 파일 정보가 저장된 BoardVO 객체와 최종 결과를 저장할 Model 객체를 파라미터로 전달받기
-		private void addFileListToModel(CourseSupportVO cSupport, Model model) {
-			// 뷰 페이지에서 파일목록의 효율적 처리를 위해 별도의 가공 후 전달
-//			1. 파일명을 별도의 list 객체에 저장(제네릭 타입 : String)
-			List<String> fileList = new ArrayList<String>();
-			fileList.add(cSupport.getC_support_file());
-			System.out.println(fileList);
-			//----------------------
-			// 2. 만약, 컨트롤러 측에서 원본 파일명을 추출하여 전달할 경우
-			// => 파일명이 저장된 List 객체를 반복하면서 원본 파일명을 추출하여 별도의 List에 저장
-			List<String> originalFileList = new ArrayList<String>();
-			
-			for(String file : fileList) {
-//				System.out.println("file: " + file);
-				if(!file.equals("")) {
-					// 실제 파일명에서 "-" 기호 다음(인덱스값 + 1)부터 끝까지 추출하여 리스트에 추가
-					originalFileList.add(file.substring(file.indexOf("_") + 1));
-				} else {
-					// 파일이 존재하지 않을 경우 원본 파일명도 파일명과 동일하게 null 로 저장
-					originalFileList.add(file);
-				}
-			}
-			System.out.println("originalFileList" + originalFileList); // 자동적으로 위치도 구분해서 나온다.
-			//----------------
-			// Model 객체에 파일 목록 객체 2개 저장
-			model.addAttribute("fileList", fileList);
-			model.addAttribute("originalFileList", originalFileList); // model은 파라미터에서 보내주니까 void가 맞다. 같은 객체이므로
-			// Model 객체를 별도로 리턴하지 않아도 객체 자체를 전달받았으므로
-					// 메서드 호출한 곳에서 저장된 속성 그대로 공유 가능
-		}
-		
-		// 서브 디렉토리 생성
-		public String createDirectories(int classId, String realPath) {
-			
-			//	기존 실제 업로드 경로
-			realPath += "/" + classId;
-			//	실제 경로 전달
-//			Path path = Paths.get(realPath);
-			
-			return Integer.toString(classId);
-		}
 	
+	// ========================================================
+	// 뷰페이지에서 파일 목록의 효율적 처리를 위해 별도의 가공하는 메서드
+	// => 파일 정보가 저장된 BoardVO 객체와 최종 결과를 저장할 Model 객체를 파라미터로 전달받기
+	private void addFileListToModel(CourseSupportVO cSupport, Model model) {
+		// 뷰 페이지에서 파일목록의 효율적 처리를 위해 별도의 가공 후 전달
+//			1. 파일명을 별도의 list 객체에 저장(제네릭 타입 : String)
+		List<String> fileList = new ArrayList<String>();
+		fileList.add(cSupport.getC_support_file());
+		System.out.println(fileList);
+		//----------------------
+		// 2. 만약, 컨트롤러 측에서 원본 파일명을 추출하여 전달할 경우
+		// => 파일명이 저장된 List 객체를 반복하면서 원본 파일명을 추출하여 별도의 List에 저장
+		List<String> originalFileList = new ArrayList<String>();
+		
+		for(String file : fileList) {
+//				System.out.println("file: " + file);
+			if(!file.equals("")) {
+				// 실제 파일명에서 "-" 기호 다음(인덱스값 + 1)부터 끝까지 추출하여 리스트에 추가
+				originalFileList.add(file.substring(file.indexOf("_") + 1));
+			} else {
+				// 파일이 존재하지 않을 경우 원본 파일명도 파일명과 동일하게 null 로 저장
+				originalFileList.add(file);
+			}
+		}
+		System.out.println("originalFileList" + originalFileList); // 자동적으로 위치도 구분해서 나온다.
+		//----------------
+		// Model 객체에 파일 목록 객체 2개 저장
+		model.addAttribute("fileList", fileList);
+		model.addAttribute("originalFileList", originalFileList); // model은 파라미터에서 보내주니까 void가 맞다. 같은 객체이므로
+		// Model 객체를 별도로 리턴하지 않아도 객체 자체를 전달받았으므로
+				// 메서드 호출한 곳에서 저장된 속성 그대로 공유 가능
+	}
+	
+	// 서브 디렉토리 생성
+	public String createDirectories(int classId, String realPath) {
+		
+		//	기존 실제 업로드 경로
+		realPath += "/" + classId;
+		//	실제 경로 전달
+//			Path path = Paths.get(realPath);
+		
+		return Integer.toString(classId);
+	}
+
 	
 }

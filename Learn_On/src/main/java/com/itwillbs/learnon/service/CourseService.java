@@ -22,8 +22,8 @@ public class CourseService {
 	public int getCourseListCount(CourseVO course, String codetype, String searchType) {
 		return mapper.selectCourseListCount(course, codetype, searchType);
 	}
-	public List<CourseVO> getCourseList(CourseVO course, String codetype, String searchType, int startPage, int pageListLimit) {
-		return mapper.selectCourseList(searchType, codetype, course, startPage, pageListLimit);
+	public List<CourseVO> getCourseList(CourseVO course, String codetype, String searchType, int startRow, int pageListLimit) {
+		return mapper.selectCourseList(searchType, codetype, course, startRow, pageListLimit);
 	}
 	public List<CourseVO> getCourse(int class_id) {
 		return mapper.selectCourse(class_id);
@@ -46,13 +46,13 @@ public class CourseService {
 	public int registCourseSupport(CourseSupportVO cSupport) {
 		return mapper.insertCourseSupport(cSupport);
 	}
-
+	
 	public List<CourseSupportVO> getCourseSupportList(int class_id, int startRow, int listLimit) {
 		return mapper.selectCourseSupportList(class_id,startRow,listLimit);
 	}
 
-	public int getCSupportListCount(int class_id) {
-		return mapper.selectCSupportListCount(class_id);
+	public int getCourseSupportListCount(int class_id) {
+		return mapper.selectCourseSupportListCount(class_id);
 	}
 
 	public CourseSupportVO getCourseSupport(int class_id) {
@@ -87,8 +87,11 @@ public class CourseService {
 		return mapper.selectFindCourseList(find_title);
 	}
 
-	public List<CourseVO> getCourseBestList() {
-		return mapper.selectCourseBestList();
+	public List<CourseVO> getCourseBestList(int startRow, int pageListLimit, String searchType) {
+		return mapper.selectCourseBestList(startRow, pageListLimit, searchType);
+	}
+	public int getCourseBestListCount() {
+		return mapper.selectCourseBestListCount();
 	}
 
 	

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
 <!DOCTYPE html>
 <html>
@@ -22,26 +23,9 @@
 		<div class="wrapper">
 			<div class="cls-wrap">
 				<div class="cls-cate">
-					<h1 class="cls-ttl">${codeType[0].codename}</h1>
+					<c:set var="find_cnt" value="${courseList}" />
+					<h1 class="cls-ttl">'${param.find_title}'의 검색결과 ${fn:length(find_cnt)}건 </h1>
 					<div class="cate-li">
-						<button <c:if test="${param.codetype eq codeType[0].codetype && param.codetype_id eq null}">class="on"</c:if>>
-							<a href="Category?codetype=${codeType[0].codetype}" >전체</a>
-						</button>
-						<c:forEach var="category" items="${requestScope.codeType}" varStatus="status">
- 							<button <c:if test="${param.codetype_id eq category.codetype_id}">class="on"</c:if>> 
-								 <a href="Category?codetype=${category.codetype}&codetype_id=${category.codetype_id}">${category.name}</a>
-							</button>
-						</c:forEach>
-						<form action="Category">
-							<select name="searchType">
-								<option value="new" <c:if test="${param.searchType eq 'new'}">selected</c:if>>최신순</option>
-								<option value="title" <c:if test="${param.searchType eq 'title'}">selected</c:if>>제목순</option>
-								<option value="price" <c:if test="${param.searchType eq 'price'}">selected</c:if>>가격순</option>
-								<option value="score" <c:if test="${param.searchType eq 'score'}">selected</c:if>>평점순</option>
-							</select>
-							<input type="hidden" name="codetype" value="${codeType[0].codetype }"/>
-							<input type="submit" value="검색" />
-						</form>
 						<script>
 							function handleChange(event) {
 								let form = document.searchType;

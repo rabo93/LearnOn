@@ -25,7 +25,7 @@ public interface CourseMapper {
 			@Param("searchType") String searchType,
 			@Param("codetype") String codetype,
 			@Param("course") CourseVO course,
-			@Param("startPage") int startPage, 
+			@Param("startRow") int startRow, 
 			@Param("pageListLimit") int pageListLimit
 	);
 	
@@ -49,7 +49,7 @@ public interface CourseMapper {
 		);
 
 
-	int selectCSupportListCount(int class_id);
+	int selectCourseSupportListCount(int class_id);
 
 	CourseSupportVO selectCourseSupport(int class_id);
 
@@ -71,7 +71,13 @@ public interface CourseMapper {
 
 	List<CourseVO> selectFindCourseList(String find_title);
 
-	List<CourseVO> selectCourseBestList();
+	List<CourseVO> selectCourseBestList(
+			@Param("startRow") int startRow, 
+			@Param("pageListLimit") int pageListLimit,
+			@Param("searchType") String searchType
+	);
+	
+	int selectCourseBestListCount();
 
 	
 

@@ -96,6 +96,10 @@ public class AdminService {
 	public int changeMemStatus(Map<String, String> map) {
 		return mapper.changeMemStatus(map);
 	}
+	//	회원 정보 수정
+	public int modifyMember(Map<String, Object> map) {
+		return mapper.updateMember(map);
+	}
 	//	회원 삭제
 	public int removeMember(String mem_id) {
 		return mapper.deleteMember(mem_id);

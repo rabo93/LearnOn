@@ -5,8 +5,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-    <title>LearnOn - 관리자 페이지</title>
+	<meta charset="UTF-8">
+    <title>런 온 - 온라인 No.1 교육 플랫폼</title>
+	<link rel="SHORTCUT ICON" href="${pageContext.request.contextPath}/resources/images/favicon.ico">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -40,7 +41,6 @@
 	<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 	
 <meta charset="UTF-8">
-<title>Insert title here</title>
 </head>
 <body>
 	<%@include file="inc/sidebar.jsp"%>

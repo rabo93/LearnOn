@@ -73,6 +73,8 @@ public interface AdminMapper {
 	MemberVO getMemberList(String mem_id);
 	//	멤버 상태변경(정상, 휴먼, 탈퇴)
 	int changeMemStatus(Map<String, String> map);
+	//	회원 정보 수정
+	int updateMember(Map<String, Object> map);
 	//	회원 삭제
 	int deleteMember(String mem_id);
 	//	회원 등급변경

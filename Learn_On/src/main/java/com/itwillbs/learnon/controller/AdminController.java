@@ -359,7 +359,6 @@ public class AdminController {
 	@GetMapping("AdmClassList")
 	public String admin_class_list(Model model) {
 		model.addAttribute("getClassList", adminService.getClassList());
-//		model.addAttribute("getMainCate", adminService.getMainCate());
 		
 		return "admin/class_list";
 	}
@@ -367,13 +366,11 @@ public class AdminController {
 	// 어드민 클래스 수정 페이지 매핑
 	@GetMapping("AdmClassListModify")
 	public String admin_class_list_modi(int class_id, Model model) {
-		System.out.println("class_id : " + class_id);
 		AdminVO classLoad = adminService.getIdClass(class_id);
 		model.addAttribute("getClass", classLoad);
 		model.addAttribute("getMainCate", adminService.getMainCate());
 		model.addAttribute("getCurriculum", adminService.getCurriculum(class_id));
-//		List<AdminVO> classLoad = adminService.getClass(VO);
-//		System.out.println("========================classLoad : " + adminService.getCurriculum(VO));
+		model.addAttribute("getInstructor", adminService.getInstructorMemberList());
 //		
 		if (classLoad == null) {
 			model.addAttribute("msg", "클래스 불러오기 실패!");
@@ -386,9 +383,7 @@ public class AdminController {
 	// 어드민 클래스 수정 로직
 	@PostMapping("AdmClassListModify")
 	public String adm_class_modify(int class_id, AdminVO adm, HttpSession session, Model model) {
-		
 		AdminVO classInfo = adminService.getIdClass(class_id);
-//		List<Map<String, Object>> curIndex = adminService.getCurriculum(class_id);
 		
 		// 커리큘럼 내용 가져오기
 		String[] arrCurTitle = adm.getCur_title().split(",");

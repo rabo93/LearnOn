@@ -19,28 +19,28 @@
                 <h4 class="pageSubject">LearnOn 관리자 대시보드</h4>
                 <div class="navbar-nav align-items-center ms-auto">
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <i class="fa fa-bell me-lg-2"></i>
+<!--                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"> -->
+<!--                             <i class="fa fa-bell me-lg-2"></i> -->
 <!--                             <span class="d-none d-lg-inline-flex">알림</span> -->
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">프로필이 업데이트 되었습니다.</h6>
-                                <small>15분 전</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">신규 가입 되었습니다.</h6>
-                                <small>15분 전</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">비밀번호가 변경되었습니다</h6>
-                                <small>15분 전</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item text-center">모든 알림 확인</a>
-                        </div>
+<!--                         </a> -->
+<!--                         <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0"> -->
+<!--                             <a href="#" class="dropdown-item"> -->
+<!--                                 <h6 class="fw-normal mb-0">프로필이 업데이트 되었습니다.</h6> -->
+<!--                                 <small>15분 전</small> -->
+<!--                             </a> -->
+<!--                             <hr class="dropdown-divider"> -->
+<!--                             <a href="#" class="dropdown-item"> -->
+<!--                                 <h6 class="fw-normal mb-0">신규 가입 되었습니다.</h6> -->
+<!--                                 <small>15분 전</small> -->
+<!--                             </a> -->
+<!--                             <hr class="dropdown-divider"> -->
+<!--                             <a href="#" class="dropdown-item"> -->
+<!--                                 <h6 class="fw-normal mb-0">비밀번호가 변경되었습니다</h6> -->
+<!--                                 <small>15분 전</small> -->
+<!--                             </a> -->
+<!--                             <hr class="dropdown-divider"> -->
+<!--                             <a href="#" class="dropdown-item text-center">모든 알림 확인</a> -->
+<!--                         </div> -->
                     </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
@@ -48,9 +48,9 @@
                             <span class="d-none d-lg-inline-flex">${sessionScope.sNick}</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                            <a href="#" class="dropdown-item">내 프로필</a>
-                            <a href="#" class="dropdown-item">계정 설정</a>
-                            <a href="#" class="dropdown-item">로그아웃</a>
+                            <a href="MyInfo" class="dropdown-item">내 프로필</a>
+                            <a href="/learnon" class="dropdown-item">홈페이지로 돌아가기</a>
+                            <a href="MemberLogout" class="dropdown-item">로그아웃</a>
                         </div>
                     </div>
                 </div>

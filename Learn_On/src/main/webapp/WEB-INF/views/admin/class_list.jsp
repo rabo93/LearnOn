@@ -74,17 +74,9 @@
 											<td><input class="form-control" type="text" placeholder="" value="${li.class_title}" disabled="disabled"></td>
 											<td>
 												<input type="text" value="${li.codename}" class="form-control" name="class_maincate" disabled="disabled">
-<%-- 													<c:forEach items="${getMainCate}" var="cate"> --%>
-<%-- 														<option value="${cate.CODEID}"  --%>
-<%-- 															<c:if test="${fn:contains(cate.DESCRIPTION, li.class_category)}">selected="selected"</c:if>> --%>
-<%-- 																${cate.CODENAME} --%>
-<!-- 														</option> -->
-<%-- 													</c:forEach> --%>
 											</td>
 											<td>
 												<input type="text" class="form-control" value="${li.name}" disabled="disabled">
-<!-- 												<select class="form-control" id="floatingSelect2" name="class_category" disabled="disabled"> -->
-<!-- 												</select> -->
 											</td>
 											<td>
 												<select class="form-control" id="classStat" disabled="disabled">
@@ -127,7 +119,7 @@
 
     <!-- Template Javascript -->
     <script src="resources/admin/js/main.js"></script>
-    <script src="resources/admin/js/admClass.js"></script>
+<!--     <script src="resources/admin/js/admClass.js"></script> -->
     <script type="text/javascript">
     		var link = document.location.href;
 	    	if (link.includes("AdmClass")) {

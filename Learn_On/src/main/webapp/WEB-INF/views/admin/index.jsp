@@ -53,8 +53,8 @@
                         <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
                             <i class="fa fa-chart-line fa-3x text-primary"></i>
                             <div class="ms-3">
-                                <p class="mb-2">오늘의 매출</p>
-                                <h6 class="mb-0">￦ 1,234,567</h6>
+                                <p class="mb-2">총 회원수</p>
+                                <h6 class="mb-0">${nomalMemberCount}명</h6>
                             </div>
                         </div>
                     </div>
@@ -62,8 +62,8 @@
                         <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
                             <i class="fa fa-chart-bar fa-3x text-primary"></i>
                             <div class="ms-3">
-                                <p class="mb-2">주간 매출</p>
-                                <h6 class="mb-0">￦ 12,345,678</h6>
+                                <p class="mb-2">총 강사수</p>
+                                <h6 class="mb-0">${instrucMemberCount}명</h6>
                             </div>
                         </div>
                     </div>
@@ -71,8 +71,8 @@
                         <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
                             <i class="fa fa-chart-area fa-3x text-primary"></i>
                             <div class="ms-3">
-                                <p class="mb-2">오늘의 수익</p>
-                                <h6 class="mb-0">￦ 345,678</h6>
+                                <p class="mb-2">오늘 매출</p>
+                                <h6 class="mb-0">￦ ${todayPayTotal}원</h6>
                             </div>
                         </div>
                     </div>
@@ -80,8 +80,8 @@
                         <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
                             <i class="fa fa-chart-pie fa-3x text-primary"></i>
                             <div class="ms-3">
-                                <p class="mb-2">주간 수익</p>
-                                <h6 class="mb-0">￦ 789,123</h6>
+                                <p class="mb-2">주간 매출</p>
+                                <h6 class="mb-0">￦ ${weekPayTotal}원</h6>
                             </div>
                         </div>
                     </div>

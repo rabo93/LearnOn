@@ -626,3 +626,12 @@
 	width: 1024px;
 	text-align: center;
 }
+
+/* 페이징 */
+#pageList {display: flex;justify-content: center;align-items: center;gap: 6px;margin: 1rem auto;}
+#pageList button, #pageList input[type=button] {font-size: 13px;font-weight: 700;background: var(--white);border: 1px solid var(--dark);border-radius: 4px;cursor:pointer;width: 30px;height: 30px;}
+#pageList button:disabled, #pageList input[type=button]:disabled {background:#eee;border-color:#ddd;color:#c999;}
+#pageList button:hover, #pageList input[type=button]:hover {background:var(--primary);color:var(--white);border-color:var(--primary);}
+#pageList strong {width: 20px;display: inline-block;text-align: center;text-decoration: underline;cursor:pointer;}
+#pageList a {display: inline-block;width: 20px;text-align: center;}
+#pageList a:hover {color:var(--primary);font-weight:600;}

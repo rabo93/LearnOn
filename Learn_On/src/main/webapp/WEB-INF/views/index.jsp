@@ -43,21 +43,21 @@
 				<div class="sec-inner">
 					<h1 class="sec-ttl">
 						실시간 인기 클래스 ✨
-						<button class="more"><i class="fa-solid fa-chevron-right"></i></button>
+						<button class="more" onclick="location.href='/Category?codetype=CATE01'"><i class="fa-solid fa-chevron-right"></i></button>
 					</h1>
 					<div class="course-wrap">
-						<ul class="course-card">
-							<!-- 8개 -->
-							<c:choose>
-								<c:when test="${empty bestClassList}">
-									<li>인기 강의가 존재하지 않습니다.</li>
-								</c:when>
+						<!-- 8개 -->
+						<c:choose>
+							<c:when test="${empty bestClassList}">
+								<div class="empty">강의를 준비중이에요 😊</div>
+							</c:when>
+							<ul class="course-card">
 								<c:otherwise>
 									<c:forEach var="best" items="${bestClassList}">
-										<li onclick="location.href='CourseDetail?class_id='${best.CLASS_ID}">
-											<img src="${pageContext.request.contextPath}/resources/upload/${best.CLASS_PIC}" class="card-thumb" alt="thumbnail" />
+										<li>
+											<img src="${pageContext.request.contextPath}/resources/upload/${best.CLASS_PIC}" onclick="location.href='CourseDetail?class_id=${best.CLASS_ID}'" class="card-thumb" alt="thumbnail" />
 <%-- 											<img src="${pageContext.request.contextPath}/resources/images/thumb_01.webp" class="card-thumb" alt="thumbnail" /> --%>
-											<div class="card-info">
+											<div class="card-info" onclick="location.href='CourseDetail?class_id=${best.CLASS_ID}'">
 												<div class="category">
 													<span>${best.CLASS_CATEGORY}</span>
 												</div>
@@ -72,8 +72,8 @@
 										</li>
 									</c:forEach>
 								</c:otherwise>
-							</c:choose>
-						</ul>
+							</ul>
+						</c:choose>
 					</div>
 				</div>
 			</section>
@@ -82,17 +82,17 @@
 				<div class="sec-inner">
 					<h1 class="sec-ttl">
 						방금 오픈한 강의 👀
-						<button class="more"><i class="fa-solid fa-chevron-right"></i></button>
+						<button class="more" onclick="location.href='/Category?codetype=CATE01'"><i class="fa-solid fa-chevron-right"></i></button>
 					</h1>
 					<div class="course-wrap">
-						<ul class="course-card">
-							<c:choose>
-								<c:when test="${empty newClassList}">
-									<li>최신 강의가 존재하지 않습니다.</li>
-								</c:when>
+						<c:choose>
+							<c:when test="${empty newClassList}">
+								<div class="empty">강의를 준비중이에요 😊</div>
+							</c:when>
+							<ul class="course-card">
 								<c:otherwise>
 									<c:forEach var="newClass" items="${newClassList}">
-										<li onclick="location.href='CourseDetail?class_id='${newClass.CLASS_ID}">
+										<li onclick="location.href='CourseDetail?class_id=${newClass.CLASS_ID}'">
 											<img src="${pageContext.request.contextPath}/resources/upload/${newClass.CLASS_PIC}" class="card-thumb" alt="thumbnail" />
 <%-- 											<img src="${pageContext.request.contextPath}/resources/images/thumb_01.webp" class="card-thumb" alt="thumbnail" /> --%>
 											<div class="card-info">
@@ -110,8 +110,8 @@
 										</li>
 									</c:forEach>
 								</c:otherwise>
-							</c:choose>
-						</ul>
+							</ul>
+						</c:choose>
 					</div>
 				</div>
 			</section>

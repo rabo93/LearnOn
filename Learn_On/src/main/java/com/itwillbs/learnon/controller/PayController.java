@@ -134,11 +134,11 @@ public class PayController {
 		String impUid = paycancelVO.getImp_uid();
 		
 		// impUid에 해당하는 로그인 아이디 가져오기
-//		String memId = payService.getMem_id(impUid);
-//		logger.info("회원아이디:"+ memId);
-//		
-//		//취소하면 결제 상태값 업데이트 및 사용한 쿠폰 복구
-//		payService.payStatusUpdate(impUid, memId);
+		String memId = payService.getMem_id(impUid);
+		logger.info("회원아이디:"+ memId);
+		
+		//취소하면 결제 상태값 업데이트 및 사용한 쿠폰 복구
+		payService.payStatusUpdate(impUid, memId);
 		
 		//IamportClient클래스의 cancelPaymentByImpUid() 함수 호출
 		//=> 파라미터: CancelData클래스 	/리턴: IamportResponse<Payment>

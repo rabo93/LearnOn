@@ -18,15 +18,13 @@ public class CourseService {
 	@Autowired
 	CourseMapper mapper;
 	
-//	public List<CourseVO> getCourseList(CourseVO course, String searchType) {
-//	public List<CourseVO> getCourseList(CourseVO course) {
-//	public List<CourseVO> getCourseList(CourseVO course, String searchType) {
-//		return mapper.selectCourseList(searchType, course);
-//	}
-	public List<CourseVO> getCourseList(CourseVO course, String codetype, String searchType) {
-		return mapper.selectCourseList(searchType, codetype, course);
+	
+	public int getCourseListCount(CourseVO course, String codetype, String searchType) {
+		return mapper.selectCourseListCount(course, codetype, searchType);
 	}
-
+	public List<CourseVO> getCourseList(CourseVO course, String codetype, String searchType, int startPage, int pageListLimit) {
+		return mapper.selectCourseList(searchType, codetype, course, startPage, pageListLimit);
+	}
 	public List<CourseVO> getCourse(int class_id) {
 		return mapper.selectCourse(class_id);
 	}
@@ -92,6 +90,8 @@ public class CourseService {
 	public List<CourseVO> getCourseBestList() {
 		return mapper.selectCourseBestList();
 	}
+
+	
 
 
 	

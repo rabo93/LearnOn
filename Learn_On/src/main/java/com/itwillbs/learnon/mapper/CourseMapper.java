@@ -15,11 +15,20 @@ import com.itwillbs.learnon.vo.MyReviewVO;
 @Mapper
 public interface CourseMapper {
 
+	
+	int selectCourseListCount(
+			@Param("course") CourseVO course, 
+			@Param("codetype") String codetype,
+			@Param("searchType")  String searchType
+	);
 	List<CourseVO> selectCourseList(
 			@Param("searchType") String searchType,
 			@Param("codetype") String codetype,
-			@Param("course") CourseVO course
-							);
+			@Param("course") CourseVO course,
+			@Param("startPage") int startPage, 
+			@Param("pageListLimit") int pageListLimit
+	);
+	
 
 	List<CourseVO> selectCourse(int classId);
 
@@ -63,6 +72,8 @@ public interface CourseMapper {
 	List<CourseVO> selectFindCourseList(String find_title);
 
 	List<CourseVO> selectCourseBestList();
+
+	
 
 
 }

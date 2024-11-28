@@ -112,17 +112,40 @@ public class CourseController {
 			, HttpServletRequest request
 			, Model model) {
 
-		System.out.println("codetype ??  "  + codetype); // CATE01
+//		System.out.println("codetype ??  "  + codetype); // CATE01
 		String id = (String)session.getAttribute("sId");
+		// ----------------------------------------------------------------
+		// [ 페이징 처리 ]	
+		int listLimit = 8; // 페이지 당 게시물 수
+		int listCount = courseService.getCourseListCount(course, codetype, searchType);
+		System.out.println("리스트 카운트 몇개?? : " + listCount);
+		
+		int pageListLimit = 5; 
+		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+		if(maxPage == 0) {
+			maxPage = 1;
+		}
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		int endPage = startPage + pageListLimit - 1;
+		if(endPage > maxPage) {
+			endPage = maxPage;
+		}
+		// 페이징 정보 관리하는 PageInfo 객체 생성 및 계산 결과 저장
+		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
+		// ----------------------------------------------------------------
+		
 		
 		// 전체 메뉴 조회
 		List<CommonCodeTypeVO> codeTypeAll = courseService.getCodeTypeAll();
-		// codetype  으로 뿌리는 공통코드
+		// codetype으로 뿌리는 공통코드
 		List<CommonCodeTypeVO> codeType = courseService.getCodeType(codetype); 
 		// codetype group by 해서 CATE타입만 출력
 		List<CommonCodeTypeVO> commonCode = courseService.getCommonCode();
-		// 강의 목록 출력
-		List<CourseVO> courseList = courseService.getCourseList(course, codetype, searchType);
+		// 강의 페이징 처리한 목록 출력
+		List<CourseVO> courseList = courseService.getCourseList(course, codetype, searchType, startPage, pageListLimit);
+				
+		
+		
 		
 		// 관심목록 조회
 		List<Map<String, Object>> wishList = myService.getWishlistForCategoryList(id);
@@ -141,23 +164,7 @@ public class CourseController {
 		} 
 		session.setAttribute("prevURL", prevURL);
 		
-		// ----------------------------------------------------------------
-		// [ 페이징 처리 ]	
-		int listLimit = 8; // 페이지 당 게시물 수
-		int listCount = courseService.getCourseList(course, codetype, searchType).size();
-		int pageListLimit = 5; 
-		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
-		if(maxPage == 0) {
-			maxPage = 1;
-		}
-		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
-		int endPage = startPage + pageListLimit - 1;
-		if(endPage > maxPage) {
-			endPage = maxPage;
-		}
-		// 페이징 정보 관리하는 PageInfo 객체 생성 및 계산 결과 저장
-		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
-		// ----------------------------------------------------------------
+		
 		model.addAttribute("pageInfo", pageInfo);
 		
 		return "course/course_list"; 

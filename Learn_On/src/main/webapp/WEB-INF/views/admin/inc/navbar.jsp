@@ -50,7 +50,7 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
                             <a href="MyInfo" class="dropdown-item">내 프로필</a>
-                            <a href="/learnon" class="dropdown-item">홈페이지로 돌아가기</a>
+                            <a href="./" class="dropdown-item">홈페이지로 돌아가기</a>
                             <a href="javascript:void(0)" class="dropdown-item" onclick="logout()">로그아웃</a>
                         </div>
                     </div>

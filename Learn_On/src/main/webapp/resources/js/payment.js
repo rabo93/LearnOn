@@ -244,8 +244,7 @@ $(document).ready(function() {
 							//=> 주문 저장 후 쿠폰상태(MYCOUPON) 업데이트 및 나의클래스(MYCOURSE)에 인서트 처리
 							saveOrderinfo(rsp);
 							
-							//테스트 진행을 위해 바로 결제취소(테스트 완료후 코드 지울것)
-//							cancelPay(rsp);
+							
 						//-------------------------------------------	
 						} else {
 							alert("결제 금액 오류로 결제 실패");

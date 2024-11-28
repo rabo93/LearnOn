@@ -26,6 +26,7 @@ public class AdminVO {
 	private String codetype_id;
 	private String name;
 	private String codetype;
+	private String codename;
 	
 	// 커리큘럼
 	private int cur_id;

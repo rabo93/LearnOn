@@ -84,9 +84,9 @@
 										<label for="floatingSelect2">소분류</label>
 									</div>
 									<div class="form-floating flex-fill">
-<!-- 										<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTeacherList">강사 찾기</button> -->
-										<input type="text" class="form-control" id="floatingInput" name="mem_id">
-										<label for="floatingInput">강사</label>
+										<input type="text" class="form-control" id="teacher" name="mem_id">
+										<label for="floatingInput">강사 ID</label>
+										<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTeacherList">강사 찾기</button>
 									</div>
 								</div>
 							</div>
@@ -146,30 +146,30 @@
 	<%-- 내용 끝 --%>
 	
 	<!-- 강사이름 모달 -->
-<!-- 	<div class="modal fade" tabindex="-1" id="modalTeacherList"> -->
-<!-- 		<div class="modal-dialog modal-dialog-centered"> -->
-<!-- 			<div class="modal-content"> -->
-<!-- 				<div class="modal-header"> -->
-<!-- 					<h5 class="modal-title">강사 리스트</h5> -->
-<!-- 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
-<!-- 				</div> -->
-<!-- 				<div class="modal-body"> -->
-<!-- 					<div class="input-group mb-3"> -->
-<!-- 						<input type="text" class="form-control" placeholder="강사 검색" aria-describedby="basic-addon1"> -->
-<!-- 					</div> -->
-<!-- 					<select class="form-select" multiple="" aria-label="multiple select example"> -->
-<%-- 						<c:forEach items="${getInstructor}" var="ins"> --%>
-<%-- 							<option value="${ins.MEM_ID}">${ins.MEM_NAME}</option> --%>
-<%-- 						</c:forEach> --%>
-<!-- 					</select> -->
-<!-- 				</div> -->
-<!-- 				<div class="modal-footer"> -->
-<!-- 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
-<!-- 					<button type="button" class="btn btn-primary">Save changes</button> -->
-<!-- 				</div> -->
-<!-- 			</div> -->
-<!-- 		</div> -->
-<!-- 	</div> -->
+	<div class="modal fade" tabindex="-1" id="modalTeacherList">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">강사 리스트</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="input-group mb-3">
+						<input type="text" class="form-control" placeholder="강사 검색" aria-describedby="basic-addon1">
+					</div>
+					<select id="selectTeacher" class="form-select" multiple="" aria-label="multiple select example">
+						<c:forEach items="${getInstructor}" var="ins">
+							<option value="${ins.MEM_ID}">${ins.MEM_NAME}, (ID: ${ins.MEM_ID})</option>
+						</c:forEach>
+					</select>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+					<button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="selectTeacher()">선택</button>
+				</div>
+			</div>
+		</div>
+	</div>
             
 	<%@include file="inc/footer.jsp"%>
 
@@ -199,6 +199,12 @@
     		document.querySelector("#classAdd").parentElement.classList.add("show");
     		document.querySelector("#classAdd").classList.toggle("active");
     	};
+    	
+    	function selectTeacher() {
+    		var val = $('#selectTeacher').find(":selected").val();
+    		console.log(val);
+    	    $("#teacher").val(val);
+    	}
     </script>
 </body>
 </html>

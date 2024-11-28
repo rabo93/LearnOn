@@ -4,7 +4,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>런 온 - 온라인 No.1 교육 플랫폼</title>
+<link rel="SHORTCUT ICON" href="${pageContext.request.contextPath}/resources/images/favicon.ico">
 </head>
 <body>
 	<script type="text/javascript">

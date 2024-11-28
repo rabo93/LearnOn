@@ -5,8 +5,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +26,9 @@ import com.siot.IamportRestClient.request.CancelData;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
 
+import lombok.extern.log4j.Log4j2;
+
+@Log4j2
 @Controller
 public class PayController {
 	@Autowired
@@ -39,21 +40,18 @@ public class PayController {
 		this.iamportClient = new IamportClient("1582333057803703", "Xeql20bTzSYAkeu3qPVXGoU3GEn0Ve4WKSmXsZViEAIrMFoJKE8n8q78DJlZMXkconSi5Nd3JpfpUX7h");
 	}
 	
-	//Log4j 라이브러리
-	private Logger logger = LogManager.getLogger();
-	
 	//=================================================================================
 	// "Payment" 서블릿 주소 로드시 매핑 - GET
 	// 결제 목록 조회 비즈니스 로직
 	@GetMapping("Payment")
 	public String payment(@RequestParam(value = "checkitem", required = false) List<String> checkItems,
 						 HttpSession session, Model model) {
-		logger.info("장바구니에서 넘어온 체크한 장바구니 번호 : " + checkItems);
+		log.info("장바구니에서 넘어온 체크한 장바구니 번호 : " + checkItems);
 		
 		//------------------------------------------------------
 		// 로그인 정보 가져오기 (세션 아이디값 확인)
 		String sId = (String) session.getAttribute("sId");
-		logger.info("결제할 로그인 아이디 : " + sId);
+		log.info("결제할 로그인 아이디 : " + sId);
 		//------------------------------------------------------
 		// PayService - getMemberInfo() 메서드 호출
 		// 파라미터 : sId  	리턴타입 : MemberVO
@@ -80,7 +78,7 @@ public class PayController {
 	@ResponseBody
 	@PostMapping("/payments/verification")
 	public IamportResponse<Payment> paymentByImpUid(@RequestBody PayVerificationVO payVerificationVO) throws IamportResponseException, IOException {
-		logger.info("결제검증VO : " + payVerificationVO); 
+		log.info("결제검증VO : " + payVerificationVO); 
 		//결제검증VO: PayVerificationVO(imp_uid=imp_600839946642, merchant_uid=2024112421267, amount=1004)
 	
 		//IamportClient클래스의 paymentByImpUid() 함수 호출
@@ -93,7 +91,7 @@ public class PayController {
 	@ResponseBody
 	@PostMapping("payinfoSave")
 	public String  savePayInfo(@RequestBody PayVO payVO) {
-		logger.info("결제저장DTO : " + payVO);
+		log.info("결제저장DTO : " + payVO);
 		
 		//결제정보 저장 호출
 		payService.savePayInfo(payVO);
@@ -106,16 +104,16 @@ public class PayController {
 	@ResponseBody
     @PostMapping("orderinfoSave")
 	public String orderPayInfo(@RequestBody OrderVO orderVO, Model model) {
-		logger.info("컨트롤러에 넘겨받은 주문저장VO : " + orderVO);
+		log.info("컨트롤러에 넘겨받은 주문저장VO : " + orderVO);
 		//OrderVO(order_idx=0, merchant_uid=2024112528321, mem_id=bborara
 		//		, items=[OrderItemVO(class_id=1, class_price=75000), OrderItemVO(class_id=2, class_price=1004)]
 		//		, coupon_id=2, price=0)
 		
-		//주문정보 & 나의클래스 저장
+		//주문정보 & 나의클래스 & 커리큘럼 시청기록 저장
 		payService.saveOrderInfo(orderVO);
 		
 		//쿠폰 사용 상태 업데이트
-		payService.couponUsed(orderVO.getCoupon_id());
+		payService.couponUsed(orderVO.getMem_id(),orderVO.getCoupon_id());
 		
 		//ajax 응답 데이터로 넘겨줄 response 저장
 		//=> 저장 완료되면 결제 결과 페이지로 이동하고, 주문고유번호를 가지고가서 표출함.
@@ -128,16 +126,20 @@ public class PayController {
 	@ResponseBody
 	@PostMapping("/payments/cancel")
 	public IamportResponse<Payment> cancelPaymentbyImpUid(@RequestBody PayCancelVO paycancelVO) throws IamportResponseException, IOException {
-		logger.info("결제 취소에 필요한 VO : " + paycancelVO); 
+		log.info("결제 취소에 필요한 VO : " + paycancelVO); 
 		
 		String impUid = paycancelVO.getImp_uid();
 		
 		// impUid에 해당하는 로그인 아이디 가져오기
 		String memId = payService.getMem_id(impUid);
-		logger.info("회원아이디:"+ memId);
+		log.info("회원아이디:"+ memId);
 		
-		//취소하면 결제 상태값 업데이트 및 사용한 쿠폰 복구
-		payService.payStatusUpdate(impUid, memId);
+		//취소하면서 같이 처리되어야할 작업
+		//1. 결제정보 상태값 업데이트 (결제완료>결제취소)
+		//2. 사용한 쿠폰 복구 업데이트 (사용>미사용)
+		//3. 나의클래스 & 커리큘럼시청기록 데이터 삭제하기
+		payService.cancelAddProcess(impUid, memId);
+		
 		
 		//IamportClient클래스의 cancelPaymentByImpUid() 함수 호출
 		//=> 파라미터: CancelData클래스 	/리턴: IamportResponse<Payment>
@@ -149,11 +151,11 @@ public class PayController {
 	// "PayResult" 매핑 - GET 
 	@GetMapping("PayResult")
 	public String paySuccess(@RequestParam String merchant_uid, Model model) {
-		logger.info("주문고유번호: " + merchant_uid);
+		log.info("주문고유번호: " + merchant_uid);
 		
 		//결제 정보 조회
 		PayVO payinfo = payService.getPayInfo(merchant_uid);
-		logger.info("결제완료시정보:" + payinfo);
+		log.info("결제완료시정보:" + payinfo);
 		
 		//뷰페이지에 전달
 		model.addAttribute("payinfo", payinfo);

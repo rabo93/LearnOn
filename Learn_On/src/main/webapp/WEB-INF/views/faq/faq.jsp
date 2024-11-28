@@ -94,8 +94,7 @@
 					</div>
 				</div>
 			</section>
-				<c:if test="${not empty sessionScope.sId}">
-				<%-- 관리자용 아이디가 추가되었을때 관리자만 보이게 설정 추가 --%>
+				<c:if test="${sessionScope.sGrade eq 'MEM03'}">
 				<div class="faq-writebtn">
 					<input type="button" value="글쓰기" onclick="location.href='FaqWrite'">
 				</div>

@@ -16,8 +16,8 @@ public class MailService {
 	@Autowired
 	private SendMailClient sendMailClient;
 	
-//	@Autowired
-//	private MemberService memberService;
+	@Autowired
+	private MemberService memberService;
 
 	
 //	public MailAuthInfo sendAuthMail(MemberVO member) {
@@ -68,10 +68,11 @@ public class MailService {
 //	}
 	
 	
-	//	========================================================================
-	public MailAuthInfo sendAuthMail(MemberVO member, String email1, String email2) {
+//	public MailAuthInfo sendAuthMail(MemberVO member, String mem_email) {
+	public MailAuthInfo sendAuthMail(MemberVO member, String email1 , String email2) {
 		System.out.println("memberService : " + member);
-		
+		String fullEmail = member.getMem_email();
+		System.out.println("@@@@@@@@@@@@@"+ member.getMem_email());
 		
 		String email = email1 + '@' +  email2;
 		String auth_code = GenerateRandomCode.getRandomCode(50);
@@ -91,7 +92,7 @@ public class MailService {
 		}).start();
 		
 		System.out.println("메일 발송 쓰레드 작업 시작" + new Date());
-		System.out.println("memverVO" + member.getMem_email());
+		System.out.println("member email : " + email);
 		
 		MailAuthInfo mailAuthInfo = new MailAuthInfo(email, auth_code);
 		
@@ -99,9 +100,6 @@ public class MailService {
 	}
 
 	//	========================================================================
-//	public void sendPasswdMail(MemberVO dbMember, String email, String tempPasswd) {
-//		sendPasswdMail(dbMember, email);
-//	} //오버라이딩
 	public MailAuthInfo sendPasswdMail(MemberVO dbMember, String email, String temPasswd) {
 		String dbemail = email;
 		System.out.println(dbMember);
@@ -125,5 +123,35 @@ public class MailService {
 		MailAuthInfo mailAuthInfo = new MailAuthInfo(email, temPasswd);
 		return mailAuthInfo;
 	}
+
+	//	===========================메일 다시 보내기=============================================
+	public MailAuthInfo reSendAuthMail(MemberVO member, String mem_email) {
+			System.out.println("memberService : " + member);
+			String mail = member.getMem_email();
+			System.out.println("@@@@@@@@@@@@@"+ member.getMem_email());
+			
+			String auth_code = GenerateRandomCode.getRandomCode(50);
+			
+			String subject = "[런온]가입 인증코드 입니다.";
+			String content =
+					"<a href=\"http://localhost:8081/MemberEmailAuth?mem_email="+ mail + "&auth_code=" + auth_code +"\">[클릭]이메일 인증하기</a>";
+					//주소 수정해야함
+		
+			new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					sendMailClient.sendMail(mail, subject, content);
+					System.out.println("메일 발송 쓰레드 작업 완료!" + new Date());
+				}
+			}).start();
+			
+			System.out.println("메일 발송 쓰레드 작업 시작" + new Date());
+			System.out.println("member email : " + mail);
+			
+			MailAuthInfo mailAuthInfo = new MailAuthInfo(mail, auth_code);
+			
+			return mailAuthInfo;
+		}
 
 }

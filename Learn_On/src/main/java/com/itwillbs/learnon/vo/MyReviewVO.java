@@ -13,6 +13,7 @@ public class MyReviewVO {
 	private Timestamp review_date;
 	private String class_id;
 	private String class_title;
+	private String class_pic;
 	private double review_score;
 	private String review_answer_content;
 	private int total_count;

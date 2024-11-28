@@ -44,7 +44,7 @@
 				<h5 class="me-auto tableSubject">회원 정보 수정</h5>
 			</div>
 			<section class="tb-wrap">
-				<form action="AdmMemberModify" class="d-flex input-group mb-3" method="post" enctype="multipart/form-data">
+				<form action="AdmMemberModify" name="modifyForm" class="d-flex input-group mb-3" method="post" enctype="multipart/form-data">
 <%-- 					<input type="hidden" name="faq_idx" value="${param.faq_idx}"> --%>
 					<table class="table table-striped">
 						<colgroup>
@@ -119,27 +119,27 @@
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script type="text/javascript">
 		let link = document.location.href;
-		if (link.includes("AdminFaqModify")) {
-			document.querySelector("#AdmFaq").parentElement.previousElementSibling.classList.add("show");
-			document.querySelector("#AdmFaq").parentElement.previousElementSibling.classList.add("active");
-			document.querySelector("#AdmFaq").parentElement.classList.add("show");
-			document.querySelector("#AdmFaq").classList.toggle("active");
+		if (link.includes("AdmMemberModify")) {
+			document.querySelector("#memberList").parentElement.previousElementSibling.classList.add("show");
+			document.querySelector("#memberList").parentElement.previousElementSibling.classList.add("active");
+			document.querySelector("#memberList").parentElement.classList.add("show");
+			document.querySelector("#memberList").classList.toggle("active");
 		};
 		
 		function search_address() {
 			new daum.Postcode({
 				oncomplete : function(data) {
 					console.log(data);
-					document.joinForm.mem_post_code.value = data.zonecode;
+					document.modifyForm.mem_post_code.value = data.zonecode;
 
 					let address = data.address;
 					if (data.buildingName != "") {
 						address += " (" + data.buildingName + ")";
 					}
 
-					document.joinForm.mem_address1.value = address;
+					document.modifyForm.mem_address1.value = address;
 
-					document.joinForm.mem_address2.focus();
+					document.modifyForm.mem_address2.focus();
 
 				}
 			}).open();

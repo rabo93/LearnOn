@@ -44,6 +44,8 @@ public interface AdminMapper {
 	int insertCurVideo(AdminVO vO);
 	// 클래스 아이디 조회
 	int getClassId();
+	//	클래스 등록 시 강사찾기
+	List<Map<String, Object>> selectClassIns();
 	// 클래스 삭제
 	int deleteClass(int i);
 	// 커리큘럼 삭제
@@ -73,6 +75,8 @@ public interface AdminMapper {
 	MemberVO getMemberList(String mem_id);
 	//	멤버 상태변경(정상, 휴먼, 탈퇴)
 	int changeMemStatus(Map<String, String> map);
+	//	회원 정보 수정
+	int updateMember(Map<String, Object> map);
 	//	회원 삭제
 	int deleteMember(String mem_id);
 	//	회원 등급변경

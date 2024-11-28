@@ -23,15 +23,17 @@ public interface PayMapper {
 	void insertOrderInfo(Map<String, Object> orderData);
 	
 	//쿠폰 사용 상태 업데이트
-	void updateCoupon(int coupon_id);
+	void updateCoupon(@Param("mem_id") String mem_id, @Param("coupon_id") int coupon_id);
 	
 	//나의클래스 인서트
 	void insertMycourse(Map<String, Object> mycourseData);
 	
+	//커리큘럼 시청기록 인서트
+	void insertCurHistory(Map<String, Object> curHistory);
+	
 	//결제완료 페이지에 전달할 결제 정보 조회
 	PayVO selectPayInfo(String merchant_uid);
 	
-	 
 	//결제 취소에 필요한 impUid에 해당하는 회원ID 조회
 	String selectMemId(String impUid);
 	
@@ -41,7 +43,8 @@ public interface PayMapper {
 	//결제 취소 시 쿠폰 복구
 	void updateCouponUsed(@Param("imp_uid") String imp_uid, @Param("memId") String memId);
 	
-	
-
+	//결제 취소 시 데이터 삭제
+	void deleteMycourse(@Param("imp_uid") String imp_uid, @Param("memId") String memId);
+	void deleteCurhistory(@Param("imp_uid") String imp_uid, @Param("memId") String memId);
 	
 }

@@ -213,9 +213,11 @@
 			}).done(function(response) {
 				console.log("취소 응답: "+ JSON.stringify(response));
 				alert("결제를 취소하였습니다.");
+				location.reload();
 			}).fail(function(error) {
 				console.log(JSON.stringify(error));
 				alert("결제 취소 실패");
+				location.reload();
 			});
 		}
 		

@@ -102,6 +102,10 @@
 								<option value="daum.net">daum.net</option>
 							</select> 
 						</div>
+						
+						<label for="hashtag">#관심있는 주제</label>
+						<input type="text" name="hashtag" id="hashtag" placeholder="관심있는 주제를 해쉬태그로 작성해보세요!(최대 10개까지 가능합니다)"
+						pattern="^#([a-zA-Z0-9가-힣]{1,10})(,#([a-zA-Z0-9가-힣]{1,10})){0,9},?$" title="ex) #스프링,#it,#취업,#다이어트"> 
 
 <!-- 						<div class="email-auth-bx"> -->
 <!-- 							<input type="button" value="인증코드 번호" name="mail_auth" > -->

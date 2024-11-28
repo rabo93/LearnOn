@@ -27,7 +27,8 @@
 		<form action="ReSendAuthMail" method="post" class="passwdFinderForm" >
 			<h3 class="ttl">인증메일 다시 보내기</h3>
 <%-- 			<input type="text" value="${sessionScope.sMail}"><br> --%>
-			<input type="text" placeholder="이메일을 입력해주세요" required><br>
+			<input type="text" placeholder="아이디" name="mem_id" required><br>
+			<input type="text" placeholder="이메일을 입력해주세요" name="mem_email" required><br>
 			<div id="form-controls">
 				<button type="submit">인증메일 재발송📩</button><br>
 			</div>

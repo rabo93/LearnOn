@@ -41,6 +41,7 @@
 				<div class="contents">
 					<!-- contents -->
 					<section class="payment-wrap">
+						<p class="notice">결제취소는 1:1문의 게시판을 이용해주시기 바랍니다.</p>
 						<div class="my-ord-li">
 							<c:choose>
 								<c:when test="${empty paymentList}">

@@ -72,11 +72,21 @@
 		WHERE CUR_ID = #{cur_id}
 	</update>
 	
+	<!-- 클래스 등록 시 강사명 찾기 -->
+	<select id="selectClassIns">
+		SELECT MEM_NAME
+		     , MEM_ID
+		  FROM MEMBER
+		 WHERE MEM_GRADE = 'MEM02'
+	</select>
 	
 	<!-- 클래스 목록 조회 -->
 	<select id="getClassList">
-		SELECT *
-		FROM CLASS
+		SELECT cla.CLASS_ID, cla.CLASS_TITLE, ty.NAME, com.CODENAME, cla.CLASS_STATUS
+		FROM CLASS cla JOIN COMMONCODETYPE ty
+		ON cla.CLASS_CATEGORY = ty.NAME
+		JOIN COMMONCODE com
+		ON ty.CODETYPE = com.CODEID;
 	</select>
 	
 	<!-- 클래스 상세정보 조회 -->
@@ -313,6 +323,18 @@
 			</otherwise>
 		</choose>
 		WHERE MEM_ID = #{mem_id}
+	</update>
+	
+	<!-- 회원 정보 수정 -->
+	<update id="updateMember">
+		UPDATE MEMBER
+		   SET MEM_NAME = #{mem_name}
+		     , MEM_NICK = #{mem_nick}
+		     , MEM_GENDER = #{mem_gender}
+		     , MEM_POST_CODE = #{mem_post_code}
+		     , MEM_ADDRESS1 = #{mem_address1}
+		     , MEM_ADDRESS2 = #{mem_address2}
+		 WHERE MEM_ID = #{mem_id}
 	</update>
 	
 	<!-- 회원 삭제 -->

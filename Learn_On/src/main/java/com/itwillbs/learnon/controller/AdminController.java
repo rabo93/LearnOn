@@ -70,12 +70,10 @@ public class AdminController {
 	// 어드민 메인페이지 매핑
 	@GetMapping("AdmIndex")
 	public String admin_home(HttpSession session, Model model) {
+		//	로그인 ID 가져오기
 		String id = (String)session.getAttribute("sId");
+		//	로그인한 회원등급 가져오기
 		String grade = (String)session.getAttribute("sGrade");
-		String nick = (String)session.getAttribute("sNick");
-		System.out.println("id : " + id);
-		System.out.println("grade : " + grade);
-		System.out.println("nick : " + nick);
 		if(id == null) {
 			model.addAttribute("msg", "로그인이 필요합니다");
 			model.addAttribute("targetURL", "MemberLogin");
@@ -89,27 +87,10 @@ public class AdminController {
 		if(grade.equals("MEM02")) {
 			return "admin/index_instructor";
 		}
-//	public String admin_home(HttpSession session, Model model, HttpServletRequest request) {
 		
-		//로그인 감지
-//		String id = (String)session.getAttribute("sId");
-//		if(id == null) {
-//			model.addAttribute("msg", "접근 권한이 없습니다");
-//			model.addAttribute("targetURL", "MemberLogin");
-//			
-//			// 로그인 성공 후 다시 현재 페이지로 돌아오기 위해 prevURL 세션 속성값 설정
-//			String prevURL = request.getServletPath();
-//			String queryString = request.getQueryString();
-//			
-//			if(queryString != null) {
-//				prevURL += "?" + queryString;
-//			}
-//			
-//			// 세션 객체에 prevURL 값 저장
-//			session.setAttribute("prevURL", prevURL);
-//			
-//			return "admin/fail";
-//		}
+		
+		
+		
 		
 		return "admin/index";
 		
@@ -118,7 +99,21 @@ public class AdminController {
 	
 	// 어드민 카테고리 편집 페이지 매핑
 	@GetMapping("AdmClassCategory")
-	public String admin_class_categoryModify(Model model) {
+	public String admin_class_categoryModify(Model model, HttpSession session) {
+		//	로그인 ID 가져오기
+		String id = (String)session.getAttribute("sId");
+		//	로그인한 회원등급 가져오기
+		String grade = (String)session.getAttribute("sGrade");
+		if(id == null) {
+			model.addAttribute("msg", "로그인이 필요합니다");
+			model.addAttribute("targetURL", "MemberLogin");
+			return "admin/fail";
+		}
+		if(grade.equals("MEM01") || grade.equals("MEM02")) {
+			model.addAttribute("msg", "접근 권한이 없습니다");
+			model.addAttribute("targetURL", "/");
+			return "admin/fail";
+		}
 		model.addAttribute("getMainCate", adminService.getMainCate());
 		model.addAttribute("getSubCate", adminService.getSubCate());
 		
@@ -240,9 +235,23 @@ public class AdminController {
 	
 	// 어드민 클래스 등록 페이지 매핑
 	@GetMapping("AdmClassAdd")
-	public String admin_class_add(Model model) {
+	public String admin_class_add(Model model, HttpSession session) {
+		//		로그인 ID 가져오기
+		String id = (String)session.getAttribute("sId");
+		//	로그인한 회원등급 가져오기
+		String grade = (String)session.getAttribute("sGrade");
+		if(id == null) {
+			model.addAttribute("msg", "로그인이 필요합니다");
+			model.addAttribute("targetURL", "MemberLogin");
+			return "admin/fail";
+		}
+		if(grade.equals("MEM01")) {
+			model.addAttribute("msg", "접근 권한이 없습니다");
+			model.addAttribute("targetURL", "/");
+			return "admin/fail";
+		}
 		model.addAttribute("getMainCate", adminService.getMainCate());
-		model.addAttribute("getInstructor", adminService.getInstructorMemberList());
+		model.addAttribute("getInstructor", adminService.getInstructor());
 		return "admin/class_add";
 	}
 	
@@ -250,13 +259,6 @@ public class AdminController {
 	public String admin_class_add1(AdminVO VO, HttpSession session, Model model) {
 		int classId = adminService.getClassId();
 		VO.setClass_id(classId);
-		
-//		System.out.println("!@#!@#");
-//		for (int i = 0; i < VO.getCur_video_get().length; i++) {
-//			System.out.println(VO.getCur_video_get()[i].getOriginalFilename());
-//		}
-		
-//		AdminVO insertCur = new AdminVO();
 		
 		String[] arrCurTitle = VO.getCur_title().split(",");
 		String[] arrCurRunTime = VO.getCur_runtime().split(",");
@@ -275,12 +277,10 @@ public class AdminController {
 			VO.setCur_title(arrCurTitle[i]);
 			VO.setCur_runtime(arrCurRunTime[i]);
 			totalRunTime += Integer.parseInt(arrCurRunTime[i]);
-//			System.out.println("누적 ======" + totalRunTime);
 			adminService.insertCurriculum(VO);
 			
 			adminService.insertCurVideo(VO);
 		}
-//		System.out.println("결과 ======" + totalRunTime);
 		VO.setClass_runtime(totalRunTime);
 		
 		//	첨부파일 업로드
@@ -368,7 +368,6 @@ public class AdminController {
 	public String selectCategory(AdminVO admin) {
 //		System.out.println("=========================================================" + admin);
 		List<Map<String, Object>> adminArr = adminService.selectSubCate(admin);
-		System.out.println("========================== " + adminArr);
 		JSONArray joArr = new JSONArray(adminArr);
 		
 		return joArr.toString();
@@ -377,9 +376,22 @@ public class AdminController {
 	
 	// 어드민 클래스 목록 페이지 매핑
 	@GetMapping("AdmClassList")
-	public String admin_class_list(Model model) {
+	public String admin_class_list(Model model, HttpSession session) {
+		//	로그인 ID 가져오기
+		String id = (String)session.getAttribute("sId");
+		//	로그인한 회원등급 가져오기
+		String grade = (String)session.getAttribute("sGrade");
+		if(id == null) {
+			model.addAttribute("msg", "로그인이 필요합니다");
+			model.addAttribute("targetURL", "MemberLogin");
+			return "admin/fail";
+		}
+		if(grade.equals("MEM01") || grade.equals("MEM02")) {
+			model.addAttribute("msg", "접근 권한이 없습니다");
+			model.addAttribute("targetURL", "/");
+			return "admin/fail";
+		}
 		model.addAttribute("getClassList", adminService.getClassList());
-		model.addAttribute("getMainCate", adminService.getMainCate());
 		
 		return "admin/class_list";
 	}
@@ -387,13 +399,11 @@ public class AdminController {
 	// 어드민 클래스 수정 페이지 매핑
 	@GetMapping("AdmClassListModify")
 	public String admin_class_list_modi(int class_id, Model model) {
-		System.out.println("class_id : " + class_id);
 		AdminVO classLoad = adminService.getIdClass(class_id);
 		model.addAttribute("getClass", classLoad);
 		model.addAttribute("getMainCate", adminService.getMainCate());
 		model.addAttribute("getCurriculum", adminService.getCurriculum(class_id));
-//		List<AdminVO> classLoad = adminService.getClass(VO);
-//		System.out.println("========================classLoad : " + adminService.getCurriculum(VO));
+		model.addAttribute("getInstructor", adminService.getInstructor());
 //		
 		if (classLoad == null) {
 			model.addAttribute("msg", "클래스 불러오기 실패!");
@@ -406,9 +416,7 @@ public class AdminController {
 	// 어드민 클래스 수정 로직
 	@PostMapping("AdmClassListModify")
 	public String adm_class_modify(int class_id, AdminVO adm, HttpSession session, Model model) {
-		
 		AdminVO classInfo = adminService.getIdClass(class_id);
-//		List<Map<String, Object>> curIndex = adminService.getCurriculum(class_id);
 		
 		// 커리큘럼 내용 가져오기
 		String[] arrCurTitle = adm.getCur_title().split(",");
@@ -524,7 +532,22 @@ public class AdminController {
 									@RequestParam(defaultValue = "reg_latest") String sort,
 									@RequestParam(defaultValue = "") String searchKeyword,
 									@RequestParam(defaultValue = "") String searchType,
+									HttpSession session,
 									Model model) {
+		//	로그인 ID 가져오기
+		String id = (String)session.getAttribute("sId");
+		//	로그인한 회원등급 가져오기
+		String grade = (String)session.getAttribute("sGrade");
+		if(id == null) {
+			model.addAttribute("msg", "로그인이 필요합니다");
+			model.addAttribute("targetURL", "MemberLogin");
+			return "admin/fail";
+		}
+		if(grade.equals("MEM01") || grade.equals("MEM02")) {
+			model.addAttribute("msg", "접근 권한이 없습니다");
+			model.addAttribute("targetURL", "/");
+			return "admin/fail";
+		}
 		
 		int listLimit = 10;
 		int startRow = (pageNum - 1) * listLimit;
@@ -560,28 +583,79 @@ public class AdminController {
 	
 	// 어드민 강사 회원 목록 페이지 매핑
 	@GetMapping("AdmMemInstructor")
-	public String admin_member_list_instructor(Model model) {
+	public String admin_member_list_instructor(Model model, HttpSession session) {
+		//	로그인 ID 가져오기
+		String id = (String)session.getAttribute("sId");
+		//	로그인한 회원등급 가져오기
+		String grade = (String)session.getAttribute("sGrade");
+		if(id == null) {
+			model.addAttribute("msg", "로그인이 필요합니다");
+			model.addAttribute("targetURL", "MemberLogin");
+			return "admin/fail";
+		}
+		if(grade.equals("MEM01") || grade.equals("MEM02")) {
+			model.addAttribute("msg", "접근 권한이 없습니다");
+			model.addAttribute("targetURL", "/");
+			return "admin/fail";
+		}
 		model.addAttribute("getMemberList", adminService.getInstructorMemberList());
 		return "admin/member_list_instructor";
 	}
 	
 	// 어드민 탈퇴한 회원 목록 페이지 매핑
 	@GetMapping("AdmMemListDelete")
-	public String admin_member_list_delete(Model model) {
+	public String admin_member_list_delete(Model model, HttpSession session) {
+		//	로그인 ID 가져오기
+		String id = (String)session.getAttribute("sId");
+		//	로그인한 회원등급 가져오기
+		String grade = (String)session.getAttribute("sGrade");
+		if(id == null) {
+			model.addAttribute("msg", "로그인이 필요합니다");
+			model.addAttribute("targetURL", "MemberLogin");
+			return "admin/fail";
+		}
+		if(grade.equals("MEM01") || grade.equals("MEM02")) {
+			model.addAttribute("msg", "접근 권한이 없습니다");
+			model.addAttribute("targetURL", "/");
+			return "admin/fail";
+		}
 		model.addAttribute("getMemberList", adminService.getWithdrawMemberList());
 	return "admin/member_list_delete";
 	}
 	
 	//	어드민 회원정보 수정
 	@GetMapping("AdmMemberModify")
-	public String AdmMemberModifyForm(String mem_id, Model model) {
-		System.out.println("mem_id : " + mem_id);
+	public String admMemberModifyForm(String mem_id, Model model, HttpSession session) {
+		//	로그인 ID 가져오기
+		String id = (String)session.getAttribute("sId");
+		//	로그인한 회원등급 가져오기
+		String grade = (String)session.getAttribute("sGrade");
+		if(id == null) {
+			model.addAttribute("msg", "로그인이 필요합니다");
+			model.addAttribute("targetURL", "MemberLogin");
+			return "admin/fail";
+		}
+		if(grade.equals("MEM01") || grade.equals("MEM02")) {
+			model.addAttribute("msg", "접근 권한이 없습니다");
+			model.addAttribute("targetURL", "/");
+			return "admin/fail";
+		}
 		MemberVO member = adminService.getMemberList(mem_id);
-		System.out.println("member : " + member);
 		model.addAttribute("member", member);
 		return "admin/member_modify_form";
 	}
 	
+	//	어드민 회원정보 수정
+	@PostMapping("AdmMemberModify")
+	public String admMemberModify(@RequestParam Map<String, Object> map, Model model) {
+		int updateCount = adminService.modifyMember(map);
+		if (updateCount < 0) {
+			model.addAttribute("msg", "수정에 실패했습니다");
+			return "admin/fail";
+		}
+		return "redirect:/AdmMemList";
+	}
+	//	어드민 회원 삭제
 	@GetMapping("AdminMemberDelete")
 	public String adminMemberDelete(String[] mem_ids, Model model) {
 		for(String mem_id : mem_ids) {
@@ -598,10 +672,8 @@ public class AdminController {
 	//	어드민 강사회원 승인
 	@GetMapping("AdmMemGradeChange")
 	public String admMemGradeChange(String mem_id, Model model) {
-//		System.out.println("mem_id : " + mem_id);
 		//	mem_id 파라미터로 받아와서 memberVO 에 저장
 		MemberVO member = adminService.getMemberList(mem_id);
-//		System.out.println(member);
 		//	MemberVO를 통해서 MEM_GRADE 여부에 따라 업데이트 처리
 		//	ex) MEM_GRADE = 'MEM01'일 시 'MEM02'로 업데이트
 		//	ex) MEM_GRADE = 'MEM02'일 시 'MEM01'로 업데이트
@@ -711,7 +783,22 @@ public class AdminController {
 			  								@RequestParam(defaultValue = "latest") String sort,
 			  								@RequestParam(defaultValue = "") String searchKeyword,
 			  								@RequestParam(defaultValue = "") String searchType,
+			  								HttpSession session,
 			  								Model model) {
+		//	로그인 ID 가져오기
+		String id = (String)session.getAttribute("sId");
+		//	로그인한 회원등급 가져오기
+		String grade = (String)session.getAttribute("sGrade");
+		if(id == null) {
+			model.addAttribute("msg", "로그인이 필요합니다");
+			model.addAttribute("targetURL", "MemberLogin");
+			return "admin/fail";
+		}
+		if(grade.equals("MEM01") || grade.equals("MEM02")) {
+			model.addAttribute("msg", "접근 권한이 없습니다");
+			model.addAttribute("targetURL", "/");
+			return "admin/fail";
+		}
 		
 		int listLimit = 5;
 		int startRow = (pageNum - 1) * listLimit;
@@ -747,7 +834,21 @@ public class AdminController {
 	}
 	
 	@GetMapping("AdmCouponWrite")
-	public String admCouponWriteForm () {
+	public String admCouponWriteForm (HttpSession session, Model model) {
+		//	로그인 ID 가져오기
+		String id = (String)session.getAttribute("sId");
+		//	로그인한 회원등급 가져오기
+		String grade = (String)session.getAttribute("sGrade");
+		if(id == null) {
+			model.addAttribute("msg", "로그인이 필요합니다");
+			model.addAttribute("targetURL", "MemberLogin");
+			return "admin/fail";
+		}
+		if(grade.equals("MEM01") || grade.equals("MEM02")) {
+			model.addAttribute("msg", "접근 권한이 없습니다");
+			model.addAttribute("targetURL", "/");
+			return "admin/fail";
+		}
 		return "admin/coupon_write_form";
 	}
 	
@@ -791,7 +892,21 @@ public class AdminController {
 	}
 	
 	@GetMapping("AdmCouponModify")
-	public String admCouponModifyForm(int coupon_id, Model model) {
+	public String admCouponModifyForm(int coupon_id, Model model, HttpSession session) {
+		//	로그인 ID 가져오기
+		String id = (String)session.getAttribute("sId");
+		//	로그인한 회원등급 가져오기
+		String grade = (String)session.getAttribute("sGrade");
+		if(id == null) {
+			model.addAttribute("msg", "로그인이 필요합니다");
+			model.addAttribute("targetURL", "MemberLogin");
+			return "admin/fail";
+		}
+		if(grade.equals("MEM01") || grade.equals("MEM02")) {
+			model.addAttribute("msg", "접근 권한이 없습니다");
+			model.addAttribute("targetURL", "/");
+			return "admin/fail";
+		}
 		CouponVO coupon = couponService.getIdxCoupon(coupon_id);
 		model.addAttribute("coupon", coupon);
 		return "admin/coupon_modify_form";
@@ -799,7 +914,6 @@ public class AdminController {
 	
 	@PostMapping("AdmCouponModify")
 	public String admCouponModify(CouponVO coupon, Model model) {
-		System.out.println("coupon : " + coupon);
 		int updateCount = couponService.modifyCouponInfo(coupon);
 		if(updateCount < 0) {
 			model.addAttribute("msg", "수정에 실패했습니다");
@@ -819,7 +933,23 @@ public class AdminController {
 								 @RequestParam(defaultValue = "latest") String sort,
 								 @RequestParam(defaultValue = "") String searchKeyword,
 								 @RequestParam(defaultValue = "") String searchType,
+								 HttpSession session,
 								 Model model) {
+		
+		//	로그인 ID 가져오기
+		String id = (String)session.getAttribute("sId");
+		//	로그인한 회원등급 가져오기
+		String grade = (String)session.getAttribute("sGrade");
+		if(id == null) {
+			model.addAttribute("msg", "로그인이 필요합니다");
+			model.addAttribute("targetURL", "MemberLogin");
+			return "admin/fail";
+		}
+		if(grade.equals("MEM01") || grade.equals("MEM02")) {
+			model.addAttribute("msg", "접근 권한이 없습니다");
+			model.addAttribute("targetURL", "/");
+			return "admin/fail";
+		}
 		
 		int listLimit = 5;
 		int startRow = (pageNum - 1) * listLimit;
@@ -890,8 +1020,23 @@ public class AdminController {
 										  @RequestParam(defaultValue = "latest") String sort,
 										  @RequestParam(defaultValue = "") String searchKeyword,
 										  @RequestParam(defaultValue = "") String searchType,
+										  HttpSession session,
 										  Model model) {
 		
+		//	로그인 ID 가져오기
+		String id = (String)session.getAttribute("sId");
+		//	로그인한 회원등급 가져오기
+		String grade = (String)session.getAttribute("sGrade");
+		if(id == null) {
+			model.addAttribute("msg", "로그인이 필요합니다");
+			model.addAttribute("targetURL", "MemberLogin");
+			return "admin/fail";
+		}
+		if(grade.equals("MEM01") || grade.equals("MEM02")) {
+			model.addAttribute("msg", "접근 권한이 없습니다");
+			model.addAttribute("targetURL", "/");
+			return "admin/fail";
+		}
 		int listLimit = 5;
 		int startRow = (pageNum - 1) * listLimit;
 		
@@ -1026,7 +1171,24 @@ public class AdminController {
 	public String admin_board_faq(@RequestParam(defaultValue = "1") int pageNum,
 			  					  @RequestParam(defaultValue = "") String searchKeyword,
 			  					  @RequestParam(defaultValue = "") String searchType,
+			  					  HttpSession session,
 			  					  Model model) {
+		//	로그인 ID 가져오기
+		String id = (String)session.getAttribute("sId");
+		//	로그인한 회원등급 가져오기
+		String grade = (String)session.getAttribute("sGrade");
+		if(id == null) {
+			model.addAttribute("msg", "로그인이 필요합니다");
+			model.addAttribute("targetURL", "MemberLogin");
+			return "admin/fail";
+		}
+		if(grade.equals("MEM01") || grade.equals("MEM02")) {
+			model.addAttribute("msg", "접근 권한이 없습니다");
+			model.addAttribute("targetURL", "/");
+			return "admin/fail";
+		}
+		
+		
 		int listLimit = 5;
 		int startRow = (pageNum - 1) * listLimit;
 		

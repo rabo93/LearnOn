@@ -1,10 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-    <title>LearnOn - 관리자 페이지</title>
+	<meta charset="UTF-8">
+    <title>런 온 - 온라인 No.1 교육 플랫폼</title>
+	<link rel="SHORTCUT ICON" href="${pageContext.request.contextPath}/resources/images/favicon.ico">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -33,8 +36,11 @@
     
     <!-- Template Stylesheet -->
     <link href="resources/admin/css/style.css" rel="stylesheet">
+    
+    <!-- 포트원 결제api sdk 추가 -->
+	<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+	
 <meta charset="UTF-8">
-<title>Insert title here</title>
 </head>
 <body>
 	<%@include file="inc/sidebar.jsp"%>
@@ -108,81 +114,6 @@
                 </div>
             </div>
             <!-- Sales Chart End -->
-
-
-            <!-- Recent Sales Start -->
-            <div class="container-fluid pt-4 px-4">
-                <div class="bg-light text-center rounded p-4">
-                    <div class="d-flex align-items-center justify-content-between mb-4">
-                        <h6 class="mb-0">사용자 구매 내역</h6>
-                        <a href="">자세히 보기</a>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table text-start align-middle table-bordered table-hover mb-0">
-                            <thead>
-                                <tr class="text-dark">
-                                    <th scope="col"><input class="form-check-input" type="checkbox"></th>
-                                    <th scope="col">구매 일시</th>
-                                    <th scope="col">구매 코드</th>
-                                    <th scope="col">구매자</th>
-                                    <th scope="col">금액</th>
-                                    <th scope="col">상태</th>
-                                    <th scope="col">비고</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><input class="form-check-input" type="checkbox"></td>
-                                    <td>2024-11-01</td>
-                                    <td>INV-0123</td>
-                                    <td>얋다ㅓㅁ쟈</td>
-                                    <td>￦ 80,000</td>
-                                    <td>결제 완료</td>
-                                    <td><a class="btn btn-sm btn-primary" href="">상세 정보</a></td>
-                                </tr>
-                                <tr>
-                                    <td><input class="form-check-input" type="checkbox"></td>
-                                    <td>2024-11-01</td>
-                                    <td>INV-0123</td>
-                                    <td>엻댬턐ㄷ</td>
-                                    <td>￦ 80,000</td>
-                                    <td>결제 대기중</td>
-                                    <td><a class="btn btn-sm btn-primary" href="">상세 정보</a></td>
-                                </tr>
-                                <tr>
-                                    <td><input class="form-check-input" type="checkbox"></td>
-                                    <td>2024-11-01</td>
-                                    <td>INV-0123</td>
-                                    <td>볔ㄹ리ㅑㅋ</td>
-                                    <td>￦ 80,000</td>
-                                    <td>결제 완료</td>
-                                    <td><a class="btn btn-sm btn-primary" href="">상세 정보</a></td>
-                                </tr>
-                                <tr>
-                                    <td><input class="form-check-input" type="checkbox"></td>
-                                    <td>2024-11-01</td>
-                                    <td>INV-0123</td>
-                                    <td>엸카햧ㅍ</td>
-                                    <td>￦ 80,000</td>
-                                    <td>결제 대기중</td>
-                                    <td><a class="btn btn-sm btn-primary" href="">상세 정보</a></td>
-                                </tr>
-                                <tr>
-                                    <td><input class="form-check-input" type="checkbox"></td>
-                                    <td>2024-11-01</td>
-                                    <td>INV-0123</td>
-                                    <td>몡ㅀ캬릍</td>
-                                    <td>￦ 80,000</td>
-                                    <td>결제 대기중</td>
-                                    <td><a class="btn btn-sm btn-primary" href="">상세 정보</a></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <!-- Recent Sales End -->
-
 
             <!-- Widgets Start -->
             <div class="container-fluid pt-4 px-4">
@@ -275,7 +206,7 @@
 
     <!-- Template Javascript -->
     <script src="resources/admin/js/main.js"></script>
-    <script src="resources/admin/js/main_chart.js"></script>
+<!--     <script src="resources/admin/js/main_chart.js"></script> -->
     <script type="text/javascript">
     		var link = document.location.href;
 	    	if (link.includes("Adm")) {

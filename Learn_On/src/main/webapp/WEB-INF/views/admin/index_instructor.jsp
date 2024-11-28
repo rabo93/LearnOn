@@ -3,8 +3,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-    <title>LearnOn - 관리자 페이지</title>
+	<meta charset="UTF-8">
+    <title>런 온 - 온라인 No.1 교육 플랫폼</title>
+	<link rel="SHORTCUT ICON" href="${pageContext.request.contextPath}/resources/images/favicon.ico">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -33,157 +34,12 @@
     
     <!-- Template Stylesheet -->
     <link href="resources/admin/css/style.css" rel="stylesheet">
-<meta charset="UTF-8">
-<title>Insert title here</title>
+
 </head>
 <body>
 	<%@include file="inc/sidebar.jsp"%>
 	<%@include file="inc/navbar.jsp"%>
 	
-	<!-- Sale & Revenue Start -->
-            <div class="container-fluid pt-4 px-4">
-                <div class="row g-4">
-                    <div class="col-sm-6 col-xl-3">
-                        <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="fa fa-chart-line fa-3x text-primary"></i>
-                            <div class="ms-3">
-                                <p class="mb-2">오늘의 매출</p>
-                                <h6 class="mb-0">￦ 1,234,567</h6>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-xl-3">
-                        <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="fa fa-chart-bar fa-3x text-primary"></i>
-                            <div class="ms-3">
-                                <p class="mb-2">주간 매출</p>
-                                <h6 class="mb-0">￦ 12,345,678</h6>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-xl-3">
-                        <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="fa fa-chart-area fa-3x text-primary"></i>
-                            <div class="ms-3">
-                                <p class="mb-2">오늘의 수익</p>
-                                <h6 class="mb-0">￦ 345,678</h6>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-xl-3">
-                        <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="fa fa-chart-pie fa-3x text-primary"></i>
-                            <div class="ms-3">
-                                <p class="mb-2">주간 수익</p>
-                                <h6 class="mb-0">￦ 789,123</h6>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Sale & Revenue End -->
-
-
-            <!-- Sales Chart Start -->
-            <div class="container-fluid pt-4 px-4">
-                <div class="row g-4">
-                    <div class="col-sm-12 col-xl-6">
-                        <div class="bg-light text-center rounded p-4">
-                            <div class="d-flex align-items-center justify-content-between mb-4">
-                                <h6 class="mb-0">카테고리별 월간 매출 통계</h6>
-                                <a href="">자세히 보기</a>
-                            </div>
-                            <canvas id="worldwide-sales"></canvas>
-                        </div>
-                    </div>
-                    <div class="col-sm-12 col-xl-6">
-                        <div class="bg-light text-center rounded p-4">
-                            <div class="d-flex align-items-center justify-content-between mb-4">
-                                <h6 class="mb-0">월간 매출 통계</h6>
-                                <a href="">자세히 보기</a>
-                            </div>
-                            <canvas id="salse-revenue"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Sales Chart End -->
-
-
-            <!-- Recent Sales Start -->
-            <div class="container-fluid pt-4 px-4">
-                <div class="bg-light text-center rounded p-4">
-                    <div class="d-flex align-items-center justify-content-between mb-4">
-                        <h6 class="mb-0">사용자 구매 내역</h6>
-                        <a href="">자세히 보기</a>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table text-start align-middle table-bordered table-hover mb-0">
-                            <thead>
-                                <tr class="text-dark">
-                                    <th scope="col"><input class="form-check-input" type="checkbox"></th>
-                                    <th scope="col">구매 일시</th>
-                                    <th scope="col">구매 코드</th>
-                                    <th scope="col">구매자</th>
-                                    <th scope="col">금액</th>
-                                    <th scope="col">상태</th>
-                                    <th scope="col">비고</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><input class="form-check-input" type="checkbox"></td>
-                                    <td>2024-11-01</td>
-                                    <td>INV-0123</td>
-                                    <td>얋다ㅓㅁ쟈</td>
-                                    <td>￦ 80,000</td>
-                                    <td>결제 완료</td>
-                                    <td><a class="btn btn-sm btn-primary" href="">상세 정보</a></td>
-                                </tr>
-                                <tr>
-                                    <td><input class="form-check-input" type="checkbox"></td>
-                                    <td>2024-11-01</td>
-                                    <td>INV-0123</td>
-                                    <td>엻댬턐ㄷ</td>
-                                    <td>￦ 80,000</td>
-                                    <td>결제 대기중</td>
-                                    <td><a class="btn btn-sm btn-primary" href="">상세 정보</a></td>
-                                </tr>
-                                <tr>
-                                    <td><input class="form-check-input" type="checkbox"></td>
-                                    <td>2024-11-01</td>
-                                    <td>INV-0123</td>
-                                    <td>볔ㄹ리ㅑㅋ</td>
-                                    <td>￦ 80,000</td>
-                                    <td>결제 완료</td>
-                                    <td><a class="btn btn-sm btn-primary" href="">상세 정보</a></td>
-                                </tr>
-                                <tr>
-                                    <td><input class="form-check-input" type="checkbox"></td>
-                                    <td>2024-11-01</td>
-                                    <td>INV-0123</td>
-                                    <td>엸카햧ㅍ</td>
-                                    <td>￦ 80,000</td>
-                                    <td>결제 대기중</td>
-                                    <td><a class="btn btn-sm btn-primary" href="">상세 정보</a></td>
-                                </tr>
-                                <tr>
-                                    <td><input class="form-check-input" type="checkbox"></td>
-                                    <td>2024-11-01</td>
-                                    <td>INV-0123</td>
-                                    <td>몡ㅀ캬릍</td>
-                                    <td>￦ 80,000</td>
-                                    <td>결제 대기중</td>
-                                    <td><a class="btn btn-sm btn-primary" href="">상세 정보</a></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <!-- Recent Sales End -->
-
-
             <!-- Widgets Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-4">

@@ -147,6 +147,7 @@
 }
 
 /* course common */
+.course-wrap .empty {background:url('/resources/images/no_class.svg') no-repeat center top;padding-top: 21rem;text-align:center;font-weight: 500;color: var(--dark);margin: 5rem 0;background-size: auto 300px;font-size: 1.2rem;line-height: 1.6;}
 .course-card {display: grid;-webkit-column-gap: 1rem;column-gap: 1rem;row-gap: 1rem;grid-template-columns: repeat(4, minmax(0, 1fr));} 
 .course-card li {position:relative;}
 .course-card .fav-on, .course-card .fav-off {transition: all 0.25s;position: absolute;top: 6px;left: 14px;color: var(--secondary);font-size: 1.6rem;text-shadow: 1px 2px 3px rgba(0, 0, 0, 0.2);background: transparent;width: 36px;height: 36px;border-radius: 50%;line-height: 43px;}

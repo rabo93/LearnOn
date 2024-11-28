@@ -220,14 +220,6 @@
 #pageList a:hover {color:var(--primary);font-weight:600;}
 
 
-/* 페이징 */
-#pageList {display: flex;justify-content: center;align-items: center;gap: 6px;margin: 1rem auto;}
-#pageList button {font-size: 13px;font-weight: 700;background: var(--white);border: 1px solid var(--dark);border-radius: 4px;cursor:pointer;width: 30px;height: 30px;}
-#pageList button:hover {background:var(--primary);color:var(--white);border-color:var(--primary);}
-#pageList strong {width: 20px;display: inline-block;text-align: center;text-decoration: underline;cursor:pointer;}
-#pageList a {display: inline-block;width: 20px;text-align: center;}
-#pageList a:hover {color:var(--primary);font-weight:600;}
-
 /* 수강 화면 */
 #myCourseDashboard {background: var(--dark);color: var(--white);width: 100vw;height: 100vh;display: flex;align-items: stretch;justify-content: space-between;}
 #myCourseDashboard .contents {width: calc(100% - 440px);background: var(--dark);height: 100%;}

@@ -43,37 +43,37 @@
 				<div class="sec-inner">
 					<h1 class="sec-ttl">
 						실시간 인기 클래스 ✨
-						<button class="more"><i class="fa-solid fa-chevron-right"></i></button>
+						<button class="more" onclick="location.href='/Category?codetype=CATE01'"><i class="fa-solid fa-chevron-right"></i></button>
 					</h1>
 					<div class="course-wrap">
-						<ul class="course-card">
-							<!-- 8개 -->
-							<c:choose>
-								<c:when test="${empty bestClassList}">
-									<li>인기 강의가 존재하지 않습니다.</li>
-								</c:when>
+						<!-- 8개 -->
+						<c:choose>
+							<c:when test="${empty bestClassList}">
+								<div class="empty">강의를 준비중이에요 😊</div>
+							</c:when>
 								<c:otherwise>
-									<c:forEach var="best" items="${bestClassList}">
-										<li onclick="location.href='CourseDetail?class_id='${best.CLASS_ID}">
-											<img src="${pageContext.request.contextPath}/resources/upload/${best.CLASS_PIC}" class="card-thumb" alt="thumbnail" />
-<%-- 											<img src="${pageContext.request.contextPath}/resources/images/thumb_01.webp" class="card-thumb" alt="thumbnail" /> --%>
-											<div class="card-info">
-												<div class="category">
-													<span>${best.CLASS_CATEGORY}</span>
+									<ul class="course-card">
+										<c:forEach var="best" items="${bestClassList}">
+											<li>
+												<img src="${pageContext.request.contextPath}/resources/upload/${best.CLASS_PIC}" onclick="location.href='CourseDetail?class_id=${best.CLASS_ID}'" class="card-thumb" alt="thumbnail" />
+	<%-- 											<img src="${pageContext.request.contextPath}/resources/images/thumb_01.webp" class="card-thumb" alt="thumbnail" /> --%>
+												<div class="card-info" onclick="location.href='CourseDetail?class_id=${best.CLASS_ID}'">
+													<div class="category">
+														<span>${best.CLASS_CATEGORY}</span>
+													</div>
+													<div class="ttl">${best.CLASS_TITLE}</div>
+													<div class="price">₩<fmt:formatNumber pattern="#,###">${best.CLASS_PRICE}</fmt:formatNumber></div>
+													<div class="rating">
+														<i class="fa-solid fa-star"></i>
+														<span>${best.REVIEW_SCORE}</span>
+													</div>
+													<div class="name">${best.TEACHER_NAME}</div>
 												</div>
-												<div class="ttl">${best.CLASS_TITLE}</div>
-												<div class="price">₩<fmt:formatNumber pattern="#,###">${best.CLASS_PRICE}</fmt:formatNumber></div>
-												<div class="rating">
-													<i class="fa-solid fa-star"></i>
-													<span>${best.REVIEW_SCORE}</span>
-												</div>
-												<div class="name">${best.TEACHER_NAME}</div>
-											</div>
-										</li>
-									</c:forEach>
+											</li>
+										</c:forEach>
+									</ul>
 								</c:otherwise>
-							</c:choose>
-						</ul>
+						</c:choose>
 					</div>
 				</div>
 			</section>
@@ -82,17 +82,17 @@
 				<div class="sec-inner">
 					<h1 class="sec-ttl">
 						방금 오픈한 강의 👀
-						<button class="more"><i class="fa-solid fa-chevron-right"></i></button>
+						<button class="more" onclick="location.href='/Category?codetype=CATE01'"><i class="fa-solid fa-chevron-right"></i></button>
 					</h1>
 					<div class="course-wrap">
-						<ul class="course-card">
-							<c:choose>
-								<c:when test="${empty newClassList}">
-									<li>최신 강의가 존재하지 않습니다.</li>
-								</c:when>
-								<c:otherwise>
+						<c:choose>
+							<c:when test="${empty newClassList}">
+								<div class="empty">강의를 준비중이에요 😊</div>
+							</c:when>
+							<c:otherwise>
+								<ul class="course-card">
 									<c:forEach var="newClass" items="${newClassList}">
-										<li onclick="location.href='CourseDetail?class_id='${newClass.CLASS_ID}">
+										<li onclick="location.href='CourseDetail?class_id=${newClass.CLASS_ID}'">
 											<img src="${pageContext.request.contextPath}/resources/upload/${newClass.CLASS_PIC}" class="card-thumb" alt="thumbnail" />
 <%-- 											<img src="${pageContext.request.contextPath}/resources/images/thumb_01.webp" class="card-thumb" alt="thumbnail" /> --%>
 											<div class="card-info">
@@ -109,66 +109,12 @@
 											</div>
 										</li>
 									</c:forEach>
-								</c:otherwise>
-							</c:choose>
-						</ul>
+								</ul>
+							</c:otherwise>
+						</c:choose>
 					</div>
 				</div>
 			</section>
-			<!-- section04. 얼리버드 특가 -->
-<!-- 			<section id="sec04" class="sec"> -->
-<!-- 				<div class="sec-inner"> -->
-<!-- 					<h1 class="sec-ttl"> -->
-<!-- 						MD 추천! HOT한 강의 🎉 -->
-<!-- 						<button class="more"><i class="fa-solid fa-chevron-right"></i></button> -->
-<!-- 					</h1> -->
-<!-- 					<div class="course-wrap"> -->
-<!-- 						<ul class="course-card"> -->
-<!-- 							4개 -->
-<!-- 							<li> -->
-<%-- 								<img src="${pageContext.request.contextPath}/resources/images/thumb_13.webp" class="card-thumb" alt="thumbnail" /> --%>
-<!-- 								<div class="card-info"> -->
-<!-- 									<div class="category"> -->
-<!-- 										<span>IT/개발</span> -->
-<!-- 									</div> -->
-<!-- 									<div class="ttl">초심자를 위한 알고리즘 강의</div> -->
-<!-- 									<div class="name">프로그래머 홍길동</div> -->
-<!-- 								</div> -->
-<!-- 							</li> -->
-<!-- 							<li> -->
-<%-- 								<img src="${pageContext.request.contextPath}/resources/images/thumb_14.webp" class="card-thumb" alt="thumbnail" /> --%>
-<!-- 								<div class="card-info"> -->
-<!-- 									<div class="category"> -->
-<!-- 										<span>IT/개발</span> -->
-<!-- 									</div> -->
-<!-- 									<div class="ttl">초심자를 위한 알고리즘 강의</div> -->
-<!-- 									<div class="name">프로그래머 홍길동</div> -->
-<!-- 								</div> -->
-<!-- 							</li> -->
-<!-- 							<li> -->
-<%-- 								<img src="${pageContext.request.contextPath}/resources/images/thumb_11.webp" class="card-thumb" alt="thumbnail" /> --%>
-<!-- 								<div class="card-info"> -->
-<!-- 									<div class="category"> -->
-<!-- 										<span>IT/개발</span> -->
-<!-- 									</div> -->
-<!-- 									<div class="ttl">초심자를 위한 알고리즘 강의</div> -->
-<!-- 									<div class="name">프로그래머 홍길동</div> -->
-<!-- 								</div> -->
-<!-- 							</li> -->
-<!-- 							<li> -->
-<%-- 								<img src="${pageContext.request.contextPath}/resources/images/thumb_05.webp" class="card-thumb" alt="thumbnail" /> --%>
-<!-- 								<div class="card-info"> -->
-<!-- 									<div class="category"> -->
-<!-- 										<span>IT/개발</span> -->
-<!-- 									</div> -->
-<!-- 									<div class="ttl">초심자를 위한 알고리즘 강의</div> -->
-<!-- 									<div class="name">프로그래머 홍길동</div> -->
-<!-- 								</div> -->
-<!-- 							</li> -->
-<!-- 						</ul> -->
-<!-- 					</div> -->
-<!-- 				</div> -->
-<!-- 			</section> -->
 			<!-- section05. 출석체크 -->
 			<section id="sec05" class="sec-full">
 				<div class="sec-inner">

@@ -130,6 +130,41 @@
 						</ul>
 					</c:otherwise>
 				</c:choose>
+				
+				<section id="pageList">	<!-- 페이징 처리 시작 -->
+					<input type="button" value="&lt;&lt;" 
+						onclick="location.href='CourseSupportList?class_id=${course[0].class_id}&pageNum=${pageInfo.startPage - pageInfo.pageListLimit}'"				
+						<c:if test="${pageInfo.startPage == 1}">disabled</c:if> 	
+					>
+					<input type="button" value="이전" 
+						onclick="location.href='CourseSupportList?class_id=${course[0].class_id}&pageNum=${pageNum - 1}'"
+						<c:if test="${pageNum == 1}">disabled</c:if> 	
+					>
+					
+					<c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
+						<c:choose>
+							<c:when test="${i eq pageNum}">
+								<strong>${i}</strong>
+							</c:when>
+							<c:otherwise>
+								<a href="CourseSupportList?class_id=${course[0].class_id}&pageNum=${i}">${i}</a>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+					
+					<!-- [다음] 버튼 클릭시 이전 페이지 글 목록 요청(파라미터로 현재 페이지번호 +1 전달) -->
+					<%-- 현재 페이지가 전체 페이지 수와 동일할 경우 비활성화(disabled) --%>
+					<input type="button" value="다음" 
+						onclick="location.href='CourseSupportList?class_id=${course[0].class_id}&pageNum=${pageNum + 1}'"
+						<c:if test="${pageNum == pageInfo.maxPage}">disabled</c:if> 		
+					>
+					<!-- 현재 목록의 시작페이지 번호에서 페이지 번호 갯수를 더한 페이지 요청ㄹ -->
+					<%-- 끝 페이지가 전체 페이지 수와 동일할 경우 비활성화(disabled) --%>
+					<input type="button" value="&gt;&gt;" 
+						onclick="location.href='CourseSupportList?class_id=${course[0].class_id}&pageNum=${pageInfo.startPage + pageInfo.pageListLimit}'"
+						<c:if test="${pageInfo.endPage == pageInfo.maxPage}">disabled</c:if>	
+					>			
+				</section><!-- 페이징 처리 끝 -->
 				</div><!-- course-wrap -->
 			</div><!-- cls-wrap -->
 		</div><!-- wrapper -->

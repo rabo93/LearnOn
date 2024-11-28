@@ -411,11 +411,10 @@ $(document).ready(function() {
 //				"checksum": rsp.paid_amount // 부분환불(환불가능금액)
 				//checksum을 넣어주는 이유 : 서버와 포트원 서버간의 환불 가능 금액을 검증하기 위해서 필수 입력(우리는 전체 환불만 가능하도록 설계)			
 				"reason": "테스트 결제 환불",	
-				
-
 			})
 		}).done(function(response) {
 			alert("환불 성공");
+			
 		}).fail(function(error) {
 			console.log("환불 실패", error);
 		});

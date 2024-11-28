@@ -210,10 +210,12 @@
 // 					"amount" : paid_amount	//누락시 전체환불(일단 전체환불만 가능하도록 했으므로 주석처리)
 // 					"reason": "테스트 결제 환불",
 				})
-			}).done(function() {
+			}).done(function(response) {
+				console.log("취소 응답: "+ JSON.stringify(response));
 				alert("결제를 취소하였습니다.");
 			}).fail(function(error) {
-				alert(JSON.stringify(error));
+				console.log(JSON.stringify(error));
+				alert("결제 취소 실패");
 			});
 		}
 		

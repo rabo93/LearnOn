@@ -251,7 +251,7 @@ public class AdminController {
 			return "admin/fail";
 		}
 		model.addAttribute("getMainCate", adminService.getMainCate());
-		model.addAttribute("getInstructor", adminService.getInstructorMemberList());
+		model.addAttribute("getInstructor", adminService.getInstructor());
 		return "admin/class_add";
 	}
 	
@@ -403,7 +403,7 @@ public class AdminController {
 		model.addAttribute("getClass", classLoad);
 		model.addAttribute("getMainCate", adminService.getMainCate());
 		model.addAttribute("getCurriculum", adminService.getCurriculum(class_id));
-		model.addAttribute("getInstructor", adminService.getInstructorMemberList());
+		model.addAttribute("getInstructor", adminService.getInstructor());
 //		
 		if (classLoad == null) {
 			model.addAttribute("msg", "클래스 불러오기 실패!");

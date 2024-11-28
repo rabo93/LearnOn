@@ -69,7 +69,10 @@ public class AdminService {
 	public int updateClass(AdminVO vO) {
 		return mapper.updateClass(vO);
 	}
-	
+	//	클래스 등록 시 강사찾기
+	public List<Map<String, Object>> getInstructor() {
+		return mapper.selectClassIns();
+	}
 	//	=================== 멤버 ==============================
 	//	일반회원 조회
 	public List<MemberVO> getNomalMemberList(int startRow, int listLimit, String searchKeyword, String searchType, String sort) {

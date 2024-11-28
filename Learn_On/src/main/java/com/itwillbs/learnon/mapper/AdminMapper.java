@@ -44,6 +44,8 @@ public interface AdminMapper {
 	int insertCurVideo(AdminVO vO);
 	// 클래스 아이디 조회
 	int getClassId();
+	//	클래스 등록 시 강사찾기
+	List<Map<String, Object>> selectClassIns();
 	// 클래스 삭제
 	int deleteClass(int i);
 	// 커리큘럼 삭제

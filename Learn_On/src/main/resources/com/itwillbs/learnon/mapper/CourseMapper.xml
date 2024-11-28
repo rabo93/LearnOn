@@ -274,6 +274,7 @@
 		 WHERE C_SUPPORT_IDX = #{c_support_idx}
 	</delete>
 	<select id="selectMenuList" resultType="map">
+		-- 헤더 메뉴 출력	
 		SELECT C.CODEID
 			   , C.CODENAME AS MAIN_MENU
 		       , T.CODETYPE_ID
@@ -281,6 +282,7 @@
 		FROM COMMONCODE C
 		JOIN COMMONCODETYPE T ON C.CODEID = T.CODETYPE
 		WHERE C.CODETYPE = 'CATE'
+		ORDER BY C.CODEID ASC, T.CODETYPE_ID ASC
 	</select>
 	
 	

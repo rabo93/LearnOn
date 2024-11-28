@@ -14,7 +14,16 @@ import com.itwillbs.learnon.vo.MyPaymentVO;
 
 @Mapper
 public interface AdminMapper {
-	
+	//	=========== 메인 ====================
+	//	일반 회원 수 조회
+	int getNomalMemberCount();
+	//	강사 회원 수 조회
+	int getInstrucMemberCount();
+	//	일간 매출량 조회 
+	int getTodayPayTotal(String formattedDate);
+	//	주간 매출량 조회
+	int getWeekPayTotal(String formattedDate);
+	//	==================================
 	// 카테고리
 	List<Map<String, String>> getCategory();
 	List<Map<String, String>> getMainCate();
@@ -104,6 +113,8 @@ public interface AdminMapper {
 	
 	// 관리자 - 결제내역 전체 조회
 	List<MyPaymentVO> selectPaymentListToAdm(@Param("startRow") int startRow, @Param("listLimit") int listLimit);
+	
+	
 
 	
 

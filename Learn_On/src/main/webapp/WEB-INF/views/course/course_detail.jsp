@@ -43,6 +43,9 @@
 				            	<c:set var="total_re" value="${myReview}" />
 				            	<h4>총  ${fn:length(total_cur)}강 ( ${course[0].class_runtime}분)</h4>
 				            </div>
+				            <div class="cls-pic">
+				            	<img src="resources/upload/${coursePicArray[0]}" id="preview" class="figure-img img-fluid rounded" alt="thumpnail" style="height: 280px;">
+				            </div>
 			            </div>
 			        </section>
 	        		<c:set var="count" value="${courseSupportList}" />
@@ -56,9 +59,6 @@
 						<div class="tabmenu" id="tab01">
 							<h2>클래스 소개</h2>
 				            <div class="intro_title">
-				            	사진 : 
-				            	
-				            	<img src="${pageContext.request.contextPath}/${course[0].class_pic1}">
 				            	${course[0].class_intro}
 			            	</div>
 				            <div class="intro">

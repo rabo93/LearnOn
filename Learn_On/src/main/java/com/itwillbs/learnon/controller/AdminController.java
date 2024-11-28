@@ -91,26 +91,6 @@ public class AdminController {
 		}
 //	public String admin_home(HttpSession session, Model model, HttpServletRequest request) {
 		
-		//로그인 감지
-//		String id = (String)session.getAttribute("sId");
-//		if(id == null) {
-//			model.addAttribute("msg", "접근 권한이 없습니다");
-//			model.addAttribute("targetURL", "MemberLogin");
-//			
-//			// 로그인 성공 후 다시 현재 페이지로 돌아오기 위해 prevURL 세션 속성값 설정
-//			String prevURL = request.getServletPath();
-//			String queryString = request.getQueryString();
-//			
-//			if(queryString != null) {
-//				prevURL += "?" + queryString;
-//			}
-//			
-//			// 세션 객체에 prevURL 값 저장
-//			session.setAttribute("prevURL", prevURL);
-//			
-//			return "admin/fail";
-//		}
-		
 		return "admin/index";
 		
 	}
@@ -379,7 +359,7 @@ public class AdminController {
 	@GetMapping("AdmClassList")
 	public String admin_class_list(Model model) {
 		model.addAttribute("getClassList", adminService.getClassList());
-		model.addAttribute("getMainCate", adminService.getMainCate());
+//		model.addAttribute("getMainCate", adminService.getMainCate());
 		
 		return "admin/class_list";
 	}

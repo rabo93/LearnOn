@@ -69,23 +69,23 @@ public class MailService {
 	
 	
 	//	========================================================================
-	public MailAuthInfo sendAuthMail(MemberVO member, String email1, String email2) {
+	public MailAuthInfo sendAuthMail(MemberVO member, String mem_email) {
 		System.out.println("memberService : " + member);
 		
 		
-		String email = email1 + '@' +  email2;
+//		String email = email1 + '@' +  email2;
 		String auth_code = GenerateRandomCode.getRandomCode(50);
 		
 		String subject = "[런온]가입 인증코드 입니다.";
 		String content =
-				"<a href=\"http://localhost:8081/MemberEmailAuth?mem_email="+ email + "&auth_code=" + auth_code +"\">[클릭]이메일 인증하기</a>";
+				"<a href=\"http://localhost:8081/MemberEmailAuth?mem_email="+ mem_email + "&auth_code=" + auth_code +"\">[클릭]이메일 인증하기</a>";
 				//주소 수정해야함
 	
 		new Thread(new Runnable() {
 			
 			@Override
 			public void run() {
-				sendMailClient.sendMail(email, subject, content);
+				sendMailClient.sendMail(mem_email, subject, content);
 				System.out.println("메일 발송 쓰레드 작업 완료!" + new Date());
 			}
 		}).start();
@@ -93,7 +93,7 @@ public class MailService {
 		System.out.println("메일 발송 쓰레드 작업 시작" + new Date());
 		System.out.println("memverVO" + member.getMem_email());
 		
-		MailAuthInfo mailAuthInfo = new MailAuthInfo(email, auth_code);
+		MailAuthInfo mailAuthInfo = new MailAuthInfo(mem_email, auth_code);
 		
 		return mailAuthInfo;
 	}

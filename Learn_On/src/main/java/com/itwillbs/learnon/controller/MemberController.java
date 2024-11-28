@@ -177,7 +177,7 @@ public class MemberController {
 //	 이메일 인증 처리 메서드
 	private void handleEmailAuth(MemberVO member) {
 		System.out.println("memberHandle : " + member);
-	    MailAuthInfo mailAuthInfo = mailService.sendAuthMail(member ,member.getMem_email1(), member.getMem_email2());
+	    MailAuthInfo mailAuthInfo = mailService.sendAuthMail(member ,member.getMem_email());
 	    System.out.println("인증정보 : " + mailAuthInfo);
 	    memberService.registMemberAuthInfo(mailAuthInfo);
 	}
@@ -199,15 +199,15 @@ public class MemberController {
 	
 	@PostMapping("ReSendAuthMail")
 	public String reSendAuthMail(MemberVO member,Model model , HttpSession session) {
-		MemberVO dbmember = memberService.getMember(member);
 
+		MemberVO dbmember = memberService.getMember(member);
 		if(!member.getMem_email().equals(dbmember.getMem_email())) {
 			model.addAttribute("msg","[존재하지 않는 이메일]\\n이메일을 다시한번 확인해주세요");
 			return "result/fail";
 		}
 		
 //		MailAuthInfo mailAuthInfo = mailService.sendAuthMail(member);
-		MailAuthInfo mailAuthInfo = mailService.sendAuthMail(member, member.getMem_email1(), member.getMem_email2());
+		MailAuthInfo mailAuthInfo = mailService.sendAuthMail(member, member.getMem_email());
 		
 		memberService.registMemberAuthInfo(mailAuthInfo);
 		System.out.println("인증메일 다시 보냄!!@!!!!!!!!!");

@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -375,6 +376,7 @@ public class MypageController {
 			
 			return "result/fail";
 		}
+		
 		
 		Map<String, List<MyPaymentVO>> paymentList = myService.getMyPaymentList(id);
 		System.out.println("결제 내역 리스트: "+ paymentList);

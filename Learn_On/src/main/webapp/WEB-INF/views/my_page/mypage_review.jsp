@@ -53,10 +53,11 @@
 									<c:forEach var="review" items="${myReviewList}">
 										<article class="rev-box">
 											<div class="info">
-												<img src="/resources/images/thumb_06.webp" alt="썸네일">
+												<img src="${pageContext.request.contextPath}/resources/upload/${review.class_pic}" onclick="location.href='CourseDetail?class_id=${review.class_id}'" class="card-thumb" alt="thumbnail" />
+<!-- 												<img src="/resources/images/thumb_06.webp" alt="썸네일"> -->
 												<div class="right">
-													<p class="ttl">${review.class_title}</p>
-													<span class="name">${review.teacher_name}</span>
+													<p class="ttl" onclick="location.href='CourseDetail?class_id=${review.class_id}'">${review.class_title}</p>
+													<span class="name" onclick="location.href='CourseDetail?class_id=${review.class_id}'">${review.teacher_name}</span>
 												</div>
 											</div>
 											<div class="detail">

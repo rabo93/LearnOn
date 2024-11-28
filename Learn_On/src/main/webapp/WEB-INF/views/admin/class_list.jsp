@@ -69,22 +69,22 @@
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items="${getClassList}" var="li">
+									<c:forEach items="${getClassList}" var="li" varStatus="status">
 										<tr id="${li.class_id}">
 											<td><input class="form-control" type="text" placeholder="" value="${li.class_title}" disabled="disabled"></td>
 											<td>
-												<select class="form-control" id="floatingSelect" name="class_maincate" disabled="disabled">
-													<c:forEach items="${getMainCate}" var="cate">
-														<option value="${cate.CODEID}" 
-															<c:if test="${fn:contains(cate.DESCRIPTION, li.class_category)}">selected="selected"</c:if>>
-																${cate.CODENAME}
-														</option>
-													</c:forEach>
-												</select>
+												<input type="text" class="form-control" id="mainCategory${li.class_id}" name="class_maincate" disabled="disabled">
+<%-- 													<c:forEach items="${getMainCate}" var="cate"> --%>
+<%-- 														<option value="${cate.CODEID}"  --%>
+<%-- 															<c:if test="${fn:contains(cate.DESCRIPTION, li.class_category)}">selected="selected"</c:if>> --%>
+<%-- 																${cate.CODENAME} --%>
+<!-- 														</option> -->
+<%-- 													</c:forEach> --%>
 											</td>
 											<td>
-												<select class="form-control" id="floatingSelect2" name="class_category" disabled="disabled">
-												</select>
+												<input type="text" class="form-control" id="subCategory${li.class_id}" disabled="disabled">
+<!-- 												<select class="form-control" id="floatingSelect2" name="class_category" disabled="disabled"> -->
+<!-- 												</select> -->
 											</td>
 											<td>
 												<select class="form-control" id="classStat" disabled="disabled">

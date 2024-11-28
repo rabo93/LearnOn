@@ -27,9 +27,9 @@
 				<div class="sec-inner">
 					<div class="visual-area">
 						<div class="main-visual">
-							<div><img src="${pageContext.request.contextPath}/resources/images/main_visual_01.jpg" alt="배너1"></div>
-							<div><img src="${pageContext.request.contextPath}/resources/images/main_visual_02.jpg" alt="배너1"></div>
-							<div><img src="${pageContext.request.contextPath}/resources/images/main_visual_03.jpg" alt="배너1"></div>
+							<div><img src="${pageContext.request.contextPath}/resources/images/main_banner01.jpg" alt="배너1"></div>
+							<div><img src="${pageContext.request.contextPath}/resources/images/main_banner02.jpg" alt="배너1"></div>
+							<div><img src="${pageContext.request.contextPath}/resources/images/main_banner03.jpg" alt="배너1"></div>
 						</div>
 						<a href="#" class="visu-prev"><i class="fa-solid fa-chevron-left"></i></a>
 						<a href="#" class="visu-next"><i class="fa-solid fa-chevron-right"></i></a>

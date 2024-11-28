@@ -28,14 +28,14 @@
    <div class="login-wrap">
 	    <h1 class="login-ttl">로그인</h1>
 	    <div class="login-box">
-<!--            <div class="mem-select"> -->
-<!--                <label> -->
-<!--                    <input type="radio" name="mem_status" id="mem_user" value="일반회원"> 일반회원 -->
-<!--                </label> -->
-<!--                <label> -->
-<!--                    <input type="radio" name="mem_status" id="mem_teacher" value="강사회원"> 강사회원 -->
-<!--                </label> -->
-<!--            </div> -->
+           <div class="mem-select">
+               <label>
+                   <input type="radio" name="mem_status" id="mem_user" value="일반회원"> 일반회원
+               </label>
+               <label>
+                   <input type="radio" name="mem_status" id="mem_teacher" value="강사회원"> 강사회원
+               </label>
+           </div>
            <form action="MemberLogin" method="post">
                <label for="mem_id" >아이디</label>
                <input type="text" name="mem_id" id="mem_id" placeholder="아이디" value="${cookie.userId.value }">

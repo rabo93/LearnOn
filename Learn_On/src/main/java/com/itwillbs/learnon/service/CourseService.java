@@ -75,16 +75,19 @@ public class CourseService {
 		return mapper.deleteCourseSupport(c_support_idx);
 	}
 
-	public List<CourseVO> getCourseTeacher(int class_id, String teacher_id) {
-		return mapper.selectCourseTeacher(class_id, teacher_id);
+	public int getCourseTeacherCount(int class_id, String teacher_id) {
+		return mapper.selectCourseTeacherCount(class_id, teacher_id);
+	}
+	public List<CourseVO> getCourseTeacher(int class_id, String teacher_id, int startRow, int listLimit) {
+		return mapper.selectCourseTeacher(class_id, teacher_id,startRow,listLimit);
 	}
 
 	public int registApplyForCourse(int class_id, String id) {
 		return mapper.insertApplyForCourse(class_id, id);
 	}
 
-	public List<CourseVO> getFindCourseList(String find_title) {
-		return mapper.selectFindCourseList(find_title);
+	public List<CourseVO> getFindCourseList(String find_title, int startRow, int pageListLimit) {
+		return mapper.selectFindCourseList(find_title, startRow, pageListLimit);
 	}
 
 	public List<CourseVO> getCourseBestList(int startRow, int pageListLimit, String searchType) {
@@ -93,6 +96,7 @@ public class CourseService {
 	public int getCourseBestListCount() {
 		return mapper.selectCourseBestListCount();
 	}
+	
 
 	
 

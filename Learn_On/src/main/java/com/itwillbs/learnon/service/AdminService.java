@@ -21,6 +21,26 @@ public class AdminService {
 	@Autowired
 	private AdminMapper mapper;
 	
+	//	================ 메인 =============================
+	//	일반 회원 수 조회
+	public int getNomalMemberCount() {
+		return mapper.getNomalMemberCount();
+	}
+	//	강사 회원 수 조회
+	public int getInstrucMemberCount() {
+		return mapper.getInstrucMemberCount();
+	}
+	//	오늘 매출량 조회
+	public int getTodayPayTotal(String formattedDate) {
+		return mapper.getTodayPayTotal(formattedDate);
+	}
+	//	주간 매출량 조회
+	public int getWeekPayTotal(String formattedDate) {
+		return mapper.getTodayPayTotal(formattedDate);
+	}
+	
+	//	====================================================
+	
 	// 카테고리
 	public List<Map<String, String>> getCategory() {
 		return mapper.getCategory();
@@ -187,5 +207,6 @@ public class AdminService {
 	public int deleteCurHistory(Object cur_id) {
 		return mapper.deleteCurHistory(cur_id);
 	}
+	
 
 }

@@ -20,7 +20,7 @@
 		<c:if test="${sessionScope.sGrade eq 'MEM02'}">
 	        <div class="sidebar pe-4 pb-3">
 	            <nav class="navbar bg-light navbar-light">
-	                <a href="/" class="navbar-brand" style="display: flex;align-items: center;width: 100%;margin: 0;">
+	                <a href="AdmIndex" class="navbar-brand" style="display: flex;align-items: center;width: 100%;margin: 0;">
 	                	<img class="projectLogo" src="resources/admin/img/learn_on_logo2.png" alt="learnLogo" style="width: 150px; margin: 10px auto; border-radius: 20px;">
 	                </a>
 	                <div class="navbar-nav w-100">
@@ -39,7 +39,7 @@
         <!-- Sidebar Start -->
 	        <div class="sidebar pe-4 pb-3">
 	            <nav class="navbar bg-light navbar-light">
-	                <a href="/" class="navbar-brand" style="display: flex;align-items: center;width: 100%;margin: 0;">
+	                <a href="AdmIndex" class="navbar-brand" style="display: flex;align-items: center;width: 100%;margin: 0;">
 	                	<img class="projectLogo" src="resources/admin/img/learn_on_logo2.png" alt="learnLogo" style="width: 150px; margin: 10px auto; border-radius: 20px;">
 	                </a>
 	                <div class="navbar-nav w-100">

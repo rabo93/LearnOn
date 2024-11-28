@@ -368,7 +368,6 @@ public class AdminController {
 	public String selectCategory(AdminVO admin) {
 //		System.out.println("=========================================================" + admin);
 		List<Map<String, Object>> adminArr = adminService.selectSubCate(admin);
-		System.out.println("========================== " + adminArr);
 		JSONArray joArr = new JSONArray(adminArr);
 		
 		return joArr.toString();

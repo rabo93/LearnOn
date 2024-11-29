@@ -60,6 +60,8 @@ public class CartController {
 	
 	}
 	//=================================================================================
+	// '주문하기' 클릭시 이미 수강중인 클래스면 주문 불가 조건
+	// => 장바구니 상품의 클래스가 수강중인 클래스에 있는지 갯수 조회
 	@ResponseBody
 	@PostMapping("SubcribeClassCheck")
 	public ResponseEntity<Integer> subcribeClassCheck(@RequestParam("cartitem_idx") String cartitem) {

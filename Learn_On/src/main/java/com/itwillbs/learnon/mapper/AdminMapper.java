@@ -113,6 +113,9 @@ public interface AdminMapper {
 	// 관리자 - 결제내역 전체 조회
 	List<MyPaymentVO> selectPaymentListToAdm(@Param("startRow") int startRow, @Param("listLimit") int listLimit);
 	
+	// 관리자 - 1:1문의 전체 게시물 수 조회
+	int selectSupportListCount();
+	
 	
 
 	

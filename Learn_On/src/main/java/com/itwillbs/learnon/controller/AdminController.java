@@ -1105,7 +1105,7 @@ public class AdminController {
 		// 페이징 설정
 		int listLimit = 10; // 한 페이지당 게시물 수
 		int startRow = (pageNum - 1) * listLimit;
-		int listCount = myService.getSupportListCount(id);
+		int listCount = adminService.getSupportListCountToAdm();
 		
 		int pageListLimit = 5; // 페이징 개수 
 		int maxPage = (listCount / listLimit) + (listCount % listLimit > 0 ? 1 : 0);

@@ -6,7 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>런온</title>
+<title>런 온 - 온라인 No.1 교육 플랫폼</title>
+<link rel="SHORTCUT ICON" href="${pageContext.request.contextPath}/resources/images/favicon.ico">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/reset.css">
@@ -48,8 +49,8 @@
 									<input type="file" name="file">
 								</div>
 								<div class="btns">
-									<input type="submit" value="작성하기">&nbsp;&nbsp;
-									<input type="button" value="취소" onclick="history.back()">
+								 	<button type="button" onclick="history.back()">취소</button>
+			                    	<button type="submit">등록하기</button>
 								</div>
 							</form>
 						</section>
@@ -59,11 +60,3 @@
 	</main>
 </body>
 </html>
-
-
-
-
-
-
-
-

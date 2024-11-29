@@ -49,7 +49,7 @@
 									data-class-title="${item.class_title}" 
 									data-class-price="${item.class_price}">
 										<div class="class-pic">
-											<img src="${pageContext.request.contextPath}/resources/images/thumb_01.webp">
+											<img src="${pageContext.request.contextPath}/resources/upload/${item.class_pic1}" class="card-thumb" alt="thumbnail" />
 										</div>
 										<div class="item-info">
 											<p id="classTitle">${item.class_title}</p>

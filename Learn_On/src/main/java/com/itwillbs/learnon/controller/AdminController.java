@@ -408,11 +408,12 @@ public class AdminController {
 	@GetMapping("AdmClassListModify")
 	public String admin_class_list_modi(int class_id, Model model) {
 		AdminVO classLoad = adminService.getClass(class_id);
+		
 		model.addAttribute("getClass", classLoad);
 		model.addAttribute("getMainCate", adminService.getMainCate());
 		model.addAttribute("getCurriculum", adminService.getCurriculum(class_id));
 		model.addAttribute("getInstructor", adminService.getInstructor());
-//		
+		
 		if (classLoad == null) {
 			model.addAttribute("msg", "클래스 불러오기 실패!");
 			return "admin/fail";

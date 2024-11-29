@@ -10,7 +10,7 @@
 		WHERE mem_id = #{sId}
 	</select>
 	
-	<!-- resultMap을 사용한 MyBatis 자동 매핑 -->
+	<!-- resultMap을 사용한 MyBatis 자동 매핑 : 다음번엔 map으로 담아가기!-->
 	<resultMap id="CartToOrderMap" type="order">
 		<result property="cartitem_idx" column="CARTITEM_IDX"/>
 	   	<result property="class_id" column="CLASS_ID"/>
@@ -87,7 +87,7 @@
 	<!-- 주문 정보 저장 -->
 	<insert id="insertOrderInfo" >
 		<selectKey keyProperty="order_idx" resultType="int" order="BEFORE">
-			SELECT IFNULL(MAX(order_idx), 0)
+			SELECT IFNULL(MAX(order_idx), 0) + 1
 			FROM ORDER_INFO
 		</selectKey>
 		INSERT INTO ORDER_INFO
@@ -102,7 +102,7 @@
 		)
 		VALUES
 		(
-			#{order_idx} + 1
+			#{order_idx}
 			, #{merchant_uid}
 			, #{mem_id}
 			, #{class_id}
@@ -123,7 +123,7 @@
 	<!-- 결제 완료시 나의 클래스에 인서트 -->
 	<insert id="insertMycourse">
 		<selectKey keyProperty="course_idx" resultType="int" order="BEFORE">
-			SELECT IFNULL(MAX(course_idx), 0)
+			SELECT IFNULL(MAX(course_idx), 0) + 1
 			FROM MYCOURSE
 		</selectKey>
 		INSERT INTO MYCOURSE
@@ -137,7 +137,7 @@
 		)
 		VALUES
 		(
-			#{course_idx} + 1
+			#{course_idx}
 			, #{mem_id}
 			, #{class_id}
 			, 0
@@ -211,10 +211,10 @@
 		WHERE 1=1
 		AND MEM_ID = #{memId} 
 		AND COUPON_ID = (
-			SELECT DISTINCT(OI.COUPON_ID)
-			FROM PAY_INFO PI
-			JOIN ORDER_INFO OI ON PI.MERCHANT_UID = OI.MERCHANT_UID
-			WHERE PI.IMP_UID = #{imp_uid}
+			SELECT DISTINCT O.COUPON_ID
+			FROM PAY_INFO P
+			JOIN ORDER_INFO O ON P.MERCHANT_UID = O.MERCHANT_UID
+			WHERE P.IMP_UID = #{imp_uid}
 		)
 	</update>
 	
@@ -231,8 +231,7 @@
 		WHERE MEM_ID = #{memId}
 		AND CUR_ID IN ( SELECT CUR_ID 
 						FROM CURRICULUM
-						WHERE CLASS_ID IN (
-											SELECT O.CLASS_ID
+						WHERE CLASS_ID IN (	SELECT O.CLASS_ID
 											FROM ORDER_INFO O JOIN PAY_INFO P
 											ON O.MERCHANT_UID = P.MERCHANT_UID
 											WHERE P.IMP_UID = #{imp_uid}

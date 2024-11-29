@@ -15,7 +15,6 @@
 	
 */
 $(document).ready(function() {
-	
 	console.log("초기 결제 상품 금액(totalAmount):", $("#totalAmount").data("value"));
 	console.log("초기 결제 금액(totalPrice):", $("#totalPrice").data("value"));
 	
@@ -413,7 +412,6 @@ $(document).ready(function() {
 			})
 		}).done(function(response) {
 			alert("환불 성공");
-			
 		}).fail(function(error) {
 			console.log("환불 실패", error);
 		});

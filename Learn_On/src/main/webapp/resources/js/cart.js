@@ -7,8 +7,8 @@
 	-(V) 선택 삭제 => 장바구니(CART) 테이블에서 딜리트
 	-(V) 헤더부분 장바구니 갯수 표시 => top.js에서 작성함
 	-(V) 선택 구매 => 선택한 상품 결제페이지로 데이터 넘기기
-	-() 썸네일사진 표출 : 클래스 등록 완료되면 구현
-	-() 상품 클릭시 상품 상세 페이지 이동() : CourseDetail?CLASS_ID=240108 형식으로 보냈음. 나중에 주미언니 강의 상세 페이지 다되면 구현.
+	-(V) 썸네일사진 표출 : 클래스 등록 완료되면 구현
+	-(V) 상품 클릭시 상품 상세 페이지 이동() : CourseDetail?CLASS_ID=240108 형식으로 보냈음. 나중에 주미언니 강의 상세 페이지 다되면 구현.
  */
 $(document).ready(function() {
 	//-------------------------------------------------------------------------
@@ -77,14 +77,52 @@ $(document).ready(function() {
 	    event.preventDefault(); // 기본 폼 제출 방지
 	
 	    // 체크된 체크박스 확인
-	    const checkedItems = document.querySelectorAll('.chk:checked');
-	    if (checkedItems.length === 0) {
-	        // 체크된 항목이 없으면 알림창 띄우기
+//	    let checkedItems = document.querySelectorAll('.chk:checked');
+//	    if (checkedItems.length === 0) {
+//	        // 체크된 항목이 없으면 알림창 띄우기
+//	        alert("주문할 상품을 선택해주세요.");
+//	    } 
+	    //----------------------------------------------
+		// 선택한 체크박스 가져오기 (상수로 선언=const 변하지 않는 값)
+		const selectedChk = []; 
+		document.querySelectorAll('.chk:checked').forEach(checkbox => {
+			selectedChk.push(checkbox.value); // 체크된 항목의 cartitem_idx 값을 배열에 넣기
+		});
+		
+		if(selectedChk.length == 0) {
+			// 체크된 항목이 없으면 알림창 띄우기
 	        alert("주문할 상품을 선택해주세요.");
-	    } else {
-	        // 체크된 항목이 있으면 폼 제출
-	        document.getElementById('cartForm').submit();
-	    }
+	        return;
+		}
+		
+	   	// 체크된 항목에 대한 검사(이미 수강중인 클래스가 있는지)
+	    //선택된 항목들을 콤마로 구분된 문자열로 결합
+	    const cartItemsParam = selectedChk.join(","); 
+	//    console.log("cartItemsParam : " + cartItemsParam); //cartItemsParam : 8,7,6,3
+	   	
+		//AJAX 요청을 통해 삭제 처리    
+	    $.ajax({
+			type : "Post",
+			url : "SubcribeClassCheck",
+			data : { //넘겨줄 데이터들 작성
+				cartitem_idx : cartItemsParam //요청 파라미터
+			}, 
+			success : function(response) {
+				console.log("조회된 결과:"+response); //갯수 출력
+				if(response == 0) { //이미 수강중인게 없을 경우
+					//체크된 항목 폼 제출
+		        	document.getElementById('cartForm').submit();
+				} else { // 수강 중인 강의가 있는 경우
+					alert("이미 수강중인 클래스가 있습니다. \n해당 클래스 삭제 후 주문해 주세요.");
+				}
+			},
+			error : function(jqXHR) {
+				console.log(jqXHR);
+			}
+			
+		});
+	    
+	    
     };
 	
 	//-----------------------------------------------------------------------------------

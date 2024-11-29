@@ -26,6 +26,7 @@ public class AdminVO {
 	private String name;
 	private String codetype;
 	private String codename;
+	private String hashtag;
 	
 	// 커리큘럼
 	private int cur_id;

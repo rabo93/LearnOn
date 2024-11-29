@@ -424,8 +424,12 @@ public class AdminController {
 	
 	// 어드민 클래스 수정 로직
 	@PostMapping("AdmClassListModify")
-	public String adm_class_modify(int class_id, AdminVO adm, HttpSession session, Model model) {
+	public String adm_class_modify(int class_id, AdminVO adm,  HttpSession session, Model model) {
+//		System.out.println("===============" + adm);
+		
 		AdminVO classInfo = adminService.getIdClass(class_id);
+		List<Map<String, Object>> curList = adminService.getCurriculum(class_id);
+		System.out.println("===========================================" + curList);
 		
 		// 커리큘럼 내용 가져오기
 		String[] arrCurTitle = adm.getCur_title().split(",");
@@ -439,7 +443,7 @@ public class AdminController {
 		realPath += "/" + subDir;
 		
 		// 커리큘럼 업데이트 for
-		adminService.deleteCurriculum(class_id);
+//		adminService.deleteCurriculum(class_id);
 		for (int i = 0; i < arrCurTitle.length; i++) {
 			String videoName = addVideoProcess(adm.getCur_video_get()[i], realPath, subDir);
 			if (videoName.equals("")) {
@@ -450,7 +454,7 @@ public class AdminController {
 			adm.setCur_title(arrCurTitle[i]);
 			adm.setCur_runtime(arrCurRunTime[i]);
 			totalRunTime += Integer.parseInt(arrCurRunTime[i]);
-			adminService.insertCurriculum(adm);
+//			adminService.insertCurriculum(adm);
 			adminService.insertCurVideo(adm);
 		}
 		

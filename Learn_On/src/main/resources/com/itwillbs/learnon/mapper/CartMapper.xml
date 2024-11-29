@@ -29,7 +29,7 @@
 	</delete>
 	
 	<!-- 장바구니 여러개 삭제 (결과반환: 삭제 갯수(int))-->
-	<delete id="deleteCarts" parameterType="list">
+	<delete id="deleteCarts" parameterType="list" >
 		DELETE 
 		FROM CART		
 		WHERE CARTITEM_IDX IN
@@ -45,5 +45,21 @@
 		FROM CART
 		WHERE MEM_ID = #{sId}
 	</select>
+	
+	<!-- 이미 수강중인지 나의 클래스에서 조회 -->
+	<select id="selectMycourseClass" parameterType="list" resultType="int">
+		SELECT COUNT(*) 
+		FROM MYCOURSE
+		WHERE CLASS_ID IN ( 
+							SELECT distinct CLASS_ID 
+		                    FROM CART
+		                    WHERE CARTITEM_IDX IN
+							   <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+							       #{item}
+							   </foreach>
+							);
+	</select>	
+	
+	
 	
 </mapper>

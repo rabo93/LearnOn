@@ -208,5 +208,10 @@ public class AdminService {
 		return mapper.deleteCurHistory(cur_id);
 	}
 	
+	// 관리자 - 1:1문의 전체 게시물 수
+	public int getSupportListCountToAdm() {
+		return mapper.selectSupportListCount();
+	}
+	
 
 }

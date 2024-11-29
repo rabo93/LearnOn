@@ -1,15 +1,18 @@
 package com.itwillbs.learnon.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.itwillbs.learnon.mapper.CartMapper;
 import com.itwillbs.learnon.vo.CartVO;
-import com.itwillbs.learnon.vo.MemberVO;
 
+import lombok.extern.log4j.Log4j2;
+@Log4j2
 @Service
 public class CartService {
 	@Autowired
@@ -36,8 +39,14 @@ public class CartService {
 	}
 	
 	//이미 수강중인 클래스가 있는지 조회
-	public int alreadySubcribeClass(List<Integer> cartItems) {
-		return mapper.selectMycourseClass(cartItems);
+	public int alreadySubcribeClass(String sId, List<Integer> cartItems) {
+		log.info(sId, cartItems);
+		
+		Map<String, Object> params = new HashMap<>();
+	    params.put("sId", sId);
+	    params.put("cartItems", cartItems);
+	    
+		return mapper.selectMycourseClass(params);
 	}
 
 	

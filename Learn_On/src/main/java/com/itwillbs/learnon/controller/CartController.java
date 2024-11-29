@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
@@ -64,8 +63,12 @@ public class CartController {
 	// => 장바구니 상품의 클래스가 수강중인 클래스에 있는지 갯수 조회
 	@ResponseBody
 	@PostMapping("SubcribeClassCheck")
-	public ResponseEntity<Integer> subcribeClassCheck(@RequestParam("cartitem_idx") String cartitem) {
-		
+	public ResponseEntity<Integer> subcribeClassCheck(HttpSession session, @RequestParam("cartitem_idx") String cartitem) {
+		// 로그인 정보 가져오기 (세션 아이디값 확인)
+		String sId = (String) session.getAttribute("sId");
+		log.info("로그인 아이디: " + sId);
+				
+		//------------------------------------------------------
 		// cartitem_idx를 콤마로 구분(분리)하여 각각의 요소를 List<Integer>객체(배열)에 묶어서 저장
 		List<Integer> cartItems = Arrays.stream(cartitem.split(",")) //Arrays.stream()은 배열을 스트림으로 변환
 								.map(Integer::parseInt) //map()은 스트림의 각 요소에 대해 변환 작업, 지금은 String 값을 Integer로 변환하는 작업 
@@ -75,7 +78,7 @@ public class CartController {
 		
 		// CartService - alreadySubcribeClass() 메서드 호출
 		// 파라미터 : cartItems(여러개)    리턴타입 : int(조회갯수)
-		int alreadySubCounts = cartService.alreadySubcribeClass(cartItems);
+		int alreadySubCounts = cartService.alreadySubcribeClass(sId, cartItems);
 		log.info("조회된 결과: " + alreadySubCounts); //0
 		
 		// 갯수 그대로 반환

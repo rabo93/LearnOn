@@ -30,12 +30,14 @@ import com.itwillbs.learnon.service.CartService;
 import com.itwillbs.learnon.service.CourseService;
 import com.itwillbs.learnon.service.MemberService;
 import com.itwillbs.learnon.service.MypageService;
+import com.itwillbs.learnon.service.PayService;
 import com.itwillbs.learnon.vo.CartVO;
 import com.itwillbs.learnon.vo.CommonCodeTypeVO;
 import com.itwillbs.learnon.vo.CourseSupportVO;
 import com.itwillbs.learnon.vo.CourseVO;
 import com.itwillbs.learnon.vo.MyReviewVO;
 import com.itwillbs.learnon.vo.PageInfo;
+import com.itwillbs.learnon.vo.PayVO;
 
 @Controller
 public class CourseController {
@@ -47,6 +49,8 @@ public class CourseController {
 	MypageService myService;
 	@Autowired
 	CartService cartService;
+	@Autowired
+	PayService payService;
 	
 	
 	// 이클립스 상의 가상의 업로드 경로명 저장(프로젝트 상에서 보이는 경ㅇ로)
@@ -71,7 +75,7 @@ public class CourseController {
 		// ----------------------------------------------------------------
 		// [ 페이징 처리 ]	
 		int listLimit = 8; // 페이지 당 게시물 수
-		int startRow = (pageNum - 1) * listLimit; // ????
+		int startRow = (pageNum - 1) * listLimit; 
 		int listCount = courseService.getCourseBestListCount();
 		
 		int pageListLimit = 8; 
@@ -91,12 +95,11 @@ public class CourseController {
 		}
 		// 페이징 정보 관리하는 PageInfo 객체 생성 및 계산 결과 저장
 		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
+		model.addAttribute("pageInfo", pageInfo);
 		// ----------------------------------------------------------------
 		
-		
-		
 		// 상단의 클래스 검색창 
-		List<CourseVO> courseList = courseService.getFindCourseList(find_title);
+		List<CourseVO> courseList = courseService.getFindCourseList(find_title,startRow, pageListLimit);
 		model.addAttribute("courseList", courseList);
 		return "course/course_find_list"; 
 	}
@@ -231,16 +234,13 @@ public class CourseController {
 		
 		String id = (String)session.getAttribute("sId");
 		
-//		System.out.println("searchType 잘받아오나?? :  " + searchType);
-		
 		// 클래스 목록
 		List<CourseVO> course = courseService.getCourse(class_id);
 		// 수강평 목록 
 		List<MyReviewVO> myReviewList = courseService.getReviewList(class_id, searchType);
 		// codetype으로 조회한 공통코드
 		List<CommonCodeTypeVO> codeType = courseService.getCodeType(codetype); 
-		// 강사의 다른 클래스 조회
-		List<CourseVO> courseTeacher = courseService.getCourseTeacher(class_id, course.get(0).getTeacher_id());
+		
 		// 관심목록 조회
 		List<Map<String, Object>> wishList = myService.getWishlistForCategoryList(id);
 		
@@ -251,13 +251,12 @@ public class CourseController {
 				 						.map(pic -> pic.getClass_pic1())
 				 						.toArray(size -> new String[size]);
 		// ----------------------------------------------------------------
-	    // [ 페이징 처리 ]	
- 		int listLimit = 8; // 페이지 당 게시물 수
+	    // [ 강사의 다른 클래스 페이징 처리 ]	
+ 		int listLimit = 5; // 페이지 당 게시물 수
  		int startRow = (pageNum - 1) * listLimit; // ????
- 		int listCount = courseService.getCourseSupportListCount(class_id);
- 		// System.out.println("리스트 카운트 몇개?? : " + listCount);
- 		
- 		int pageListLimit = 8; 
+ 		// 강사의 다른 클래스 개수 조회
+ 	 	int listCount = courseService.getCourseTeacherCount(class_id, course.get(0).getTeacher_id()); 		
+ 		int pageListLimit = 5;
  		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
  		if(maxPage == 0) {
  			maxPage = 1;
@@ -275,14 +274,16 @@ public class CourseController {
  		// 페이징 정보 관리하는 PageInfo 객체 생성 및 계산 결과 저장
  		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
 	    // ----------------------------------------------------------------
-		// 페이징 처리한 문의사항 항목가져옴. 
-		List<CourseSupportVO> courseSupportList 
-			= courseService.getCourseSupportList(class_id,startRow,listLimit);
+		// 강사의 다른 클래스 항목가져옴. 
+		List<CourseVO> courseTeacher = courseService.getCourseTeacher(class_id, course.get(0).getTeacher_id());
 		model.addAttribute("pageInfo", pageInfo);
 		// ----------------------------------------------------------------
+		// 문의사항 갯수 조회
+		 int listCountSupport = courseService.getCourseSupportListCount(class_id);
+		 		
 		JSONArray jsonToWishList = new JSONArray(wishList);
 		model.addAttribute("wishList", jsonToWishList);
-		model.addAttribute("courseSupportList", courseSupportList);
+		model.addAttribute("listCountSupport", listCountSupport);
 		
 		model.addAttribute("course", course);
 		model.addAttribute("myReview", myReviewList);
@@ -311,13 +312,11 @@ public class CourseController {
 		
 		
 		// ----------------------------------------------------------------
-	    // [ 페이징 처리 ]	
- 		int listLimit = 8; // 페이지 당 게시물 수
+	    // [ 문의사항 페이징 처리 ]	
+ 		int listLimit = 5; // 페이지 당 게시물 수
  		int startRow = (pageNum - 1) * listLimit; // ????
  		int listCount = courseService.getCourseSupportListCount(class_id);
- 		// System.out.println("리스트 카운트 몇개?? : " + listCount);
- 		
- 		int pageListLimit = 8; 
+ 		int pageListLimit = 5; 
  		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
  		if(maxPage == 0) {
  			maxPage = 1;
@@ -338,18 +337,28 @@ public class CourseController {
  		// 페이징 처리한 문의사항 항목가져옴. 
 		List<CourseSupportVO> courseSupportList = courseService.getCourseSupportList(class_id,startRow,listLimit);
 		model.addAttribute("pageInfo", pageInfo);
-		
-		
 		// ----------------------------------------------------------------
 		List<CourseVO> course = courseService.getCourse(class_id);
-		// 강사의 다른 클래스 조회
-		List<CourseVO> courseTeacher = courseService.getCourseTeacher(class_id, course.get(0).getTeacher_id());
-		// 수강평 목록 
-				
 		
-		model.addAttribute("course", course);
+		
+		// 수강평 목록 
+		String searchType = "";
+		List<MyReviewVO> myReviewList = courseService.getReviewList(class_id, searchType);
+		// 뷰페이지에서 썸네일 불러오기 위해서 배열 생성
+		Integer[] reviewArray = myReviewList.stream()
+											.map(review -> review.getClass_id())
+											.toArray(size -> new Integer[size]);
+		
+		// ----------------------------------------------------------------
+		
+		// 강사의 다른 클래스 항목가져옴. 
+		List<CourseVO> courseTeacher = courseService.getCourseTeacher(class_id, course.get(0).getTeacher_id());
+				
 		model.addAttribute("courseTeacher", courseTeacher);
+		model.addAttribute("totalReview", reviewArray.length);
+		model.addAttribute("course", course);
 		model.addAttribute("courseSupportList", courseSupportList);
+		
 		return "course/course_support_list"; 
 	}
 	
@@ -638,6 +647,16 @@ public class CourseController {
 		
 		// CartService - getCartList() 메서드 호출하여 장바구니 목록 조회 요청
 	    List<CartVO> cartList = cartService.getCartList(id);
+	    // payService.getPayInfo 메서드 호출하여 수강목록 조회 요청
+//	    PayVO pay =  payService.getPayInfo(id);
+//	    System.out.println("수강목록 조회 : " + pay);
+	    // 수강목록은 order_info에서 조회하는데 
+	    
+	    
+	    
+	    
+	    
+	    
 	    
 	    // getClass_id 값만 추출하여 배열 생성
 	    Integer[] classIdArray = cartList.stream()

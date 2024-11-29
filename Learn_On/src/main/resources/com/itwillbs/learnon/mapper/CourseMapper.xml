@@ -12,6 +12,7 @@
  	 LEFT JOIN (SELECT TRUNCATE(AVG(REVIEW_SCORE), 1) AS REVIEW_SCORE, CLASS_ID FROM REVIEW GROUP BY CLASS_ID) R ON R.CLASS_ID  = C.CLASS_ID
 		 WHERE 1 = 1
 		  AND T.CODETYPE = #{codetype}
+<!-- 		   AND CLASS_ID = #{class_id} -->
   		 <if test="course.CODETYPE_ID != null"> 
 		  AND T.CODETYPE_ID = #{course.codetype_id}
 		 </if>
@@ -99,6 +100,9 @@
  	 LEFT JOIN (SELECT TRUNCATE(AVG(REVIEW_SCORE), 1) AS REVIEW_SCORE, CLASS_ID FROM REVIEW GROUP BY CLASS_ID) R ON R.CLASS_ID  = C.CLASS_ID
 	     WHERE C.CLASS_TITLE LIKE CONCAT('%', #{find_title}, '%')
 	        OR M.MEM_NAME LIKE CONCAT('%', #{find_title}, '%')
+	    LIMIT 
+		       #{startRow}
+			 , #{pageListLimit}
 	</select>
 	
 	
@@ -154,17 +158,16 @@
 			   , CR.CUR_TITLE
 			   , CR.CUR_VIDEO
 			   , CR.CUR_RUNTIME
-			   , (SELECT TRUNCATE(AVG(REVIEW_SCORE), 1)
-					FROM REVIEW
-				   WHERE C.CLASS_ID = #{class_id}
-					) AS REVIEW_SCORE
+			   , R.REVIEW_SCORE 
 			   , M.MEM_ID 		AS TEACHER_ID	
 			   , CC.CODENAME AS CATENAME
+			   , CT.CODETYPE
 			FROM CLASS C
 			JOIN MEMBER M ON M.MEM_ID = C.MEM_ID
 			JOIN CURRICULUM CR ON CR.CLASS_ID = C.CLASS_ID
 			JOIN COMMONCODETYPE CT ON CT.NAME = C.CLASS_CATEGORY
 			JOIN COMMONCODE CC ON CC.CODEID = CT.CODETYPE
+	   LEFT JOIN (SELECT TRUNCATE(AVG(REVIEW_SCORE), 1) AS REVIEW_SCORE,  CLASS_ID FROM REVIEW GROUP BY CLASS_ID) R ON R.CLASS_ID = C.CLASS_ID 
 			
 		   WHERE C.CLASS_ID = #{class_id}
 	</select>
@@ -172,11 +175,23 @@
 	<select id="selectCourseTeacher" resultType="course">
 		SELECT 
 			    C.CLASS_TITLE
+			  , C.CLASS_ID	
+			  , C.CLASS_PIC1
 			  , M.MEM_NAME		AS MEM_ID
 			  , (SELECT TRUNCATE(AVG(REVIEW_SCORE), 1)
 			       FROM REVIEW
 				  WHERE C.CLASS_ID = #{class_id}
 				   ) AS REVIEW_SCORE
+		  FROM CLASS C
+		  JOIN MEMBER M 
+		    ON C.MEM_ID = M.MEM_ID
+		 WHERE C.MEM_ID = #{teacher_id}  
+		   AND CLASS_ID != #{class_id}
+		 LIMIT 1,5 
+		      
+	</select>
+	<select id="selectCourseTeacherCount" resultType="int">
+		SELECT COUNT(*) 
 		  FROM CLASS C
 		  JOIN MEMBER M 
 		    ON C.MEM_ID = M.MEM_ID
@@ -245,8 +260,6 @@
 		   AND C_CLASS_ID = ${class_id}
 		 </if>
 	</select>
-	
-	
 	<select id="selectCourseSupport" resultType="cSupport" parameterType="int">
 		SELECT *
 		  FROM CLASS_SUPPORT
@@ -274,6 +287,7 @@
 		 WHERE C_SUPPORT_IDX = #{c_support_idx}
 	</delete>
 	<select id="selectMenuList" resultType="map">
+		-- 헤더 메뉴 출력	
 		SELECT C.CODEID
 			   , C.CODENAME AS MAIN_MENU
 		       , T.CODETYPE_ID
@@ -281,6 +295,7 @@
 		FROM COMMONCODE C
 		JOIN COMMONCODETYPE T ON C.CODEID = T.CODETYPE
 		WHERE C.CODETYPE = 'CATE'
+		ORDER BY C.CODEID ASC, T.CODETYPE_ID ASC
 	</select>
 	
 	

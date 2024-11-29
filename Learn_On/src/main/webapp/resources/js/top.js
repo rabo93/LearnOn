@@ -38,7 +38,6 @@ $(document).ready(function(){
 //			console.log(data);
 			let resultArea = document.querySelector("#resultArea");
 			
-			
 			const newData = data.reduce((acc, item) => {
 				const {MAIN_MENU, SUB_MENU, CODEID, CODETYPE_ID} = item;
 				
@@ -60,48 +59,6 @@ $(document).ready(function(){
 					document.querySelector(`.sub-dropdown${i}`).append(subMenu);
 				});
 			}); 
-			
-			
-			
-//			for (let i of data) {
-//
-//				let code = i.CODEID;
-////					if(j.CODEID != i.CODEID){
-//					for (let j of data) {
-//							console.log(j);
-//							var sub_menu = "";
-////							console.log("code : " + code);
-////							console.log("j.SUB_MENU : " + j.SUB_MENU);
-////							sub_menu += "<ul class='sub-dropdown'>" 
-////						    sub_menu += 	"<li><a href='Category?codetype=" + code  +"'>" + i.MAIN_MENU + "</a></li>"
-////							sub_menu += 	"<li>" + j.SUB_MENU + "</li>"
-////							sub_menu += "</ul>"
-//							sub_menu = `
-//								<ul class='sub-dropdown'>
-//									<li>${j.SUB_MENU}</li>
-//								</ul>
-//							`;
-//					}
-////					}
-//					console.log(sub_menu);
-//				if(code != code_test){
-//					$("#resultArea").append(
-//					    "<li>" 
-//					    + "<a href='Category?codetype=" + code  +"'>" + i.MAIN_MENU + "</a>"
-//					    	+ "<ul class='sub-dropdown'>"
-//					    		+ "<li><a href='Category?codetype=" + code  +"'>" + i.MAIN_MENU + "</a>"
-//					    		
-//					    		
-//					    		
-//					    		+"</li>"
-//					    		 
-//					    + "</li>"
-//					);
-//				}
-//					
-//				var code_test = code;
-
-				   			
 		}, error: function(){
 			alert("메뉴 불러오기 실패");
 		}

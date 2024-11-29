@@ -31,8 +31,13 @@
 						<span class="empty"><i class="fa-solid fa-video-slash"></i><br>커리큘럼이 등록되지 않았습니다.</span>
 					</c:when>
 					<c:otherwise>
+						<c:forEach var="item" items="${myCurList}">
+						    <c:if test="${item.cur_id == param.cur_id}">
+						        <c:set var="cur_video" value="${item.cur_video}" />
+						    </c:if>
+						</c:forEach>
 						<video controls muted>
-							<source src="/resources/videos/cur-01.webm" type="video/webm">
+							<source src="${pageContext.request.contextPath}/resources/upload/${cur_video}">
 						</video>
 					</c:otherwise>
 				</c:choose>

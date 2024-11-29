@@ -18,13 +18,13 @@
 		 </if>
 		 <choose>
 		 	<when test="searchType.equals('new')">
-		 	 ORDER BY CLASS_ID DESC
+		 	 ORDER BY C.CLASS_ID DESC
 		 	</when>
 		 	<when test="searchType.equals('title')">
-		 	 ORDER BY CLASS_TITLE ASC
+		 	 ORDER BY C.CLASS_TITLE ASC
 		 	</when>
 		 	<when test="searchType.equals('price')">
-		 	 ORDER BY CLASS_PRICE ASC
+		 	 ORDER BY C.CLASS_PRICE ASC
 		 	</when>
 		 	<when test="searchType.equals('score')">
 		 	 ORDER BY REVIEW_SCORE DESC

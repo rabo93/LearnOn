@@ -33,6 +33,7 @@
 								 <a href="Category?codetype=${category.codetype}&codetype_id=${category.codetype_id}">${category.name}</a>
 							</button>
 						</c:forEach>
+						
 						<form action="Category">
 							<select name="searchType">
 								<option value="new" <c:if test="${param.searchType eq 'new'}">selected</c:if>>최신순</option>

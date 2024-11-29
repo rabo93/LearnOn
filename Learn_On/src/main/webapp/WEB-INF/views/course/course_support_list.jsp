@@ -35,7 +35,7 @@
 			            <div class="cls-pic">
 			            	<c:choose>
 			            		<c:when test="${not empty course[0].class_pic1}">
-			            			<img src="resources/upload/${course[0].class_pic1}" id="preview" class="figure-img img-fluid rounded" alt="thumpnail" style="height: 280px;">
+			            			<img src="${pageContext.request.contextPath}/resources/upload/${course[0].class_pic1}" id="preview" class="figure-img img-fluid rounded" alt="thumpnail" style="height: 280px;">
 			            		</c:when>
 			            		<c:otherwise>
 			            			<img src="${pageContext.request.contextPath}/resources/images/empty.png">
@@ -44,12 +44,11 @@
 			            </div>
 			            <div class="cls-infos">
 				            <h1>${course[0].class_title}</h1>
-							<p>${course[0].class_intro}</p>       
+							<p>${course[0].class_intro}</p>
 				            <div class="cls_det_rating">
-				            	<span class="stars"></span>
-				            	<h4>${course[0].review_score }</h4>
+				            	<span class="stars"><i class="fa-solid fa-star"></i> ${course[0].review_score }</span>
 								<div class="cls-det-text">            	
-					            	<i class="fa-sharp-duotone fa-solid fa-user"></i>
+					            	<i class="fa-solid fa-user"></i>
 					            	<h4>${course[0].mem_id}</h4>
 					            </div>
 								<div class="cls-det-text">            	

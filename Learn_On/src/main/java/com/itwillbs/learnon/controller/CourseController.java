@@ -240,9 +240,9 @@ public class CourseController {
 		List<MyReviewVO> myReviewList = courseService.getReviewList(class_id, searchType);
 		// codetype으로 조회한 공통코드
 		List<CommonCodeTypeVO> codeType = courseService.getCodeType(codetype); 
-		
 		// 관심목록 조회
 		List<Map<String, Object>> wishList = myService.getWishlistForCategoryList(id);
+		
 		
 		
 		// ----------------------------------------------------------------

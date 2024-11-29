@@ -29,7 +29,9 @@
 					<section class="breadcrumb">
 						<a href="#">카테고리</a> <i class="fa-solid fa-angle-right"></i>
 						<a href="Category?codetype=${course[0].codetype}">${course[0].catename}</a> <i class="fa-solid fa-angle-right"></i>
-						<span>${course[0].class_category}</span>
+						<a href="Category?codetype=${course[0].codetype}&codetype_id=${course[0].codetype_id}">
+			            	<span>${course[0].class_category}</span>
+			            </a>
 			        </section>
 			        <section class="class-details">
 			            <div class="cls-pic">
@@ -45,6 +47,7 @@
 			            <div class="cls-infos">
 				            <h1>${course[0].class_title}</h1>
 							<p>${course[0].class_intro}</p>
+							<p>${course[0].hashtag}</p>    
 				            <div class="cls_det_rating">
 				            	<span class="stars"><i class="fa-solid fa-star"></i> ${course[0].review_score }</span>
 								<div class="cls-det-text">            	

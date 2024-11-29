@@ -15,13 +15,14 @@
     
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <style>
-	.error { color:#13AE85;width:100%;min-height: 100vh;text-align: center;display: flex;align-items: center;justify-content: center;flex-direction: column;overflow-y: auto;overflow-x: hidden;}
+	.error {color: var(--dark);width:100%;padding: 5rem 0;text-align: center;display: flex;align-items: center;justify-content: center;flex-direction: column;}
 	.error .error-box {padding:0 30px;}
+	.error .error-box i {font-size: 3rem;}
 	.error .error-box img {margin: 0 auto;width: min(515px, 100%);}
 	.error .error-box .desc {padding:20px 0;font-size:20px;line-height: 1.6;}
-	.error .error-box .desc p {display: block;font-size: 30px;margin-bottom:20px;font-weight:800}
-	.error .error-box .desc span {display: block;}
-	.error .error-box .desc button {margin:40px auto;background:#222943;padding:10px 40px; border-radius:50px; font-weight:700;color:#C4FEA1;}
+	.error .error-box .desc p {display: block;font-size: 1.5rem;margin-bottom:20px;font-weight:800}
+	.error .error-box .desc span {display: block;font-size: 1rem;}
+	.error .error-box .desc button {margin: 40px auto 0;background: var(--primary);padding: 1rem 3rem;border-radius:50px;font-weight: 600;color: var(--white);}
 	
 	@media screen and (max-width:1023px){
 	  .error .error-box .desc {font-size:18px;}
@@ -36,7 +37,7 @@
 </style>
 </head>
 <body>
-	<header>
+	<header id="hd">
 		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>
 	</header>
 	<main>
@@ -55,7 +56,7 @@
 			</div>
 		</div>
 	</main>
-	<footer>
+	<footer id="ft">
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
 	</footer>
 </body>

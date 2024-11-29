@@ -111,7 +111,7 @@ public class MypageService {
 	public int getSupportListCount(String id) {
 		return myMapper.selectSupportListCount(id);
 	}
-
+	
 	// 1:1문의 전체 게시물 목록
 	public List<SupportBoardVO> getSupportList(int startRow, int listLimit, String id) {
 		return myMapper.selectSupportList(startRow, listLimit, id);

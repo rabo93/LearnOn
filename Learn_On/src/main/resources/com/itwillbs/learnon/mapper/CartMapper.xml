@@ -47,14 +47,16 @@
 	</select>
 	
 	<!-- 이미 수강중인지 나의 클래스에서 조회 -->
-	<select id="selectMycourseClass" parameterType="list" resultType="int">
+	<select id="selectMycourseClass" resultType="int">
 		SELECT COUNT(*) 
 		FROM MYCOURSE
-		WHERE CLASS_ID IN ( 
+		WHERE 1=1
+		AND MEM_ID = #{sId}
+		AND	CLASS_ID IN ( 
 							SELECT distinct CLASS_ID 
 		                    FROM CART
 		                    WHERE CARTITEM_IDX IN
-							   <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+							   <foreach collection="cartItems" index="index" item="item" open="(" separator="," close=")">
 							       #{item}
 							   </foreach>
 							);

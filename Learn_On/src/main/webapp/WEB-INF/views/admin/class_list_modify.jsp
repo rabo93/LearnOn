@@ -106,7 +106,7 @@
 							<div class="p-2 bd-highlight d-flex">
 	                            <h6 class="me-auto p-2">커리큘럼</h6>
 <!-- 		                		<button type="button" class="btn btn-lg btn-primary col-auto" onClick="addRow();">커리큘럼 추가</button> -->
-		                		<button type="button" class="btn btn-lg btn-primary col-auto ms-3" onClick="deleteRow();">커리큘럼 제거</button>
+<!-- 		                		<button type="button" class="btn btn-lg btn-primary col-auto ms-3" onClick="deleteRow();">커리큘럼 제거</button> -->
 							</div>
 							<div class="col-12">
 		                        <div class="bg-light rounded h-100 p-4">

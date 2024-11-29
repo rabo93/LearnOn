@@ -584,8 +584,10 @@ public class AdminController {
 		}
 		
 		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
+		List<MemberVO> memberList = adminService.getNomalMemberList(startRow, listLimit, searchKeyword, searchType, sort);
 		model.addAttribute("pageInfo", pageInfo);
-		model.addAttribute("getMemberList", adminService.getNomalMemberList(startRow, listLimit, searchKeyword, searchType, sort));
+		model.addAttribute("getMemberList", memberList);
+//		model.addAttribute("getMemberList", adminService.getNomalMemberList(startRow, listLimit, searchKeyword, searchType, sort));
 		model.addAttribute("sort", sort);
 		return "admin/member_list";
 	}

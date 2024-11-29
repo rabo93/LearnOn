@@ -46,6 +46,7 @@
 				            	<h4>총  ${fn:length(total_cur)}강 (  ${course[0].class_runtime}분)</h4>
 				            </div>
 				            <div class="cls-pic">
+				           
 				            	<c:choose>
 				            		<c:when test="${not empty course[0].class_pic1}">
 				            			<img src="resources/upload/${course[0].class_pic1}" id="preview" class="figure-img img-fluid rounded" alt="thumpnail" style="height: 280px;">
@@ -141,7 +142,6 @@
 								</c:otherwise>
 							</c:choose>
 								
-								
 							<c:choose>
 								<c:when test="${not empty requestScope.courseSupportList}">									
 									<section id="pageList">	
@@ -221,12 +221,6 @@
 			        </div>
 			    </div>
 			</div><!-- cls-wrap detail -->
-			<c:set var="pageNumT" value="1"/>
-<%-- 			pageInfoTeacher : ${pageInfoTeacher } --%>
-<%-- 			pageNumT : ${pageNumT } --%>
-            <c:if test="${not empty param.pageNumT}">
-				<c:set var="pageNumT" value="${param.pageNumT}"/>
-			</c:if>
 			<c:choose>
 				<c:when test="${not empty requestScope.courseTeacher}">
 					<div class="tabmenu" id="tab05">		
@@ -246,37 +240,6 @@
 									</a>
 								</c:forEach>
 				            </div>
-				        
-				           	<section id="pageList">	
-	<!-- 							<input type="button" value="&lt;&lt;"  -->
-	<%-- 								onclick="location.href='courseTeacher?class_id=${courseTeacher.class_id}&pageNum=${pageInfo.startPage - pageInfo.pageListLimit}'"				 --%>
-	<%-- 								<c:if test="${pageInfo.startPage == 1}">disabled</c:if> 	 --%>
-	<!-- 							> -->
-	<!-- 							<input type="button" value="이전"  -->
-	<%-- 								onclick="location.href='courseTeacher?class_id=${courseTeacher.class_id}&pageNum=${pageNum - 1}'" --%>
-	<%-- 								<c:if test="${pageNum == 1}">disabled</c:if> 	 --%>
-	<!-- 							> -->
-								
-								<c:forEach var="i" begin="${pageInfoTeacher.startPageTeacher}" end="${pageInfoTeacher.endPageTeacher}">
-									<c:choose>
-										<c:when test="${i eq pageNumT}">
-											<strong>${i}</strong>
-										</c:when>
-										<c:otherwise>
-											<a href="CourseSupportList?class_id=${course[0].class_id}&pageNumT=${i}#tab05">${i}</a>
-										</c:otherwise>
-									</c:choose>
-								</c:forEach>
-								
-	<!-- 							<input type="button" value="다음"  -->
-	<%-- 								onclick="location.href='courseTeacher?class_id=${courseTeacher.class_id}&pageNum=${pageNum + 1}'" --%>
-	<%-- 								<c:if test="${pageNum == pageInfo.maxPage}">disabled</c:if> 		 --%>
-	<!-- 							> -->
-	<!-- 							<input type="button" value="&gt;&gt;"  -->
-	<%-- 								onclick="location.href='courseTeacher?class_id=${courseTeacher.class_id}&pageNum=${pageInfo.startPage + pageInfo.pageListLimit}'" --%>
-	<%-- 								<c:if test="${pageInfo.endPage == pageInfo.maxPage}">disabled</c:if>	 --%>
-	<!-- 							>			 -->
-							</section>
 						</section>
 					</div><!-- tabmenu 05끝 -->		           
 			     	

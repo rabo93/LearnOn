@@ -64,9 +64,7 @@ public interface CourseMapper {
 	int selectCourseTeacherCount(@Param("class_id") int class_id, @Param("teacher_id") String teacher_id);
 	List<CourseVO> selectCourseTeacher(
 			@Param("class_id") int class_id, 
-			@Param("teacher_id") String teacher_id,
-			@Param("startRow") int startRow,
-			@Param("pageListLimit") int pageListLimit
+			@Param("teacher_id") String teacher_id
 	);
 
 	int insertApplyForCourse(

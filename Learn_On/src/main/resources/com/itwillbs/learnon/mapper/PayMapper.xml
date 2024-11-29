@@ -222,9 +222,11 @@
 	<delete id="deleteMycourse">
 		DELETE FROM MYCOURSE
 		WHERE MEM_ID = #{memId}
-		AND ORDER_IDX = (SELECT ORDER_IDX
-						 FROM PAY_INFO
-						 WHERE IMP_UID = #{imp_uid})
+		AND CLASS_ID IN ( SELECT O.CLASS_ID
+							FROM ORDER_INFO O JOIN PAY_INFO P
+							ON O.MERCHANT_UID = P.MERCHANT_UID
+							WHERE P.IMP_UID = #{imp_uid}
+						  )
 	</delete>
 	<delete id="deleteCurhistory">
 		DELETE FROM CURHISTORY

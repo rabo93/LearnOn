@@ -118,19 +118,19 @@
 														<span class="ttl">${item.class_title}</span>
 														<span class="price"><fmt:formatNumber pattern="#,###">${item.class_price}</fmt:formatNumber> 원</span>
 	                             					</div>
-	                             					<c:if test="${item.discount_type == 1}">
-														<div class="discount-item">
-															<span class="ttl">쿠폰 할인 사용</span>
-															<span class="price">- ${item.discount_percent} % </span>
-														 </div>
-													</c:if>
-													<c:if test="${item.discount_type == 2}">
-														<div class="discount-item"> 
-															<span class="ttl">쿠폰 할인 사용</span>
-															<span class="price"> - <fmt:formatNumber pattern="#,###">${item.discount_amount}</fmt:formatNumber> 원  </span>
-														</div>
-													</c:if>
 												</c:forEach>
+												<c:if test="${payment.value[0].discount_type == 1}">
+													<div class="discount-item">
+														<span class="ttl">쿠폰 할인 사용</span>
+														<span class="price">- ${payment.value[0].discount_percent} % </span>
+													 </div>
+												</c:if>
+												<c:if test="${payment.value[0].discount_type == 2}">
+													<div class="discount-item"> 
+														<span class="ttl">쿠폰 할인 사용</span>
+														<span class="price"> - <fmt:formatNumber pattern="#,###">${payment.value[0].discount_amount}</fmt:formatNumber> 원  </span>
+													</div>
+												</c:if>
 												<div class="total-item">
 													<span class="ttl">총 결제금액</span>
 													<span class="price"> <fmt:formatNumber pattern="#,###">${payment.value[0].total_price}</fmt:formatNumber> 원</span>

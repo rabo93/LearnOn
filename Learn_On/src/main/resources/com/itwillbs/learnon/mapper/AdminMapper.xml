@@ -590,5 +590,11 @@
 		SELECT COUNT(MERCHANT_UID) AS PAYMENT_COUNT
 		FROM PAY_INFO
 	</select>
+	
+	<select id="selectSupportListCount" resultType="int">
+		-- 1:1문의 전체 게시글 수
+		SELECT COUNT(*)
+		  FROM SUPPORT
+	</select>
 
 </mapper>

@@ -18,13 +18,13 @@
 		 </if>
 		 <choose>
 		 	<when test="searchType.equals('new')">
-		 	 ORDER BY CLASS_ID DESC
+		 	 ORDER BY C.CLASS_ID DESC
 		 	</when>
 		 	<when test="searchType.equals('title')">
-		 	 ORDER BY CLASS_TITLE ASC
+		 	 ORDER BY C.CLASS_TITLE ASC
 		 	</when>
 		 	<when test="searchType.equals('price')">
-		 	 ORDER BY CLASS_PRICE ASC
+		 	 ORDER BY C.CLASS_PRICE ASC
 		 	</when>
 		 	<when test="searchType.equals('score')">
 		 	 ORDER BY REVIEW_SCORE DESC
@@ -43,6 +43,7 @@
 		     , C.CLASS_CONTENTS
 			 , C.CLASS_STATUS
 			 , C.CLASS_ID
+			 , C.HASHTAG
 			 , T.NAME
 			 , T.CODETYPE
 			 , T.DESCRIPTION
@@ -154,6 +155,7 @@
 			   , C.CLASS_CONTENTS
 			   , C.CLASS_STATUS
 			   , C.CLASS_ID
+			   , C.HASHTAG
 			   , CR.CUR_ID
 			   , CR.CUR_TITLE
 			   , CR.CUR_VIDEO
@@ -162,6 +164,7 @@
 			   , M.MEM_ID 		AS TEACHER_ID	
 			   , CC.CODENAME AS CATENAME
 			   , CT.CODETYPE
+			   , CT.CODETYPE_ID
 			FROM CLASS C
 			JOIN MEMBER M ON M.MEM_ID = C.MEM_ID
 			JOIN CURRICULUM CR ON CR.CLASS_ID = C.CLASS_ID
@@ -320,6 +323,7 @@
 			 , C.CLASS_TITLE
 			 , C.MEM_ID AS NAME
 			 , C.CLASS_PRICE
+			 , C.CLASS_PIC1
 			 , R.REVIEW_SCORE
 			 , CC.CODENAME AS CATENAME
 		  FROM CLASS C

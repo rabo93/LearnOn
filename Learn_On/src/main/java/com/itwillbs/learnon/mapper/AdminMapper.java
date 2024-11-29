@@ -74,8 +74,8 @@ public interface AdminMapper {
 									  @Param("searchType") String searchType,
 									  @Param("sort") String sort);
 	//	멤버 리스트 카운트(일반회원)
-	int getNomalMemberListCount(@Param("startRow") String searchKeyword,
-								@Param("startRow") String searchType);
+	int getNomalMemberListCount(@Param("searchKeyword") String searchKeyword,
+								@Param("searchType") String searchType);
 	//	멤버 리스트 조회(강사회원)
 	List<MemberVO> getInstructorMemberList();
 	//	멤버 리스트 조회(탈퇴회원)

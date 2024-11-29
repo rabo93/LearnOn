@@ -62,8 +62,7 @@
 						<li><a href="#tab02">커리큘럼</a></li>
 						<li><a href="#tab03">수강평(${fn:length(total_re)})</a></li>
 						<li><a class="tab" href="CourseSupportList?class_id=${course[0].class_id}&codetype=${param.codetype}">
-<%-- 						문의(${fn:length(count)}) --%>
-문의
+						문의(${listCountSupport})
 						</a></li>
 					</ul>
 					<div class="tabcontent">
@@ -178,39 +177,6 @@
 									</a>
 								</c:forEach>
 				            </div>
-				       
-					        <!-- 페이징 영역 -->
-				        	<section id="pageList">	
-								<input type="button" value="&lt;&lt;" 
-									onclick="location.href='CourseDetail?class_id=${course[0].class_id}&pageNum=${pageInfo.startPage - pageInfo.pageListLimit}#tab05'"				
-									<c:if test="${pageInfo.startPage == 1}">disabled</c:if> 	
-								>
-								<input type="button" value="이전" 
-									onclick="location.href='CourseDetail?class_id=${course[0].class_id}&pageNum=${pageNum - 1}#tab05'"
-									<c:if test="${pageNum == 1}">disabled</c:if> 	
-								>
-								
-								<c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
-									<c:choose>
-										<c:when test="${i eq pageNum}">
-											<strong>${i}</strong>
-										</c:when>
-										<c:otherwise>
-											<a href="CourseDetail?class_id=${course[0].class_id}&pageNum=${i}#tab05">${i}</a>
-										</c:otherwise>
-									</c:choose>
-								</c:forEach>
-								
-								<input type="button" value="다음" 
-									onclick="location.href='CourseDetail?class_id=${course[0].class_id}&pageNum=${pageNum + 1}#tab05'"
-									<c:if test="${pageNum == pageInfo.maxPage}">disabled</c:if> 		
-								>
-								<input type="button" value="&gt;&gt;" 
-									onclick="location.href='CourseDetail?class_id=${course[0].class_id}&pageNum=${pageInfo.startPage + pageInfo.pageListLimit}'"
-									<c:if test="${pageInfo.endPage == pageInfo.maxPage}">disabled</c:if>	
-								>			
-							</section>
-				        <!-- 페이징 영역 -->
 				         </section>
 			        </div><!--tabmenu 05 끝 -->	
 				</c:when>

@@ -5,7 +5,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-    <title>런 온 - 온라인 No.1 교육 플랫폼</title>
+    <title>런 온 - 관리자 페이지</title>
 	<link rel="SHORTCUT ICON" href="${pageContext.request.contextPath}/resources/images/favicon.ico">
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -105,7 +105,7 @@
 							</div>
 							<div class="p-2 bd-highlight d-flex">
 	                            <h6 class="me-auto p-2">커리큘럼</h6>
-		                		<button type="button" class="btn btn-lg btn-primary col-auto" onClick="addRow();">커리큘럼 추가</button>
+<!-- 		                		<button type="button" class="btn btn-lg btn-primary col-auto" onClick="addRow();">커리큘럼 추가</button> -->
 		                		<button type="button" class="btn btn-lg btn-primary col-auto ms-3" onClick="deleteRow();">커리큘럼 제거</button>
 							</div>
 							<div class="col-12">
@@ -134,13 +134,15 @@
 										<span class="input-group-text">원</span>
 									</div>
 								</div>
-<!-- 								<div class="col-3 me-3"> -->
-<!-- 									<h6>할인</h6> -->
-<!-- 									<div class="input-group"> -->
-<!-- 										<input type="number" class="form-control" > -->
-<!-- 										<span class="input-group-text">원</span> -->
-<!-- 									</div> -->
-<!-- 								</div> -->
+								<div class="col-3 me-3">
+									<h6>해시태그 생성</h6>
+									<div class="input-group">
+										<input type="text" name="hashtag" class="form-control" 
+											pattern="^#([a-zA-Z0-9가-힣]{1,10})(,#([a-zA-Z0-9가-힣]{1,10})){0,9},?$" 
+											placeholder="ex) #프로그래밍,#자바,#스프링,#DBMS" 
+											value="${getClass.hashtag}">
+									</div>
+								</div>
 								<div class="col-2 me-3">
 									<h6>공개상태</h6>
 									<div class="form-floating">

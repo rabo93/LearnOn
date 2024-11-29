@@ -30,29 +30,31 @@
 			            <span>${course[0].class_category}</span>
 			        </section>
 			        <section class="class-details">
-			            <h1>${course[0].class_title}</h1>
-						<p>${course[0].class_intro}</p>       
-			            <div class="cls_det_rating">
-			            	<span class="stars"><i class="fa-solid fa-star"></i> ${course[0].review_score }</span>
-							<div class="cls-det-text">            	
-				            	<i class="fa-solid fa-user"></i>
-				            	<h4>${course[0].mem_id}</h4>
-				            </div>
-							<div class="cls-det-text">            	
-				            	<i class="fa-regular fa-hourglass-half"></i>
-				            	<c:set var="total_cur" value="${course}" />
-				            	<c:set var="total_re" value="${myReview}" />
-				            	<h4>총  ${fn:length(total_cur)}강 ( ${course[0].class_runtime}분)</h4>
-				            </div>
-				            <div class="cls-pic">
-				            	<c:choose>
-				            		<c:when test="${not empty course[0].class_pic1}">
-				            			<img src="resources/upload/${course[0].class_pic1}" id="preview" class="figure-img img-fluid rounded" alt="thumpnail" style="height: 280px;">
-				            		</c:when>
-				            		<c:otherwise>
-				            			<img src="${pageContext.request.contextPath}/resources/images/empty.png">
-				            		</c:otherwise>
-				            	</c:choose>
+			        	<div class="cls-pic">
+			            	<c:choose>
+			            		<c:when test="${not empty course[0].class_pic1}">
+			            			<img src="resources/upload/${course[0].class_pic1}" id="preview" class="figure-img img-fluid rounded" alt="thumpnail" style="height: 280px;">
+			            		</c:when>
+			            		<c:otherwise>
+			            			<img src="${pageContext.request.contextPath}/resources/images/thumb_origin.jpg">
+			            		</c:otherwise>
+			            	</c:choose>
+			            </div>
+			            <div class="cls-infos">
+				            <h1>${course[0].class_title}</h1>
+							<p>${course[0].class_intro}</p>       
+				            <div class="cls_det_rating">
+				            	<span class="stars"><i class="fa-solid fa-star"></i> ${course[0].review_score }</span>
+								<div class="cls-det-text">            	
+					            	<i class="fa-solid fa-user"></i>
+					            	<h4>${course[0].mem_id}</h4>
+					            </div>
+								<div class="cls-det-text">            	
+					            	<i class="fa-regular fa-hourglass-half"></i>
+					            	<c:set var="total_cur" value="${course}" />
+					            	<c:set var="total_re" value="${myReview}" />
+					            	<h4>총  ${fn:length(total_cur)}강 ( ${course[0].class_runtime}분)</h4>
+					            </div>
 				            </div>
 			            </div>
 			        </section>
@@ -61,10 +63,7 @@
 						<li><a href="#tab01">클래스 소개</a></li>
 						<li><a href="#tab02">커리큘럼</a></li>
 						<li><a href="#tab03">수강평(${fn:length(total_re)})</a></li>
-						<li><a class="tab" href="CourseSupportList?class_id=${course[0].class_id}&codetype=${param.codetype}">
-<%-- 						문의(${fn:length(count)}) --%>
-문의
-						</a></li>
+						<li><a class="tab" href="CourseSupportList?class_id=${course[0].class_id}&codetype=${param.codetype}">문의</a></li>
 					</ul>
 					<div class="tabcontent">
 						<div class="tabmenu" id="tab01">
@@ -178,39 +177,6 @@
 									</a>
 								</c:forEach>
 				            </div>
-				       
-					        <!-- 페이징 영역 -->
-				        	<section id="pageList">	
-								<input type="button" value="&lt;&lt;" 
-									onclick="location.href='CourseDetail?class_id=${course[0].class_id}&pageNum=${pageInfo.startPage - pageInfo.pageListLimit}#tab05'"				
-									<c:if test="${pageInfo.startPage == 1}">disabled</c:if> 	
-								>
-								<input type="button" value="이전" 
-									onclick="location.href='CourseDetail?class_id=${course[0].class_id}&pageNum=${pageNum - 1}#tab05'"
-									<c:if test="${pageNum == 1}">disabled</c:if> 	
-								>
-								
-								<c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
-									<c:choose>
-										<c:when test="${i eq pageNum}">
-											<strong>${i}</strong>
-										</c:when>
-										<c:otherwise>
-											<a href="CourseDetail?class_id=${course[0].class_id}&pageNum=${i}#tab05">${i}</a>
-										</c:otherwise>
-									</c:choose>
-								</c:forEach>
-								
-								<input type="button" value="다음" 
-									onclick="location.href='CourseDetail?class_id=${course[0].class_id}&pageNum=${pageNum + 1}#tab05'"
-									<c:if test="${pageNum == pageInfo.maxPage}">disabled</c:if> 		
-								>
-								<input type="button" value="&gt;&gt;" 
-									onclick="location.href='CourseDetail?class_id=${course[0].class_id}&pageNum=${pageInfo.startPage + pageInfo.pageListLimit}'"
-									<c:if test="${pageInfo.endPage == pageInfo.maxPage}">disabled</c:if>	
-								>			
-							</section>
-				        <!-- 페이징 영역 -->
 				         </section>
 			        </div><!--tabmenu 05 끝 -->	
 				</c:when>

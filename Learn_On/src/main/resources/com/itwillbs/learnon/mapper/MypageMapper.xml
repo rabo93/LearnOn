@@ -12,28 +12,21 @@
 			 , C.CLASS_TITLE
 			 , C.CLASS_PIC1 AS CLASS_PIC
 		     , C.CLASS_REG_DATE
-		     , TRUNCATE(IFNULL(AVG(REVIEW_SCORE), 0), 1) AS REVIEW_SCORE
+             , (SELECT TRUNCATE(IFNULL(AVG(REVIEW_SCORE), 0), 1) AS REVIEW_SCORE
+				  FROM REVIEW
+				 WHERE CLASS_ID = C.CLASS_ID) AS REVIEW_SCORE
 		     , M.MEM_NAME AS TEACHER_NAME
 		  FROM WISHLIST W 
 		  LEFT JOIN CLASS C ON C.CLASS_ID = W.CLASS_ID
 		  LEFT JOIN MEMBER M ON M.MEM_ID = C.MEM_ID
-		  LEFT JOIN REVIEW R ON R.CLASS_ID = C.CLASS_ID
 		 WHERE W.MEM_ID = #{id}
-		 GROUP BY W.MEM_ID
-				  , W.CLASS_ID
-		          , C.CLASS_CATEGORY
-		          , C.CLASS_TITLE
-		          , C.CLASS_PIC1
-		          , C.CLASS_REG_DATE
-		          , M.MEM_NAME
-		 <choose>
-		 	<when test="filterType.equals('newest')">
-				ORDER BY C.CLASS_REG_DATE DESC
-		 	</when>
-		 	<when test="filterType.equals('popularity')">
-				ORDER BY REVIEW_SCORE DESC
-		 	</when>
-		 </choose>
+		 ORDER BY 1
+		 		  <if test="filterType.equals('newest')">
+				  , C.CLASS_REG_DATE DESC
+			 	  </if>
+			 	  <if test="filterType.equals('popularity')">
+				  , REVIEW_SCORE DESC
+			 	  </if> 
 	</select>
 	<select id="selectWishlistForCategoryList" resultType="map">
 		SELECT CLASS_ID

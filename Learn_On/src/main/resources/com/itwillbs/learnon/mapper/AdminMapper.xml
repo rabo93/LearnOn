@@ -115,7 +115,7 @@
 	</select>
 	
 	<!-- 클래스 상세정보 조회 -->
-	<select id="getClass" resultType="admin">
+	<select id="getClass">
 		SELECT 
 			CLA.CLASS_ID
 			, CLA.CLASS_TITLE
@@ -189,11 +189,11 @@
 	</delete>
 	
 	<!-- 임시 -->
-	<select id="selectClass">
-		SELECT	*
-		FROM	CLASS
-		WHERE	CLASS_ID = #{class_id}
-	</select>
+<!-- 	<select id="selectClass"> -->
+<!-- 		SELECT	* -->
+<!-- 		FROM	CLASS -->
+<!-- 		WHERE	CLASS_ID = #{class_id} -->
+<!-- 	</select> -->
 	
 <!-- ================================================================== -->
 <!-- 회원 -->	

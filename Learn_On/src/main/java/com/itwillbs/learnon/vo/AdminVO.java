@@ -1,7 +1,5 @@
 package com.itwillbs.learnon.vo;
 
-import java.sql.Timestamp;
-
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Data;

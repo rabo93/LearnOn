@@ -319,6 +319,7 @@
 	margin: 1rem 0;
 	padding: 2rem 1rem;
 }
+.tabmenu .empty {background:url('/resources/images/no_class.svg') no-repeat center top;padding-top: 21rem;text-align:center;font-weight: 500;color: var(--dark);margin: 5rem 0;background-size: auto 300px;font-size: 1.2rem;line-height: 1.6;}
 .tabmenu h2 {
 	font-size: 1.6rem;
 	color: var(--dark);
@@ -571,6 +572,18 @@
 .cls-det-text {
 	display: inline-flex;
 	gap: 6px;
+}
+.cls-pic {
+	flex: 0 0 25%; /* 크기를 4분의 1로 설정 */
+    display: flex; /* 이미지 박스를 flexbox로 설정 */
+    justify-content: flex-end; /* 이미지를 오른쪽으로 정렬 */
+}
+
+.cls-pic img {
+	width: 100%; /* 컨테이너에 맞게 이미지 크기 조정 */
+    height: auto; /* 비율 유지 */
+    display: block; /* 이미지를 블록 요소로 설정 */
+    border-radius: 8px; /* 이미지 모서리 둥글게 */
 }
 
 .description {

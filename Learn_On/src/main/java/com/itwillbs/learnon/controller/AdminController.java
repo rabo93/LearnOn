@@ -7,9 +7,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -20,19 +17,14 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.google.protobuf.DescriptorProtos.FieldDescriptorProto.Type;
 import com.itwillbs.learnon.service.AdminService;
 import com.itwillbs.learnon.service.CouponService;
 import com.itwillbs.learnon.service.CourseService;
@@ -42,7 +34,6 @@ import com.itwillbs.learnon.service.NoticeBoardService;
 import com.itwillbs.learnon.vo.AdminVO;
 import com.itwillbs.learnon.vo.CouponVO;
 import com.itwillbs.learnon.vo.CourseSupportVO;
-import com.itwillbs.learnon.vo.CourseVO;
 import com.itwillbs.learnon.vo.FaqVO;
 import com.itwillbs.learnon.vo.MemberVO;
 import com.itwillbs.learnon.vo.MyPaymentVO;
@@ -416,7 +407,7 @@ public class AdminController {
 	// 어드민 클래스 수정 페이지 매핑
 	@GetMapping("AdmClassListModify")
 	public String admin_class_list_modi(int class_id, Model model) {
-		AdminVO classLoad = adminService.getIdClass(class_id);
+		AdminVO classLoad = adminService.getClass(class_id);
 		model.addAttribute("getClass", classLoad);
 		model.addAttribute("getMainCate", adminService.getMainCate());
 		model.addAttribute("getCurriculum", adminService.getCurriculum(class_id));
@@ -1243,7 +1234,7 @@ public class AdminController {
 	@GetMapping("AdmCourseSupport")
 	public String admCourseSupport(@RequestParam(defaultValue = "1") int pageNum, HttpServletRequest request, HttpSession session, Model model) {
 		// 세션아이디 체크
-		String id = (String)session.getAttribute("sId");
+//		String id = (String)session.getAttribute("sId");
 //		if(id == null) {
 //			model.addAttribute("msg", "로그인 필수!\\n 로그인 페이지로 이동합니다!");
 //			model.addAttribute("targetURL", "MemberLogin");
@@ -1310,7 +1301,7 @@ public class AdminController {
 	public String admCourseSupportUpdate(@RequestParam(defaultValue = "1") int pageNum, CourseSupportVO cSupport, HttpServletRequest request, HttpSession session, Model model) {
 		System.out.println("pageNum : " + pageNum);
 		// 세션아이디 체크
-		String id = (String)session.getAttribute("sId");
+//		String id = (String)session.getAttribute("sId");
 //		if(id == null) {
 //			model.addAttribute("msg", "로그인 필수!\\n 로그인 페이지로 이동합니다!");
 //			model.addAttribute("targetURL", "MemberLogin");
@@ -1334,7 +1325,7 @@ public class AdminController {
 	// =======================================================================
 	// 페이지 정보 저장
 	public PageInfo pageInfoMethod(int pageNum, int listLimit, int listCount , int pageListLimit) {
-		int startRow = (pageNum - 1) * listLimit;
+//		int startRow = (pageNum - 1) * listLimit;
 		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
 		if (maxPage == 0) {
 			maxPage = 1;

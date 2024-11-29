@@ -1,5 +1,7 @@
 package com.itwillbs.learnon.controller;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -20,8 +22,17 @@ public class ChatGPTController {
 	public String recommend(HttpServletRequest request, HttpSession session, Model model) {
 		String id = (String)session.getAttribute("sId");
 		
+		Map<String, String> userInfo = chatGPTService.getName(id);
 		
+		model.addAttribute("userInfo", userInfo);
 		
 		return "gpt/gpt_list";
 	}
+	
+	@GetMapping("requestPersonalRec")
+	public String requestPersonalRec() {
+		
+		return "";
+	}
+	
 }

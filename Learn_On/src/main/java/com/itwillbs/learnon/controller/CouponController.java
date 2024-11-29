@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.learnon.service.CouponService;
 
+import lombok.extern.log4j.Log4j2;
+
+@Log4j2
 @Controller
 public class CouponController {
 	@Autowired
@@ -29,7 +32,7 @@ public class CouponController {
 		//------------------------------------------------------
 		// 로그인 정보 가져오기 (세션 아이디값 확인)
 		String sId = (String) session.getAttribute("sId");
-//		System.out.println("마이쿠폰 로그인 아이디: " + sId);
+//		log.info("마이쿠폰 로그인 아이디: " + sId);
 		//------------------------------------------------------
 		//CouponService - getCoupon() 메서드 호출하여 쿠폰 조회 요청
 		List<Map<String, Object>> coupon = couponService.getCoupon(sId);
@@ -37,8 +40,8 @@ public class CouponController {
 		//CouponService - getCouponCount() 메서드 호출하여 쿠폰 갯수 조회 요청
 		int couponCount = couponService.getCouponCount(sId);
 		
-//		System.out.println(coupon); // [{MEM_ID=bborara, COUPON_STATUS=1, COUPON_ISUSED=1, COUPON_NAME=전회원 5000원 할인 쿠폰, C_EXPIRY_DATE=20251231, DISCOUNT_AMOUNT=5000, ISSUE_DATE=2024-11-19 11:02:51, COUPON_CODE=DISC5000, COUPON_ID=1},]
-//		System.out.println(couponCount); //3
+//		log.info(coupon); // [{MEM_ID=bborara, COUPON_STATUS=1, COUPON_ISUSED=1, COUPON_NAME=전회원 5000원 할인 쿠폰, C_EXPIRY_DATE=20251231, DISCOUNT_AMOUNT=5000, ISSUE_DATE=2024-11-19 11:02:51, COUPON_CODE=DISC5000, COUPON_ID=1},]
+//		log.info(couponCount); //3
 		
 		//------------------------------------------
 		// 리턴받은 쿠폰 데이터 뷰페이지로 전달하기 위해 model에 저장
@@ -54,34 +57,21 @@ public class CouponController {
 	// "쿠폰발급" 클릭시 입력한 쿠폰코드 확인 후 등록 - AJAX
 	@ResponseBody
 	@GetMapping(value = "CouponCreate", produces = "application/text; charset=UTF-8")
-//	public String couponCreate(@RequestParam String couponCode, HttpSession session, HttpServletResponse response) {
 	public String couponCreate(@RequestParam String couponCode, HttpSession session) {
-//	public Map<String, Object> couponCreate(@RequestParam String couponCode, HttpSession session) {
 		//------------------------------------------------------
 		// 로그인 정보 가져오기 (세션 아이디값 확인)
 		String sId = (String) session.getAttribute("sId");
-//		System.out.println("로그인 아이디: " + sId);
+//		log.info("로그인 아이디: " + sId);
 		//------------------------------------------------------
 		//CouponService - createCoupon() 메서드 호출하여 쿠폰 발급 요청 (발급여부 리턴)
 		boolean isIssued = couponService.createCoupon(sId, couponCode);
-//		System.out.println("발급 됐나요?:"+ isIssued); //true
+//		log.info("발급 됐나요?:"+ isIssued); //true
 		
-		//--------------------------------
-		//String 문자열로 리턴할때
-//		response.setCharacterEncoding("UTF-8"); //한글 인코딩
-//		return isIssued ? "발급 성공" : "발급 실패"; //String으로 리턴
-		//--------------------------------
-		//JSON객체 생성
-//		JSONObject json = new JSONObject();
-//		//JSON 요소 추가({"key" : "value"})
-//		json.put("success", isIssued);
-//		System.out.println("json success값: "+ json.get("success")); ; //출력됨
-//		return json;
-		//--------------------------------
-		//Map으로 해보자!!!
+		//------------------------------------------------------
+		// 응답데이터 Map 형식으로 생성
 		Map<String, Object> response = new HashMap<String, Object>();
 		response.put("success", isIssued);
-//		System.out.println(response.get("success"));
+//		log.info(response.get("success"));
 		
 		//AJAX으로 다시 응답 넘겨줄때 Map으로 넘어가지 않음 JSON으로 바꾸고 문자열 형식으로 리턴해줘야함!!!!!!!!!!!!!!!!
 		JSONObject jo = new JSONObject(response);

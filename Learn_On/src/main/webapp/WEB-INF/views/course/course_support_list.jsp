@@ -8,7 +8,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>런온</title>
+<title>런 온 - 온라인 No.1 교육 플랫폼</title>
+<link rel="SHORTCUT ICON" href="${pageContext.request.contextPath}/resources/images/favicon.ico">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/reset.css">
@@ -31,7 +32,6 @@
 						<span>${course[0].class_category}</span>
 			        </section>
 			        <section class="class-details">
-<<<<<<< HEAD
 			            <div class="cls-pic">
 			            	<c:choose>
 			            		<c:when test="${not empty course[0].class_pic1}">
@@ -57,32 +57,6 @@
 					            	<c:set var="total_cur" value="${course}" />
 					            	<h4>총  ${fn:length(total_cur)}강 (  ${course[0].class_runtime}분)</h4>
 					            </div>
-=======
-			            <h1>${course[0].class_title}</h1>
-						<p>${course[0].class_intro}</p>       
-			            <div class="cls_det_rating">
-			            	<span class="stars"></span>
-			            	<h4>${course[0].review_score }</h4>
-							<div class="cls-det-text">            	
-				            	<i class="fa-sharp-duotone fa-solid fa-user"></i>
-				            	<h4>${course[0].mem_id}</h4>
-				            </div>
-							<div class="cls-det-text">            	
-				            	<i class="fa-regular fa-clock"></i>
-				            	<c:set var="total_cur" value="${course}" />
-				            	<h4>총  ${fn:length(total_cur)}강 (  ${course[0].class_runtime}분)</h4>
-				            </div>
-				            <div class="cls-pic">
-				           
-				            	<c:choose>
-				            		<c:when test="${not empty course[0].class_pic1}">
-				            			<img src="resources/upload/${course[0].class_pic1}" id="preview" class="figure-img img-fluid rounded" alt="thumpnail" style="height: 280px;">
-				            		</c:when>
-				            		<c:otherwise>
-				            			<img src="${pageContext.request.contextPath}/resources/images/empty.png">
-				            		</c:otherwise>
-				            	</c:choose>
->>>>>>> branch 'main' of https://github.com/jhk727/learn_on.git
 				            </div>
 			            </div>
 			        </section><!-- class-details -->
@@ -129,7 +103,6 @@
 												    <div class="review-text">
 												        ${support.c_support_content}
 												    </div>
-<%-- 												    ${support.c_support_file} --%>
 												    <c:if test="${not empty support.c_support_file}">
 													    <div class="review-file">
 													    	<a href="${pageContext.request.contextPath}/resources/upload/${support.c_support_file}" download="${originalFileList}">
@@ -139,8 +112,6 @@
 													</c:if>
 												</a>
 											</div>
-											
-											
 											<c:if test="${not empty support.c_support_answer_subject }">
 												<div class="question_a">
 												    <div class="r_header">
@@ -153,7 +124,6 @@
 												            </div>
 												            <div class="date">
 												            	<span><fmt:formatDate value="${support.c_support_answer_date}" pattern="yy-MM-dd HH:mm" /></span>
-<%-- 												            	<span><fmt:formatDate value="${support.c_support_answer_date}" pattern="yy-MM-dd HH:mm" /></span> --%>
 												            </div>
 												        </div>
 												    </div>
@@ -173,7 +143,6 @@
 							<c:choose>
 								<c:when test="${not empty requestScope.courseSupportList}">									
 									<section id="pageList">	
-									
 										<!-- 현재 목록의 시작페이지 번호에서 페이지 번호 갯수를 뺀 페이지 요청ㄹ -->
 										<!-- 시작 페이지가 1페이지 일 경우 페이지 비활성화! -->
 										<input type="button" value="&lt;&lt;" 
@@ -258,7 +227,7 @@
 								<c:forEach var="others" items="${requestScope.courseTeacher}">
 								    <a href="CourseDetail?class_id=${others.class_id}">
 									    <div class="card">
-									        <img src="resources/upload/${others.class_pic1}" alt="Class Image">
+									        <img src="${pageContext.request.contextPath}/resources/upload/${others.class_pic1}" alt="Class Image">
 									        <div class="card-content">
 									            <div class="category">IT/개발</div>
 									            <div class="title">${others.class_title}</div>

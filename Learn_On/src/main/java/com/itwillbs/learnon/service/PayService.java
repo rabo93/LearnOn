@@ -51,20 +51,17 @@ public class PayService {
 			orderData.put("price", orderVO.getPrice());
 			orderData.put("class_id", orderitemVO.getClass_id());
 			orderData.put("class_price", orderitemVO.getClass_price());
-			
 			//주문 정보 인서트
 			mapper.insertOrderInfo(orderData);
 			
 			//위에서 인서트된 order_idx를 저장
 			int order_idx = (int) orderData.get("order_idx");
-			
 			//----------------------
 			//나의 클래스 데이터 생성
 			Map<String, Object> mycourseData = new HashMap<String, Object>();
 			mycourseData.put("mem_id", orderVO.getMem_id());
 			mycourseData.put("class_id", orderitemVO.getClass_id());
 			mycourseData.put("order_idx", order_idx);
-			
 			//나의 클래스 인서트
 			mapper.insertMycourse(mycourseData);
 			
@@ -73,13 +70,13 @@ public class PayService {
 			Map<String, Object> curHistory = new HashMap<String, Object>();
 			curHistory.put("mem_id", orderVO.getMem_id());
 			curHistory.put("class_id", orderitemVO.getClass_id());
-			
 			//커리큘럼 시청기록 인서트
 			mapper.insertCurHistory(curHistory);
 			
 		}
 		
 	}
+	
 	//쿠폰 사용 상태 업데이트
 	public void couponUsed(String mem_id, int coupon_id) {
 		mapper.updateCoupon(mem_id, coupon_id);
@@ -94,12 +91,12 @@ public class PayService {
 	//------------------------------------------------------------------------
 	//결제 취소)
 	//결제 취소에 필요한 impUid에 해당하는 회원ID 조회
-	@Transactional
 	public String getMem_id(String impUid) {
 		return mapper.selectMemId(impUid);
 	}
 	
 	//결제 취소 후 결제상태 변경 및 쿠폰 복구
+	@Transactional
 	public void cancelAddProcess(String imp_uid, String memId) {
 		//1. 결제 상태 업데이트
 		mapper.updatePayStatus(imp_uid, memId);

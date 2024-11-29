@@ -34,6 +34,11 @@ public class CartService {
 	public int getCartCount(String sId) {
 		return mapper.countCart(sId);
 	}
+	
+	//이미 수강중인 클래스가 있는지 조회
+	public int alreadySubcribeClass(List<Integer> cartItems) {
+		return mapper.selectMycourseClass(cartItems);
+	}
 
 	
 	

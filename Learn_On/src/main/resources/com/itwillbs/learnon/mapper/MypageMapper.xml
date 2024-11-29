@@ -110,7 +110,7 @@
 		ORDER BY 1
 		<choose>
 		 	<when test="filterType == 'newest'">
-				 , C.CLASS_REG_DATE DESC
+				, C.CLASS_REG_DATE DESC
 		 	</when>
 		 	<when test="filterType == 'title'">
 				 , C.CLASS_TITLE
@@ -215,25 +215,13 @@
 				, C.CLASS_TITLE
 				, C.CLASS_PIC1 AS CLASS_PIC
 				, C.CLASS_RUNTIME
-				, COUNT(CUR.CUR_ID) AS CURRICULUM_COUNT
+				, (SELECT COUNT(*) FROM CURRICULUM WHERE CLASS_ID = C.CLASS_ID) AS CURRICULUM_COUNT
 				, M.MEM_NAME AS TEACHER_NAME
 		  FROM MYCOURSE A
 		  LEFT JOIN CLASS C ON C.CLASS_ID = A.CLASS_ID
-		  LEFT JOIN MEMBER M ON C.MEM_ID = M.MEM_ID
-		  LEFT JOIN CURRICULUM CUR ON CUR.CLASS_ID = C.CLASS_ID
+		  LEFT JOIN MEMBER M ON C.MEM_ID = M.MEM_ID		  
 		WHERE A.MEM_ID = #{mem_id}
 		  AND A.CLASS_ID = #{class_id}
-		GROUP BY 
-				A.MEM_ID
-				, A.COURSE_STATUS
-				, A.STUDY_TIME
-				, C.CLASS_ID
-				, C.CLASS_CATEGORY
-				, C.CLASS_REG_DATE
-				, C.CLASS_TITLE
-				, C.CLASS_PIC1
-				, C.CLASS_RUNTIME
-				, M.MEM_NAME
 	</select>
 	<select id="selectMyCurList" resultType="myCurriculum">
 		-- 커리큘럼과 시청기록 조회

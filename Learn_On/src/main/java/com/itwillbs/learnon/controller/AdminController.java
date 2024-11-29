@@ -86,23 +86,36 @@ public class AdminController {
 		LocalDate today = LocalDate.now();
 		//	통계를 위한 오늘 날짜 - 4일전 날짜 계산
 		LocalDate fiveDaysAgo = today.minusDays(4);
+		//	통계를 위한 해당 주의 월요일 구하기
+		LocalDate mondayWeek = today.minusDays(today.getDayOfWeek().getValue() - 1);
+		//	3주 전의 월요일
+		LocalDate fourWeekAgo = mondayWeek.minusWeeks(3);
 		//	년-월-일 형식으로 포맷
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		List<Integer> payTotals = new ArrayList<>();
-		
+		//	날짜별 매출합을 담기위한 List 생성
+		List<Integer> payFiveDayTotals = new ArrayList<>();
+		List<Integer> payFourWeekTotals = new ArrayList<>();
 		for (int i = 0; i <= 4; i++) {
+			//	5일 전부터 차례대로 1일씩 증가
 			LocalDate date = fiveDaysAgo.plusDays(i);
+			//	포맷한 형식 넣기
 			String formattedDate = date.format(formatter);
-			
+			//	날짜 별 매출 합 조회
 			int payTotalForDay = adminService.getTodayPayTotal(formattedDate);
-			payTotals.add(payTotalForDay);
+			//	List에 하나씩 add
+			payFiveDayTotals.add(payTotalForDay);
 		}
 		
-		for (int i = 0; i < payTotals.size(); i++) {
-			System.out.println("날짜 : " + fiveDaysAgo.plusDays(i).format(formatter));
-			System.out.println("매출 : " + payTotals.get(i));
+		for (int i = 0; i <= 3; i++) {
+			//	3주 전부터 차례대로 1주씩 증가
+			LocalDate startOfWeek = fourWeekAgo.plusWeeks(i);
+			//	포맷한 형식 넣기
+			String formattedDate = startOfWeek.format(formatter);
+			//	각 주별 매출 합 조회
+			int payTotalForWeek = adminService.getWeekPayTotal(formattedDate);
+			//	List에 하나씩 add
+			payFourWeekTotals.add(payTotalForWeek);
 		}
-		
 		
 		//	오늘날짜에 포맷한 형식 넣기
 		String formattedDate = today.format(formatter);
@@ -115,11 +128,18 @@ public class AdminController {
 		//	주간 총 매출 조회
 		int weekPayTotal = adminService.getWeekPayTotal(formattedDate);
 		
+		//	일반회원
 		model.addAttribute("nomalMemberCount", nomalMemberCount);
+		//	강사회원
 		model.addAttribute("instrucMemberCount", instrucMemberCount);
+		//	오늘 매출
 		model.addAttribute("todayPayTotal", todayPayTotal);
+		//	주간 매출
 		model.addAttribute("weekPayTotal", weekPayTotal);
-		model.addAttribute("payTotals", payTotals);
+		//	5일 각각의 매출
+		model.addAttribute("payFiveDayTotals", payFiveDayTotals);
+		//	4주 각각의 매출
+		model.addAttribute("payFourWeekTotals", payFourWeekTotals);
 		return "admin/index";
 		
 	}

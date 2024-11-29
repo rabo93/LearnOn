@@ -36,7 +36,7 @@ public class AdminService {
 	}
 	//	주간 매출량 조회
 	public int getWeekPayTotal(String formattedDate) {
-		return mapper.getTodayPayTotal(formattedDate);
+		return mapper.getWeekPayTotal(formattedDate);
 	}
 	
 	//	====================================================

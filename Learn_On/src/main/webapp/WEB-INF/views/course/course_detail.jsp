@@ -70,10 +70,10 @@
 					<div class="tabcontent">
 						<div class="tabmenu" id="tab01">
 							<h2>클래스 소개</h2>
-				            <div class="intro_title">
+				            <div class="intro_title" style="white-space: pre-line;">
 				            	${course[0].class_intro}
 			            	</div>
-				            <div class="intro">
+				            <div class="intro" style="white-space: pre-line;">
 				            	${course[0].class_contents}
 							</div>
 						</div>

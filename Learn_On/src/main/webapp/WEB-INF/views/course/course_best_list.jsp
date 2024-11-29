@@ -24,7 +24,7 @@
 			<div class="cls-wrap">
 				<div class="cls-cate">
 				
-					<h1 class="cls-ttl">BEST CLASS LIST</h1>
+					<h1 class="cls-ttl">실시간 베스트 강의 🔥</h1>
 					<div class="cate-li">
 						<form action="BestCourse">
 							<select name="searchType">
@@ -54,7 +54,7 @@
 								<c:forEach var="course" items="${requestScope.courseList}" varStatus="status">
 									<li id="${course.class_id}">
 										<a href="CourseDetail?class_id=${course.class_id}&codetype=${codeType[0].codetype}">
-											<img src="${pageContext.request.contextPath}/resources/images/thumb_0${status.count}.webp" class="card-thumb" alt="thumbnail" />
+											<img src="${pageContext.request.contextPath}/resources/upload/${course.class_pic1}" onclick="location.href='CourseDetail?class_id=${course.class_id}&codetype=${codeType[0].codetype}'" class="card-thumb" alt="thumbnail" />
 											<div class="card-info">
 												<div class="category">
 													<span>${course.catename}</span>

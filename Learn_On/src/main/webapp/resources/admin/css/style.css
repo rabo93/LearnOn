@@ -13,6 +13,7 @@
     z-index: 99;
 }
 
+textarea {wrap:hard; white-space:pre;}
 
 /*** Spinner ***/
 #spinner {

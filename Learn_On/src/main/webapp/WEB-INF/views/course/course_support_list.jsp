@@ -32,6 +32,33 @@
 						<span>${course[0].class_category}</span>
 			        </section>
 			        <section class="class-details">
+<<<<<<< HEAD
+			            <div class="cls-pic">
+			            	<c:choose>
+			            		<c:when test="${not empty course[0].class_pic1}">
+			            			<img src="resources/upload/${course[0].class_pic1}" id="preview" class="figure-img img-fluid rounded" alt="thumpnail" style="height: 280px;">
+			            		</c:when>
+			            		<c:otherwise>
+			            			<img src="${pageContext.request.contextPath}/resources/images/empty.png">
+			            		</c:otherwise>
+			            	</c:choose>
+			            </div>
+			            <div class="cls-infos">
+				            <h1>${course[0].class_title}</h1>
+							<p>${course[0].class_intro}</p>       
+				            <div class="cls_det_rating">
+				            	<span class="stars"></span>
+				            	<h4>${course[0].review_score }</h4>
+								<div class="cls-det-text">            	
+					            	<i class="fa-sharp-duotone fa-solid fa-user"></i>
+					            	<h4>${course[0].mem_id}</h4>
+					            </div>
+								<div class="cls-det-text">            	
+					            	<i class="fa-regular fa-clock"></i>
+					            	<c:set var="total_cur" value="${course}" />
+					            	<h4>총  ${fn:length(total_cur)}강 (  ${course[0].class_runtime}분)</h4>
+					            </div>
+=======
 			            <h1>${course[0].class_title}</h1>
 						<p>${course[0].class_intro}</p>       
 			            <div class="cls_det_rating">
@@ -56,6 +83,7 @@
 				            			<img src="${pageContext.request.contextPath}/resources/images/empty.png">
 				            		</c:otherwise>
 				            	</c:choose>
+>>>>>>> branch 'main' of https://github.com/jhk727/learn_on.git
 				            </div>
 			            </div>
 			        </section><!-- class-details -->
@@ -210,13 +238,13 @@
 			        </div>
 			        <div class="cls-event-card-footer">
 	
-			            <button class="apply-button" onclick="applyForCourse('${course[0].class_id}', '${param.codetype}')">수강신청 하기</button>
+			            <button class="apply-button" onclick="applyForCourse('${course[0].class_id}', '${param.codetype}')"><i class="fa-solid fa-cart-arrow-down"></i> 수강신청 하기</button>
 						<div  id="${course[0].class_id}">
 				            <button class="fav-off" style="display:block;" onclick="addToWishList('${course[0].class_id}')">
-									관심목록에 추가
+								<i class="fa-solid fa-heart-circle-plus"></i> 관심목록에 추가
 							</button>
 							<button class="fav-on" style="display:none;" onclick="deleteToWishList('${course[0].class_id}')">
-									관심목록에서 삭제
+								<i class="fa-solid fa-heart-circle-minus"></i> 관심목록에서 삭제
 							</button>
 						</div>
 			        </div>
@@ -252,5 +280,22 @@
 	<footer>
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
 	</footer>
+	<script>
+		function applyForCourse(id, codetype){
+			location.href="ApplyForCourse?class_id=" + id + "&codetype=" + codetype;
+		}
+		
+		function addToWishList(id){
+			if(confirm("관심목록에 추가하시겠습니까?")) {
+				location.href="MyFavAdd?class_id=" + id;
+			}
+		}
+		
+		function deleteToWishList(id){
+			if(confirm("관심목록에서 삭제하시겠습니까?")){
+				location.href="MyFavDel?class_id=" + id;
+			}
+		}
+	</script>
 </body>
 </html>

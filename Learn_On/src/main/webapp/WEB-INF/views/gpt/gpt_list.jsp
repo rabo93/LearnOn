@@ -24,7 +24,7 @@
 			<section class="rec-wrap">
 				<div class="rec-inner">
 					<div class="rec-ttl">
-						안녕하세요. XXX님 ✨<br>
+						안녕하세요. ${sessionScope.sId}님 ✨<br>
 						런온의 추천로봇이 강의를 추천해드릴게요! 🤖
 						<br>
 						XXX님의 관심사<br>

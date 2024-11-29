@@ -265,13 +265,15 @@
     padding: 2rem;
     border-radius: 8px;
     border: 1px solid #ddd;
+    display: flex;
+    gap: 3rem;
 }
 
-.class-details h1 {/*     font-size: 22px; */font-size: 2em;margin-bottom: 1rem;}
+.class-details h1 {/*     font-size: 22px; */font-size: 2em;margin-bottom: 1rem;color: var(--dark);}
 
 .class-details p {
     color: #56585b;
-    line-height: 1.4;
+    line-height: 1.6;
     font-weight: 500;
 }
 
@@ -282,7 +284,7 @@
     margin-top: 10px;
 }
 
-.intro_title {font-size: 1rem;line-height: 1.5;}
+.intro_title {line-height: 1.5;text-align: center;font-size: 1.6rem;font-weight: 700;color: var(--secondary);word-break: keep-all;padding: 0 10rem;}
 .intro_title img{
 	margin: auto;
 }
@@ -307,7 +309,7 @@
     border-radius: 8px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
-.recommended-classes {max-width: 1320px;margin:2rem auto;border: 1px solid #ddd;box-shadow: none;background: var(--light-blue);}
+.recommended-classes {max-width: 1320px;margin:2rem auto;border: 1px solid #ddd;box-shadow: none;background: var(--light-blue);padding: 2rem;}
 .tabcontent {
     padding: 2rem;
     background-color: #fff;
@@ -360,6 +362,11 @@
   	border-radius: 10px;
   	padding: 2rem;
   	margin-top: 2rem;
+  	line-height: 1.6;
+  	text-indent: 1rem;
+  	font-weight: 500;
+  	color: var(--dark);
+  	word-break: keep-all;
 }
 .lesson {
     padding: 1.2rem 2rem;
@@ -384,7 +391,7 @@
 	justify-content: flex-end;
 }
 .review-rating {
-    padding: 15px;
+    padding: 2rem;
     border: 1px solid #ddd;
     border-radius: 8px;
     margin-bottom: 10px;
@@ -399,16 +406,21 @@
 }
 .review-rating span{
 	justify-content: center;
+	color: var(--dark);
+	font-weight: 700;
+	display: block;
+	font-size: 2rem;
 }	
 .review {
     margin-top: 10px;
     padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
 }
 
 .r_header {
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
+    padding: 1rem 0;
 }
 
 .profile-icon {
@@ -420,12 +432,13 @@
 }
 
 .user-info {
-    font-size: 14px;
+    font-size: 1rem;
 }
 
 .user-info .name {
     font-weight: bold;
-    color: #333;
+    color: var(--dark);
+    margin-bottom: 5px;
 }
 
 .user-info .date {
@@ -450,11 +463,12 @@
 	color: black;
 }
 .review-text {
-    font-size: 14px;
-    color: #333;
+    font-size: 0.875rem;
+    color: var(--dark);
     line-height: 1.5;
-    margin-top: 10px;
-    border-top: #ddd 1px solid;
+    margin-top: 6px;
+    font-weight: 600;
+    word-break: keep-all;
 }
 
 
@@ -480,30 +494,9 @@
 	padding: 10px;
 	background-color: #F2F4F8;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .recommended-classes h2 {
-    font-size: 18px;
-    color: #333;
+    font-size: 1.4rem;
+    color: var(--dark);
     margin-bottom: 20px;
 }
 
@@ -512,14 +505,15 @@
     gap: 1rem;
     max-width: 100%;
     flex-wrap: wrap;
-    justify-content: flex-start;
+    /* justify-content: flex-start; */
+    align-items: stretch;
 }
 
 .recommended-classes .card {
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 200px;
+    /* width: 200px; */
     overflow: hidden;
     border: 1px solid #e0e0e0;
 }
@@ -528,28 +522,34 @@
     width: 100%;
     height: 120px;
     object-fit: cover;
-    background-color: #f0f0f0;
+    background-color: var(--milk);
+    border-bottom: 1px solid #ddd;
 }
 
 .recommended-classes .card-content {
     padding: 10px 15px;
+    min-height: 130px;
 }
 
 .recommended-classes .category {
     font-size: 12px;
-    color: #555;
-    background-color: #f0f0f0;
+    color: var(--dark);
+    background-color: #eee;
     padding: 4px 8px;
     border-radius: 12px;
     display: inline-block;
     margin-bottom: 10px;
+    border: 1px solid var(--dark);
+    font-weight: 700;
 }
 
 .recommended-classes .title {
-    font-size: 14px;
+    font-size: 1rem;
     font-weight: bold;
-    color: #333;
+    color: var(--dark);
     margin-bottom: 8px;
+    line-height: 1.4;
+    height: 50px;
 }
 
 .cls_det_rating {
@@ -574,16 +574,25 @@
 	gap: 6px;
 }
 .cls-pic {
-	flex: 0 0 25%; /* 크기를 4분의 1로 설정 */
-    display: flex; /* 이미지 박스를 flexbox로 설정 */
-    justify-content: flex-end; /* 이미지를 오른쪽으로 정렬 */
+	flex: 0 0 380px; /* 크기를 4분의 1로 설정 */
+	display: flex; /* 이미지 박스를 flexbox로 설정 */
+	justify-content: flex-end; /* 이미지를 오른쪽으로 정렬 */
+	border-radius: 14px;
+	overflow: hidden;
+	border: 1px solid #ddd;
 }
 
 .cls-pic img {
 	width: 100%; /* 컨테이너에 맞게 이미지 크기 조정 */
-    height: auto; /* 비율 유지 */
-    display: block; /* 이미지를 블록 요소로 설정 */
-    border-radius: 8px; /* 이미지 모서리 둥글게 */
+	height: auto; /* 비율 유지 */
+	display: block; /* 이미지를 블록 요소로 설정 */
+	border-radius: 8px; /* 이미지 모서리 둥글게 */
+	object-fit: contain;
+	background: var(--white);
+}
+
+.cls-infos {
+	padding:3rem 0 2rem;
 }
 
 .description {

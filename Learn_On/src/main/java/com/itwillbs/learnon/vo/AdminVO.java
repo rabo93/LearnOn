@@ -12,6 +12,7 @@ public class AdminVO {
 	private int class_id;
 	private String class_title;
 	private String mem_id;
+	private String mem_name;
 	private String class_intro;
 	private int class_price;
 	private String class_category;

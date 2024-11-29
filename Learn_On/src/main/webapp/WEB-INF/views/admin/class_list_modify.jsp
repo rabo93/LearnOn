@@ -65,11 +65,11 @@
 			                			<label for="floatingInput">강의 제목</label>
 			                		</div>
 									<div class="form-floating mb-3">
-										<input type="text" class="form-control" id="floatingInput" name="class_intro" value="${getClass.class_intro}">
+										<textarea class="form-control" id="class_intro" name="class_intro">${getClass.class_intro}</textarea>
 										<label for="floatingInput">강의 소개</label>
 									</div>
 									<div class="form-floating mb-3">
-										<input type="text" class="form-control" id="floatingTextarea" style="height: 150px;" name="class_contents" value="${getClass.class_contents}"/>
+										<textarea class="form-control" id="class_contents" style="height: 150px;white-scpace:pre-line;" name="class_contents" >${getClass.class_contents}</textarea>
 										<label for="floatingTextarea">강의 상세내용</label>
 									</div>
 									<div class="d-flex">
@@ -174,7 +174,7 @@
 					</div>
 					<select id="selectTeacher" class="form-select" multiple="" aria-label="multiple select example">
 						<c:forEach items="${getInstructor}" var="ins">
-							<option value="${ins.mem_id}">${ins.mem_name}, (ID: ${ins.mem_id})</option>
+							<option value="${ins.MEM_ID}">${ins.MEM_NAME}, (ID: ${ins.MEM_ID})</option>
 						</c:forEach>
 					</select>
 				</div>
@@ -215,9 +215,9 @@
     	
     	function selectTeacher() {
     		var val = $('#selectTeacher').find(":selected").val();
-    		console.log(val);
     	    $("#teacher").val(val);
     	}
+    	
     </script>
 </body>
 </html>

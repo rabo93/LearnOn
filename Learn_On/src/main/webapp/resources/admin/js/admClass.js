@@ -95,7 +95,6 @@ function searchInstructor() {
 // 소분류 불러오기
 function selectMainCate() {
 	let mainCateId = document.querySelector("select[name=class_maincate]").value;
-	console.log(mainCateId);
 	
 	$.ajax({
 		type: "GET",
@@ -122,7 +121,6 @@ function selectMainCate() {
 window.onload=function () {
 	let mainCateId = document.querySelector("select[name=class_maincate]").value;
 	let classId = window.location.search;
-	console.log(classId.substring(10));
 	
 	$.ajax({
 		type: "GET",
@@ -144,3 +142,4 @@ window.onload=function () {
 	});
 		
 };
+

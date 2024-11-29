@@ -55,7 +55,6 @@
 		)
   	</insert>
  	
- 	<!-- 쿠폰 사용 후 사용여부 업데이트 -> 결제 성공 후 (COUPON_ISUSED = 2)-->
  	 	
   	<!-- ===================== 관리자용 쿠폰 ======================= -->
   	<select id="selectAdmCoupon" resultType="coupon">

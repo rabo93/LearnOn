@@ -11,7 +11,7 @@ function addRow() {
 	cell1.innerHTML = '<input type="checkbox" name="checkboxObj"/>';
 	cell2.innerHTML = '<input type="text" name="cur_title" class="form-control" id="floatingInput" placeholder="커리큘럼 제목" required oninvalid="this.setCustomValidity(\'제목 입력 필수\')">';
 	cell3.innerHTML = '<input type="number" name="cur_runtime" class="form-control" id="floatingInput" placeholder="커리큘럼 영상길이" required oninvalid="this.setCustomValidity(\'영상 길이(분) 입력 필수\')">';
-	cell4.innerHTML = '<input type="file" name="cur_video_get" class="file form-control" id="inputGroupFile02" placeholder="커리큘럼 영상" required oninvalid="this.setCustomValidity(\'영상 업로드 필수\')">';
+	cell4.innerHTML = '<input type="file" name="cur_video_get" class="file form-control" id="inputGroupFile02" placeholder="커리큘럼 영상">';
 	
 }
 

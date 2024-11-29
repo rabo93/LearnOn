@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -83,8 +84,26 @@ public class AdminController {
 		}
 		//	오늘 날짜 불러오기
 		LocalDate today = LocalDate.now();
+		//	통계를 위한 오늘 날짜 - 4일전 날짜 계산
+		LocalDate fiveDaysAgo = today.minusDays(4);
 		//	년-월-일 형식으로 포맷
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		List<Integer> payTotals = new ArrayList<>();
+		
+		for (int i = 0; i <= 4; i++) {
+			LocalDate date = fiveDaysAgo.plusDays(i);
+			String formattedDate = date.format(formatter);
+			
+			int payTotalForDay = adminService.getTodayPayTotal(formattedDate);
+			payTotals.add(payTotalForDay);
+		}
+		
+		for (int i = 0; i < payTotals.size(); i++) {
+			System.out.println("날짜 : " + fiveDaysAgo.plusDays(i).format(formatter));
+			System.out.println("매출 : " + payTotals.get(i));
+		}
+		
+		
 		//	오늘날짜에 포맷한 형식 넣기
 		String formattedDate = today.format(formatter);
 		//	일반 회원 수 조회
@@ -100,6 +119,7 @@ public class AdminController {
 		model.addAttribute("instrucMemberCount", instrucMemberCount);
 		model.addAttribute("todayPayTotal", todayPayTotal);
 		model.addAttribute("weekPayTotal", weekPayTotal);
+		model.addAttribute("payTotals", payTotals);
 		return "admin/index";
 		
 	}

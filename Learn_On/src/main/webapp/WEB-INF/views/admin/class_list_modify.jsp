@@ -174,7 +174,7 @@
 					</div>
 					<select id="selectTeacher" class="form-select" multiple="" aria-label="multiple select example">
 						<c:forEach items="${getInstructor}" var="ins">
-							<option value="${ins.mem_id}">${ins.mem_name}, (ID: ${ins.mem_id})</option>
+							<option value="${ins.MEM_ID}">${ins.MEM_NAME}, (ID: ${ins.MEM_ID})</option>
 						</c:forEach>
 					</select>
 				</div>

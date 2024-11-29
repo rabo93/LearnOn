@@ -69,7 +69,8 @@
 										<i class="fa-solid fa-heart"></i>
 									</button>
 									<a href="CourseDetail?class_id=${course.class_id}&codetype=${codeType[0].codetype}">
-										<img src="resources/upload/${course.class_pic1}" class="card-thumb" alt="thumbnail" />
+										<img src="${pageContext.request.contextPath}/resources/upload/${course.class_pic1}" class="card-thumb" alt="thumbnail" />
+<%-- 										<img src="resources/upload/${course.class_pic1}" class="card-thumb" alt="thumbnail" /> --%>
 										<div class="card-info">
 											<div class="category">
 												<span>${course.catename}</span>

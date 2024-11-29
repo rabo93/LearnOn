@@ -3,6 +3,34 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itwillbs.learnon.mapper.CourseMapper">
+
+	<select id="selectCourseListCount" resultType="int">
+		SELECT COUNT(*)
+		  FROM CLASS C
+	LEFT  JOIN MEMBER M ON C.MEM_ID = M.MEM_ID
+		  JOIN COMMONCODETYPE T ON C.CLASS_CATEGORY = T.NAME
+ 	 LEFT JOIN (SELECT TRUNCATE(AVG(REVIEW_SCORE), 1) AS REVIEW_SCORE, CLASS_ID FROM REVIEW GROUP BY CLASS_ID) R ON R.CLASS_ID  = C.CLASS_ID
+		 WHERE 1 = 1
+		  AND T.CODETYPE = #{codetype}
+<!-- 		   AND CLASS_ID = #{class_id} -->
+  		 <if test="course.CODETYPE_ID != null"> 
+		  AND T.CODETYPE_ID = #{course.codetype_id}
+		 </if>
+		 <choose>
+		 	<when test="searchType.equals('new')">
+		 	 ORDER BY CLASS_ID DESC
+		 	</when>
+		 	<when test="searchType.equals('title')">
+		 	 ORDER BY CLASS_TITLE ASC
+		 	</when>
+		 	<when test="searchType.equals('price')">
+		 	 ORDER BY CLASS_PRICE ASC
+		 	</when>
+		 	<when test="searchType.equals('score')">
+		 	 ORDER BY REVIEW_SCORE DESC
+		 	</when>
+		 </choose>
+	</select>
 	<select id="selectCourseList" resultType="course">
 		SELECT C.CLASS_TITLE 
 		     , M.MEM_NAME AS MEM_ID 
@@ -45,7 +73,11 @@
 		 	 ORDER BY REVIEW_SCORE DESC
 		 	</when>
 		 </choose>
+		  LIMIT 
+			    #{startRow}
+			  , #{pageListLimit}
 	</select>
+	
 	<select id="selectFindCourseList" resultType="course">
 		SELECT C.CLASS_TITLE 
 		     , M.MEM_NAME AS MEM_ID 
@@ -68,6 +100,9 @@
  	 LEFT JOIN (SELECT TRUNCATE(AVG(REVIEW_SCORE), 1) AS REVIEW_SCORE, CLASS_ID FROM REVIEW GROUP BY CLASS_ID) R ON R.CLASS_ID  = C.CLASS_ID
 	     WHERE C.CLASS_TITLE LIKE CONCAT('%', #{find_title}, '%')
 	        OR M.MEM_NAME LIKE CONCAT('%', #{find_title}, '%')
+	    LIMIT 
+		       #{startRow}
+			 , #{pageListLimit}
 	</select>
 	
 	
@@ -123,17 +158,16 @@
 			   , CR.CUR_TITLE
 			   , CR.CUR_VIDEO
 			   , CR.CUR_RUNTIME
-			   , (SELECT TRUNCATE(AVG(REVIEW_SCORE), 1)
-					FROM REVIEW
-				   WHERE C.CLASS_ID = #{class_id}
-					) AS REVIEW_SCORE
+			   , R.REVIEW_SCORE 
 			   , M.MEM_ID 		AS TEACHER_ID	
 			   , CC.CODENAME AS CATENAME
+			   , CT.CODETYPE
 			FROM CLASS C
 			JOIN MEMBER M ON M.MEM_ID = C.MEM_ID
 			JOIN CURRICULUM CR ON CR.CLASS_ID = C.CLASS_ID
 			JOIN COMMONCODETYPE CT ON CT.NAME = C.CLASS_CATEGORY
 			JOIN COMMONCODE CC ON CC.CODEID = CT.CODETYPE
+	   LEFT JOIN (SELECT TRUNCATE(AVG(REVIEW_SCORE), 1) AS REVIEW_SCORE,  CLASS_ID FROM REVIEW GROUP BY CLASS_ID) R ON R.CLASS_ID = C.CLASS_ID 
 			
 		   WHERE C.CLASS_ID = #{class_id}
 	</select>
@@ -141,11 +175,24 @@
 	<select id="selectCourseTeacher" resultType="course">
 		SELECT 
 			    C.CLASS_TITLE
+			  , C.CLASS_ID	
+			  , C.CLASS_PIC1
 			  , M.MEM_NAME		AS MEM_ID
 			  , (SELECT TRUNCATE(AVG(REVIEW_SCORE), 1)
 			       FROM REVIEW
 				  WHERE C.CLASS_ID = #{class_id}
 				   ) AS REVIEW_SCORE
+		  FROM CLASS C
+		  JOIN MEMBER M 
+		    ON C.MEM_ID = M.MEM_ID
+		 WHERE C.MEM_ID = #{teacher_id}  
+		   AND CLASS_ID != #{class_id}
+		 LIMIT 
+		       #{startRow}
+			 , #{pageListLimit}
+	</select>
+	<select id="selectCourseTeacherCount" resultType="int">
+		SELECT COUNT(*) 
 		  FROM CLASS C
 		  JOIN MEMBER M 
 		    ON C.MEM_ID = M.MEM_ID
@@ -173,7 +220,6 @@
 		<when test="searchType.equals('score')">
 		 ORDER BY R.REVIEW_SCORE DESC
 		</when>
-		
 	</choose>
 	</select>
 	
@@ -207,17 +253,14 @@
 		     , #{c_class_id}
 		)   
 	</insert>
-	<select id="selectCSupportListCount"  resultType="int">
+	<select id="selectCourseSupportListCount"  resultType="int">
 		SELECT COUNT(*)
 		  FROM CLASS_SUPPORT
 		 WHERE 1 = 1
 		 <if test="class_id != 0">
 		   AND C_CLASS_ID = ${class_id}
 		 </if>
-		  
 	</select>
-	
-	
 	<select id="selectCourseSupport" resultType="cSupport" parameterType="int">
 		SELECT *
 		  FROM CLASS_SUPPORT
@@ -245,6 +288,7 @@
 		 WHERE C_SUPPORT_IDX = #{c_support_idx}
 	</delete>
 	<select id="selectMenuList" resultType="map">
+		-- 헤더 메뉴 출력	
 		SELECT C.CODEID
 			   , C.CODENAME AS MAIN_MENU
 		       , T.CODETYPE_ID
@@ -252,6 +296,7 @@
 		FROM COMMONCODE C
 		JOIN COMMONCODETYPE T ON C.CODEID = T.CODETYPE
 		WHERE C.CODETYPE = 'CATE'
+		ORDER BY C.CODEID ASC, T.CODETYPE_ID ASC
 	</select>
 	
 	
@@ -278,6 +323,32 @@
 			 , C.CLASS_PRICE
 			 , R.REVIEW_SCORE
 			 , CC.CODENAME AS CATENAME
+		  FROM CLASS C
+		  JOIN (SELECT CLASS_ID, COUNT(*) AS CLASS_COUNT FROM ORDER_INFO GROUP BY CLASS_ID ORDER BY CLASS_COUNT DESC) BEST 
+		    ON C.CLASS_ID = BEST.CLASS_ID
+     LEFT JOIN (SELECT TRUNCATE(AVG(REVIEW_SCORE), 1) AS REVIEW_SCORE, CLASS_ID FROM REVIEW GROUP BY CLASS_ID) R ON R.CLASS_ID  = C.CLASS_ID
+          JOIN COMMONCODETYPE CT ON CT.NAME = C.CLASS_CATEGORY
+		  JOIN COMMONCODE CC ON CC.CODEID = CT.CODETYPE
+	     WHERE 1 = 1
+     <choose>
+		<when test="searchType.equals('new')">
+		 ORDER BY C.CLASS_REG_DATE DESC
+		</when>
+		<when test="searchType.equals('title')">
+		 ORDER BY C.CLASS_TITLE ASC
+		</when>
+		<when test="searchType.equals('price')">
+		 ORDER BY C.CLASS_PRICE DESC
+		</when>
+		<when test="searchType.equals('score')">
+		 ORDER BY R.REVIEW_SCORE DESC
+		</when>
+	</choose>	  
+		 LIMIT #{startRow}
+			 , #{pageListLimit}
+	</select>
+	<select id="selectCourseBestListCount">
+		SELECT COUNT(*)
 		  FROM CLASS C
 		  JOIN (SELECT CLASS_ID, COUNT(*) AS CLASS_COUNT FROM ORDER_INFO GROUP BY CLASS_ID ORDER BY CLASS_COUNT DESC) BEST 
 		    ON C.CLASS_ID = BEST.CLASS_ID

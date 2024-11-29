@@ -72,6 +72,12 @@
 								</div>
 							</div>
 							<div class="set">
+								<label>선호 해시태그</label>
+								<div>
+									<input type="text" name="hashtag" id="hashtag" value="${member.hashtag }">
+								</div>
+							</div>
+							<div class="set">
 								<label>비밀번호 <span>*</span></label>
 								<div>
 									<input type="password" name="oldPasswd" required>

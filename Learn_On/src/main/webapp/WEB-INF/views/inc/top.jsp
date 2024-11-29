@@ -86,10 +86,8 @@ function logout() {
 							<li><a href="Category?codetype=CATE05">음료/술</a></li>
 						</ul>
 					</li>
-					<li class="gnb-menu"><a href="BestCourse">BEST</a></li>
-					<li class="gnb-menu"><a href="#">얼리버드 특가</a></li>
-					<li class="gnb-menu"><a href="#">이벤트</a></li>
-					<li class="gnb-menu"><a href="#">AI 추천</a></li>
+					<li><a href="BestCourse">BEST 🔥</a></li>
+					<li><a href="Recommend">AI 추천🤖</a></li>
 				</ul>
 			</nav>
         </div>
@@ -102,10 +100,12 @@ function logout() {
 				<ul class="dropdown" id="resultArea">
 				</ul>	
 			</li>						
-			<li><a href="BestCourse">BEST</a></li>
-			<li><a href="#">얼리버드 특가</a></li>
-			<li><a href="#">이벤트</a></li>
-			<li><a href="#">AI 추천</a></li>
+			<li><a href="BestCourse">BEST 🔥</a></li>
+			<li><a href="Recommend">AI 추천🤖</a></li>
+			<li><a href="/Category?codetype=CATE01">IT전문가🖥️</a></li>
+			<li><a href="/Category?codetype=CATE04&codetype_id=20">지금핫한 드로잉강의✒️</a></li>
+<!-- 			<li><a href="#">얼리버드 특가</a></li> -->
+<!-- 			<li><a href="#">이벤트</a></li> -->
 		</ul>
 	</nav>
 </header>

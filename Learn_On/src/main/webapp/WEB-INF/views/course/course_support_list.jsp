@@ -27,7 +27,7 @@
 				<div class="container">
 					<section class="breadcrumb">
 						<a href="#">카테고리</a> <i class="fa-solid fa-angle-right"></i>
-						<a href="Category?codetype="></a> <i class="fa-solid fa-angle-right"></i>
+						<a href="Category?codetype=${course[0].codetype}">${course[0].catename}</a> <i class="fa-solid fa-angle-right"></i>
 						<span>${course[0].class_category}</span>
 			        </section>
 			        <section class="class-details">
@@ -45,37 +45,40 @@
 				            	<c:set var="total_cur" value="${course}" />
 				            	<h4>총  ${fn:length(total_cur)}강 (  ${course[0].class_runtime}분)</h4>
 				            </div>
+				            <div class="cls-pic">
+				            	<c:choose>
+				            		<c:when test="${not empty course[0].class_pic1}">
+				            			<img src="resources/upload/${course[0].class_pic1}" id="preview" class="figure-img img-fluid rounded" alt="thumpnail" style="height: 280px;">
+				            		</c:when>
+				            		<c:otherwise>
+				            			<img src="${pageContext.request.contextPath}/resources/images/empty.png">
+				            		</c:otherwise>
+				            	</c:choose>
+				            </div>
 			            </div>
 			        </section><!-- class-details -->
-			        <c:set var="count" value="${courseSupportList}" />
-					<c:set var="total_re" value="${myReview}" />
 					<ul class="tabnav">
 						<li><a href="CourseDetail?class_id=${course[0].class_id}&codetype=${param.codetype}#tab01">클래스 소개</a></li>
 						<li><a href="CourseDetail?class_id=${course[0].class_id}&codetype=${param.codetype}#tab02">커리큘럼</a></li>
-						<li><a href="CourseDetail?class_id=${course[0].class_id}&codetype=${param.codetype}#tab03">수강평(${fn:length(total_re)})</a></li>
-						<li><a class="tab on" href="#" >문의(${fn:length(count)})</a></li>
+						<li><a href="CourseDetail?class_id=${course[0].class_id}&codetype=${param.codetype}#tab03">수강평(${totalReview})</a></li>
+						<li><a class="tab on" href="#" >문의(${pageInfo.listCount})</a></li>
 					</ul>
 					<div class="tabcontent">
 						<div class="tabmenu" id="tab04">
 							<div class="question_title">
-								<h2>문의</h2><h4>(전체 ${fn:length(count)} 개)</h4>
-<%-- 										<p>총 개수: ${fn:length(numbers)}</p> --%>
+								<h2>문의</h2><h4>(전체 ${pageInfo.listCount} 개)</h4>
 					            <button onclick="window.location.href='CourseSupport?class_id=${course[0].class_id}'">
 					            	문의작성하기
 					            </button>
 				            </div>
 					            
 				            <c:set var="pageNum" value="1"/>
-				            <%-- pageNum 파라미터가 존재할 경우 pageNum 변수에 ㅎ ㅐ당 파라미터값 저장 --%>
 				            <c:if test="${not empty param.pageNum}">
 								<c:set var="pageNum" value="${param.pageNum}"/>
 							</c:if>
 				            <c:choose>
 								<c:when test="${empty courseSupportList}">
-									<%-- 게시물 목록이 하나도 존재하지 않을 경우 --%>
-									<tr>
-										<td colspan="5">게시물이 존재하지 않습니다.</td>
-									</tr>
+									<div class="empty">수강문의가 없습니다.</div>
 								</c:when>
 								<c:otherwise>
 						            <c:forEach var="support" items="${courseSupportList}">
@@ -138,53 +141,58 @@
 								</c:otherwise>
 							</c:choose>
 								
-							<section id="pageList">	
-							
-								<!-- 현재 목록의 시작페이지 번호에서 페이지 번호 갯수를 뺀 페이지 요청ㄹ -->
-								<!-- 시작 페이지가 1페이지 일 경우 페이지 비활성화! -->
-								<input type="button" value="&lt;&lt;" 
-									onclick="location.href='CourseSupportList?class_id=${course[0].class_id}&pageNum=${pageInfo.startPage - pageInfo.pageListLimit}'"				
-									<c:if test="${pageInfo.startPage == 1}">disabled</c:if> 	
-								>
-								<!-- [이전] 버튼 클릭시 이전 페이지 글 목록 요청(파라미터로 현재 페이지번호 -1 전달) -->
-								<!-- 현재 페이지가 1페이지 일 경우 페이지 비활성화! --> <!-- 0은 어차피 콘트롤러에서 제어함. -->
-								<input type="button" value="이전" 
-									onclick="location.href='CourseSupportList?class_id=${course[0].class_id}&pageNum=${pageNum - 1}'"
-									<c:if test="${pageNum == 1}">disabled</c:if> 	
-								>
 								
-								<!-- 계산된 페이지 번호가 저장된 PageInfo 객체(pageInfo)를 통해 페이지 번호 출력 -->
-								<!-- startPage 부터 endPage 까지 1씩 증가하면서 페이지 번호 표시 -->
-<%-- 								startPage : ${pageInfo.startPage} , endPage : ${pageInfo.endPage} , pageNum : ${pageNum} --%>
-<%-- 								pageInfo :  ${pageInfo }	 --%>
-								<c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
-									<!-- 각페이지마다 하이퍼링크 설정(BoardList) => 페이지번호를 파라미터로 전달 -->
-									<!-- 단, 현재 페이지 (i값과 pageNum 파라미터값이 동일)는 하이퍼링크 없이 굵게 표시			 -->
-									<c:choose>
-										<c:when test="${i eq pageNum}">
+							<c:choose>
+								<c:when test="${not empty requestScope.courseSupportList}">									
+									<section id="pageList">	
+									
+										<!-- 현재 목록의 시작페이지 번호에서 페이지 번호 갯수를 뺀 페이지 요청ㄹ -->
+										<!-- 시작 페이지가 1페이지 일 경우 페이지 비활성화! -->
+										<input type="button" value="&lt;&lt;" 
+											onclick="location.href='CourseSupportList?class_id=${course[0].class_id}&pageNum=${pageInfo.startPage - pageInfo.pageListLimit}'"				
+											<c:if test="${pageInfo.startPage == 1}">disabled</c:if> 	
+										>
+										<!-- [이전] 버튼 클릭시 이전 페이지 글 목록 요청(파라미터로 현재 페이지번호 -1 전달) -->
+										<!-- 현재 페이지가 1페이지 일 경우 페이지 비활성화! --> <!-- 0은 어차피 콘트롤러에서 제어함. -->
+										<input type="button" value="이전" 
+											onclick="location.href='CourseSupportList?class_id=${course[0].class_id}&pageNum=${pageNum - 1}'"
+											<c:if test="${pageNum == 1}">disabled</c:if> 	
+										>
 										
-											<strong>${i}</strong>
-										</c:when>
-										<c:otherwise>
-											<!-- 페이지 번호 클릭시 해당 페이지 번호를 파라미터로 전달					 -->
-											<a href="CourseSupportList?class_id=${course[0].class_id}&pageNum=${i}">${i}</a>
-										</c:otherwise>
-									</c:choose>
-								</c:forEach>
-								
-								<!-- [다음] 버튼 클릭시 이전 페이지 글 목록 요청(파라미터로 현재 페이지번호 +1 전달) -->
-								<%-- 현재 페이지가 전체 페이지 수와 동일할 경우 비활성화(disabled) --%>
-								<input type="button" value="다음" 
-									onclick="location.href='CourseSupportList?class_id=${course[0].class_id}&pageNum=${pageNum + 1}'"
-									<c:if test="${pageNum == pageInfo.maxPage}">disabled</c:if> 		
-								>
-								<!-- 현재 목록의 시작페이지 번호에서 페이지 번호 갯수를 더한 페이지 요청ㄹ -->
-								<%-- 끝 페이지가 전체 페이지 수와 동일할 경우 비활성화(disabled) --%>
-								<input type="button" value="&gt;&gt;" 
-									onclick="location.href='CourseSupportList?class_id=${course[0].class_id}&pageNum=${pageInfo.startPage + pageInfo.pageListLimit}'"
-									<c:if test="${pageInfo.endPage == pageInfo.maxPage}">disabled</c:if>	
-								>			
-							</section>
+										<!-- 계산된 페이지 번호가 저장된 PageInfo 객체(pageInfo)를 통해 페이지 번호 출력 -->
+										<!-- startPage 부터 endPage 까지 1씩 증가하면서 페이지 번호 표시 -->
+		<%-- 								startPage : ${pageInfo.startPage} , endPage : ${pageInfo.endPage} , pageNum : ${pageNum} --%>
+		<%-- 								pageInfo :  ${pageInfo }	 --%>
+										<c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
+											<!-- 각페이지마다 하이퍼링크 설정(BoardList) => 페이지번호를 파라미터로 전달 -->
+											<!-- 단, 현재 페이지 (i값과 pageNum 파라미터값이 동일)는 하이퍼링크 없이 굵게 표시			 -->
+											<c:choose>
+												<c:when test="${i eq pageNum}">
+												
+													<strong>${i}</strong>
+												</c:when>
+												<c:otherwise>
+													<!-- 페이지 번호 클릭시 해당 페이지 번호를 파라미터로 전달					 -->
+													<a href="CourseSupportList?class_id=${course[0].class_id}&pageNum=${i}">${i}</a>
+												</c:otherwise>
+											</c:choose>
+										</c:forEach>
+										
+										<!-- [다음] 버튼 클릭시 이전 페이지 글 목록 요청(파라미터로 현재 페이지번호 +1 전달) -->
+										<%-- 현재 페이지가 전체 페이지 수와 동일할 경우 비활성화(disabled) --%>
+										<input type="button" value="다음" 
+											onclick="location.href='CourseSupportList?class_id=${course[0].class_id}&pageNum=${pageNum + 1}'"
+											<c:if test="${pageNum == pageInfo.maxPage}">disabled</c:if> 		
+										>
+										<!-- 현재 목록의 시작페이지 번호에서 페이지 번호 갯수를 더한 페이지 요청ㄹ -->
+										<%-- 끝 페이지가 전체 페이지 수와 동일할 경우 비활성화(disabled) --%>
+										<input type="button" value="&gt;&gt;" 
+											onclick="location.href='CourseSupportList?class_id=${course[0].class_id}&pageNum=${pageInfo.startPage + pageInfo.pageListLimit}'"
+											<c:if test="${pageInfo.endPage == pageInfo.maxPage}">disabled</c:if>	
+										>			
+									</section>
+								</c:when>
+							</c:choose>
 							<!-- 페이징 처리 끝 -->
 						</div><!-- tabmenu -->
 						
@@ -192,13 +200,11 @@
 				</div><!-- container -->
 				<div class="cls-event-card">
 			        <div class="cls-event-card-header">
-			            클래스 가격
+			            결제하기
 			        </div>
 			        <div class="cls-event-card-body">
-			            <div class="price">88,200 원</div>
-			            <div>
-			                <span class="percentage">30%</span>
-			                <span class="discount">199,000원</span>
+			        	<div class="price">
+			            	<fmt:formatNumber pattern="#,###">${course[0].class_price}</fmt:formatNumber>원
 			            </div>
 			        </div>
 			        <div class="cls-event-card-footer">
@@ -215,24 +221,68 @@
 			        </div>
 			    </div>
 			</div><!-- cls-wrap detail -->
-			<section class="recommended-classes">
-	            <h2>강사의 다른 클래스 보기</h2>
-				<div class="card-container">
-					<c:forEach var="others" items="${requestScope.courseTeacher}">
-					    <div class="card">
-					        <img src="" alt="Class Image">
-				            <div class="rating">
-				                <span class="star">★</span>  (+ ???? )
+			<c:set var="pageNumT" value="1"/>
+<%-- 			pageInfoTeacher : ${pageInfoTeacher } --%>
+<%-- 			pageNumT : ${pageNumT } --%>
+            <c:if test="${not empty param.pageNumT}">
+				<c:set var="pageNumT" value="${param.pageNumT}"/>
+			</c:if>
+			<c:choose>
+				<c:when test="${not empty requestScope.courseTeacher}">
+					<div class="tabmenu" id="tab05">		
+						<section class="recommended-classes">
+				            <h2>강사의 다른 클래스 보기</h2>
+							<div class="card-container">
+								<c:forEach var="others" items="${requestScope.courseTeacher}">
+								    <a href="CourseDetail?class_id=${others.class_id}">
+									    <div class="card">
+									        <img src="resources/upload/${others.class_pic1}" alt="Class Image">
+									        <div class="card-content">
+									            <div class="category">IT/개발</div>
+									            <div class="title">${others.class_title}</div>
+									            <div class="description">${others.mem_id}</div>
+									        </div>
+									    </div>
+									</a>
+								</c:forEach>
 				            </div>
-					        <div class="card-content">
-					            <div class="category">IT/개발</div>
-					            <div class="title">${others.class_title}</div>
-					            <div class="description">${others.mem_id}</div>
-					        </div>
-					    </div>
-					</c:forEach>
-	            </div>
-	     	</section>
+				        
+				           	<section id="pageList">	
+	<!-- 							<input type="button" value="&lt;&lt;"  -->
+	<%-- 								onclick="location.href='courseTeacher?class_id=${courseTeacher.class_id}&pageNum=${pageInfo.startPage - pageInfo.pageListLimit}'"				 --%>
+	<%-- 								<c:if test="${pageInfo.startPage == 1}">disabled</c:if> 	 --%>
+	<!-- 							> -->
+	<!-- 							<input type="button" value="이전"  -->
+	<%-- 								onclick="location.href='courseTeacher?class_id=${courseTeacher.class_id}&pageNum=${pageNum - 1}'" --%>
+	<%-- 								<c:if test="${pageNum == 1}">disabled</c:if> 	 --%>
+	<!-- 							> -->
+								
+								<c:forEach var="i" begin="${pageInfoTeacher.startPageTeacher}" end="${pageInfoTeacher.endPageTeacher}">
+									<c:choose>
+										<c:when test="${i eq pageNumT}">
+											<strong>${i}</strong>
+										</c:when>
+										<c:otherwise>
+											<a href="CourseSupportList?class_id=${course[0].class_id}&pageNumT=${i}#tab05">${i}</a>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+								
+	<!-- 							<input type="button" value="다음"  -->
+	<%-- 								onclick="location.href='courseTeacher?class_id=${courseTeacher.class_id}&pageNum=${pageNum + 1}'" --%>
+	<%-- 								<c:if test="${pageNum == pageInfo.maxPage}">disabled</c:if> 		 --%>
+	<!-- 							> -->
+	<!-- 							<input type="button" value="&gt;&gt;"  -->
+	<%-- 								onclick="location.href='courseTeacher?class_id=${courseTeacher.class_id}&pageNum=${pageInfo.startPage + pageInfo.pageListLimit}'" --%>
+	<%-- 								<c:if test="${pageInfo.endPage == pageInfo.maxPage}">disabled</c:if>	 --%>
+	<!-- 							>			 -->
+							</section>
+						</section>
+					</div><!-- tabmenu 05끝 -->		           
+			     	
+			     	
+		     	</c:when>
+		    </c:choose>
 		</div><!-- wrapper -->
 	</main>
 	<footer>

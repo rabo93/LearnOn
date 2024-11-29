@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -76,13 +78,28 @@ public class AdminController {
 			return "admin/fail";
 		}
 		if(grade.equals("MEM02")) {
+			
 			return "admin/index_instructor";
 		}
+		//	오늘 날짜 불러오기
+		LocalDate today = LocalDate.now();
+		//	년-월-일 형식으로 포맷
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		//	오늘날짜에 포맷한 형식 넣기
+		String formattedDate = today.format(formatter);
+		//	일반 회원 수 조회
+		int nomalMemberCount = adminService.getNomalMemberCount();
+		//	강사 회원 수 조회
+		int instrucMemberCount = adminService.getInstrucMemberCount();
+		//	오늘 결제된 매출 조회
+		int todayPayTotal = adminService.getTodayPayTotal(formattedDate);
+		//	주간 총 매출 조회
+		int weekPayTotal = adminService.getWeekPayTotal(formattedDate);
 		
-		
-		
-		
-		
+		model.addAttribute("nomalMemberCount", nomalMemberCount);
+		model.addAttribute("instrucMemberCount", instrucMemberCount);
+		model.addAttribute("todayPayTotal", todayPayTotal);
+		model.addAttribute("weekPayTotal", weekPayTotal);
 		return "admin/index";
 		
 	}
@@ -242,7 +259,7 @@ public class AdminController {
 			return "admin/fail";
 		}
 		model.addAttribute("getMainCate", adminService.getMainCate());
-		model.addAttribute("getInstructor", adminService.getInstructorMemberList());
+		model.addAttribute("getInstructor", adminService.getInstructor());
 		return "admin/class_add";
 	}
 	
@@ -394,7 +411,7 @@ public class AdminController {
 		model.addAttribute("getClass", classLoad);
 		model.addAttribute("getMainCate", adminService.getMainCate());
 		model.addAttribute("getCurriculum", adminService.getCurriculum(class_id));
-		model.addAttribute("getInstructor", adminService.getInstructorMemberList());
+		model.addAttribute("getInstructor", adminService.getInstructor());
 //		
 		if (classLoad == null) {
 			model.addAttribute("msg", "클래스 불러오기 실패!");
@@ -1229,7 +1246,7 @@ public class AdminController {
 		// 페이징 설정
 		int listLimit = 10; // 한 페이지당 게시물 수
 		int startRow = (pageNum - 1) * listLimit;
-		int listCount = courseService.getCSupportListCount(0);
+		int listCount = courseService.getCourseSupportListCount(0);
 		
 		int pageListLimit = 5; // 페이징 개수 
 		int maxPage = (listCount / listLimit) + (listCount % listLimit > 0 ? 1 : 0);

@@ -18,15 +18,13 @@ public class CourseService {
 	@Autowired
 	CourseMapper mapper;
 	
-//	public List<CourseVO> getCourseList(CourseVO course, String searchType) {
-//	public List<CourseVO> getCourseList(CourseVO course) {
-//	public List<CourseVO> getCourseList(CourseVO course, String searchType) {
-//		return mapper.selectCourseList(searchType, course);
-//	}
-	public List<CourseVO> getCourseList(CourseVO course, String codetype, String searchType) {
-		return mapper.selectCourseList(searchType, codetype, course);
+	
+	public int getCourseListCount(CourseVO course, String codetype, String searchType) {
+		return mapper.selectCourseListCount(course, codetype, searchType);
 	}
-
+	public List<CourseVO> getCourseList(CourseVO course, String codetype, String searchType, int startRow, int pageListLimit) {
+		return mapper.selectCourseList(searchType, codetype, course, startRow, pageListLimit);
+	}
 	public List<CourseVO> getCourse(int class_id) {
 		return mapper.selectCourse(class_id);
 	}
@@ -48,13 +46,13 @@ public class CourseService {
 	public int registCourseSupport(CourseSupportVO cSupport) {
 		return mapper.insertCourseSupport(cSupport);
 	}
-
+	
 	public List<CourseSupportVO> getCourseSupportList(int class_id, int startRow, int listLimit) {
 		return mapper.selectCourseSupportList(class_id,startRow,listLimit);
 	}
 
-	public int getCSupportListCount(int class_id) {
-		return mapper.selectCSupportListCount(class_id);
+	public int getCourseSupportListCount(int class_id) {
+		return mapper.selectCourseSupportListCount(class_id);
 	}
 
 	public CourseSupportVO getCourseSupport(int class_id) {
@@ -77,21 +75,30 @@ public class CourseService {
 		return mapper.deleteCourseSupport(c_support_idx);
 	}
 
-	public List<CourseVO> getCourseTeacher(int class_id, String teacher_id) {
-		return mapper.selectCourseTeacher(class_id, teacher_id);
+	public int getCourseTeacherCount(int class_id, String teacher_id) {
+		return mapper.selectCourseTeacherCount(class_id, teacher_id);
+	}
+	public List<CourseVO> getCourseTeacher(int class_id, String teacher_id, int startRow, int listLimit) {
+		return mapper.selectCourseTeacher(class_id, teacher_id,startRow,listLimit);
 	}
 
 	public int registApplyForCourse(int class_id, String id) {
 		return mapper.insertApplyForCourse(class_id, id);
 	}
 
-	public List<CourseVO> getFindCourseList(String find_title) {
-		return mapper.selectFindCourseList(find_title);
+	public List<CourseVO> getFindCourseList(String find_title, int startRow, int pageListLimit) {
+		return mapper.selectFindCourseList(find_title, startRow, pageListLimit);
 	}
 
-	public List<CourseVO> getCourseBestList() {
-		return mapper.selectCourseBestList();
+	public List<CourseVO> getCourseBestList(int startRow, int pageListLimit, String searchType) {
+		return mapper.selectCourseBestList(startRow, pageListLimit, searchType);
 	}
+	public int getCourseBestListCount() {
+		return mapper.selectCourseBestListCount();
+	}
+	
+
+	
 
 
 	

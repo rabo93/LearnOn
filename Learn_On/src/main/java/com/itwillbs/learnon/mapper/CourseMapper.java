@@ -15,11 +15,20 @@ import com.itwillbs.learnon.vo.MyReviewVO;
 @Mapper
 public interface CourseMapper {
 
+	
+	int selectCourseListCount(
+			@Param("course") CourseVO course, 
+			@Param("codetype") String codetype,
+			@Param("searchType")  String searchType
+	);
 	List<CourseVO> selectCourseList(
 			@Param("searchType") String searchType,
 			@Param("codetype") String codetype,
-			@Param("course") CourseVO course
-							);
+			@Param("course") CourseVO course,
+			@Param("startRow") int startRow, 
+			@Param("pageListLimit") int pageListLimit
+	);
+	
 
 	List<CourseVO> selectCourse(int classId);
 
@@ -40,7 +49,7 @@ public interface CourseMapper {
 		);
 
 
-	int selectCSupportListCount(int class_id);
+	int selectCourseSupportListCount(int class_id);
 
 	CourseSupportVO selectCourseSupport(int class_id);
 
@@ -52,17 +61,34 @@ public interface CourseMapper {
 
 	int deleteCourseSupport(int c_support_idx);
 
+	int selectCourseTeacherCount(@Param("class_id") int class_id, @Param("teacher_id") String teacher_id);
 	List<CourseVO> selectCourseTeacher(
 			@Param("class_id") int class_id, 
-			@Param("teacher_id") String teacher_id);
+			@Param("teacher_id") String teacher_id,
+			@Param("startRow") int startRow,
+			@Param("pageListLimit") int pageListLimit
+	);
 
 	int insertApplyForCourse(
 			@Param("class_id") int class_id, 
 			@Param("id") String id);
 
-	List<CourseVO> selectFindCourseList(String find_title);
+	List<CourseVO> selectFindCourseList(
+			@Param("find_title") String find_title,
+			@Param("startRow") int startRow, 
+			@Param("pageListLimit") int pageListLimit
+	);
 
-	List<CourseVO> selectCourseBestList();
+	List<CourseVO> selectCourseBestList(
+			@Param("startRow") int startRow, 
+			@Param("pageListLimit") int pageListLimit,
+			@Param("searchType") String searchType
+	);
+	
+	int selectCourseBestListCount();
+	
+
+	
 
 
 }

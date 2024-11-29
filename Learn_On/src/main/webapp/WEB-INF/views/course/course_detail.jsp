@@ -23,9 +23,10 @@
 		<div class="wrapper">
 			<div class="cls-wrap detail">
 				<div class="container">
+				
 					<section class="breadcrumb">
 			            <a href="#">카테고리</a> <i class="fa-solid fa-angle-right"></i>
-			            <a href="Category?codetype=${codeType[0].codetype}">${codeType[0].codename}</a> <i class="fa-solid fa-angle-right"></i>
+			            <a href="Category?codetype=${course[0].codetype}">${course[0].catename}</a> <i class="fa-solid fa-angle-right"></i>
 			            <span>${course[0].class_category}</span>
 			        </section>
 			        <section class="class-details">
@@ -44,16 +45,26 @@
 				            	<h4>총  ${fn:length(total_cur)}강 ( ${course[0].class_runtime}분)</h4>
 				            </div>
 				            <div class="cls-pic">
-				            	<img src="resources/upload/${coursePicArray[0]}" id="preview" class="figure-img img-fluid rounded" alt="thumpnail" style="height: 280px;">
+				            	<c:choose>
+				            		<c:when test="${not empty course[0].class_pic1}">
+				            			<img src="resources/upload/${course[0].class_pic1}" id="preview" class="figure-img img-fluid rounded" alt="thumpnail" style="height: 280px;">
+				            		</c:when>
+				            		<c:otherwise>
+				            			<img src="${pageContext.request.contextPath}/resources/images/empty.png">
+				            		</c:otherwise>
+				            	</c:choose>
 				            </div>
 			            </div>
 			        </section>
-	        		<c:set var="count" value="${courseSupportList}" />
+<%-- 	        		<c:set var="count" value="${courseSupportList}" /> --%>
 					<ul class="tabnav">
 						<li><a href="#tab01">클래스 소개</a></li>
 						<li><a href="#tab02">커리큘럼</a></li>
 						<li><a href="#tab03">수강평(${fn:length(total_re)})</a></li>
-						<li><a class="tab" href="CourseSupportList?class_id=${course[0].class_id}&codetype=${param.codetype}">문의(${fn:length(count)})</a></li>
+						<li><a class="tab" href="CourseSupportList?class_id=${course[0].class_id}&codetype=${param.codetype}">
+<%-- 						문의(${fn:length(count)}) --%>
+문의
+						</a></li>
 					</ul>
 					<div class="tabcontent">
 						<div class="tabmenu" id="tab01">
@@ -91,27 +102,39 @@
 									<input type="submit" value="검색" />
 								</form>
 							</div>	
+							<c:choose>
+								<c:when test="${empty myReview}">
+									<div class="empty">작성된 수강평이 없습니다.</div>
+								</c:when>
+								<c:otherwise>	
+									<div class="review-rating">
+						                <span class="rating-score">${course[0].review_score}</span><br>
+						                <span class="stars"><i class="fa-solid fa-star"></i></span>
+						            </div>
+						            <c:forEach var="review" items="${myReview}" varStatus="status">
+						            	<div class="review">
+										    <div class="r_header">
+										        <div class="profile-icon"></div>
+										        <div class="user-info">
+										            <div class="name">${review.mem_id}</div>
+										            <div class="date">${review.review_date}</div>
+										        </div>
+										    </div>
+								            <div class=rating>
+												<i class="fa-solid fa-star" ></i>
+												<span><b>${review.review_score}</b></span>
+											</div>
+										    <div class="review-text">${review.review_content}</div>
+										</div>
+						            </c:forEach>
+								</c:otherwise>
+							</c:choose>	
 								
-				            <div class="review-rating">
-				                <span class="rating-score">${course[0].review_score}</span><br>
-				                <span class="stars"><i class="fa-solid fa-star"></i></span>
-				            </div>
-				            <c:forEach var="review" items="${myReview}" varStatus="status">
-				            	<div class="review">
-								    <div class="r_header">
-								        <div class="profile-icon"></div>
-								        <div class="user-info">
-								            <div class="name">${review.mem_id}</div>
-								            <div class="date">${review.review_date}</div>
-								        </div>
-								    </div>
-						            <div class=rating>
-										<i class="fa-solid fa-star" ></i>
-										<span><b>${review.review_score}</b></span>
-									</div>
-								    <div class="review-text">${review.review_content}</div>
-								</div>
-				            </c:forEach>
+								
+								
+								
+								
+				            
 						</div><!-- tabmenu 03 -->
 					</div><!-- tabcontent(클래스소개) 끝 -->
 			  	</div><!-- container -->
@@ -121,10 +144,6 @@
 						<div class="price">
 							<fmt:formatNumber pattern="#,###">${course[0].class_price}</fmt:formatNumber>원	
 						</div>
-<!-- 						<div> -->
-<!-- 						    <span class="percentage">30%</span> -->
-<!-- 						    <span class="discount">199,000원</span> -->
-<!-- 						</div> -->
 					</div>
 					<div class="cls-event-card-footer">
 						<button class="apply-button" onclick="applyForCourse('${course[0].class_id}', '${param.codetype}')"><i class="fa-solid fa-cart-arrow-down"></i> 수강신청 하기</button>
@@ -136,25 +155,66 @@
 				</div><!-- cls-event-card -->
 				
 			</div><!-- cls-wrap detail -->
-		        
-	        <section class="recommended-classes">
-	            <h2>강사의 다른 클래스 보기</h2>
-				<div class="card-container">
-					<c:forEach var="others" items="${requestScope.courseTeacher}">
-					    <div class="card">
-					        <img src="" alt="Class Image">
-				            <div class="rating">
-				                <span class="star"><i class="fa-solid fa-star"></i></span>  (+ ???? )
+			<c:set var="pageNum" value="1"/>
+            <c:if test="${not empty param.pageNum}">
+				<c:set var="pageNum" value="${param.pageNum}"/>
+			</c:if>
+		    <c:choose>
+				<c:when test="${not empty requestScope.courseTeacher}">    
+			        <div class="tabmenu" id="tab05">
+				        <section class="recommended-classes">
+				            <h2>강사의 다른 클래스 보기</h2>
+							<div class="card-container">
+								<c:forEach var="others" items="${requestScope.courseTeacher}">
+									<a href="CourseDetail?class_id=${others.class_id}">
+									    <div class="card">
+									        <img src="resources/upload/${others.class_pic1}" alt="Class Image">
+									        <div class="card-content">
+									            <div class="category">IT/개발</div>
+									            <div class="title">${others.class_title}</div>
+									            <div class="description">${others.mem_id}</div>
+									        </div>
+									    </div>
+									</a>
+								</c:forEach>
 				            </div>
-					        <div class="card-content">
-					            <div class="category">IT/개발</div>
-					            <div class="title">${others.class_title}</div>
-					            <div class="description">${others.mem_id}</div>
-					        </div>
-					    </div>
-					</c:forEach>
-	            </div>
-	        </section>
+				       
+					        <!-- 페이징 영역 -->
+				        	<section id="pageList">	
+								<input type="button" value="&lt;&lt;" 
+									onclick="location.href='CourseDetail?class_id=${course[0].class_id}&pageNum=${pageInfo.startPage - pageInfo.pageListLimit}#tab05'"				
+									<c:if test="${pageInfo.startPage == 1}">disabled</c:if> 	
+								>
+								<input type="button" value="이전" 
+									onclick="location.href='CourseDetail?class_id=${course[0].class_id}&pageNum=${pageNum - 1}#tab05'"
+									<c:if test="${pageNum == 1}">disabled</c:if> 	
+								>
+								
+								<c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
+									<c:choose>
+										<c:when test="${i eq pageNum}">
+											<strong>${i}</strong>
+										</c:when>
+										<c:otherwise>
+											<a href="CourseDetail?class_id=${course[0].class_id}&pageNum=${i}#tab05">${i}</a>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+								
+								<input type="button" value="다음" 
+									onclick="location.href='CourseDetail?class_id=${course[0].class_id}&pageNum=${pageNum + 1}#tab05'"
+									<c:if test="${pageNum == pageInfo.maxPage}">disabled</c:if> 		
+								>
+								<input type="button" value="&gt;&gt;" 
+									onclick="location.href='CourseDetail?class_id=${course[0].class_id}&pageNum=${pageInfo.startPage + pageInfo.pageListLimit}'"
+									<c:if test="${pageInfo.endPage == pageInfo.maxPage}">disabled</c:if>	
+								>			
+							</section>
+				        <!-- 페이징 영역 -->
+				         </section>
+			        </div><!--tabmenu 05 끝 -->	
+				</c:when>
+			</c:choose>
 		</div> <!-- // wrapper -->
 	</main>
 	<footer>

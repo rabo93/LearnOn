@@ -9,12 +9,14 @@
 		SELECT COUNT(MEM_ID)
 		  FROM MEMBER
 		 WHERE MEM_GRADE = 'MEM01'
+		   AND MEM_STATUS = 1
 	</select>
 	<!-- 강사회원 수 조회 -->
 	<select id="getInstrucMemberCount" resultType="int">
 		SELECT COUNT(MEM_ID)
 		  FROM MEMBER
 		 WHERE MEM_GRADE = 'MEM02'
+		   AND MEM_STATUS = 1
 	</select>
 	<!-- 오늘 매출량 조회 -->
 	<select id="getTodayPayTotal" resultType="int">
@@ -223,7 +225,6 @@
 		  FROM MEMBER
 		 WHERE 1=1
 		   AND MEM_STATUS IN (1, 2)
-		   -- AND MEM_GRADE = 'MEM01'
 		 <if test="!searchKeyword.equals('')">
 			<choose>
 			<when test="searchType.equals('id')">
@@ -252,7 +253,6 @@
 		SELECT COUNT(*)
 		  FROM MEMBER
 		 WHERE 1=1
-		   AND MEM_GRADE = 'MEM01'
 		   AND MEM_STATUS IN (1, 2)
 	</select>
 	

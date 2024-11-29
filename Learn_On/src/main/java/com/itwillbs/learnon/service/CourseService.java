@@ -78,8 +78,8 @@ public class CourseService {
 	public int getCourseTeacherCount(int class_id, String teacher_id) {
 		return mapper.selectCourseTeacherCount(class_id, teacher_id);
 	}
-	public List<CourseVO> getCourseTeacher(int class_id, String teacher_id, int startRow, int listLimit) {
-		return mapper.selectCourseTeacher(class_id, teacher_id,startRow,listLimit);
+	public List<CourseVO> getCourseTeacher(int class_id, String teacher_id) {
+		return mapper.selectCourseTeacher(class_id, teacher_id);
 	}
 
 	public int registApplyForCourse(int class_id, String id) {

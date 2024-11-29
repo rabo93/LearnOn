@@ -408,11 +408,12 @@ public class AdminController {
 	@GetMapping("AdmClassListModify")
 	public String admin_class_list_modi(int class_id, Model model) {
 		AdminVO classLoad = adminService.getClass(class_id);
+		
 		model.addAttribute("getClass", classLoad);
 		model.addAttribute("getMainCate", adminService.getMainCate());
 		model.addAttribute("getCurriculum", adminService.getCurriculum(class_id));
 		model.addAttribute("getInstructor", adminService.getInstructor());
-//		
+		
 		if (classLoad == null) {
 			model.addAttribute("msg", "클래스 불러오기 실패!");
 			return "admin/fail";
@@ -583,8 +584,10 @@ public class AdminController {
 		}
 		
 		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
+		List<MemberVO> memberList = adminService.getNomalMemberList(startRow, listLimit, searchKeyword, searchType, sort);
 		model.addAttribute("pageInfo", pageInfo);
-		model.addAttribute("getMemberList", adminService.getNomalMemberList(startRow, listLimit, searchKeyword, searchType, sort));
+		model.addAttribute("getMemberList", memberList);
+//		model.addAttribute("getMemberList", adminService.getNomalMemberList(startRow, listLimit, searchKeyword, searchType, sort));
 		model.addAttribute("sort", sort);
 		return "admin/member_list";
 	}

@@ -187,9 +187,8 @@
 		    ON C.MEM_ID = M.MEM_ID
 		 WHERE C.MEM_ID = #{teacher_id}  
 		   AND CLASS_ID != #{class_id}
-		 LIMIT 
-		       #{startRow}
-			 , #{pageListLimit}
+		 LIMIT 1,5 
+		      
 	</select>
 	<select id="selectCourseTeacherCount" resultType="int">
 		SELECT COUNT(*) 

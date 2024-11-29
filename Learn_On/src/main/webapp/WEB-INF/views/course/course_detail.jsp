@@ -63,7 +63,9 @@
 						<li><a href="#tab01">클래스 소개</a></li>
 						<li><a href="#tab02">커리큘럼</a></li>
 						<li><a href="#tab03">수강평(${fn:length(total_re)})</a></li>
-						<li><a class="tab" href="CourseSupportList?class_id=${course[0].class_id}&codetype=${param.codetype}">문의</a></li>
+						<li><a class="tab" href="CourseSupportList?class_id=${course[0].class_id}&codetype=${param.codetype}">
+						문의(${listCountSupport})
+						</a></li>
 					</ul>
 					<div class="tabcontent">
 						<div class="tabmenu" id="tab01">

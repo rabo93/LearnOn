@@ -91,7 +91,7 @@
 								</div>
 							</div>
 							<figure class="figure">
-								<img src="resources/admin/img/learn_on_logo2.png" id="preview" class="figure-img img-fluid rounded" alt="thumpnail" style="height: 280px;">
+								<img src="resources/admin/img/thumb_origin.jpg" id="preview" class="figure-img img-fluid rounded" alt="thumpnail" style="height: 280px;">
 								<figcaption class="figure-caption text-center mb-3">썸네일 이미지 미리보기</figcaption>
 <!-- 									<input type="file" class="file form-control" id="inputGroupFile02" name="CLASS_PIC1"  -->
 									<input type="file" class="file form-control" id="inputGroupFile02"

@@ -72,7 +72,9 @@
                             <i class="fa fa-chart-area fa-3x text-primary"></i>
                             <div class="ms-3">
                                 <p class="mb-2">오늘 매출</p>
-                                <h6 class="mb-0">￦ ${todayPayTotal}원</h6>
+                                <h6 class="mb-0">
+                                	￦ <fmt:formatNumber pattern="#,###">${todayPayTotal}</fmt:formatNumber>원
+                                </h6>
                             </div>
                         </div>
                     </div>
@@ -81,7 +83,9 @@
                             <i class="fa fa-chart-pie fa-3x text-primary"></i>
                             <div class="ms-3">
                                 <p class="mb-2">주간 매출</p>
-                                <h6 class="mb-0">￦ ${weekPayTotal}원</h6>
+                                <h6 class="mb-0">
+                                	￦ <fmt:formatNumber pattern="#,###">${weekPayTotal}</fmt:formatNumber>원
+                                </h6>
                             </div>
                         </div>
                     </div>

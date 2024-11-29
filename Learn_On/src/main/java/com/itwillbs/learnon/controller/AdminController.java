@@ -428,11 +428,12 @@ public class AdminController {
 	@GetMapping("AdmClassListModify")
 	public String admin_class_list_modi(int class_id, Model model) {
 		AdminVO classLoad = adminService.getClass(class_id);
+		
 		model.addAttribute("getClass", classLoad);
 		model.addAttribute("getMainCate", adminService.getMainCate());
 		model.addAttribute("getCurriculum", adminService.getCurriculum(class_id));
 		model.addAttribute("getInstructor", adminService.getInstructor());
-//		
+		
 		if (classLoad == null) {
 			model.addAttribute("msg", "클래스 불러오기 실패!");
 			return "admin/fail";
@@ -443,8 +444,10 @@ public class AdminController {
 	
 	// 어드민 클래스 수정 로직
 	@PostMapping("AdmClassListModify")
-	public String adm_class_modify(int class_id, AdminVO adm, HttpSession session, Model model) {
+	public String adm_class_modify(int class_id, AdminVO adm,  HttpSession session, Model model) {
+		
 		AdminVO classInfo = adminService.getIdClass(class_id);
+		List<Map<String, Object>> curList = adminService.getCurriculum(class_id);
 		
 		// 커리큘럼 내용 가져오기
 		String[] arrCurTitle = adm.getCur_title().split(",");
@@ -458,7 +461,6 @@ public class AdminController {
 		realPath += "/" + subDir;
 		
 		// 커리큘럼 업데이트 for
-		adminService.deleteCurriculum(class_id);
 		for (int i = 0; i < arrCurTitle.length; i++) {
 			String videoName = addVideoProcess(adm.getCur_video_get()[i], realPath, subDir);
 			if (videoName.equals("")) {
@@ -466,11 +468,11 @@ public class AdminController {
 			} else {
 				adm.setCur_video(videoName);
 			}
+			adm.setCur_id(Integer.parseInt(curList.get(i).get("CUR_ID").toString()));
 			adm.setCur_title(arrCurTitle[i]);
 			adm.setCur_runtime(arrCurRunTime[i]);
 			totalRunTime += Integer.parseInt(arrCurRunTime[i]);
-			adminService.insertCurriculum(adm);
-			adminService.insertCurVideo(adm);
+			adminService.updateCurriculum(adm);
 		}
 		
 		adm.setClass_runtime(totalRunTime);

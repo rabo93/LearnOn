@@ -5,7 +5,8 @@
 <html>
 <head>
 	<meta charset="utf-8">
-    <title>LearnOn - 관리자 페이지</title>
+    <title>런 온 - 관리자 페이지</title>
+	<link rel="SHORTCUT ICON" href="${pageContext.request.contextPath}/resources/images/favicon.ico">
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
@@ -58,15 +59,15 @@
 						<div class="d-flex justify-content-between">
 							<div class="col-8">
 		                		<div class="form-floating mb-3">
-		                			<input type="text" class="form-control" id="floatingInput" name="class_title">
+		                			<input type="text" class="form-control" id="floatingInput" name="class_title" oninvalid="this.setCustomValidity('제목을 입력해주세요')">
 		                			<label for="floatingInput">강의 제목</label>
 		                		</div>
 								<div class="form-floating mb-3">
-									<textarea class="form-control" id="floatingInput" name="class_intro" style="height: 80px;" rows="3" ></textarea>
+									<textarea class="form-control" id="floatingInput" name="class_intro" style="height: 80px;" rows="3" oninvalid="this.setCustomValidity('소개를 입력 해주세요')"></textarea>
 									<label for="floatingInput">강의 소개</label>
 								</div>
 								<div class="form-floating mb-3">
-									<textarea class="form-control" id="floatingTextarea" style="height: 150px;" name="class_contents" rows="5"></textarea>
+									<textarea class="form-control" id="floatingTextarea" style="height: 150px;" name="class_contents" rows="5" oninvalid="this.setCustomValidity('상세내용을 입력해주세요')"></textarea>
 									<label for="floatingTextarea">강의 상세내용</label>
 								</div>
 								<div class="d-flex">
@@ -84,14 +85,14 @@
 										<label for="floatingSelect2">소분류</label>
 									</div>
 									<div class="form-floating flex-fill">
-										<input type="text" class="form-control" id="teacher" name="mem_id">
+										<input type="text" class="form-control" id="teacher" name="mem_id" readonly oninvalid="this.setCustomValidity('강사를 선택해주세요')">
 										<label for="floatingInput">강사 ID</label>
 										<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTeacherList">강사 찾기</button>
 									</div>
 								</div>
 							</div>
 							<figure class="figure">
-								<img src="resources/admin/img/learn_on_logo2.png" id="preview" class="figure-img img-fluid rounded" alt="thumpnail" style="height: 280px;">
+								<img src="resources/admin/img/thumb_origin.jpg" id="preview" class="figure-img img-fluid rounded" alt="thumpnail" style="height: 280px;">
 								<figcaption class="figure-caption text-center mb-3">썸네일 이미지 미리보기</figcaption>
 <!-- 									<input type="file" class="file form-control" id="inputGroupFile02" name="CLASS_PIC1"  -->
 									<input type="file" class="file form-control" id="inputGroupFile02"
@@ -120,22 +121,19 @@
 									<span class="input-group-text">원</span>
 								</div>
 							</div>
-<!-- 							<div class="col-3 me-3"> -->
-<!-- 								<h6>할인</h6> -->
-<!-- 								<div class="input-group"> -->
-<!-- 									<input type="number" class="form-control" "> -->
-<!-- 									<span class="input-group-text">원</span> -->
-<!-- 								</div> -->
-<!-- 							</div> -->
+							<div class="col-3 me-3">
+								<h6>해시태그 생성</h6>
+								<div class="input-group">
+									<input type="text" name="hashtag" class="form-control" pattern="^#([a-zA-Z0-9가-힣]{1,10})(,#([a-zA-Z0-9가-힣]{1,10})){0,9},?$" placeholder="ex) #프로그래밍,#자바,#스프링,#DBMS" >
+								</div>
+							</div>
 							<div class="col-2 me-3">
 								<h6>공개상태</h6>
-								<div class="form-floating">
 									<select class="form-select mb-3" aria-label="Default select example" name="class_status">
 										<option value="1">공개</option>
 										<option value="2">비공개</option>
 										<option value="3">폐강</option>
 									</select>
-								</div>
 							</div>
 						</div>
 					</div>

@@ -8,7 +8,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>런온</title>
+<title>런 온 - 온라인 No.1 교육 플랫폼</title>
+<link rel="SHORTCUT ICON" href="${pageContext.request.contextPath}/resources/images/favicon.ico">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/reset.css">
@@ -30,29 +31,31 @@
 			            <span>${course[0].class_category}</span>
 			        </section>
 			        <section class="class-details">
-			            <h1>${course[0].class_title}</h1>
-						<p>${course[0].class_intro}</p>       
-			            <div class="cls_det_rating">
-			            	<span class="stars"><i class="fa-solid fa-star"></i> ${course[0].review_score }</span>
-							<div class="cls-det-text">            	
-				            	<i class="fa-solid fa-user"></i>
-				            	<h4>${course[0].mem_id}</h4>
-				            </div>
-							<div class="cls-det-text">            	
-				            	<i class="fa-regular fa-hourglass-half"></i>
-				            	<c:set var="total_cur" value="${course}" />
-				            	<c:set var="total_re" value="${myReview}" />
-				            	<h4>총  ${fn:length(total_cur)}강 ( ${course[0].class_runtime}분)</h4>
-				            </div>
-				            <div class="cls-pic">
-				            	<c:choose>
-				            		<c:when test="${not empty course[0].class_pic1}">
-				            			<img src="resources/upload/${course[0].class_pic1}" id="preview" class="figure-img img-fluid rounded" alt="thumpnail" style="height: 280px;">
-				            		</c:when>
-				            		<c:otherwise>
-				            			<img src="${pageContext.request.contextPath}/resources/images/empty.png">
-				            		</c:otherwise>
-				            	</c:choose>
+			        	<div class="cls-pic">
+			            	<c:choose>
+			            		<c:when test="${not empty course[0].class_pic1}">
+			            			<img src="${pageContext.request.contextPath}/resources/upload/${course[0].class_pic1}" id="preview" class="figure-img img-fluid rounded" alt="thumpnail" style="height: 280px;">
+			            		</c:when>
+			            		<c:otherwise>
+			            			<img src="${pageContext.request.contextPath}/resources/images/thumb_origin.jpg">
+			            		</c:otherwise>
+			            	</c:choose>
+			            </div>
+			            <div class="cls-infos">
+				            <h1>${course[0].class_title}</h1>
+							<p>${course[0].class_intro}</p>       
+				            <div class="cls_det_rating">
+				            	<span class="stars"><i class="fa-solid fa-star"></i> ${course[0].review_score }</span>
+								<div class="cls-det-text">            	
+					            	<i class="fa-solid fa-user"></i>
+					            	<h4>${course[0].mem_id}</h4>
+					            </div>
+								<div class="cls-det-text">            	
+					            	<i class="fa-regular fa-hourglass-half"></i>
+					            	<c:set var="total_cur" value="${course}" />
+					            	<c:set var="total_re" value="${myReview}" />
+					            	<h4>총  ${fn:length(total_cur)}강 ( ${course[0].class_runtime}분)</h4>
+					            </div>
 				            </div>
 			            </div>
 			        </section>
@@ -68,10 +71,10 @@
 					<div class="tabcontent">
 						<div class="tabmenu" id="tab01">
 							<h2>클래스 소개</h2>
-				            <div class="intro_title">
+				            <div class="intro_title" style="white-space: pre-line;">
 				            	${course[0].class_intro}
 			            	</div>
-				            <div class="intro">
+				            <div class="intro" style="white-space: pre-line;">
 				            	${course[0].class_contents}
 							</div>
 						</div>
@@ -167,7 +170,7 @@
 								<c:forEach var="others" items="${requestScope.courseTeacher}">
 									<a href="CourseDetail?class_id=${others.class_id}">
 									    <div class="card">
-									        <img src="resources/upload/${others.class_pic1}" alt="Class Image">
+									        <img src="${pageContext.request.contextPath}/resources/upload/${others.class_pic1}" alt="Class Image">
 									        <div class="card-content">
 									            <div class="category">IT/개발</div>
 									            <div class="title">${others.class_title}</div>

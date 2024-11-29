@@ -7,7 +7,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>런온</title>
+<title>런 온 - 온라인 No.1 교육 플랫폼</title>
+<link rel="SHORTCUT ICON" href="${pageContext.request.contextPath}/resources/images/favicon.ico">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/reset.css">
@@ -23,7 +24,7 @@
 			<div class="cls-wrap">
 				<div class="cls-cate">
 				
-					<h1 class="cls-ttl">BEST CLASS LIST</h1>
+					<h1 class="cls-ttl">실시간 베스트 강의 🔥</h1>
 					<div class="cate-li">
 						<form action="BestCourse">
 							<select name="searchType">
@@ -53,7 +54,7 @@
 								<c:forEach var="course" items="${requestScope.courseList}" varStatus="status">
 									<li id="${course.class_id}">
 										<a href="CourseDetail?class_id=${course.class_id}&codetype=${codeType[0].codetype}">
-											<img src="${pageContext.request.contextPath}/resources/images/thumb_0${status.count}.webp" class="card-thumb" alt="thumbnail" />
+											<img src="${pageContext.request.contextPath}/resources/upload/${course.class_pic1}" onclick="location.href='CourseDetail?class_id=${course.class_id}&codetype=${codeType[0].codetype}'" class="card-thumb" alt="thumbnail" />
 											<div class="card-info">
 												<div class="category">
 													<span>${course.catename}</span>

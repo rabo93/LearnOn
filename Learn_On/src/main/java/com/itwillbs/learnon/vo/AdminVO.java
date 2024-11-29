@@ -12,6 +12,7 @@ public class AdminVO {
 	private int class_id;
 	private String class_title;
 	private String mem_id;
+	private String mem_name;
 	private String class_intro;
 	private int class_price;
 	private String class_category;
@@ -25,6 +26,7 @@ public class AdminVO {
 	private String name;
 	private String codetype;
 	private String codename;
+	private String hashtag;
 	
 	// 커리큘럼
 	private int cur_id;

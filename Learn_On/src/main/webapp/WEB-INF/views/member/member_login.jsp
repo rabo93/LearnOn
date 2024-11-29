@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-    
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Insert title here</title>
+<title>런 온 - 온라인 No.1 교육 플랫폼</title>
+<link rel="SHORTCUT ICON" href="${pageContext.request.contextPath}/resources/images/favicon.ico">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/reset.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
@@ -28,14 +28,14 @@
    <div class="login-wrap">
 	    <h1 class="login-ttl">로그인</h1>
 	    <div class="login-box">
-           <div class="mem-select">
-               <label>
-                   <input type="radio" name="mem_status" id="mem_user" value="일반회원"> 일반회원
-               </label>
-               <label>
-                   <input type="radio" name="mem_status" id="mem_teacher" value="강사회원"> 강사회원
-               </label>
-           </div>
+<!--            <div class="mem-select"> -->
+<!--                <label> -->
+<!--                    <input type="radio" name="mem_status" id="mem_user" value="일반회원"> 일반회원 -->
+<!--                </label> -->
+<!--                <label> -->
+<!--                    <input type="radio" name="mem_status" id="mem_teacher" value="강사회원"> 강사회원 -->
+<!--                </label> -->
+<!--            </div> -->
            <form action="MemberLogin" method="post">
                <label for="mem_id" >아이디</label>
                <input type="text" name="mem_id" id="mem_id" placeholder="아이디" value="${cookie.userId.value }">

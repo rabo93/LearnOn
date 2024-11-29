@@ -58,6 +58,7 @@
 			, #{class_runtime}
 			, #{class_pic1}
 			, #{class_contents}
+			, #{hashtag}
 			, #{class_status})
 	</insert>
 	
@@ -87,6 +88,17 @@
 			, NULL
 			, ${cur_runtime})
 	</insert>
+		
+<!-- 	<update id=""> -->
+<!-- 		UPDATE -->
+<!-- 		INTO CURRICULUM -->
+<!-- 		VALUES ( -->
+<!-- 			#{class_id} -->
+<!-- 			, NULL -->
+<!-- 			, #{cur_title} -->
+<!-- 			, NULL -->
+<!-- 			, ${cur_runtime}) -->
+<!-- 	</update> -->
 	
 	<!-- 클래스 등록시 커리큘럼 비디오 첨부 -->
 	<update id="insertCurVideo">
@@ -129,6 +141,7 @@
 		    , CLA.CLASS_RUNTIME
 		    , CLA.CLASS_PIC1 
 		    , CLA.CLASS_CONTENTS
+		    , CLA.HASHTAG
 		    , CLA.CLASS_STATUS
 		    , COMTY.CODETYPE
 		    , COMTY.CODETYPE_ID
@@ -160,6 +173,7 @@
 			, CLASS_RUNTIME = #{class_runtime}
 			, CLASS_PIC1 = #{class_pic1}
 			, CLASS_CONTENTS = #{class_contents}
+			, HASHTAG = #{hashtag}
 			, CLASS_STATUS = #{class_status}
 		WHERE CLASS_ID = #{class_id}
 	</update>

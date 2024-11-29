@@ -7,7 +7,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>런온</title>
+<title>런 온 - 온라인 No.1 교육 플랫폼</title>
+<link rel="SHORTCUT ICON" href="${pageContext.request.contextPath}/resources/images/favicon.ico">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/reset.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
@@ -30,8 +31,13 @@
 						<span class="empty"><i class="fa-solid fa-video-slash"></i><br>커리큘럼이 등록되지 않았습니다.</span>
 					</c:when>
 					<c:otherwise>
+						<c:forEach var="item" items="${myCurList}">
+						    <c:if test="${item.cur_id == param.cur_id}">
+						        <c:set var="cur_video" value="${item.cur_video}" />
+						    </c:if>
+						</c:forEach>
 						<video controls muted>
-							<source src="/resources/videos/cur-01.webm" type="video/webm">
+							<source src="${pageContext.request.contextPath}/resources/upload/${cur_video}">
 						</video>
 					</c:otherwise>
 				</c:choose>

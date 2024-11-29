@@ -72,7 +72,8 @@
 												<a href='CourseDetail?class_id=${cart.class_id}' class="item-link">
 													<div class="class-pic">
 														<!-- 썸네일 사진 나중에 바꿀것!! -->
-														<img src="${pageContext.request.contextPath}/resources/images/thumb_01.webp">
+														<img src="${pageContext.request.contextPath}/resources/upload/${cart.class_pic1}" class="card-thumb" alt="thumbnail" />
+<%-- 														<img src="${pageContext.request.contextPath}/resources/images/thumb_01.webp"> --%>
 			<%-- 											<img src="${cart.class_pic1}"> --%>
 													</div>
 													<div class="item-info">

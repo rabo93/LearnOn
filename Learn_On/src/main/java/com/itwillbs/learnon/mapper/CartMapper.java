@@ -20,6 +20,9 @@ public interface CartMapper {
 	// 장바구니 갯수 조회 (갯수 int 리턴)
 	int countCart(String sId);
 	
+	// 나의 클래스에 수강중인지 조회(갯수 리턴)
+	int selectMycourseClass(List<Integer> cartItems);
+	
 	
 	
 }

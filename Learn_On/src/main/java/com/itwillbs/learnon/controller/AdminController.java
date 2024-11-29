@@ -1355,7 +1355,4 @@ public class AdminController {
 		session.setAttribute("prevURL", prevURL);
 	}
 	
-	
-	
-	
 }

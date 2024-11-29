@@ -59,11 +59,11 @@
 						<div class="d-flex justify-content-between">
 							<div class="col-8">
 		                		<div class="form-floating mb-3">
-		                			<input type="text" class="form-control" id="floatingInput" name="class_title" oninvalid="this.setCustomValidity('제목을 입력해주세요')">
+		                			<input type="text" class="form-control" name="floatingInput" id="class_title" oninvalid="this.setCustomValidity('제목을 입력해주세요')">
 		                			<label for="floatingInput">강의 제목</label>
 		                		</div>
 								<div class="form-floating mb-3">
-									<textarea class="form-control" id="floatingInput" name="class_intro" style="height: 80px;" rows="3" oninvalid="this.setCustomValidity('소개를 입력 해주세요')"></textarea>
+									<textarea class="form-control" name="floatingInput" id="class_intro" style="height: 80px;" rows="3" oninvalid="this.setCustomValidity('소개를 입력 해주세요')"></textarea>
 									<label for="floatingInput">강의 소개</label>
 								</div>
 								<div class="form-floating mb-3">
@@ -124,7 +124,8 @@
 							<div class="col-3 me-3">
 								<h6>해시태그 생성</h6>
 								<div class="input-group">
-									<input type="text" name="hashtag" class="form-control" pattern="^#([a-zA-Z0-9가-힣]{1,10})(,#([a-zA-Z0-9가-힣]{1,10})){0,9},?$" placeholder="ex) #프로그래밍,#자바,#스프링,#DBMS" >
+									<input type="text" name="hashtag" id="hashtag" class="form-control" pattern="^#([a-zA-Z0-9가-힣]{1,10})(,#([a-zA-Z0-9가-힣]{1,10})){0,9},?$" placeholder="ex) #프로그래밍,#자바,#스프링,#DBMS" >
+									<input type="button" value="자동생성" onclick="requestHashcode()">
 								</div>
 							</div>
 							<div class="col-2 me-3">
@@ -203,6 +204,43 @@
     		console.log(val);
     	    $("#teacher").val(val);
     	}
+    	
+    	//해시태그 자동생성 버튼
+    	function requestHashcode() {
+			if($("#class_title").val() == "") {
+				alert("강의제목 입력 필수!");
+				$("#class_title").focus();
+				return;
+			} else if($("#class_intro").val() == "") {
+				alert("강의소개 입력 필수!");
+				$("#class_intro").focus();
+				return;
+			}
+			
+			// AJAX 활용하여 ClassRequestHashtag 서블릿 요청(POST)
+			// => 파라미터 : 강의명, 강의 상세설명
+			$.ajax({
+				type: "POST",
+				url: "ClassRequestHashtag",
+				data: {
+					class_title : $("#class_title").val(),
+					class_intro : $("#class_intro").val(),
+				},
+				dataType: "JSON"
+			}).done(function(response) {
+				console.log(JSON.stringify(response));
+				
+				let hashtags = response.choices[0].message.content;
+				$("#hashtag").val(hashtags);
+				
+			}).fail(function() {
+				alert("요청실패!");
+			});
+			
+			
+		}
+    	
+    	
     </script>
 </body>
 </html>

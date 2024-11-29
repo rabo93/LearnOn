@@ -15,6 +15,8 @@ public class CourseVO {
 	private String class_contents;
 	private int class_status;
 	private int class_id;
+	private String hashtag;
+	
 	
 	private String teacher_id;
 	

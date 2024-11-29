@@ -34,7 +34,7 @@
 			        	<div class="cls-pic">
 			            	<c:choose>
 			            		<c:when test="${not empty course[0].class_pic1}">
-			            			<img src="resources/upload/${course[0].class_pic1}" id="preview" class="figure-img img-fluid rounded" alt="thumpnail" style="height: 280px;">
+			            			<img src="${pageContext.request.contextPath}/resources/upload/${course[0].class_pic1}" id="preview" class="figure-img img-fluid rounded" alt="thumpnail" style="height: 280px;">
 			            		</c:when>
 			            		<c:otherwise>
 			            			<img src="${pageContext.request.contextPath}/resources/images/thumb_origin.jpg">
@@ -170,7 +170,7 @@
 								<c:forEach var="others" items="${requestScope.courseTeacher}">
 									<a href="CourseDetail?class_id=${others.class_id}">
 									    <div class="card">
-									        <img src="resources/upload/${others.class_pic1}" alt="Class Image">
+									        <img src="${pageContext.request.contextPath}/resources/upload/${others.class_pic1}" alt="Class Image">
 									        <div class="card-content">
 									            <div class="category">IT/개발</div>
 									            <div class="title">${others.class_title}</div>

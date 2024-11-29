@@ -76,7 +76,7 @@ function logout() {
         		</div>
 				<ul class="mgnb">
 					<li class="mgnb-menu">
-						<a href="#">카테고리</a>
+						<a href="Category?codetype=CATE01">카테고리</a>
 						<ul class="mgnb-dep-01">
 							<li><a href="Category?codetype=CATE01">IT/개발</a></li>
 							<li><a href="Category?codetype=CATE01">IT/개발</a></li>
@@ -95,7 +95,7 @@ function logout() {
 	<nav id="nav">	
 		<ul class="navbar">
 			<li>
-				<a href="#">카테고리</a>
+				<a href="Category?codetype=CATE01">카테고리</a>
 				<div class="dropdown-bg"></div>
 				<ul class="dropdown" id="resultArea">
 				</ul>	

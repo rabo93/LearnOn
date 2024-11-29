@@ -63,8 +63,8 @@ public class AdminService {
 	public List<AdminVO> getClassList() {
 		return mapper.getClassList();
 	}
-	public List<AdminVO> getClass(AdminVO vO) {
-		return mapper.getClass(vO);
+	public AdminVO getClass(int class_id) {
+		return mapper.getClass(class_id);
 	}
 	public int updateClass(AdminVO vO) {
 		return mapper.updateClass(vO);
@@ -162,7 +162,7 @@ public class AdminService {
 	
 	//	임시
 	public AdminVO getIdClass(int class_id) {
-		return mapper.selectClass(class_id);
+		return mapper.getClass(class_id);
 	}
 		
 	// 관리자 전체 결제내역 갯수 조회	

@@ -8,7 +8,6 @@ import org.apache.ibatis.annotations.Param;
 
 import com.itwillbs.learnon.vo.AdminVO;
 import com.itwillbs.learnon.vo.CourseSupportVO;
-import com.itwillbs.learnon.vo.CourseVO;
 import com.itwillbs.learnon.vo.MemberVO;
 import com.itwillbs.learnon.vo.MyPaymentVO;
 
@@ -29,7 +28,7 @@ public interface AdminMapper {
 
 	// ============== 클래스 ==============
 	// 클래스 조회
-	List<AdminVO> getClass(AdminVO vO);
+	AdminVO getClass(AdminVO vO);
 	//클래스 목록 조회
 	List<AdminVO> getClassList();
 	// 커리큘럼 조회
@@ -95,7 +94,7 @@ public interface AdminMapper {
 	int updateCourseSupport(CourseSupportVO cSupport);
 	
 	//	임시
-	AdminVO selectClass(int class_id);
+	AdminVO getClass(int class_id);
 	
 	// 관리자 - 결제내역 개수 조회
 	int selectPaymentListCount();

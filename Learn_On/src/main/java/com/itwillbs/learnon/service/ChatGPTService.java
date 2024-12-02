@@ -36,40 +36,18 @@ public class ChatGPTService {
 	
 	// 추천 클래스 요청
 	public String requestRecommend() {
-		String hashtags = getHashtags();
-		List<Map<String, String>> classList = getHashtagsByClass();
-		
-		String response = client.requestRec(hashtags, classList);
-		
-		JSONObject jsonObj = new JSONObject(response);
-		JSONArray jsonArr = jsonObj.getJSONArray("choices");
-		JSONObject firstChoice = jsonArr.getJSONObject(0);
-		JSONObject message = firstChoice.getJSONObject("message");
-	    String class_ids = message.getString("content").replace("[", "").replace("]", "");
-	    
-	    return class_ids;
+		String hashtag = getHashtags();
+	    return getContentToJson(hashtag);
 	}
 	
 	public String requestRecommendPerson(String hashtag) {
-		List<Map<String, String>> classList = getHashtagsByClass();
-		
-		String response = client.requestRec(hashtag, classList);
-		
-		JSONObject jsonObj = new JSONObject(response);
-		JSONArray jsonArr = jsonObj.getJSONArray("choices");
-		JSONObject firstChoice = jsonArr.getJSONObject(0);
-		JSONObject message = firstChoice.getJSONObject("message");
-	    String class_ids = message.getString("content").replace("[", "").replace("]", "");
-	    
-	    return class_ids;
+		return getContentToJson(hashtag);
 	}
 	
 	// 추천 클래스 목록 조회
 	public List<Map<String, Object>> getRecommendList(String class_ids) {
 		return mapper.selectClassList(class_ids);
 	}
-	
-
 	
 	// ================================================================
 	
@@ -78,8 +56,20 @@ public class ChatGPTService {
 		return client.requestHashtag(classInfo);
 	}
 
-
-
+	// ================================================================
+	public String getContentToJson(String hashtag) {
+		List<Map<String, String>> classList = getHashtagsByClass();
+		
+		String response = client.requestRec(hashtag, classList);
+		
+		JSONObject jsonObj = new JSONObject(response);
+		JSONArray jsonArr = jsonObj.getJSONArray("choices");
+		JSONObject firstChoice = jsonArr.getJSONObject(0);
+		JSONObject message = firstChoice.getJSONObject("message");
+	    String classIds = message.getString("content").replace("[", "").replace("]", "");
+	    
+	    return classIds;
+	}
 	
 	
 }

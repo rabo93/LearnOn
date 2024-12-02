@@ -94,8 +94,6 @@
 		function confirmDeleteWishItem() {
 			if(confirm("관심목록에서 삭제하시겠습니까?")) {
 				document.querySelector(".MyFavDelFrm").submit();
-			} else {
-				return;
 			}
 		}
 	</script>

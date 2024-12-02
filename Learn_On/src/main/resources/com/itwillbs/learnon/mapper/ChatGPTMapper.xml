@@ -27,7 +27,8 @@
 	</select>
 	<select id="selectClassList" resultType="map">
 		-- 추천 클래스 목록 조회
-		SELECT C.CLASS_ID
+		SELECT DISTINCT
+			   C.CLASS_ID
 			   , C.CLASS_TITLE
 			   , C.CLASS_CATEGORY
 			   , C.MEM_ID AS TEACHER_ID

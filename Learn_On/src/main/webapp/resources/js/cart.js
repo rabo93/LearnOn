@@ -46,7 +46,7 @@ $(document).ready(function() {
 			let checkedCnt = document.querySelectorAll('.chk:checked').length; //체크한 갯수
 			
 			// 모든 체크박스가 선택되었는지 확인 후 전체선택 상태 업데이트
-			checkAll.checked = totalCnt === checkedCnt;
+			checkAll.checked = (totalCnt === checkedCnt);
 			
 			updateSelect(); //개별선택 후 항목에 대한 총합 호출
 		});

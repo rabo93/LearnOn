@@ -309,7 +309,7 @@ public class AdminController {
 		int classId = adminService.getClassId();
 		VO.setClass_id(classId);
 		// 커리큘럼 내용 가져오기
-		String[] arrCurTitle = VO.getCur_title().split(",");
+		String[] arrCurTitle = VO.getCur_title().split(",\\S");
 		String[] arrCurRunTime = VO.getCur_runtime().split(",");
 		int totalRunTime = VO.getClass_runtime();
 		// 실제 경로
@@ -471,6 +471,7 @@ public class AdminController {
 		List<Map<String, Object>> curList = adminService.getCurriculum(class_id);
 		
 		// 커리큘럼 내용 가져오기
+		System.out.println("============================================================" + adm.getCur_title());
 		String[] arrCurTitle = adm.getCur_title().split(",");
 		String[] arrCurRunTime = adm.getCur_runtime().split(",");
 		

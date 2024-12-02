@@ -79,6 +79,16 @@
 			  , #{pageListLimit}
 	</select>
 	
+	<select id="selectFindCourseListCount" resultType="int">
+		SELECT COUNT(*)
+		  FROM CLASS C
+	LEFT  JOIN MEMBER M ON C.MEM_ID = M.MEM_ID
+		  JOIN COMMONCODETYPE CT ON C.CLASS_CATEGORY = CT.NAME
+		  JOIN COMMONCODE CC ON CC.CODEID = CT.CODETYPE
+ 	 LEFT JOIN (SELECT TRUNCATE(AVG(REVIEW_SCORE), 1) AS REVIEW_SCORE, CLASS_ID FROM REVIEW GROUP BY CLASS_ID) R ON R.CLASS_ID  = C.CLASS_ID
+	     WHERE C.CLASS_TITLE LIKE CONCAT('%', #{find_title}, '%')
+	        OR M.MEM_NAME LIKE CONCAT('%', #{find_title}, '%')
+	</select>
 	<select id="selectFindCourseList" resultType="course">
 		SELECT C.CLASS_TITLE 
 		     , M.MEM_NAME AS MEM_ID 

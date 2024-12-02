@@ -70,13 +70,13 @@ public class CourseController {
 			@RequestParam(defaultValue = "1") int pageNum	,
 			String find_title, 
 			Model model) {
-		
+		System.out.println("CourseFind 잘들어오나!");
 		// ----------------------------------------------------------------
 		// [ 페이징 처리 ]	
 		int listLimit = 8; // 페이지 당 게시물 수
 		int startRow = (pageNum - 1) * listLimit; 
-		int listCount = courseService.getCourseBestListCount();
-		
+		int listCount = courseService.getFindCourseListCount(find_title);
+		System.out.println("listCount??? " + listCount);
 		int pageListLimit = 8; 
 		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
 		if(maxPage == 0) {

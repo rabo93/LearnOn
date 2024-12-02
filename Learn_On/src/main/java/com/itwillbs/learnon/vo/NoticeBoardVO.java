@@ -17,7 +17,7 @@ public class NoticeBoardVO {
 	private String notice_subject;
 	private String notice_content;
 	private Date notice_date;
-	private int notice_cate;
+//	private int notice_cate;
 	private MultipartFile[] notice_file_get;
 	private String notice_file;
 	private int notice_read_count;

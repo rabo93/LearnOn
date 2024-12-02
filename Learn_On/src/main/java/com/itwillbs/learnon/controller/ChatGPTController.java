@@ -1,10 +1,14 @@
 package com.itwillbs.learnon.controller;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,17 +30,37 @@ public class ChatGPTController {
 	@GetMapping("Recommend")
 	public String recommend(HttpServletRequest request, HttpSession session, Model model) {
 		String id = (String)session.getAttribute("sId");
-		
 		Map<String, String> userInfo = chatGPTService.getName(id);
 		
+		String response = chatGPTService.requestRecommend();
+		String responsePerson = chatGPTService.requestRecommendPerson(userInfo.get("HASHTAG"));
+		
+		List<Map<String, Object>> classList = chatGPTService.getRecommendList(response);
+		List<Map<String, Object>> myClassList = chatGPTService.getRecommendList(responsePerson);
+		
 		model.addAttribute("userInfo", userInfo);
+		model.addAttribute("classList", classList);
+		model.addAttribute("myClassList", myClassList);
+
 		return "gpt/gpt_list";
 	}
-	@GetMapping("requestPersonalRec")
-	public String requestPersonalRec() {
-		
-		return "";
-	}
+	
+//	@GetMapping("RequestRecommend")
+//	public String requestRecommend(@RequestParam String hashtag) {
+//		
+//		String response = chatGPTService.requestRecommendPerson(hashtag);
+//		
+//		JSONObject jsonObj = new JSONObject(response);
+//		JSONArray jsonArr = jsonObj.getJSONArray("choices");
+//		JSONObject firstChoice = jsonArr.getJSONObject(0);
+//		JSONObject message = firstChoice.getJSONObject("message");
+//	    String class_ids = message.getString("content").replace("[", "").replace("]", "");
+//	    
+//    	List<Map<String, Object>> myClassList = chatGPTService.getRecommendList(class_ids);
+//	    
+//		return "";
+//	}
+	
 	// =======================================================================
 	// 챗GPT 활용 해시태그 자동생성
 	@ResponseBody

@@ -6,16 +6,48 @@
 	<select id="selectName" resultType="map">
 		-- 사용자 정보 조회
 		SELECT MEM_NAME
-			 , MEM_NICK
-			 , hashtag AS HASHTAG
+			   , MEM_NICK
+			   , hashtag AS HASHTAG
 		  FROM MEMBER
 		 WHERE MEM_ID = #{id}
 	</select>
 	<select id="selectHashtags" resultType="String">
+		-- 전체 회원 해시태그 조회
 		SELECT GROUP_CONCAT(REPLACE(HASHTAG, ' ', '') SEPARATOR ',') AS ALL_HASHTAGS
 		  FROM MEMBER
 		 WHERE HASHTAG IS NOT NULL
 		   AND TRIM(HASHTAG) != ''
+	</select>
+	<select id="selectHashtagsByClass" resultType="map">
+		-- 전체 클래스 목록과 해시태그 조회
+		SELECT CLASS_ID, REPLACE(HASHTAG, ' ', '') AS HASHTAGS
+		  FROM CLASS
+		 WHERE HASHTAG IS NOT NULL
+		   AND TRIM(HASHTAG) != ''
+	</select>
+	<select id="selectClassList" resultType="map">
+		-- 추천 클래스 목록 조회
+		SELECT C.CLASS_ID
+			   , C.CLASS_TITLE
+			   , C.CLASS_CATEGORY
+			   , C.MEM_ID AS TEACHER_ID
+			   , M.MEM_NAME AS TEACHER_NAME
+			   , M.MEM_NICK AS TEACHER_NICK
+			   , C.CLASS_INTRO
+			   , C.CLASS_PRICE
+			   , C.CLASS_CATEGORY
+			   , C.CLASS_REG_DATE
+			   , C.CLASS_RUNTIME
+			   , C.CLASS_PIC1 AS CLASS_PIC
+			   , C.CLASS_STATUS
+			   , IFNULL((SELECT TRUNCATE(IFNULL(AVG(REVIEW_SCORE), 0), 1)
+					FROM REVIEW
+				   WHERE CLASS_ID = C.CLASS_ID
+				   GROUP BY CLASS_ID), 0) AS REVIEW_SCORE
+		FROM CLASS C
+		LEFT OUTER JOIN MEMBER M ON C.MEM_ID = M.MEM_ID
+		LEFT OUTER JOIN REVIEW R ON R.CLASS_ID = C.CLASS_ID
+		WHERE C.CLASS_ID IN (${class_ids})
 	</select>
 
 </mapper>

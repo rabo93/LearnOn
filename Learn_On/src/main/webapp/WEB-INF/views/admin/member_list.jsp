@@ -53,6 +53,9 @@
 							<select class="form-select" name= "sort" onchange="this.form.submit()" aria-label="Default select example">
 								<option value="reg_latest" <c:if test="${param.sort eq 'reg_latest'}">selected</c:if>>최신가입순</option>
 								<option value="reg_oldest" <c:if test="${param.sort eq 'reg_oldest'}">selected</c:if>>오래된가입순</option>
+								<option value="reg_nomal" <c:if test="${param.sort eq 'reg_nomal'}">selected</c:if>>일반회원</option>
+								<option value="reg_instructor" <c:if test="${param.sort eq 'reg_instructor'}">selected</c:if>>강사회원</option>
+								<option value="reg_admin" <c:if test="${param.sort eq 'reg_admin'}">selected</c:if>>관리자</option>
 							</select>
 						</form>
 						<form class="d-flex input-group mb-3" method="get">

@@ -1,6 +1,6 @@
 if (performance.navigation.type === 1) {
 			location.href= "AdmFaq";
-		}
+}
     
 function showFaq(index) {
     const detailRows = document.querySelectorAll('.AdmfaqDetail');

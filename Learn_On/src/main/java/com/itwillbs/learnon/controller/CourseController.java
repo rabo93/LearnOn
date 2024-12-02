@@ -37,7 +37,6 @@ import com.itwillbs.learnon.vo.CourseSupportVO;
 import com.itwillbs.learnon.vo.CourseVO;
 import com.itwillbs.learnon.vo.MyReviewVO;
 import com.itwillbs.learnon.vo.PageInfo;
-import com.itwillbs.learnon.vo.PayVO;
 
 @Controller
 public class CourseController {
@@ -71,13 +70,13 @@ public class CourseController {
 			@RequestParam(defaultValue = "1") int pageNum	,
 			String find_title, 
 			Model model) {
-		
+		System.out.println("CourseFind 잘들어오나!");
 		// ----------------------------------------------------------------
 		// [ 페이징 처리 ]	
 		int listLimit = 8; // 페이지 당 게시물 수
 		int startRow = (pageNum - 1) * listLimit; 
-		int listCount = courseService.getCourseBestListCount();
-		
+		int listCount = courseService.getFindCourseListCount(find_title);
+		System.out.println("listCount??? " + listCount);
 		int pageListLimit = 8; 
 		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
 		if(maxPage == 0) {
@@ -468,11 +467,12 @@ public class CourseController {
 			model.addAttribute("msg", "잘못된 접근입니다!");
 			return "result/fail";
 		}
-		
+//		System.out.println("수정화면에서 첨부파일 어찌된겨0?" + courseSupport);
 		model.addAttribute("courseSupport", courseSupport);
 		// ----------------------------------------------------------------
 		// 뷰페이지에서 파일 목록의 효율적 처리를 위해 addFileListToModel() 메서드 활용
 		addFileListToModel(courseSupport, model);
+//		System.out.println("addFileListToModel 뒤에!!!");
 		return "course/course_support_modify_form"; 
 	}
 	
@@ -489,9 +489,9 @@ public class CourseController {
 		// 기존 realPth 경로에 subDir 경로 결합
 		realPath += "/" + subDir;
 		
-		System.out.println("진짜 경로 realPath 알아보기 :   " + realPath);
 		
 		List<String> fileNames = processDuplicateFileNames(cSupport, subDir); // 중복 처리된 파일명 리턴
+		System.out.println(cSupport + "의  fileNames 알아보기 :   " + fileNames);
 		int updateCount = courseService.modifyCourseSupport(cSupport);
 		
 		int class_id = cSupport.getC_support_idx();
@@ -759,6 +759,7 @@ public class CourseController {
 		MultipartFile mFile1 = cSupport.getFile();
 		cSupport.setC_support_file("");
 		
+		System.out.println("mFile1.getOriginalFilename() ??@!$!%$@#$%@#%$  :  " + mFile1.getOriginalFilename());
 		String fileName1 = "";
 		// 업로드 파일명이 널스트링이 아닐 경우 판별하여 파일명 저장(각 파일을 별개의 if 문으로 판별)
 		if(!mFile1.getOriginalFilename().equals("")) {
@@ -796,7 +797,7 @@ public class CourseController {
 //			1. 파일명을 별도의 list 객체에 저장(제네릭 타입 : String)
 		List<String> fileList = new ArrayList<String>();
 		fileList.add(cSupport.getC_support_file());
-		System.out.println(fileList);
+//		System.out.println("수정화면에서 첨부파일 어찌된겨?" + cSupport.getC_support_file());
 		//----------------------
 		// 2. 만약, 컨트롤러 측에서 원본 파일명을 추출하여 전달할 경우
 		// => 파일명이 저장된 List 객체를 반복하면서 원본 파일명을 추출하여 별도의 List에 저장

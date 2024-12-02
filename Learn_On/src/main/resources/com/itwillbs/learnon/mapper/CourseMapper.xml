@@ -79,6 +79,16 @@
 			  , #{pageListLimit}
 	</select>
 	
+	<select id="selectFindCourseListCount" resultType="int">
+		SELECT COUNT(*)
+		  FROM CLASS C
+	LEFT  JOIN MEMBER M ON C.MEM_ID = M.MEM_ID
+		  JOIN COMMONCODETYPE CT ON C.CLASS_CATEGORY = CT.NAME
+		  JOIN COMMONCODE CC ON CC.CODEID = CT.CODETYPE
+ 	 LEFT JOIN (SELECT TRUNCATE(AVG(REVIEW_SCORE), 1) AS REVIEW_SCORE, CLASS_ID FROM REVIEW GROUP BY CLASS_ID) R ON R.CLASS_ID  = C.CLASS_ID
+	     WHERE C.CLASS_TITLE LIKE CONCAT('%', #{find_title}, '%')
+	        OR M.MEM_NAME LIKE CONCAT('%', #{find_title}, '%')
+	</select>
 	<select id="selectFindCourseList" resultType="course">
 		SELECT C.CLASS_TITLE 
 		     , M.MEM_NAME AS MEM_ID 
@@ -274,7 +284,9 @@
 		       C_SUPPORT_CATEGORY = #{c_support_category}
 		     , C_SUPPORT_SUBJECT = #{c_support_subject} 
 		     , C_SUPPORT_CONTENT = #{c_support_content}
-		     , C_SUPPORT_FILE = #{c_support_file} 
+		     <if test="!c_support_file.equals('')">
+		     	, C_SUPPORT_FILE = #{c_support_file}
+		     </if> 
 		 WHERE C_SUPPORT_IDX = #{c_support_idx}
 	</update>
 	<update id="deleteBoardFile">

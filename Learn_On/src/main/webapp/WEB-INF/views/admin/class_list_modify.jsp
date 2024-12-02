@@ -134,14 +134,15 @@
 									</div>
 								</div>
 								<div class="col-3 me-3">
-									<h6>해시태그 생성</h6>
-									<div class="input-group">
-										<input type="text" name="hashtag" class="form-control" 
-											pattern="^#([a-zA-Z0-9가-힣]{1,10})(,#([a-zA-Z0-9가-힣]{1,10})){0,9},?$" 
-											placeholder="ex) #프로그래밍,#자바,#스프링,#DBMS" 
-											value="${getClass.hashtag}">
-									</div>
+								<h6>해시태그 생성</h6>
+								<div class="input-group">
+									<input type="text" name="hashtag" id="hashtag" 
+										class="form-control" pattern="^#([a-zA-Z0-9가-힣]{1,10})(,#([a-zA-Z0-9가-힣]{1,10})){0,9},?$" 
+										placeholder="ex) #프로그래밍,#자바,#스프링,#DBMS" 
+										value="${getClass.hashtag}">
+									<input type="button" value="자동생성" onclick="requestHashcode()">
 								</div>
+							</div>
 								<div class="col-2 me-3">
 									<h6>공개상태</h6>
 									<div class="form-floating">
@@ -219,6 +220,39 @@
     	    $("#teacher").val(val);
     	}
     	
+    	//해시태그 자동생성 버튼
+    	function requestHashcode() {
+			if($("#class_title").val() == "") {
+				alert("강의제목 입력 필수!");
+				$("#class_title").focus();
+				return;
+			} else if($("#class_intro").val() == "") {
+				alert("강의소개 입력 필수!");
+				$("#class_intro").focus();
+				return;
+			}
+			
+			// AJAX 활용하여 ClassRequestHashtag 서블릿 요청(POST)
+			// => 파라미터 : 강의명, 강의 상세설명
+			$.ajax({
+				type: "POST",
+				url: "ClassRequestHashtag",
+				data: {
+					class_title : $("#class_title").val(),
+					class_intro : $("#class_intro").val(),
+				},
+				dataType: "JSON"
+			}).done(function(response) {
+				console.log(JSON.stringify(response));
+				
+				let hashtags = response.choices[0].message.content;
+				$("#hashtag").val(hashtags);
+				
+			}).fail(function() {
+				alert("요청실패!");
+			});
+			
+		}
     </script>
 </body>
 </html>

@@ -311,7 +311,7 @@ public class AdminController {
 	public String admin_class_add1(AdminVO VO, HttpSession session, Model model) {
 		int classId = adminService.getClassId();
 		VO.setClass_id(classId);
-		
+		// 커리큘럼 내용 가져오기
 		String[] arrCurTitle = VO.getCur_title().split(",");
 		String[] arrCurRunTime = VO.getCur_runtime().split(",");
 		int totalRunTime = VO.getClass_runtime();

@@ -71,6 +71,8 @@ public interface CourseMapper {
 			@Param("class_id") int class_id, 
 			@Param("id") String id);
 
+	
+	int selectFindCourseListCount(String find_title);
 	List<CourseVO> selectFindCourseList(
 			@Param("find_title") String find_title,
 			@Param("startRow") int startRow, 
@@ -84,6 +86,7 @@ public interface CourseMapper {
 	);
 	
 	int selectCourseBestListCount();
+	
 	
 
 	

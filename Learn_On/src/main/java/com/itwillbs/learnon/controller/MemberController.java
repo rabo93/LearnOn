@@ -340,7 +340,7 @@ public class MemberController {
 //		System.out.println("member id @@ : "+member.getMem_id());
 //		System.out.println("member nick@@ : "+member.getMem_nick());
 //		System.out.println("member phone@@ : "+member.getMem_phone());
-//		System.out.println("member Email@@ : "+member.getEmail());
+//		System.out.println("member Email@@ : "+member.getMem_email());
 //		System.out.println("member Email1@@ : "+member.getMem_email1());
 //		System.out.println("member Email2@@ : "+member.getMem_email2());
 		
@@ -353,7 +353,7 @@ public class MemberController {
 			return "result/fail";
 		}
 		if(!map.get("mem_passwd").equals("")) {
-			map.put("mem_passwd",passwordEncoder.encode(map.get("mem_passwd"))); //암호화된 새로운 비밀번호
+			map.put("mem_passwd",passwordEncoder.encode(map.get("mem_passwd")));//암호화된 새로운 비밀번호
 		}
 		
 		int updateCount = memberService.modifyMember(map);

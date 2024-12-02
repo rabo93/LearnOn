@@ -22,12 +22,12 @@
 		  FROM MEMBER
 		 WHERE mem_id = #{mem_id} 
 	</select>
-<!--  회원정보 수정 - 비밀번호 변경	 --> 
-	<update id="updateNewPasswd">
-		UPDATE MEMBER
-		   SET mem_passwd = #{mem_passwd}
-		 WHERE mem_email = #{mem_email}
-	</update>
+<!--   회원정보 수정 - 비밀번호 변경	 --> 
+<!-- 	<update id="updateNewPasswd"> -->
+<!-- 		UPDATE MEMBER -->
+<!-- 		   SET mem_passwd = #{mem_passwd} -->
+<!-- 		 WHERE mem_id = #{mem_id} -->
+<!-- 	</update> -->
 	
 <!-- 	이메일로 비밀번호 변경 - 이메일 존재 확인  -->
 	<select id="selectEmail" resultType="member">

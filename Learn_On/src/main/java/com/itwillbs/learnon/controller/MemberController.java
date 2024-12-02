@@ -246,8 +246,6 @@ public class MemberController {
 			model.addAttribute("msg","[존재하지 않는 이메일]\\n이메일을 다시한번 확인해주세요");
 			return "result/fail";
 		}
-		//######################따로 컨트롤러 파야됨##########################
-//		MailAuthInfo mailAuthInfo = mailService.sendAuthMail(member);
 		MailAuthInfo mailAuthInfo = mailService.reSendAuthMail(member, member.getMem_email());
 		
 		memberService.registMemberAuthInfo(mailAuthInfo);

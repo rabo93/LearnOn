@@ -18,7 +18,7 @@ function logout() {
 			<a href="./"><h1><img src="${pageContext.request.contextPath}/resources/images/hd_logo2.png" alt="런온"></h1></a>
 		</div>
 		<div id="hd_sch">
-			<form action="CourseFind" method="post">
+			<form action="CourseFind">
 				<input type="text" name="find_title" class="sch-input" placeholder="어떤 클래스를 찾으시나요?">
 				<button type="submit" class="sch-submit">
 					<i class="fa-solid fa-magnifying-glass"></i>

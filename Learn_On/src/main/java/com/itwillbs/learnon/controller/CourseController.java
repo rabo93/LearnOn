@@ -65,9 +65,9 @@ public class CourseController {
 		return jo.toString();
 	}
 	
-	@PostMapping("CourseFind")
+	@GetMapping("CourseFind")
 	public String courseFind(
-			@RequestParam(defaultValue = "1") int pageNum	,
+			@RequestParam(defaultValue = "1") int pageNum,
 			String find_title, 
 			Model model) {
 		System.out.println("CourseFind 잘들어오나!");
@@ -102,6 +102,10 @@ public class CourseController {
 		model.addAttribute("courseList", courseList);
 		return "course/course_find_list"; 
 	}
+	
+	
+	
+	
 	
 	@GetMapping("BestCourse")
 	public String bestCourse(

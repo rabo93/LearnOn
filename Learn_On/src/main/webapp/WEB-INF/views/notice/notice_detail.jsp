@@ -49,7 +49,7 @@
 				</div>
 			</section>
 			<section class="tb-btns">
-				<c:if test="${sessionScope.sId eq notice.mem_id}">
+				<c:if test="${sessionScope.sGrade eq 'MEM03'}">
 					<button class="btn-02" onclick="noticeDelete()">삭제</button>
 					<button class="btn-03" onclick="noticeModify()">수정</button>
 				</c:if>

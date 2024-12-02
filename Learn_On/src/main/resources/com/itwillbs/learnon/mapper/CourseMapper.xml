@@ -274,7 +274,9 @@
 		       C_SUPPORT_CATEGORY = #{c_support_category}
 		     , C_SUPPORT_SUBJECT = #{c_support_subject} 
 		     , C_SUPPORT_CONTENT = #{c_support_content}
-		     , C_SUPPORT_FILE = #{c_support_file} 
+		     <if test="!c_support_file.equals('')">
+		     	, C_SUPPORT_FILE = #{c_support_file}
+		     </if> 
 		 WHERE C_SUPPORT_IDX = #{c_support_idx}
 	</update>
 	<update id="deleteBoardFile">

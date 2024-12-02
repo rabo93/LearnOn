@@ -59,19 +59,11 @@
 						<div class="d-flex justify-content-between">
 							<div class="col-8">
 		                		<div class="form-floating mb-3">
-<<<<<<< HEAD
-		                			<input type="text" class="form-control" name="floatingInput" id="class_title" oninvalid="this.setCustomValidity('제목을 입력해주세요')">
-=======
 		                			<input type="text" class="form-control" id="class_title" name="class_title">
->>>>>>> branch 'main' of https://github.com/jhk727/learn_on.git
 		                			<label for="floatingInput">강의 제목</label>
 		                		</div>
 								<div class="form-floating mb-3">
-<<<<<<< HEAD
-									<textarea class="form-control" name="floatingInput" id="class_intro" style="height: 80px;" rows="3" oninvalid="this.setCustomValidity('소개를 입력 해주세요')"></textarea>
-=======
 									<textarea class="form-control" id="class_intro" name="class_intro" style="height: 80px;" rows="3"></textarea>
->>>>>>> branch 'main' of https://github.com/jhk727/learn_on.git
 									<label for="floatingInput">강의 소개</label>
 								</div>
 								<div class="form-floating mb-3">

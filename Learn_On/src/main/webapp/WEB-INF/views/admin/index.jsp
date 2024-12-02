@@ -101,7 +101,6 @@
                         <div class="bg-light text-center rounded p-4">
                             <div class="d-flex align-items-center justify-content-between mb-4">
                                 <h6 class="mb-0">일간 매출 통계</h6>
-<!--                                 <a href="">자세히 보기</a> -->
                             </div>
                             <canvas id="TodaySales"></canvas>
                         </div>
@@ -110,7 +109,6 @@
                         <div class="bg-light text-center rounded p-4">
                             <div class="d-flex align-items-center justify-content-between mb-4">
                                 <h6 class="mb-0">주간 매출 통계</h6>
-<!--                                 <a href="">자세히 보기</a> -->
                             </div>
                             <canvas id="WeeklySales"></canvas>
                         </div>
@@ -226,12 +224,12 @@
     	
     	const ctxToday = document.getElementById('TodaySales');
     	const ctxWeekly = document.getElementById('WeeklySales');
-    	// 오늘 날짜를 기준으로 시작 날짜와 며칠을 지정 (예: 오늘부터 5일치)
+    	
     	const today = new Date();
-    	const todayLabels = [];  // 날짜 배열
-    	const weekLabels = [];  // 날짜 배열
+    	const todayLabels = [];  // 매일 날짜 배열
+    	const weekLabels = [];  // 주간 날짜 배열
     	const dataToday = ${payFiveDayTotals};    // 데이터 배열
-    	const dataWeely = ${payFourWeekTotals};    // 데이터 배열
+    	const dataWeekly = ${payFourWeekTotals};    // 데이터 배열
 		
     	// 5일치 데이터를 생성 (오늘 날짜부터 시작)
     	for (let i = 0; i < 5; i++) {
@@ -245,7 +243,7 @@
 	   	    data: {
 	   	      labels: todayLabels,
 	   	      datasets: [{
-	   	        label: '# of Votes',
+	   	        label: 'TodaySales',
 	   	        data: dataToday,
 	   	        borderWidth: 1
 	   	      }]
@@ -261,7 +259,7 @@
 	    
 	   	for (let i = 0; i < 4; i++) {
 	   		const startOfWeek = new Date(today);
-	   	    startOfWeek.setDate(today.getDate() - (today.getDay() + 6) % 7 - (i * 7));
+	   	    startOfWeek.setDate(today.getDate() - (today.getDay() + 6) % 7 - ((3 - i) * 7));
 	   	 	weekLabels.push(startOfWeek.toLocaleDateString());
 	   	}
 	   	
@@ -270,11 +268,9 @@
 	   	    data: {
 	   	        labels: weekLabels,  // 주간 시작일을 X축에 표시
 	   	        datasets: [{
-	   	            label: 'Weekly Sales',  // 데이터셋 레이블
+	   	            label: 'WeeklySales',  // 데이터셋 레이블
 	   	            data: dataWeekly,  // 4주간의 매출 데이터를 Y축에 표시
 	   	            borderWidth: 1,
-// 	   	            backgroundColor: 'rgba(75, 192, 192, 0.2)',  // 막대 색상
-// 	   	            borderColor: 'rgba(75, 192, 192, 1)'  // 막대 테두리 색상
 	   	        }]
 	   	    },
 	   	    options: {

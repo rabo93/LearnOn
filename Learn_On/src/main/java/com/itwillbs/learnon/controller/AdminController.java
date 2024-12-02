@@ -94,6 +94,7 @@ public class AdminController {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		//	날짜별 매출합을 담기위한 List 생성
 		List<Integer> payFiveDayTotals = new ArrayList<>();
+		//	주간별 매출합을 담기위한 List 생성
 		List<Integer> payFourWeekTotals = new ArrayList<>();
 		for (int i = 0; i <= 4; i++) {
 			//	5일 전부터 차례대로 1일씩 증가
@@ -307,7 +308,7 @@ public class AdminController {
 	public String admin_class_add1(AdminVO VO, HttpSession session, Model model) {
 		int classId = adminService.getClassId();
 		VO.setClass_id(classId);
-		
+		// 커리큘럼 내용 가져오기
 		String[] arrCurTitle = VO.getCur_title().split(",");
 		String[] arrCurRunTime = VO.getCur_runtime().split(",");
 		int totalRunTime = VO.getClass_runtime();

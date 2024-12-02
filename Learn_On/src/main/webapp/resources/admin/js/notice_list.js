@@ -30,7 +30,8 @@ function deleteBoard() {
 		return;
 	}
 	
-	if (alert('삭제하시겠습니까?')) {
+	if (confirm('삭제하시겠습니까?')) {
+		console.log("checkedValues : " + checkedValues);
 		location.href = "AdminNoticeDelete?notice_idxs=" + checkedValues;
 	}
 	

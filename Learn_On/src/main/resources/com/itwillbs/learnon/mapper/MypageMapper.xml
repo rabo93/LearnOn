@@ -290,6 +290,7 @@
 			  AND O.MEM_ID = #{id}
 			</if>
 		ORDER BY P.PAY_DATE DESC
+				 , O.MERCHANT_UID DESC
 	</select>
 	<select id="selectCoupon" resultType="map">
 		-- 쿠폰 목록 조회

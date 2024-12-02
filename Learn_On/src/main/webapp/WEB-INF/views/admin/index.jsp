@@ -129,63 +129,63 @@
                             <div id="calender"></div>
                         </div>
                     </div>
-                    <div class="col-sm-12 col-md-6 col-auto">
-                        <div class="h-100 bg-light rounded p-4">
-                            <div class="d-flex align-items-center justify-content-between mb-4">
-                                <h6 class="mb-0">해야할 일 메모</h6>
-                                <a href="">자세히 보기</a>
-                            </div>
-                            <div class="d-flex mb-2">
-                                <input class="form-control bg-transparent" type="text" placeholder="메모를 입력해주세요">
-                                <button type="button" class="btn btn-primary ms-2">추가하기</button>
-                            </div>
-                            <div class="d-flex align-items-center border-bottom py-2">
-                                <input class="form-check-input m-0" type="checkbox">
-                                <div class="w-100 ms-3">
-                                    <div class="d-flex w-100 align-items-center justify-content-between">
-                                        <span>메모 내용 표시</span>
-                                        <button class="btn btn-sm"><i class="fa fa-times"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center border-bottom py-2">
-                                <input class="form-check-input m-0" type="checkbox" checked>
-                                <div class="w-100 ms-3">
-                                    <div class="d-flex w-100 align-items-center justify-content-between">
-                                        <span><del>메모 내용 표시</del></span>
-                                        <button class="btn btn-sm text-primary"><i class="fa fa-times"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center border-bottom py-2">
-                                <input class="form-check-input m-0" type="checkbox" checked>
-                                <div class="w-100 ms-3">
-                                    <div class="d-flex w-100 align-items-center justify-content-between">
-                                        <span><del>메모 내용 표시</del></span>
-                                        <button class="btn btn-sm text-primary"><i class="fa fa-times"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center border-bottom py-2">
-                                <input class="form-check-input m-0" type="checkbox">
-                                <div class="w-100 ms-3">
-                                    <div class="d-flex w-100 align-items-center justify-content-between">
-                                        <span>메모 내용 표시</span>
-                                        <button class="btn btn-sm"><i class="fa fa-times"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center pt-2">
-                                <input class="form-check-input m-0" type="checkbox">
-                                <div class="w-100 ms-3">
-                                    <div class="d-flex w-100 align-items-center justify-content-between">
-                                        <span>메모 내용 표시</span>
-                                        <button class="btn btn-sm"><i class="fa fa-times"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+<!--                     <div class="col-sm-12 col-md-6 col-auto"> -->
+<!--                         <div class="h-100 bg-light rounded p-4"> -->
+<!--                             <div class="d-flex align-items-center justify-content-between mb-4"> -->
+<!--                                 <h6 class="mb-0">해야할 일 메모</h6> -->
+<!-- <!--                                 <a href="">자세히 보기</a> --> -->
+<!--                             </div> -->
+<!--                             <div class="d-flex mb-2" id="memo"> -->
+<!--                                 <input class="form-control bg-transparent" type="text" placeholder="메모를 입력해주세요"> -->
+<!--                                 <button type="button" class="btn btn-primary ms-2" onclick="insertRow()">추가하기</button> -->
+<!--                             </div> -->
+<!--                             <div class="d-flex align-items-center border-bottom py-2"> -->
+<!--                                 <input class="form-check-input m-0" type="checkbox"> -->
+<!--                                 <div class="w-100 ms-3"> -->
+<!--                                     <div class="d-flex w-100 align-items-center justify-content-between"> -->
+<!--                                         <span>메모 내용 표시</span> -->
+<!--                                         <button class="btn btn-sm"><i class="fa fa-times"></i></button> -->
+<!--                                     </div> -->
+<!--                                 </div> -->
+<!--                             </div> -->
+<!--                             <div class="d-flex align-items-center border-bottom py-2"> -->
+<!--                                 <input class="form-check-input m-0" type="checkbox" checked> -->
+<!--                                 <div class="w-100 ms-3"> -->
+<!--                                     <div class="d-flex w-100 align-items-center justify-content-between"> -->
+<!--                                         <span><del>메모 내용 표시</del></span> -->
+<!--                                         <button class="btn btn-sm text-primary"><i class="fa fa-times"></i></button> -->
+<!--                                     </div> -->
+<!--                                 </div> -->
+<!--                             </div> -->
+<!--                             <div class="d-flex align-items-center border-bottom py-2"> -->
+<!--                                 <input class="form-check-input m-0" type="checkbox" checked> -->
+<!--                                 <div class="w-100 ms-3"> -->
+<!--                                     <div class="d-flex w-100 align-items-center justify-content-between"> -->
+<!--                                         <span><del>메모 내용 표시</del></span> -->
+<!--                                         <button class="btn btn-sm text-primary"><i class="fa fa-times"></i></button> -->
+<!--                                     </div> -->
+<!--                                 </div> -->
+<!--                             </div> -->
+<!--                             <div class="d-flex align-items-center border-bottom py-2"> -->
+<!--                                 <input class="form-check-input m-0" type="checkbox"> -->
+<!--                                 <div class="w-100 ms-3"> -->
+<!--                                     <div class="d-flex w-100 align-items-center justify-content-between"> -->
+<!--                                         <span>메모 내용 표시</span> -->
+<!--                                         <button class="btn btn-sm"><i class="fa fa-times"></i></button> -->
+<!--                                     </div> -->
+<!--                                 </div> -->
+<!--                             </div> -->
+<!--                             <div class="d-flex align-items-center pt-2"> -->
+<!--                                 <input class="form-check-input m-0" type="checkbox"> -->
+<!--                                 <div class="w-100 ms-3"> -->
+<!--                                     <div class="d-flex w-100 align-items-center justify-content-between"> -->
+<!--                                         <span>메모 내용 표시</span> -->
+<!--                                         <button class="btn btn-sm"><i class="fa fa-times"></i></button> -->
+<!--                                     </div> -->
+<!--                                 </div> -->
+<!--                             </div> -->
+<!--                         </div> -->
+<!--                     </div> -->
                 </div>
             </div>
             <!-- Widgets End -->
@@ -217,7 +217,6 @@
     	if (link.includes("Adm")) {
     		document.getElementById("adminIndex").classList.toggle("active");
     	};
-    	
     	
     	//	===================================================
 	    	

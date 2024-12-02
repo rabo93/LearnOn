@@ -29,7 +29,9 @@ function deleteBoard() {
 		return;
 	}
 	
-	console.log("checkedValues : " + checkedValues);
-	location.href = "AdminFaqDelete?faq_idxs=" + checkedValues;
+	if (confirm('삭제하시겠습니까?')) {
+		location.href = "AdminFaqDelete?faq_idxs=" + checkedValues;
+	}
+	
 	
 }

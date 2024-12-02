@@ -172,5 +172,9 @@
 }
 
 .rec-wrap .rec-inner {max-width:1320px;margin: 2rem auto;padding: 2rem 1rem;}
-.rec-inner .rec-ttl {text-align: center;font-size: 1.5rem;font-weight: 600;line-height: 1.6;margin-bottom: 2rem;color: var(--dark);background: var(--light-blue);padding: 3rem 2rem;}
+.rec-inner .rec-ttl {/* text-align: center; */font-size: 1.3rem;font-weight: 600;line-height: 1.4;margin-bottom: 2rem;color: var(--dark);background: var(--light-blue);padding: 2rem 2rem;border-radius: 10px;border: 1px solid #ddd;}
+.rec-inner .rec-ttl2 {/* text-align: center; */font-size: 1.3rem;font-weight: 600;line-height: 1.4;margin-bottom: 2rem;color: var(--dark);background: #f8d5e1;padding: 2rem 2rem;border-radius: 10px;border: 1px solid #ddd;}
+.rec-hashtags {padding:1rem;text-align:center;margin:0 auto 2rem;}
+.rec-hashtags span {padding:10px 20px;border-radius:50px;background:var(--secondary); color:var(--white); font-weight:700;margin:0 10px;}
+
 

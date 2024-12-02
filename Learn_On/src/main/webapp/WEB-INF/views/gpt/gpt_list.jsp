@@ -24,16 +24,80 @@
 		<div class="wrapper">
 			<section class="rec-wrap">
 				<div class="rec-inner">
-					<div class="rec-ttl">
-						안녕하세요. ${sessionScope.sId}님 ✨<br>
+					<c:if test="${not empty userInfo.HASHTAG}">
+						<div class="rec-ttl">
+							안녕하세요. ${userInfo.MEM_NAME}님 ✨<br>
+							런온의 추천로봇이 강의를 추천해드릴게요! 🤖
+						</div>
+						<div class="rec-hashtags"></div>
+					</c:if>
+					<ul class="course-card">
+						<li>
+<%-- 						<img src="${pageContext.request.contextPath}/resources/upload/${best.CLASS_PIC}" onclick="location.href='CourseDetail?class_id=${best.CLASS_ID}'" class="card-thumb" alt="thumbnail" /> --%>
+							<img src="${pageContext.request.contextPath}/resources/images/thumb_01.webp" class="card-thumb" alt="thumbnail" />
+							<div class="card-info" onclick="">
+								<div class="category">
+									<span>프로그래밍</span>
+								</div>
+								<div class="ttl">강의제목</div>
+								<div class="price">₩50,000</div>
+<%-- 								<div class="price">₩<fmt:formatNumber pattern="#,###">${best.CLASS_PRICE}</fmt:formatNumber></div> --%>
+								<div class="rating">
+									<i class="fa-solid fa-star"></i>
+									<span>4.5</span>
+								</div>
+								<div class="name">김선생</div>
+							</div>
+						</li>
+						<li>
+							<img src="${pageContext.request.contextPath}/resources/images/thumb_02.webp" class="card-thumb" alt="thumbnail" />
+							<div class="card-info" onclick="">
+								<div class="category">
+									<span>프로그래밍</span>
+								</div>
+								<div class="ttl">강의제목</div>
+								<div class="price">₩50,000</div>
+								<div class="rating">
+									<i class="fa-solid fa-star"></i>
+									<span>4.5</span>
+								</div>
+								<div class="name">김선생</div>
+							</div>
+						</li>
+						<li>
+							<img src="${pageContext.request.contextPath}/resources/images/thumb_03.webp" class="card-thumb" alt="thumbnail" />
+							<div class="card-info" onclick="">
+								<div class="category">
+									<span>프로그래밍</span>
+								</div>
+								<div class="ttl">강의제목</div>
+								<div class="price">₩50,000</div>
+								<div class="rating">
+									<i class="fa-solid fa-star"></i>
+									<span>4.5</span>
+								</div>
+								<div class="name">김선생</div>
+							</div>
+						</li>
+						<li>
+							<img src="${pageContext.request.contextPath}/resources/images/thumb_04.webp" class="card-thumb" alt="thumbnail" />
+							<div class="card-info" onclick="">
+								<div class="category">
+									<span>프로그래밍</span>
+								</div>
+								<div class="ttl">강의제목</div>
+								<div class="price">₩50,000</div>
+								<div class="rating">
+									<i class="fa-solid fa-star"></i>
+									<span>4.5</span>
+								</div>
+								<div class="name">김선생</div>
+							</div>
+						</li>
+					</ul>
+					<div class="rec-ttl2">
+						요즘 트렌드 강의는? <br>
 						런온의 추천로봇이 강의를 추천해드릴게요! 🤖
-						<br>
-						XXX님의 관심사<br>
-						<span class="hashtag">#개발</span>
-						<span class="hashtag">#그림</span>
-						<span class="hashtag">#개발</span>
-						<span class="hashtag">#개발</span>
-						<span class="hashtag">#개발</span>
 					</div>
 					<ul class="course-card">
 						<li>
@@ -106,5 +170,20 @@
 	<footer>
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
 	</footer>
+	<script>
+	$(document).ready(function(){
+		let hashtags = "${userInfo.HASHTAG}";
+		let hashtagArr = hashtags.split(',');
+		console.log(hashtagArr);
+		
+		for(let hash of hashtagArr) {
+			$(".rec-hashtags").append(
+					"<span>" + hash + "</span>"
+			);
+		}
+		
+		
+	});
+	</script>
 </body>
 </html>

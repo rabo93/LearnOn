@@ -26,9 +26,17 @@ public class ChatGPTController {
 	@GetMapping("Recommend")
 	public String recommend(HttpServletRequest request, HttpSession session, Model model) {
 		String id = (String)session.getAttribute("sId");
+		
+		Map<String, String> userInfo = chatGPTService.getName(id);
+		
+		model.addAttribute("userInfo", userInfo);
 		return "gpt/gpt_list";
 	}
-	
+	@GetMapping("requestPersonalRec")
+	public String requestPersonalRec() {
+		
+		return "";
+	}
 	// =======================================================================
 	// 챗GPT 활용 해시태그 자동생성
 	@ResponseBody
@@ -43,6 +51,5 @@ public class ChatGPTController {
 		
 		return response;
 	}
-	
 	
 }

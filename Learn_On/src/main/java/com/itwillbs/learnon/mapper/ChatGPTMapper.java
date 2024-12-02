@@ -16,8 +16,13 @@ public interface ChatGPTMapper {
 	// 전체 회원 해시태그 조회
 	String selectHashtags();
 	
-	List<Map<String, String>> selectClassList();
+	// 클래스 아이디와 클래스 해시태그 목록 조회
+	List<Map<String, String>> selectHashtagsByClass();
+	
+	// 추천 클래스 목록 조회
+	List<Map<String, Object>> selectClassList(String class_ids);
 
 	Map<String, String> selectClassInfo(String class_id);
+
 	
 }

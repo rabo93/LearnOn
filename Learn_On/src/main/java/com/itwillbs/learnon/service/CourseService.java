@@ -86,6 +86,9 @@ public class CourseService {
 		return mapper.insertApplyForCourse(class_id, id);
 	}
 
+	public int getFindCourseListCount(String find_title) {
+		return mapper.selectFindCourseListCount(find_title);
+	}
 	public List<CourseVO> getFindCourseList(String find_title, int startRow, int pageListLimit) {
 		return mapper.selectFindCourseList(find_title, startRow, pageListLimit);
 	}

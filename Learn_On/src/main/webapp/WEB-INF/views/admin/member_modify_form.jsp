@@ -93,7 +93,7 @@
 					</table>
 					<section class="nt-btns">
 						<button class="btn btn-lg btn-primary ms-3" type="submit">등록</button>
-						<button class="btn btn-lg btn-primary ms-3" type="button" onclick="location.href='AdmFaq'">취소</button>
+						<button class="btn btn-lg btn-primary ms-3" type="button" onclick="location.href='AdmMemList'">취소</button>
 					</section>
 				</form>
 			</section>

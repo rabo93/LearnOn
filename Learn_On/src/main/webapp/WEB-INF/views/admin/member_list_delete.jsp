@@ -46,8 +46,7 @@
 				<div class="bg-light rounded p-4">
 					<div class="d-flex mb-5">
 						<h5 class="me-auto tableSubject">탈퇴한 회원 목록</h5>
-						<button type="button" class="btn btn-lg btn-primary ms-3">회원 수정</button>
-						<button type="button" class="btn btn-lg btn-primary ms-3">회원 삭제</button>
+						<button type="button" class="btn btn-lg btn-primary ms-3" onclick="deleteMember()">회원 삭제</button>
 					</div>
 					<div class="d-flex input-group mb-3">
 						<input type="text" class="form-control" placeholder="회원 이름 검색" aria-label="Recipient's username" aria-describedby="button-addon2">
@@ -72,7 +71,7 @@
 							<tbody>
 								<c:forEach items="${getMemberList}" var="ml" varStatus="mem">
 									<tr> 
-										<th><input class="form-check-input" type="checkbox" id="gridCheck_${mem.index}"></th>
+										<th><input class="form-check-input" type="checkbox" id="gridCheck_${mem.index}" name="mem_id" value="${ml.mem_id}"></th>
 										<td class="col-1"><input id="idx_${mem.index}" class="form-control member" type="text" placeholder="회원 번호" aria-label="default input example" value="${ml.idx}" readonly></td>
 										<td class="col-1"><input id="memId_${mem.index}" class="form-control member" type="text" placeholder="아이디" aria-label="default input example" value="${ml.mem_id}" readonly></td>
 										<td class="col-1"><input id="memName_${mem.index}" class="form-control member" type="text" placeholder="이름" aria-label="default input example" value="${ml.mem_name}" readonly></td>

@@ -46,13 +46,22 @@
 				<div class="bg-light rounded p-4">
 					<div class="d-flex mb-5">
 						<h5 class="me-auto tableSubject">강사 회원 목록</h5>
-						<button type="button" class="btn btn-lg btn-primary ms-3">강사 등록</button>
-						<button type="button" class="btn btn-lg btn-primary ms-3">강사 수정</button>
-						<button type="button" class="btn btn-lg btn-primary ms-3">강사 삭제</button>
+<!-- 						<button type="button" class="btn btn-lg btn-primary ms-3">강사 등록</button> -->
+<!-- 						<button type="button" class="btn btn-lg btn-primary ms-3">강사 수정</button> -->
+<!-- 						<button type="button" class="btn btn-lg btn-primary ms-3">강사 삭제</button> -->
 					</div>
-					<div class="d-flex input-group mb-3">
-						<input type="text" class="form-control" placeholder="회원 이름 검색" aria-label="Recipient's username" aria-describedby="button-addon2">
-						<button class="btn btn-primary" type="button" id="button-addon2">검색</button>
+					<div class="member-sch">
+						<form class="d-flex input-group mb-3 w-25" method="get">
+							<select class="form-select" name="sort" onchange="this.form.submit()" aria-label="Default select example">
+								<option value="allMember" <c:if test="${param.sort eq 'allMember'}">selected</c:if>>전체</option>
+								<option value="nomal" <c:if test="${param.sort eq 'nomal'}">selected</c:if>>승인대기</option>
+								<option value="instructor" <c:if test="${param.sort eq 'instructor'}">selected</c:if>>승인완료</option>
+							</select>
+						</form>
+						<form class="d-flex input-group mb-3" method="get">
+							<input type="text" class="form-control" name="searchKeyword" placeholder="강사 이름 검색" aria-label="Recipient's username" aria-describedby="button-addon2">
+							<button class="btn btn-primary" type="submit" id="button-addon2">검색</button>
+						</form>
 					</div>
 					<div class="d-flex">
 						<table class="table table-striped">
@@ -94,8 +103,8 @@
 										<td><input id="memPhone_${mem.index}" class="form-control member" type="text" placeholder="연락처" aria-label="default input example" value="${ml.mem_phone}" readonly></td>
 										<td class="col-1">
 											<select id="grade_${mem.index}" class="form-select grade" aria-label="Default select example">
-												<option value="1" <c:if test="${ml.mem_grade eq 'MEM01'}">selected</c:if>>일반회원</option>
-												<option value="2" <c:if test="${ml.mem_grade eq 'MEM02'}">selected</c:if>>강사회원</option>
+												<option value="1" <c:if test="${ml.mem_grade eq 'MEM01'}">selected</c:if>>승인대기</option>
+												<option value="2" <c:if test="${ml.mem_grade eq 'MEM02'}">selected</c:if>>승인완료</option>
 											</select>
 										</td>
 	                             	</tr>

@@ -26,7 +26,7 @@ public class ChatGPTClient {
 	private String model ="gpt-4o-mini"; //GPT모델
 	private double temperature = 0.5;
 	
-	// 해시태그 요청을 위한 requestHashtag() 메서드
+	// 관리자 클래스 등록 시 해시태그 요청
 	public String requestHashtag(Map<String, String> classInfo) {
 		log.info("API_KEY: " + apiKey);
 		
@@ -34,7 +34,6 @@ public class ChatGPTClient {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setBearerAuth(apiKey);
-		
 		
 		Map<String, String> roleSystem = new HashMap<String, String>();
 		roleSystem.put("role", "system");
@@ -67,4 +66,49 @@ public class ChatGPTClient {
 		
 		return responseEntity.getBody();
 	}
+	
+	// ==============================================================================================
+	
+	// 추천 해시태그 요청
+	public String requestRec(String hashtags, List<Map<String, String>> classList) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setBearerAuth(apiKey);
+		
+		Map<String, String> roleSystem = new HashMap<String, String>();
+		roleSystem.put("role", "system");
+		roleSystem.put("content", "너는 온라인 교육 사이트 교육 안내원 역할이야."
+				+ "너는 우리 사이트는 회원들의 해시태그 선호도를 조사해서 해당 해시태그와 연관된"
+				+ "클래스를 추천해주는 역할이야."
+				+ "첫번째는 우리 웹사이트(온라인 교육 플랫폼)의 회원들이 선호하는 해시태그 모음이야."
+				+ "두번째로 우리 웹사이트에 등록된 전체 클래스 목록(클래스 아이디와 해시태그)을 보여줄테니"
+				+ "만약, 해시태그가 10개 이상으로 많다면 회원 선호 해시태그 중 가장 인기있는 해시태그 상위 5개만 간추리고"
+				+ "그 해시태그와 우리 웹사이트에 등록된 전체 클래스 목록에서 일치하거나 가장 연관있는 클래스를 최대 8개로 뽑아서 클래스아이디를 배열 객체로 알려줘."
+				+ "모든 설명은 제외하고 제목도 제외하고 오로지 클래스아이디만 알려줘. 결과에 ```json``` 이런 글자는 모두 제외해줘.");
+		
+		Map<String, String> roleUser = new HashMap<String, String>();
+		roleUser.put("role", "user");
+		roleUser.put("content", hashtags + "\n" + classList);
+		
+		List<Map<String, String>> messages = new ArrayList<Map<String,String>>();
+		messages.add(roleSystem);
+		messages.add(roleUser);
+		
+		JSONObject requestData = new JSONObject();
+		requestData.put("model", model);
+		requestData.put("temperature", temperature);
+		requestData.put("messages", messages);
+		
+		HttpEntity<String> httpEntity = new HttpEntity<String>(requestData.toString(), headers);
+		System.out.println("httpEntity : " + httpEntity);
+		
+		RestTemplate restTemplate = new RestTemplate();
+		
+		ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.POST, httpEntity, String.class);
+		System.out.println(responseEntity.getBody());
+		
+		return responseEntity.getBody();
+	}
+	
+	
 }

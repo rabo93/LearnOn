@@ -53,7 +53,7 @@
 							</div>
 							<div class="p-2 bd-highlight">
 		                		<button type="submit" class="btn btn-lg btn-primary">클래스 등록</button>
-		                		<button type="button" class="btn btn-lg btn-primary ms-3" onclick="moveBack()">클래스 삭제</button>
+<!-- 		                		<button type="button" class="btn btn-lg btn-primary ms-3" onclick="moveBack()">클래스 삭제</button> -->
 							</div>
 						</div>
 						<div class="d-flex justify-content-between">

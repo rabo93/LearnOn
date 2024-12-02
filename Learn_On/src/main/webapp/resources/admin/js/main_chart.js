@@ -1,6 +1,6 @@
 (function ($) {
     "use strict";
-
+    
     // Worldwide Sales Chart
     var ctx1 = document.querySelector("#worldwide-sales").getContext("2d");
     var myChart1 = new Chart(ctx1, {

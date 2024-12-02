@@ -69,7 +69,7 @@
 										<label for="floatingInput">강의 소개</label>
 									</div>
 									<div class="form-floating mb-3">
-										<textarea class="form-control" id="class_contents" style="height: 150px;white-scpace:pre-line;" name="class_contents" >${getClass.class_contents}</textarea>
+										<textarea class="form-control" id="class_contents" style="height: 150px;white-scpace:pre-line;" name="class_contents">${getClass.class_contents}</textarea>
 										<label for="floatingTextarea">강의 상세내용</label>
 									</div>
 									<div class="d-flex">
@@ -88,7 +88,7 @@
 											<label for="floatingSelect2">소분류</label>
 										</div>
 										<div class="form-floating flex-fill">
-											<input type="text" class="form-control" id="teacher" name="mem_id" value="${getClass.mem_id}">
+											<input type="text" class="form-control" id="teacher" name="mem_id" value="${getClass.mem_id}" readonly>
 											<label for="floatingInput">강사</label>
 											<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTeacherList">강사 찾기</button>
 										</div>
@@ -115,7 +115,6 @@
 		                                	<c:forEach items="${getCurriculum}" var="cur">
 	                                			<tr>
 			                                		<td><input type="checkbox" name="checkboxObj"/></td>
-<%-- 													<td><input type="hidden" name="cur_id" value="${cur.cur_id}"></td> --%>
 													<td><input type="text" name="cur_title" class="form-control" id="floatingInput" placeholder="커리큘럼 제목" value="${cur.CUR_TITLE}"></td>
 													<td><input type="number" name="cur_runtime" class="form-control" id="floatingInput" placeholder="커리큘럼 영상길이" value="${cur.CUR_RUNTIME}"></td>
 													<td><input type="file" name="cur_video_get" class="file form-control" id="inputGroupFile02"></td>

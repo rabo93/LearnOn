@@ -43,7 +43,7 @@
 	
 	<%-- 내용 시작 --%>
 	<!-- Blank Start -->
-		<form action="AdmClassAdd" name="addForm" method="post" enctype="multipart/form-data">
+		<form action="AdmClassAdd" name="addForm" id="addForm" method="post" enctype="multipart/form-data">
             <div class="container-fluid pt-4 px-4">
                 <div class="row vh-100 bg-light rounded align-items-center justify-content-center mx-0">
                 	<div class="bg-light rounded p-4">
@@ -59,15 +59,15 @@
 						<div class="d-flex justify-content-between">
 							<div class="col-8">
 		                		<div class="form-floating mb-3">
-		                			<input type="text" class="form-control" id="floatingInput" name="class_title" oninvalid="this.setCustomValidity('제목을 입력해주세요')">
+		                			<input type="text" class="form-control" id="class_title" name="class_title">
 		                			<label for="floatingInput">강의 제목</label>
 		                		</div>
 								<div class="form-floating mb-3">
-									<textarea class="form-control" id="floatingInput" name="class_intro" style="height: 80px;" rows="3" oninvalid="this.setCustomValidity('소개를 입력 해주세요')"></textarea>
+									<textarea class="form-control" id="class_intro" name="class_intro" style="height: 80px;" rows="3"></textarea>
 									<label for="floatingInput">강의 소개</label>
 								</div>
 								<div class="form-floating mb-3">
-									<textarea class="form-control" id="floatingTextarea" style="height: 150px;" name="class_contents" rows="5" oninvalid="this.setCustomValidity('상세내용을 입력해주세요')"></textarea>
+									<textarea class="form-control" id="class_contents" style="height: 150px;" name="class_contents" rows="5"></textarea>
 									<label for="floatingTextarea">강의 상세내용</label>
 								</div>
 								<div class="d-flex">
@@ -85,7 +85,7 @@
 										<label for="floatingSelect2">소분류</label>
 									</div>
 									<div class="form-floating flex-fill">
-										<input type="text" class="form-control" id="teacher" name="mem_id" readonly oninvalid="this.setCustomValidity('강사를 선택해주세요')">
+										<input type="text" class="form-control" id="teacher" name="mem_id" readonly>
 										<label for="floatingInput">강사 ID</label>
 										<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTeacherList">강사 찾기</button>
 									</div>
@@ -117,14 +117,15 @@
                    		 	<div class="col-3 me-3">
 								<h6>가격</h6>
 								<div class="input-group">
-									<input type="number" class="form-control" name="class_price">
+									<input type="number" class="form-control" name="class_price" id="classPrice">
 									<span class="input-group-text">원</span>
 								</div>
 							</div>
 							<div class="col-3 me-3">
 								<h6>해시태그 생성</h6>
 								<div class="input-group">
-									<input type="text" name="hashtag" class="form-control" pattern="^#([a-zA-Z0-9가-힣]{1,10})(,#([a-zA-Z0-9가-힣]{1,10})){0,9},?$" placeholder="ex) #프로그래밍,#자바,#스프링,#DBMS" >
+									<input type="text" name="hashtag" id="hashtag" class="form-control" pattern="^#([a-zA-Z0-9가-힣]{1,10})(,#([a-zA-Z0-9가-힣]{1,10})){0,9},?$" placeholder="ex) #프로그래밍,#자바,#스프링,#DBMS" >
+									<input type="button" value="자동생성" onclick="requestHashcode()">
 								</div>
 							</div>
 							<div class="col-2 me-3">
@@ -189,6 +190,7 @@
     <!-- Template Javascript -->
     <script src="resources/admin/js/main.js"></script>
     <script src="resources/admin/js/admClass.js"></script>
+    <script src="resources/admin/js/classForm.js"></script>
     <script type="text/javascript">
    		let link = document.location.href;
     	if (link.includes("AdmClass")) {
@@ -200,9 +202,45 @@
     	
     	function selectTeacher() {
     		var val = $('#selectTeacher').find(":selected").val();
-    		console.log(val);
     	    $("#teacher").val(val);
     	}
+    	
+    	//해시태그 자동생성 버튼
+    	function requestHashcode() {
+			if($("#class_title").val() == "") {
+				alert("강의제목 입력 필수!");
+				$("#class_title").focus();
+				return;
+			} else if($("#class_intro").val() == "") {
+				alert("강의소개 입력 필수!");
+				$("#class_intro").focus();
+				return;
+			}
+			
+			// AJAX 활용하여 ClassRequestHashtag 서블릿 요청(POST)
+			// => 파라미터 : 강의명, 강의 상세설명
+			$.ajax({
+				type: "POST",
+				url: "ClassRequestHashtag",
+				data: {
+					class_title : $("#class_title").val(),
+					class_intro : $("#class_intro").val(),
+				},
+				dataType: "JSON"
+			}).done(function(response) {
+				console.log(JSON.stringify(response));
+				
+				let hashtags = response.choices[0].message.content;
+				$("#hashtag").val(hashtags);
+				
+			}).fail(function() {
+				alert("요청실패!");
+			});
+			
+			
+		}
+    	
+    	
     </script>
 </body>
 </html>

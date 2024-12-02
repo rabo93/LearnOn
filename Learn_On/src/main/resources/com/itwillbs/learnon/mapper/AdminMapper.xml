@@ -28,7 +28,9 @@
 	<select id="getWeekPayTotal" resultType="int">
 		SELECT IFNULL(SUM(PRICE),0)
 		  FROM PAY_INFO
-		 WHERE YEARWEEK(PAY_DATE) = YEARWEEK(#{formattedDate})
+		 WHERE PAY_DATE
+	   BETWEEN DATE_SUB(#{formattedDate}, INTERVAL WEEKDAY(#{formattedDate}) DAY)			-- 해당 주의 월요일 
+		   AND DATE_ADD(#{formattedDate}, INTERVAL (6 - WEEKDAY(#{formattedDate})) DAY)		-- 해당 주의 일요일
 	</select>
 
 <!-- ================================================================== -->

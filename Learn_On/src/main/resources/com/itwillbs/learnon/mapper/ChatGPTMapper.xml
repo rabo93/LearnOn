@@ -3,6 +3,19 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itwillbs.learnon.mapper.ChatGPTMapper">
-
+	<select id="selectName" resultType="map">
+		-- 사용자 정보 조회
+		SELECT MEM_NAME
+			 , MEM_NICK
+			 , hashtag AS HASHTAG
+		  FROM MEMBER
+		 WHERE MEM_ID = #{id}
+	</select>
+	<select id="selectHashtags" resultType="String">
+		SELECT GROUP_CONCAT(REPLACE(HASHTAG, ' ', '') SEPARATOR ',') AS ALL_HASHTAGS
+		  FROM MEMBER
+		 WHERE HASHTAG IS NOT NULL
+		   AND TRIM(HASHTAG) != ''
+	</select>
 
 </mapper>

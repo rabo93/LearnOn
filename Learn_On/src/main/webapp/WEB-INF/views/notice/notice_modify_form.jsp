@@ -89,23 +89,23 @@
 	<script type="text/javascript">
 		
 		function deleteFile(notice_idx, file, index) {
-			console.log(notice_idx + "," + file + "," + index);
-			$.ajax ({
-				type : "POST",
-				url : "/notice/deleteFile",
-				data : {
-					notice_idx : notice_idx,
-					file : file,
-					index : index - 1
-				},
-			}).done(function(result) {
-				console.log("파일 삭제 성공" , result);
-				$("#file_" + index).remove();
-			}).fail(function(jqXHR){
-				console.log("파일 삭제 실패 : " + jqXHR.status);
-				alert("파일삭제에 실패했습니다. 다시 시도해주세요");
-			});
-		};
+			if(confirm("삭제하시겠습니까?")) {
+				$.ajax ({
+					type : "POST",
+					url : "/notice/deleteFile",
+					data : {
+						notice_idx : notice_idx,
+						file : file,
+						index : index - 1
+					},
+				}).done(function(result) {
+					$("#file_" + index).remove();
+				}).fail(function(jqXHR){
+					alert("파일삭제에 실패했습니다. 다시 시도해주세요");
+				});
+			};
+				
+		}
 		
 	</script>
 </body>

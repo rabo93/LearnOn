@@ -100,19 +100,17 @@
                     <div class="col-sm-12 col-xl-6">
                         <div class="bg-light text-center rounded p-4">
                             <div class="d-flex align-items-center justify-content-between mb-4">
-                                <h6 class="mb-0">카테고리별 월간 매출 통계</h6>
-                                <a href="">자세히 보기</a>
+                                <h6 class="mb-0">일간 매출 통계</h6>
                             </div>
-                            <canvas id="worldwide-sales"></canvas>
+                            <canvas id="TodaySales"></canvas>
                         </div>
                     </div>
                     <div class="col-sm-12 col-xl-6">
                         <div class="bg-light text-center rounded p-4">
                             <div class="d-flex align-items-center justify-content-between mb-4">
-                                <h6 class="mb-0">월간 매출 통계</h6>
-                                <a href="">자세히 보기</a>
+                                <h6 class="mb-0">주간 매출 통계</h6>
                             </div>
-                            <canvas id="salse-revenue"></canvas>
+                            <canvas id="WeeklySales"></canvas>
                         </div>
                     </div>
                 </div>
@@ -191,7 +189,9 @@
                 </div>
             </div>
             <!-- Widgets End -->
-            
+            <div>
+            	<canvas id="myChart"></canvas>
+            </div>
 	<%@include file="inc/footer.jsp"%>
 
 	<!-- Back to Top -->
@@ -200,7 +200,8 @@
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="resources/admin/lib/chart/chart.min.js"></script>
+<!--     <script src="resources/admin/lib/chart/chart.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="resources/admin/lib/easing/easing.min.js"></script>
     <script src="resources/admin/lib/waypoints/waypoints.min.js"></script>
     <script src="resources/admin/lib/owlcarousel/owl.carousel.min.js"></script>
@@ -210,12 +211,78 @@
 
     <!-- Template Javascript -->
     <script src="resources/admin/js/main.js"></script>
-<!--     <script src="resources/admin/js/main_chart.js"></script> -->
-    <script type="text/javascript">
-    		var link = document.location.href;
-	    	if (link.includes("Adm")) {
-	    		document.getElementById("adminIndex").classList.toggle("active");
-	    	};
+    <script src="resources/admin/js/main_chart.js"></script>
+    <script>
+   		var link = document.location.href;
+    	if (link.includes("Adm")) {
+    		document.getElementById("adminIndex").classList.toggle("active");
+    	};
+    	
+    	
+    	//	===================================================
+	    	
+    	
+    	const ctxToday = document.getElementById('TodaySales');
+    	const ctxWeekly = document.getElementById('WeeklySales');
+    	
+    	const today = new Date();
+    	const todayLabels = [];  // 매일 날짜 배열
+    	const weekLabels = [];  // 주간 날짜 배열
+    	const dataToday = ${payFiveDayTotals};    // 데이터 배열
+    	const dataWeekly = ${payFourWeekTotals};    // 데이터 배열
+		
+    	// 5일치 데이터를 생성 (오늘 날짜부터 시작)
+    	for (let i = 0; i < 5; i++) {
+			const date = new Date(today);
+			date.setDate(today.getDate() - (4 - i)); // 5일 전부터 오늘까지 날짜를 생성
+   			todayLabels.push(date.toLocaleDateString());  // 날짜 포맷을 'MM/DD/YYYY'로 변환하여 배열에 추가
+   		}
+	    	
+	   	new Chart(ctxToday, {
+	   	    type: 'bar',
+	   	    data: {
+	   	      labels: todayLabels,
+	   	      datasets: [{
+	   	        label: 'TodaySales',
+	   	        data: dataToday,
+	   	        borderWidth: 1
+	   	      }]
+	   	    },
+	   	    options: {
+	   	      scales: {
+	   	        y: {
+	   	          beginAtZero: true
+	   	        }
+	   	      }
+	   	    }
+	   	  });
+	    
+	   	for (let i = 0; i < 4; i++) {
+	   		const startOfWeek = new Date(today);
+	   	    startOfWeek.setDate(today.getDate() - (today.getDay() + 6) % 7 - ((3 - i) * 7));
+	   	 	weekLabels.push(startOfWeek.toLocaleDateString());
+	   	}
+	   	
+	   	new Chart(ctxWeekly, {
+	   	    type: 'bar',
+	   	    data: {
+	   	        labels: weekLabels,  // 주간 시작일을 X축에 표시
+	   	        datasets: [{
+	   	            label: 'WeeklySales',  // 데이터셋 레이블
+	   	            data: dataWeekly,  // 4주간의 매출 데이터를 Y축에 표시
+	   	            borderWidth: 1,
+	   	        }]
+	   	    },
+	   	    options: {
+	   	        responsive: true,
+	   	        scales: {
+	   	            y: {
+	   	                beginAtZero: true  // Y축은 0부터 시작
+	   	            }
+	   	        }
+	   	    }
+	   	});
+	   	
     </script>
 </body>
 </html>

@@ -111,8 +111,6 @@
 					</c:choose>
 					
 					<!-- 페이징 처리 시작 -->
-					
-					${pageInfo }
 					<c:choose>
 						<c:when test="${not empty requestScope.courseList}">		
 							<section id="pageList">

@@ -45,9 +45,6 @@ public class MypageController {
 	@Autowired
 	private MypageService myService;
 	
-	@Autowired
-	private AdminService admService;
-	
 	// 첨부파일 가상경로
 	private String uploadPath = "/resources/upload";
 	

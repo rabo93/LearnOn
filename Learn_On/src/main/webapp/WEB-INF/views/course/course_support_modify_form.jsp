@@ -49,17 +49,18 @@
 							 <!-- 파일 첨부 -->
 		                    <div class="row attach">
 		                    	<c:choose>
-									<c:when test="${not empty originalFileList}">
+									<c:when test="${not empty courseSupport.c_support_file}">
 										<div class="board_file" id="file">
 											${originalFileList}
 											<a href="${pageContext.request.contextPath}/resources/upload/${originalFileList}" download="${originalFileList}"><i class="fa-solid fa-download"></i></a>
-											<a href="#" onclick="deleteFile(${courseSupport.c_support_idx}, '${originalFileList}')"><i class="fa-solid fa-trash"></i></a>
+											<a href="#" onclick="deleteFile(${courseSupport.c_support_idx}, '${courseSupport.c_support_file}')"><i class="fa-solid fa-trash"></i></a>
 											<input type="file" name="file" size="50" hidden>
 											
 										</div>
 									</c:when>
 									<c:otherwise>
 									 	<input type="file" name="file">
+									 	
 									</c:otherwise>
 								</c:choose>
 		                    </div>

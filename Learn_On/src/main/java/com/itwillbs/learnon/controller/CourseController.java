@@ -65,9 +65,9 @@ public class CourseController {
 		return jo.toString();
 	}
 	
-	@PostMapping("CourseFind")
+	@GetMapping("CourseFind")
 	public String courseFind(
-			@RequestParam(defaultValue = "1") int pageNum	,
+			@RequestParam(defaultValue = "1") int pageNum,
 			String find_title, 
 			Model model) {
 		System.out.println("CourseFind 잘들어오나!");
@@ -102,6 +102,12 @@ public class CourseController {
 		model.addAttribute("courseList", courseList);
 		return "course/course_find_list"; 
 	}
+	
+	
+	
+	
+	
+	
 	
 	@GetMapping("BestCourse")
 	public String bestCourse(
@@ -513,7 +519,7 @@ public class CourseController {
 	@ResponseBody 
 	@PostMapping("CourseSupportDeleteFile")
 	public String courseSupportDeleteFile(@RequestParam Map<String, String> map, HttpSession session) {
-		
+		System.out.println("CourseSupportDeleteFile 잘되나????" + map);
 		// courseService - removeBoardFile() 메서드 호출하여 지정된 파일명 삭제 요청
 		// => 파라미터 : Map 객체   리턴타입 : int(deleteCount)
 		int deleteCount = courseService.removeBoardFile(map); 

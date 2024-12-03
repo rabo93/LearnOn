@@ -53,6 +53,9 @@ public interface MemberMapper {
 			@Param("heshePasswd") String heshePasswd , 
 			@Param("mem_email") String mem_email);
 
+	//이메일 중복체크
+	MemberVO selectEmailId(MemberVO member);
+
 
 
 

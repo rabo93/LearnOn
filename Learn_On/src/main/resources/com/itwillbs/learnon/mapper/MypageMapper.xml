@@ -290,6 +290,7 @@
 			  AND O.MEM_ID = #{id}
 			</if>
 		ORDER BY P.PAY_DATE DESC
+				 , O.MERCHANT_UID DESC
 	</select>
 	<select id="selectCoupon" resultType="map">
 		-- 쿠폰 목록 조회
@@ -461,7 +462,7 @@
 		INTO 
 			ATTENDANCE(CHECK_IN_DATE,MEM_ID)
 		VALUES(
-			NOW() - INTERVAL 1 DAY    -- null값이 들어가면 연속출석일 반영이 안돼서 now()-1 했습니다
+			NOW() - INTERVAL 1 DAY    -- null값이 들어가면 연속출석일 반영이 안돼서 now()-1
 			,#{mem_id}
 			)
 	</insert>

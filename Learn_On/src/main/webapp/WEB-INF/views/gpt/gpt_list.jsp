@@ -30,33 +30,33 @@
 							런온의 추천로봇이 ${userInfo.MEM_NAME}님을 위한 강의를 추천해드릴게요! 🤖
 						</div>
 						<div class="rec-hashtags"></div>
+						<c:choose>
+							<c:when test="${empty myClassList}">
+								<div class="empty">강의를 준비중이에요 😊</div>
+							</c:when>
+								<c:otherwise>
+									<ul class="course-card">
+										<c:forEach var="my" items="${myClassList}">
+											<li>
+												<img src="${pageContext.request.contextPath}/resources/upload/${my.CLASS_PIC}" onclick="location.href='CourseDetail?class_id=${my.CLASS_ID}'" class="card-thumb" alt="thumbnail" />
+												<div class="card-info" onclick="location.href='CourseDetail?class_id=${my.CLASS_ID}'">
+													<div class="category">
+														<span>${my.CLASS_CATEGORY}</span>
+													</div>
+													<div class="ttl">${my.CLASS_TITLE}</div>
+													<div class="price">₩<fmt:formatNumber pattern="#,###">${my.CLASS_PRICE}</fmt:formatNumber></div>
+													<div class="rating">
+														<i class="fa-solid fa-star"></i>
+														<span>${my.REVIEW_SCORE}</span>
+													</div>
+													<div class="name">${my.TEACHER_NAME}</div>
+												</div>
+											</li>
+										</c:forEach>
+									</ul>
+								</c:otherwise>
+						</c:choose>
 					</c:if>
-					<c:choose>
-						<c:when test="${empty myClassList}">
-							<div class="empty">강의를 준비중이에요 😊</div>
-						</c:when>
-							<c:otherwise>
-								<ul class="course-card">
-									<c:forEach var="my" items="${myClassList}">
-										<li>
-											<img src="${pageContext.request.contextPath}/resources/upload/${my.CLASS_PIC}" onclick="location.href='CourseDetail?class_id=${my.CLASS_ID}'" class="card-thumb" alt="thumbnail" />
-											<div class="card-info" onclick="location.href='CourseDetail?class_id=${my.CLASS_ID}'">
-												<div class="category">
-													<span>${my.CLASS_CATEGORY}</span>
-												</div>
-												<div class="ttl">${my.CLASS_TITLE}</div>
-												<div class="price">₩<fmt:formatNumber pattern="#,###">${my.CLASS_PRICE}</fmt:formatNumber></div>
-												<div class="rating">
-													<i class="fa-solid fa-star"></i>
-													<span>${my.REVIEW_SCORE}</span>
-												</div>
-												<div class="name">${my.TEACHER_NAME}</div>
-											</div>
-										</li>
-									</c:forEach>
-								</ul>
-							</c:otherwise>
-					</c:choose>
 					<div class="rec-ttl2">
 						요즘 트렌드 강의는? <br>
 						런온 회원이 가장 선호하는 해시태그를 기반으로 추천해드려요! 🤖

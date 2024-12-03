@@ -88,10 +88,10 @@
 											<td>${payment.value[0].mem_id}</td>
 											<td>
 												<c:choose>
-													<c:when test="${payment.value[0].pay_method.equals('vbank')}">
-														${payment.value[0].bank_name} (무통장)
+													<c:when test="${not empty payment.value[0].bank_name}">
+														${payment.value[0].bank_name}
 													</c:when>
-													<c:when test="${payment.value[0].pay_method.equals('card')}">
+													<c:when test="${not empty payment.value[0].card_name}">
 														${payment.value[0].card_name}
 													</c:when>
 												</c:choose>

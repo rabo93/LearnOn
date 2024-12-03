@@ -21,7 +21,6 @@ function showUpdateModal(id) {
 	}).fail(function(){
 		console.log("에러");
 	});
-	
 }
 
 function showWriteModal(id) {

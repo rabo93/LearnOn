@@ -65,18 +65,18 @@ public class CourseController {
 		return jo.toString();
 	}
 	
-	@PostMapping("CourseFind")
+	@GetMapping("CourseFind")
 	public String courseFind(
-			@RequestParam(defaultValue = "1") int pageNum	,
+			@RequestParam(defaultValue = "1") int pageNum,
 			String find_title, 
 			Model model) {
-		
+		System.out.println("CourseFind 잘들어오나!");
 		// ----------------------------------------------------------------
 		// [ 페이징 처리 ]	
 		int listLimit = 8; // 페이지 당 게시물 수
 		int startRow = (pageNum - 1) * listLimit; 
-		int listCount = courseService.getCourseBestListCount();
-		
+		int listCount = courseService.getFindCourseListCount(find_title);
+		System.out.println("listCount??? " + listCount);
 		int pageListLimit = 8; 
 		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
 		if(maxPage == 0) {
@@ -102,6 +102,12 @@ public class CourseController {
 		model.addAttribute("courseList", courseList);
 		return "course/course_find_list"; 
 	}
+	
+	
+	
+	
+	
+	
 	
 	@GetMapping("BestCourse")
 	public String bestCourse(
@@ -513,7 +519,7 @@ public class CourseController {
 	@ResponseBody 
 	@PostMapping("CourseSupportDeleteFile")
 	public String courseSupportDeleteFile(@RequestParam Map<String, String> map, HttpSession session) {
-		
+		System.out.println("CourseSupportDeleteFile 잘되나????" + map);
 		// courseService - removeBoardFile() 메서드 호출하여 지정된 파일명 삭제 요청
 		// => 파라미터 : Map 객체   리턴타입 : int(deleteCount)
 		int deleteCount = courseService.removeBoardFile(map); 

@@ -1,4 +1,3 @@
-
 $(function(){
 	$('.gradeChange').on("change", function() {
 		let index = this.id.split('_')[1];
@@ -70,8 +69,9 @@ function deleteMember() {
 		return;
 	}
 	
-	console.log("checkedValues : " + checkedValues);
-	location.href = "AdminMemberDelete?mem_ids=" + checkedValues;
+	if(confirm("회원을 삭제하시겠습니까?")) {
+		location.href = "AdminMemberDelete?mem_ids=" + checkedValues;
+	}
 }
 
 function changeMemGrade(mem_id) {

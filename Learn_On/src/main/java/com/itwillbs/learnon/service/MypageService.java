@@ -5,7 +5,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -88,7 +90,12 @@ public class MypageService {
 		List<MyPaymentVO> list = myMapper.selectPaymentList(id);
 		// 결제번호를 key값으로 중복 제거 후 value 값으로 주문내역 배열 저장
 		Map<String, List<MyPaymentVO>> result = list.stream()
-													.collect(Collectors.groupingBy(MyPaymentVO::getMerchant_uid));
+													.sorted(Comparator.comparing(MyPaymentVO::getPay_date).reversed())
+													.collect(Collectors.groupingBy(
+															MyPaymentVO::getMerchant_uid,
+															LinkedHashMap::new,
+													        Collectors.toList()
+													        ));
 		return result;
 	}
 	

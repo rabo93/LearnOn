@@ -15,21 +15,20 @@ $(document).ready(function(){
         dataType: "json",
         
 		success : function(data) {
+			// 로그인하지 않은 경우 
 			if(!data.isLogin) {
-				$('.cart-btn').hide(); // 로그인하지 않은 경우 장바구니 버튼 숨김
-				
-			} else { //로그인 되어 있는 경우 
-				if(data.cartCount > 0) { //장바구니에 담겨 있는 경우 
-					$('#cartCount').html(data.cartCount);
-				} else { //장바구니 갯수 0일 경우 
-					$('#cartCount').html("0");
-				}
-			}
+				$('.cart-btn').hide(); //장바구니 버튼 숨김
+			} 
+			// 로그인한 경우
+			$('#cartCount').html(data.cartCount); //장바구니에 담겨 있는 경우 갯수 표출
 		},
 		error: function(jqXHR) {
 			console.log("장바구니 개수 불러오기 오류 : "+ jqXHR);
 		}
 	});
+	//================================================================================
+	
+	
 	$.ajax({
 		type: "get",
 		url: "TopMenu",

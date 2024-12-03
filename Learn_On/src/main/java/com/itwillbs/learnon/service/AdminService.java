@@ -104,8 +104,8 @@ public class AdminService {
 	}
 	
 	//	강사회원 조회
-	public List<MemberVO> getInstructorMemberList() {
-		return mapper.getInstructorMemberList();
+	public List<MemberVO> getInstructorMemberList(String searchKeyword, String sort) {
+		return mapper.getInstructorMemberList(searchKeyword, sort);
 	}
 	//	탈퇴회원 조회
 	public List<MemberVO> getWithdrawMemberList() {

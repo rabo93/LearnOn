@@ -1,10 +1,14 @@
 package com.itwillbs.learnon.controller;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,17 +30,27 @@ public class ChatGPTController {
 	@GetMapping("Recommend")
 	public String recommend(HttpServletRequest request, HttpSession session, Model model) {
 		String id = (String)session.getAttribute("sId");
+		if(id != null) {
+			Map<String, String> userInfo = chatGPTService.getName(id);
+			
+			String responsePerson = chatGPTService.requestRecommendPerson(userInfo.get("HASHTAG"));
+			
+			List<Map<String, Object>> myClassList = chatGPTService.getRecommendList(responsePerson);
+			
+			model.addAttribute("userInfo", userInfo);
+			model.addAttribute("myClassList", myClassList);
+		}
 		
-		Map<String, String> userInfo = chatGPTService.getName(id);
+		String response = chatGPTService.requestRecommend();
 		
-		model.addAttribute("userInfo", userInfo);
+		List<Map<String, Object>> classList = chatGPTService.getRecommendList(response);
+		
+		model.addAttribute("classList", classList);
+
 		return "gpt/gpt_list";
 	}
-	@GetMapping("requestPersonalRec")
-	public String requestPersonalRec() {
-		
-		return "";
-	}
+	
+	
 	// =======================================================================
 	// 챗GPT 활용 해시태그 자동생성
 	@ResponseBody

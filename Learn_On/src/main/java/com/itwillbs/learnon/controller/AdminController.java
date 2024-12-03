@@ -84,7 +84,7 @@ public class AdminController {
 		}
 		//	오늘 날짜 불러오기
 		LocalDate today = LocalDate.now();
-		//	통계를 위한 오늘 날짜 - 4일전 날짜 계산
+		//	통계를 위한 날짜구하기 - 4일전 날짜 계산
 		LocalDate fiveDaysAgo = today.minusDays(4);
 		//	통계를 위한 해당 주의 월요일 구하기
 		LocalDate mondayWeek = today.minusDays(today.getDayOfWeek().getValue() - 1);
@@ -96,6 +96,8 @@ public class AdminController {
 		List<Integer> payFiveDayTotals = new ArrayList<>();
 		//	주간별 매출합을 담기위한 List 생성
 		List<Integer> payFourWeekTotals = new ArrayList<>();
+		
+		//	요일별 매출
 		for (int i = 0; i <= 4; i++) {
 			//	5일 전부터 차례대로 1일씩 증가
 			LocalDate date = fiveDaysAgo.plusDays(i);
@@ -107,15 +109,16 @@ public class AdminController {
 			payFiveDayTotals.add(payTotalForDay);
 		}
 		
+		//	주간별 매출
 		for (int i = 0; i <= 3; i++) {
 			//	3주 전부터 차례대로 1주씩 증가
 			LocalDate startOfWeek = fourWeekAgo.plusWeeks(i);
 			//	포맷한 형식 넣기
 			String formattedDate = startOfWeek.format(formatter);
 			//	각 주별 매출 합 조회
-			int payTotalForWeek = adminService.getWeekPayTotal(formattedDate);
+			int payTotalFourWeek = adminService.getWeekPayTotal(formattedDate);
 			//	List에 하나씩 add
-			payFourWeekTotals.add(payTotalForWeek);
+			payFourWeekTotals.add(payTotalFourWeek);
 		}
 		
 		//	오늘날짜에 포맷한 형식 넣기
@@ -309,7 +312,7 @@ public class AdminController {
 		int classId = adminService.getClassId();
 		VO.setClass_id(classId);
 		// 커리큘럼 내용 가져오기
-		String[] arrCurTitle = VO.getCur_title().split(",");
+		String[] arrCurTitle = VO.getCur_title().split(",\\S");
 		String[] arrCurRunTime = VO.getCur_runtime().split(",");
 		int totalRunTime = VO.getClass_runtime();
 		// 실제 경로
@@ -471,6 +474,7 @@ public class AdminController {
 		List<Map<String, Object>> curList = adminService.getCurriculum(class_id);
 		
 		// 커리큘럼 내용 가져오기
+		System.out.println("============================================================" + adm.getCur_title());
 		String[] arrCurTitle = adm.getCur_title().split(",");
 		String[] arrCurRunTime = adm.getCur_runtime().split(",");
 		
@@ -627,16 +631,19 @@ public class AdminController {
 		
 		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
 		List<MemberVO> memberList = adminService.getNomalMemberList(startRow, listLimit, searchKeyword, searchType, sort);
+		model.addAttribute("pageNum", pageNum);
 		model.addAttribute("pageInfo", pageInfo);
 		model.addAttribute("getMemberList", memberList);
-//		model.addAttribute("getMemberList", adminService.getNomalMemberList(startRow, listLimit, searchKeyword, searchType, sort));
 		model.addAttribute("sort", sort);
 		return "admin/member_list";
 	}
 	
 	// 어드민 강사 회원 목록 페이지 매핑
 	@GetMapping("AdmMemInstructor")
-	public String admin_member_list_instructor(Model model, HttpSession session) {
+	public String admin_member_list_instructor(@RequestParam(defaultValue = "") String searchKeyword,
+											   @RequestParam(defaultValue = "allMember") String sort,
+											   Model model,
+											   HttpSession session) {
 		//	로그인 ID 가져오기
 		String id = (String)session.getAttribute("sId");
 		//	로그인한 회원등급 가져오기
@@ -651,7 +658,7 @@ public class AdminController {
 			model.addAttribute("targetURL", "/");
 			return "admin/fail";
 		}
-		model.addAttribute("getMemberList", adminService.getInstructorMemberList());
+		model.addAttribute("getMemberList", adminService.getInstructorMemberList(searchKeyword, sort));
 		return "admin/member_list_instructor";
 	}
 	
@@ -673,7 +680,7 @@ public class AdminController {
 			return "admin/fail";
 		}
 		model.addAttribute("getMemberList", adminService.getWithdrawMemberList());
-	return "admin/member_list_delete";
+		return "admin/member_list_delete";
 	}
 	
 	//	어드민 회원정보 수정
@@ -712,7 +719,6 @@ public class AdminController {
 	@GetMapping("AdminMemberDelete")
 	public String adminMemberDelete(String[] mem_ids, Model model) {
 		for(String mem_id : mem_ids) {
-			System.out.println(mem_id);
 			int deleteCount = adminService.removeMember(mem_id);
 			if(deleteCount < 0) {
 				model.addAttribute("msg", "회원 삭제 실패");
@@ -739,13 +745,10 @@ public class AdminController {
 		return "redirect:/AdmMemInstructor";
 	}
 	
-	
 	//	어드민 회원등급 변경
 	@ResponseBody
 	@PostMapping("AdmChangeMemGrade")
 	public String admChangeMemGrade(@RequestParam Map<String, String> map) {
-		System.out.println("mem_id : " + map.get("mem_id"));
-		System.out.println("mem_grade : " + map.get("mem_grade"));
 		adminService.changeAllGradeMember(map);
 //		
 		String mem_grade = "";

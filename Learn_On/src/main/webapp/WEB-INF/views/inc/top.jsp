@@ -18,7 +18,7 @@ function logout() {
 			<a href="./"><h1><img src="${pageContext.request.contextPath}/resources/images/hd_logo2.png" alt="런온"></h1></a>
 		</div>
 		<div id="hd_sch">
-			<form action="CourseFind" method="post">
+			<form action="CourseFind">
 				<input type="text" name="find_title" class="sch-input" placeholder="어떤 클래스를 찾으시나요?">
 				<button type="submit" class="sch-submit">
 					<i class="fa-solid fa-magnifying-glass"></i>
@@ -78,7 +78,6 @@ function logout() {
 					<li class="mgnb-menu">
 						<a href="Category?codetype=CATE01">카테고리</a>
 						<ul class="mgnb-dep-01">
-							<li><a href="Category?codetype=CATE01">IT/개발</a></li>
 							<li><a href="Category?codetype=CATE01">IT/개발</a></li>
 							<li><a href="Category?codetype=CATE02">외국어</a></li>
 							<li><a href="Category?codetype=CATE03">운동/건강</a></li>

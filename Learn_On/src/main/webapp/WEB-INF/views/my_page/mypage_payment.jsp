@@ -84,15 +84,12 @@
 												<dl class="dis">
 													<dt>할인</dt>
 													<dd>
-														<c:forEach var="item" items="${payment.value}">
-															<c:if test="${item.discount_type == 1}">
-																- ${item.discount_percent} %
-															</c:if>
-															<br>
-															<c:if test="${item.discount_type == 2}">
-																- ￦ <fmt:formatNumber pattern="#,###">${item.discount_amount}</fmt:formatNumber>
-															</c:if>
-														</c:forEach>
+														<c:if test="${payment.value[0].discount_type == 1}">
+															- ${payment.value[0].discount_percent} %
+														</c:if>
+														<c:if test="${payment.value[0].discount_type == 2}">
+															- ￦ <fmt:formatNumber pattern="#,###">${payment.value[0].discount_amount}</fmt:formatNumber>
+														</c:if>
 													</dd>
 												</dl>
 												<dl class="total">

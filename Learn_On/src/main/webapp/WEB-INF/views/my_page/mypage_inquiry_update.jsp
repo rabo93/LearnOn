@@ -108,11 +108,9 @@
 						let fileElem = $("input[name=file1]");
 						$(fileElem).parent().html(fileElem);
 						$(fileElem).prop("hidden", false);
-					} else {
-						alert("파일 삭제 실패!\n다시 시도해주시기 바랍니다.");
+						return;
 					}
-					
-					
+					alert("파일 삭제 실패!\n다시 시도해주시기 바랍니다.");
 				}).fail(function(){
 					alert("오류 발생");
 				});

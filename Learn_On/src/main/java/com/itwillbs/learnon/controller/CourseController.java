@@ -67,56 +67,43 @@ public class CourseController {
 	
 	@GetMapping("CourseFind")
 	public String courseFind(
-			
+			@RequestParam(defaultValue = "1") int pageNum,
 			String find_title, 
 			Model model) {
-
-		System.out.println("CourseFind find_title 정보 잘넘어오나?? "  +  find_title);
-		return "redirect:/CourseFindList?find_title=" + find_title;
+		System.out.println("CourseFind 잘들어오나!");
+		// ----------------------------------------------------------------
+		// [ 페이징 처리 ]	
+		int listLimit = 8; // 페이지 당 게시물 수
+		int startRow = (pageNum - 1) * listLimit; 
+		int listCount = courseService.getFindCourseListCount(find_title);
+		System.out.println("listCount??? " + listCount);
+		int pageListLimit = 8; 
+		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+		if(maxPage == 0) {
+			maxPage = 1;
+		}
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		int endPage = startPage + pageListLimit - 1;
+		if(endPage > maxPage) {
+			endPage = maxPage;
+		}
+		if(pageNum < 1 || pageNum > maxPage) {
+			model.addAttribute("msg", "해당페이지 없음");
+			model.addAttribute("targetURL", "BestCourse?pageNum=1");
+			return "result/fail";
+		}
+		// 페이징 정보 관리하는 PageInfo 객체 생성 및 계산 결과 저장
+		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
+		model.addAttribute("pageInfo", pageInfo);
+		// ----------------------------------------------------------------
+		
+		// 상단의 클래스 검색창 
+		List<CourseVO> courseList = courseService.getFindCourseList(find_title,startRow, pageListLimit);
+		model.addAttribute("courseList", courseList);
+		return "course/course_find_list"; 
 	}
 	
 	
-	@GetMapping("CourseFindList")
-	public String courseFindList(
-//			@RequestParam(defaultValue = "1") int pageNum,
-			String find_title,
-			Model model
-			) {
-		System.out.println("CourseFindList find_title 정보 잘넘어오나?? "  +  find_title);
-////		System.out.println("CourseFind pageNum 잘들어오나! " + pageNum);
-//		// ----------------------------------------------------------------
-//		// [ 페이징 처리 ]	
-//		int listLimit = 8; // 페이지 당 게시물 수
-//		int startRow = (pageNum - 1) * listLimit; 
-//		int listCount = courseService.getFindCourseListCount(find_title);
-//		int pageListLimit = 8; 
-//		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
-//		if(maxPage == 0) {
-//			maxPage = 1;
-//		}
-//		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
-//		int endPage = startPage + pageListLimit - 1;
-//		if(endPage > maxPage) {
-//			endPage = maxPage;
-//		}
-//		if(pageNum < 1 || pageNum > maxPage) {
-//			model.addAttribute("msg", "해당페이지 없음");
-//			model.addAttribute("targetURL", "BestCourse?pageNum=1");
-//			return "result/fail";
-//		}
-//		// 페이징 정보 관리하는 PageInfo 객체 생성 및 계산 결과 저장
-//		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
-//		model.addAttribute("pageInfo", pageInfo);
-//		// ----------------------------------------------------------------
-//		
-//		// 상단의 클래스 검색창 
-//		List<CourseVO> courseList = courseService.getFindCourseList(find_title, startRow, pageListLimit);
-//		model.addAttribute("courseList", courseList);
-		
-		
-//		return "CourseFind";
-		return "course/course_find_list.jsp";
-	}
 	
 	
 	

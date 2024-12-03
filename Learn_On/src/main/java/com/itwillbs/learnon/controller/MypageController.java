@@ -45,9 +45,6 @@ public class MypageController {
 	@Autowired
 	private MypageService myService;
 	
-	@Autowired
-	private AdminService admService;
-	
 	// 첨부파일 가상경로
 	private String uploadPath = "/resources/upload";
 	
@@ -379,7 +376,7 @@ public class MypageController {
 		
 		
 		Map<String, List<MyPaymentVO>> paymentList = myService.getMyPaymentList(id);
-		System.out.println("결제 내역 리스트: "+ paymentList);
+//		System.out.println("결제 내역 리스트???????????????????: "+ paymentList);
 		
 		model.addAttribute("paymentList", paymentList);
 		

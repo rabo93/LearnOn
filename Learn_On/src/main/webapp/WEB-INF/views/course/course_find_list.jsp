@@ -24,8 +24,8 @@
 		<div class="wrapper">
 			<div class="cls-wrap">
 				<div class="cls-cate">
-					<c:set var="find_cnt" value="${courseList}" />
-					<h1 class="cls-ttl">'${param.find_title}'의 검색결과 ${fn:length(find_cnt)}건 </h1>
+<%-- 					<c:set var="find_cnt" value="${courseList}" /> --%>
+					<h1 class="cls-ttl">'${param.find_title}'의 검색결과 ${pageInfo.listCount}건 </h1>
 					<div class="cate-li">
 						<script>
 							function handleChange(event) {

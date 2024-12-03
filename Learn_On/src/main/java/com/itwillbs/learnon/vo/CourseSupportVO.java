@@ -29,4 +29,6 @@ public class CourseSupportVO {
 	//--------------------------------------
 	
 	private int c_class_id;
+	
+	private String class_title;
 }

@@ -197,47 +197,6 @@ public class MemberController {
 		
 	}
 	
-//	@PostMapping("ReSendAuthMail")
-//	public String reSendAuthMail(MemberVO member,Model model , HttpSession session) {
-//		
-//		MemberVO dbmember = memberService.getMember(member);
-//		if(!member.getMem_email().equals(dbmember.getMem_email())) {
-//			model.addAttribute("msg","[존재하지 않는 이메일]\\n이메일을 다시한번 확인해주세요");
-//			return "result/fail";
-//		}
-//		//######################따로 컨트롤러 파야됨##########################
-////		MailAuthInfo mailAuthInfo = mailService.sendAuthMail(member);
-//		MailAuthInfo mailAuthInfo = mailService.sendAuthMail(member, member.getMem_email());
-//		
-//		memberService.registMemberAuthInfo(mailAuthInfo);
-//		model.addAttribute("msg", "인증메일 발송 성공");
-//		model.addAttribute("targetURL", "MemberJoinSuccess");
-//		
-//		return "result/fail";
-//	}
-//	
-//	
-//	//****************************************
-//	//이메일 인증
-//	@GetMapping ("MemberEmailAuth")
-//	public String emailAuth(MailAuthInfo mailAuthInfo , Model model) {
-//		System.out.println("mailAuthInfo"+mailAuthInfo);
-//		
-//		// MemberService
-//		boolean isAuthSuccess = memberService.requestEmailAuth(mailAuthInfo);
-//		
-//		// 인증처리 결과판별
-//		if(!isAuthSuccess) {
-//			model.addAttribute("msg", "메일 인증 실패\\다시 인증해주세요");
-//			return "result/fail";
-//			
-//		}else{
-//			model.addAttribute("msg", "메일 인증 성공\\로그인 페이지로 이동합니다");
-//			model.addAttribute("targetURL", "MemberLogin");
-//			return "result/fail"; //fail로 가는이유는 문자 출력하기 위해서
-//		}
-//		
-//	}
 	@PostMapping("ReSendAuthMail")
 	public String reSendAuthMail(MemberVO member,Model model , HttpSession session) {
 
@@ -302,6 +261,18 @@ public class MemberController {
 		}
 		return isDuplicate+"";
 	}
+	
+//	@ResponseBody
+//	@GetMapping("MemberCheckMail")
+//	public String memberCheckMail(String mem_eemail,MemberVO member) {
+//		System.out.println(mem_eemail);
+//		member = memberService.getMemberMail(member);
+//		boolean isDuplicate = false;
+//		if(member != null) {
+//			isDuplicate = true;
+//		}
+//		return isDuplicate+"";
+//	}
 	
 	//*************로그아웃***************
 	@GetMapping("MemberLogout")

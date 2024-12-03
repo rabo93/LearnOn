@@ -461,7 +461,7 @@
 		INTO 
 			ATTENDANCE(CHECK_IN_DATE,MEM_ID)
 		VALUES(
-			NOW() - INTERVAL 1 DAY    -- null값이 들어가면 연속출석일 반영이 안돼서 now()-1 했습니다
+			NOW() - INTERVAL 1 DAY    -- null값이 들어가면 연속출석일 반영이 안돼서 now()-1
 			,#{mem_id}
 			)
 	</insert>

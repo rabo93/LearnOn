@@ -1,14 +1,14 @@
 /*
 	장바구니 기능 구현
-	-(V) 장바구니 목록 불러오기 : 클래스ID, 클래스명, 강사명, 클래스가격, 썸네일사진(이거는 나중에 구현) 
+	-(V) 장바구니 목록 불러오기 : 클래스ID, 클래스명, 강사명, 클래스가격, 썸네일사진
 	-(V) 전체선택 체크 기능 : checkAll, chk(각각의 클래스id)
-	-(V) 삭제버튼 기능 : CARTITEM_IDX
+	-(V) 삭제버튼 기능 => 장바구니(CART) 테이블에서 딜리트
 	-(V) 체크한 상품에 대한 총계 표출 
-	-(V) 선택 삭제 => 장바구니(CART) 테이블에서 딜리트
+	-(V) 선택 삭제 => 체크된 상품 삭제
 	-(V) 헤더부분 장바구니 갯수 표시 => top.js에서 작성함
 	-(V) 선택 구매 => 선택한 상품 결제페이지로 데이터 넘기기
 	-(V) 썸네일사진 표출 : 클래스 등록 완료되면 구현
-	-(V) 상품 클릭시 상품 상세 페이지 이동() : CourseDetail?CLASS_ID=240108 형식으로 보냈음. 나중에 주미언니 강의 상세 페이지 다되면 구현.
+	-(V) 상품 클릭시 상품 상세 페이지 이동 : CourseDetail?CLASS_ID=240108
  */
 $(document).ready(function() {
 	//-------------------------------------------------------------------------
@@ -75,15 +75,8 @@ $(document).ready(function() {
 	// "주문하기" 버튼 클릭 시 체크 여부 확인 함수
 	window.orderCart = function (event) {
 	    event.preventDefault(); // 기본 폼 제출 방지
-	
-	    // 체크된 체크박스 확인
-//	    let checkedItems = document.querySelectorAll('.chk:checked');
-//	    if (checkedItems.length === 0) {
-//	        // 체크된 항목이 없으면 알림창 띄우기
-//	        alert("주문할 상품을 선택해주세요.");
-//	    } 
-	    //----------------------------------------------
-		// 선택한 체크박스 가져오기 (상수로 선언=const 변하지 않는 값)
+
+		// 선택한 체크박스 가져오기
 		const selectedChk = []; 
 		document.querySelectorAll('.chk:checked').forEach(checkbox => {
 			selectedChk.push(checkbox.value); // 체크된 항목의 cartitem_idx 값을 배열에 넣기
@@ -95,12 +88,11 @@ $(document).ready(function() {
 	        return;
 		}
 		
-	   	// 체크된 항목에 대한 검사(이미 수강중인 클래스가 있는지)
-	    //선택된 항목들을 콤마로 구분된 문자열로 결합
+	    //체크한 항목들을 콤마로 구분된 문자열로 결합
 	    const cartItemsParam = selectedChk.join(","); 
 	//    console.log("cartItemsParam : " + cartItemsParam); //cartItemsParam : 8,7,6,3
 	   	
-		//AJAX 요청을 통해 삭제 처리    
+		//AJAX 요청을 통해 주문 처리    
 	    $.ajax({
 			type : "Post",
 			url : "SubcribeClassCheck",

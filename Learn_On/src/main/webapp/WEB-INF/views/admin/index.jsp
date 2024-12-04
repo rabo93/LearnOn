@@ -120,7 +120,7 @@
             <!-- Widgets Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-4">
-                    <div class="col-sm-12 col-md-6 col-xl-6 col-auto">
+                    <div class="">
                         <div class="h-100 bg-light rounded p-4">
                             <div class="d-flex align-items-center justify-content-between mb-4">
                                 <h6 class="mb-0">달력</h6>
@@ -133,7 +133,7 @@
 <!--                         <div class="h-100 bg-light rounded p-4"> -->
 <!--                             <div class="d-flex align-items-center justify-content-between mb-4"> -->
 <!--                                 <h6 class="mb-0">해야할 일 메모</h6> -->
-<!-- <!--                                 <a href="">자세히 보기</a> --> -->
+<!-- <!--                                 <a href="">자세히 보기</a> -->
 <!--                             </div> -->
 <!--                             <div class="d-flex mb-2" id="memo"> -->
 <!--                                 <input class="form-control bg-transparent" type="text" placeholder="메모를 입력해주세요"> -->

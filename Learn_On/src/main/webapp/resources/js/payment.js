@@ -276,7 +276,7 @@ $(document).ready(function() {
 			price : rsp.paid_amount,
 			discount_amount : discountAmount,		
 			pay_method : rsp.pay_method,
-			pay_status : rsp.status,		//주문상태: paid(결제완료), failed(결제실패), ready(미결제)
+			pay_status : rsp.status,//주문상태: paid(결제완료), failed(결제실패), ready(미결제)
 			imp_uid : rsp.imp_uid,
 			card_name : rsp.card_name,
 			card_num : rsp.card_number,

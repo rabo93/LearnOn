@@ -106,7 +106,8 @@
 			                             			<c:if test="${not empty support.c_support_file}">
 				                             			<div class="support-attach">
 					                             			${support.c_support_file}
-							 								<a href="${pageContext.request.contextPath}/resources/upload/${support.c_support_file}" download="${originalFileNames[status.index]}">
+<%-- 							 								<a href="${pageContext.request.contextPath}/resources/upload/${support.c_support_file}" download="${originalFileNames[status.index]}"> --%>
+							 								<a href="${pageContext.request.contextPath}/resources/upload/${support.c_support_file}" download="${support.c_support_file}">
 							 									<input type="button" value="다운로드">
 							 								</a>
 						 								</div>

@@ -212,6 +212,9 @@ public class AdminService {
 	public int getSupportListCountToAdm() {
 		return mapper.selectSupportListCount();
 	}
+	public List<Map<String, Object>> getInsClass(String id) {
+		return mapper.getInsClass(id);
+	}
 	
 
 }

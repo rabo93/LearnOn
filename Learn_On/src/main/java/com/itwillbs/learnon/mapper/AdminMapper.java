@@ -117,6 +117,8 @@ public interface AdminMapper {
 	// 관리자 - 1:1문의 전체 게시물 수 조회
 	int selectSupportListCount();
 	
+	List<Map<String, Object>> getInsClass(String id);
+	
 	
 
 	

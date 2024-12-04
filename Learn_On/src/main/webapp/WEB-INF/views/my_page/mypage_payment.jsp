@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -73,7 +74,8 @@
 													<span>결제번호</span>
 													<span class="num">${payment.key}</span>
 													<span class="status status04">결제일시</span>
-													<span>${payment.value[0].pay_date}</span>
+													<c:set var="formattedDate" value="${fn:replace(payment.value[0].pay_date, '.0', '')}" />
+													<span>${formattedDate}</span>
 												</div>
 												<c:forEach var="item" items="${payment.value}">
 													<div class="products">

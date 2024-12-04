@@ -33,6 +33,7 @@
 		FROM MYCOUPON
 		WHERE MEM_ID = #{sId}
 		AND COUPON_ISUSED = 1
+		AND COUPON_STATUS = 1
   	</select>
   
   

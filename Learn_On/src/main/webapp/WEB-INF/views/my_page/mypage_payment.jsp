@@ -55,19 +55,25 @@
 										<article class="ord-box">
 											<div class="infos">
 												<div class="info">
-													<span class="status">
-														<c:if test="${payment.value[0].pay_status == 1}">
+													<c:if test="${payment.value[0].pay_status == 1}">
+														<span class="status status01">
 															결제완료
-														</c:if>
-														<c:if test="${payment.value[0].pay_status == 2}">
+														</span>
+													</c:if>
+													<c:if test="${payment.value[0].pay_status == 2}">
+														<span class="status status02">
 															결제취소
-														</c:if>
-														<c:if test="${payment.value[0].pay_status == 3}">
-															입금대기
-														</c:if>
-													</span>
+														</span>
+													</c:if>
+													<c:if test="${payment.value[0].pay_status == 3}">
+														<span class="status status03">
+														입금대기
+														</span>
+													</c:if>
 													<span>결제번호</span>
 													<span class="num">${payment.key}</span>
+													<span class="status status04">결제일시</span>
+													<span>${payment.value[0].pay_date}</span>
 												</div>
 												<c:forEach var="item" items="${payment.value}">
 													<div class="products">

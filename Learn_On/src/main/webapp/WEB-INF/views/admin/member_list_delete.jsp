@@ -92,7 +92,7 @@
 										<td class="col-1">
 											<select id="status_${mem.index}" class="form-select status" aria-label="Default select example">
 												<option value="1" <c:if test="${ml.mem_status == 1}">selected</c:if>>승인</option>
-												<option value="2" <c:if test="${ml.mem_status == 2}">selected</c:if>>대기</option>
+												<option value="2" <c:if test="${ml.mem_status == 2}">selected</c:if> hidden>대기</option>
 												<option value="3" <c:if test="${ml.mem_status == 3}">selected</c:if>>탈퇴</option>
 											</select>
 										</td>

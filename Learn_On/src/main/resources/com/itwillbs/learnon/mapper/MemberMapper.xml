@@ -87,11 +87,12 @@
 	   , null
 	   , #{mem_like1_class}
 	   , #{mem_like2_class}
-	   , SUBSTR(#{file_pp}, INSTR(#{file_pp}, '_') + 1)
+	   , #{file_pp}
 	   , 'N'
 	   , #{hashtag}
 	)
 </insert>
+<!-- 	   , SUBSTR(#{file_pp}, INSTR(#{file_pp}, '_') + 1) -->
 	
 	<update id="updateMember" >
 	UPDATE MEMBER

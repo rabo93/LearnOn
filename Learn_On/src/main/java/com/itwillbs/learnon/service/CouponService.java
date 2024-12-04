@@ -51,6 +51,16 @@ public class CouponService {
 		return mapper.selectAdmCouponCount(searchKeyword, searchType);
 	}
 	
+	//	사용가능한 쿠폰 리스트 조회
+	public List<CouponVO> getAdmIssueCoupon(int startRow, int listLimit, String searchKeyword, String searchType) {
+		return mapper.selectAdmIssueCoupon(startRow, listLimit, searchKeyword, searchType);
+	}
+	
+	//	사용가능한 쿠폰 개수 조회
+	public int getCouponIssueListCount(String searchKeyword, String searchType) {
+		return mapper.selectAdmIssueCouponCount(searchKeyword, searchType);
+	}
+	
 	//	쿠폰 ID로 목록 조회
 	public CouponVO getIdxCoupon(int coupon_id) {
 		return mapper.selectAdmIdxCoupon(coupon_id);
@@ -82,6 +92,8 @@ public class CouponService {
 	public int changeStatus(CouponVO coupon) {
 		return mapper.updateCouponStatus(coupon);
 	}
+
+
 	
 	
 	

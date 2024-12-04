@@ -17,7 +17,8 @@
 		ON cl.MEM_ID = m.MEM_ID
 		JOIN CART ca
 		ON cl.CLASS_ID = ca.CLASS_ID
-		WHERE ca.MEM_ID = #{sId} -- 로그인한 회원
+		WHERE ca.MEM_ID = #{sId} 
+		-- 로그인한 회원
 		ORDER BY ca.CARTITEM_IDX DESC
 	</select>
 	

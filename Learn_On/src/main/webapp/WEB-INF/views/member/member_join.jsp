@@ -33,7 +33,7 @@
 						<label for="mem_name">이름</label>
 						<div id="checkName"></div>
 						<input type="text" name="mem_name" id="mem_name" placeholder="이름"
-							onblur="checkNameLength()"> 
+							onblur="checkNameResult()"> 
 						<label for="mem_id">아이디</label>
 						<div id="checkIdResult"></div>
 						<input type="text" name="mem_id" id="mem_id" placeholder="아이디" 
@@ -93,7 +93,7 @@
 						<label for="mem_email1">이메일</label>
 						<div id="checkMail"></div>
 						<div class="email_form">
-							<input type="text" name="mem_email1" id="mem_email1" placeholder="Email" onblur="checkMail()" required>
+							<input type="text" name="mem_email1" id="mem_email1" placeholder="Email" required>
 							@
 							<input type="text" size="10" id="mem_email2" name="mem_email2">
 							<select id="emaildmain">
@@ -204,7 +204,8 @@
 							</div>
 						</section>
 						<div id="form-controls">
-							<input type="submit" id="submit" value="회원가입" onclick="submit()" />
+							<input type="submit" id="submitBtn" value="회원가입">
+<!-- 							<button type="button" id="submitBtn" onclick="checkSubmit()">회원가입</button> -->
 						</div>
 					</form>
 				</div>

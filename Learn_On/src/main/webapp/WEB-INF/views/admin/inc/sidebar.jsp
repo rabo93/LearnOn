@@ -77,15 +77,15 @@
 	                            <a href="AdmCourseSupport" id="AdmCourseSupport" class="dropdown-item">수강 문의 관리</a>
 	                        </div>
 	                    </div>
-	                    <div class="nav-item dropdown">
-	                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fas fa-chart-line" style="margin-right: 10px;"></i>통계</a>
-	                        <div class="dropdown-menu bg-transparent border-0">
-	                            <a href="admin_chart_member" class="dropdown-item">회원별 통계</a>
-	                            <a href="admin_chart_class" class="dropdown-item">클래스별 통계</a>
-	                            <a href="admin_chart_payment" class="dropdown-item">결제 통계</a>
-	                            <a href="admin_chart_review" class="dropdown-item">수강 후기 통계</a>
-	                        </div>
-	                    </div>
+<!-- 	                    <div class="nav-item dropdown"> -->
+<!-- 	                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fas fa-chart-line" style="margin-right: 10px;"></i>통계</a> -->
+<!-- 	                        <div class="dropdown-menu bg-transparent border-0"> -->
+<!-- 	                            <a href="admin_chart_member" class="dropdown-item">회원별 통계</a> -->
+<!-- 	                            <a href="admin_chart_class" class="dropdown-item">클래스별 통계</a> -->
+<!-- 	                            <a href="admin_chart_payment" class="dropdown-item">결제 통계</a> -->
+<!-- 	                            <a href="admin_chart_review" class="dropdown-item">수강 후기 통계</a> -->
+<!-- 	                        </div> -->
+<!-- 	                    </div> -->
 	                </div>
 	            </nav>
 	        </div>

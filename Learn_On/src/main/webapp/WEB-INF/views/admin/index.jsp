@@ -242,7 +242,7 @@
 	   	    data: {
 	   	      labels: todayLabels,
 	   	      datasets: [{
-	   	        label: 'TodaySales',
+	   	        label: '오늘의 매출',
 	   	        data: dataToday,
 	   	        borderWidth: 1
 	   	      }]
@@ -267,7 +267,7 @@
 	   	    data: {
 	   	        labels: weekLabels,  // 주간 시작일을 X축에 표시
 	   	        datasets: [{
-	   	            label: 'WeeklySales',  // 데이터셋 레이블
+	   	            label: '이번주의 매출',  // 데이터셋 레이블
 	   	            data: dataWeekly,  // 4주간의 매출 데이터를 Y축에 표시
 	   	            borderWidth: 1,
 	   	        }]

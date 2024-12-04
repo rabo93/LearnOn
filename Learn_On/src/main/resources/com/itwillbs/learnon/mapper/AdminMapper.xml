@@ -36,6 +36,12 @@
 <!-- ================================================================== -->
 <!-- 클래스 -->	
 
+	<select id="getInsClass">
+		SELECT *
+		FROM CLASS
+		WHERE MEM_ID = #{mem_id}
+	</select>
+
 	<select id="getClassId" resultType="int">
 		SELECT IFNULL(MAX(CLASS_ID), 0) + 1 
 		FROM CLASS

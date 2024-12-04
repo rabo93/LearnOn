@@ -79,7 +79,8 @@ public class AdminController {
 			return "admin/fail";
 		}
 		if(grade.equals("MEM02")) {
-			
+			List<Map<String, Object>> getClass = adminService.getInsClass(id);
+			model.addAttribute("getClass", getClass);
 			return "admin/index_instructor";
 		}
 		//	오늘 날짜 불러오기

@@ -237,24 +237,13 @@ $("#profile_img").change(function (event) {
 
 
 /******************* */
-//function checkSubmit() {
-//	if (!checkIdResult || !checkNic || !checkPasswd1) {
-//		alert("회원정보를 다시 확인해주세요");
-//		console.log("유효성 검사 통과 xxxxxxxxxxx");
-//		return false;
-//	} else {
-//		console.log("유효성 검사 통과");
-//		return true;
-//	}
-//}
-
-//$("form").on("submit", function() {
-//		if (!checkIdResult || !checkNic || !checkPasswd1) {
-//		alert("회원정보를 다시 확인해주세요");
-//		console.log("유효성 검사 통과 xxxxxxxxxxx");
-//		return false;
-//	} else {
-//		console.log("유효성 검사 통과");
-//		return true;
-//	}
-//});
+//$("#joinForm").on("submit", function () {
+function checkSubmit(){
+    if (!checkIdResult || !checkNic || !checkPasswd1) {
+        alert("회원정보를 다시 확인해주세요");
+        console.log("유효성 검사 실패");
+        return false;
+    } else {
+        $("#joinForm").submit();
+    }
+};

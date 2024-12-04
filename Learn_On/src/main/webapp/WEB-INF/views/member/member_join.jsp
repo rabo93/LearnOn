@@ -29,7 +29,7 @@
 			<div id="form-inner-container">
 				<!-- Sign up form -->
 				<div id="sign-up-container">
-					<form action="MemberJoin" name="joinForm" method="post" enctype="multipart/form-data">
+					<form action="MemberJoin" id="joinForm" name="joinForm" method="post" enctype="multipart/form-data">
 						<label for="mem_name">이름</label>
 						<div id="checkName"></div>
 						<input type="text" name="mem_name" id="mem_name" placeholder="이름"
@@ -204,8 +204,8 @@
 							</div>
 						</section>
 						<div id="form-controls">
-							<input type="submit" id="submitBtn" value="회원가입">
-<!-- 							<button type="button" id="submitBtn" onclick="checkSubmit()">회원가입</button> -->
+<!-- 							<input type="submit" id="submitBtn" value="회원가입"> -->
+							<button type="button" id="submitBtn" onclick="checkSubmit()">회원가입</button>
 						</div>
 					</form>
 				</div>

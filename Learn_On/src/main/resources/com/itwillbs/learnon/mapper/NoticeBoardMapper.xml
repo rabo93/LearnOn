@@ -122,7 +122,8 @@
     	     	 WHERE	NOTICE_IDX = #{notice_idx}
 				) AS S
 			ON	N.NOTICE_IDX = S.NOTICE_IDX
-		   SET	N.NOTICE_FILE = CONCAT (
+		   SET	N.NOTICE_FILE =
+		   			CONCAT (
 					IFNULL(N.NOTICE_FILE, '')
 					, ','
 					, IFNULL(#{fileName}, '')

@@ -40,8 +40,9 @@
 						<c:if test="${not empty file}">
 						 	<div>
 						 		<i class="fa-solid fa-paperclip"></i> ${file}
-						 		<a href="${pageContext.request.contextPath}/resources/upload/${file}" download="${originalFileList[status.index]}">
-						 			<input type="button" value="다운로드">
+						 		<a href="${pageContext.request.contextPath}/resources/upload/${file}"
+						 		   download="${originalFileList[status.index]}">
+					 			<input type="button" value="다운로드">
 						 		</a>
 						 	</div>
 						 </c:if>

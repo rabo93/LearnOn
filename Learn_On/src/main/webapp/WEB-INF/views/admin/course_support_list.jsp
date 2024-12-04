@@ -101,6 +101,7 @@
 			                             	</tr>
 			                             	<tr class="supportDetailBox" id="supportDetail${status.index}">
 			                             		<td colspan="4">
+			                             			<input class="form-control" type="text" value="${support.c_class_id} ) ${support.class_title}" style="margin-bottom:6px;" readonly>
 			                             			<textarea class="form-control" rows="5" readonly>${support.c_support_content}</textarea>
 			                             			<c:if test="${not empty support.c_support_file}">
 				                             			<div class="support-attach">

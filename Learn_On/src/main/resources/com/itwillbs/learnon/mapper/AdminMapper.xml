@@ -546,20 +546,23 @@
 	
 	<!-- // 강의 문의 게시판 목록 조회 -->
 	<select id="selectCourseSupportList" resultType="cSupport">
-		SELECT C_SUPPORT_IDX
-			   , C_SUPPORT_DATE
-			   , C_SUPPORT_CATEGORY
-			   , MEM_ID
-			   , C_SUPPORT_SUBJECT
-			   , C_SUPPORT_CONTENT
-			   , C_SUPPORT_ANSWER_DATE
-			   , C_SUPPORT_ANSWER_SUBJECT
-			   , C_SUPPORT_ANSWER_CONTENT
-			   , C_SUPPORT_FILE
-			   , C_CLASS_ID
-		FROM CLASS_SUPPORT
+		SELECT C.C_SUPPORT_IDX
+			   , C.C_SUPPORT_DATE
+			   , C.C_SUPPORT_CATEGORY
+			   , C.MEM_ID
+			   , C.C_SUPPORT_SUBJECT
+			   , C.C_SUPPORT_CONTENT
+			   , C.C_SUPPORT_ANSWER_DATE
+			   , C.C_SUPPORT_ANSWER_SUBJECT
+			   , C.C_SUPPORT_ANSWER_CONTENT
+			   , C.C_SUPPORT_FILE
+			   , C.C_CLASS_ID
+			   , CLA.CLASS_TITLE
+		FROM CLASS_SUPPORT C
+		JOIN CLASS CLA
+		  ON CLA.CLASS_ID = C.C_CLASS_ID
 		ORDER BY
-		 	C_SUPPORT_IDX DESC
+			C.C_SUPPORT_IDX DESC
 		 LIMIT
 		 	#{startRow}
 		 	, #{listLimit}

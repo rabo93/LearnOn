@@ -171,9 +171,6 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<div class="input-group mb-3">
-						<input type="text" class="form-control" placeholder="강사 검색" aria-describedby="basic-addon1">
-					</div>
 					<select id="selectTeacher" class="form-select" multiple="" aria-label="multiple select example">
 						<c:forEach items="${getInstructor}" var="ins">
 							<option value="${ins.MEM_ID}">${ins.MEM_NAME}, (ID: ${ins.MEM_ID})</option>

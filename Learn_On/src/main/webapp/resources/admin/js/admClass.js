@@ -11,7 +11,7 @@ function addRow() {
 	cell1.innerHTML = '<input type="checkbox" name="checkboxObj"/>';
 	cell2.innerHTML = '<input type="text" name="cur_title" class="form-control" id="cur_title" placeholder="커리큘럼 제목">';
 	cell3.innerHTML = '<input type="number" name="cur_runtime" class="form-control" id="cur_runtime" placeholder="커리큘럼 영상길이">';
-	cell4.innerHTML = '<input type="file" name="cur_video_get" class="file form-control" id="cur_video" placeholder="커리큘럼 영상">';
+	cell4.innerHTML = '<input type="file" name="cur_video_get" class="file form-control" accept="video/*" id="cur_video" placeholder="커리큘럼 영상">';
 	
 }
 
@@ -30,13 +30,11 @@ function deleteRow() {
 // 클래스 수정 클래스 id값 가져오기
 function modifyClass(elem) {
 	console.log("elem : " + elem);
-//	let classId = $(elem).parent().parent().attr("id");
 	location.href="AdmClassListModify?class_id=" + elem;
 }
 
 // 클래스 삭제 클래스 id값 가져오기
 function deleteClass(elem) {
-//	let classId = $(elem).parent().parent().attr("id");
 	if (confirm("정말 삭제하시겠습니까?")) {
 		location.href="AdmClassListDelete?class_id=" + elem;
 	}
@@ -107,7 +105,6 @@ function selectMainCate() {
 		$("#floatingSelect2").empty();
 		for(let item of data) {
 			$("#floatingSelect2").append(
-//				console.log(item)
 				`<option value="${item.NAME_SUBCATE}" ${item.SELECTED}>${item.NAME_SUBCATE}</option>`
 			);
 		}

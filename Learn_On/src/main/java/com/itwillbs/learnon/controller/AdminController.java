@@ -79,7 +79,8 @@ public class AdminController {
 			return "admin/fail";
 		}
 		if(grade.equals("MEM02")) {
-			
+			List<Map<String, Object>> getClass = adminService.getInsClass(id);
+			model.addAttribute("getClass", getClass);
 			return "admin/index_instructor";
 		}
 		//	오늘 날짜 불러오기
@@ -312,7 +313,7 @@ public class AdminController {
 		int classId = adminService.getClassId();
 		VO.setClass_id(classId);
 		// 커리큘럼 내용 가져오기
-		String[] arrCurTitle = VO.getCur_title().split(",\\S");
+		String[] arrCurTitle = VO.getCur_title().split(",");
 		String[] arrCurRunTime = VO.getCur_runtime().split(",");
 		int totalRunTime = VO.getClass_runtime();
 		// 실제 경로
@@ -1325,17 +1326,17 @@ public class AdminController {
 		
 		
 		// 첨부파일 정보 저장
-		for(CourseSupportVO cSupport : courseSupportList) {
-			String originalFileName = "";
+//		for(CourseSupportVO cSupport : courseSupportList) {
+//			String originalFileName = "";
+//			
+//			if(cSupport.getC_support_file() != null) {
+//				originalFileName = cSupport.getC_support_file().substring(cSupport.getC_support_file().indexOf("_") + 1);
+//			} else {
+//				originalFileName = null;
+//			}
 			
-			if(cSupport.getC_support_file() != null) {
-				originalFileName = cSupport.getC_support_file().substring(cSupport.getC_support_file().indexOf("_") + 1);
-			} else {
-				originalFileName = null;
-			}
-			
-			cSupport.setC_support_file(originalFileName);
-		}
+//			cSupport.setC_support_file(originalFileName);
+//		}
 		
 		System.out.println(courseSupportList);
 		

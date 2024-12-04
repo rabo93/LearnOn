@@ -21,6 +21,9 @@
 		  LEFT JOIN MEMBER M ON M.MEM_ID = C.MEM_ID
 		 WHERE W.MEM_ID = #{id}
 		 ORDER BY 1
+		 		  <if test="filterType.equals('')">
+				  , C.CLASS_REG_DATE DESC
+			 	  </if>
 		 		  <if test="filterType.equals('newest')">
 				  , C.CLASS_REG_DATE DESC
 			 	  </if>
@@ -102,10 +105,13 @@
 		    , R.REVIEW_CONTENT
 		ORDER BY 1
 		<choose>
-		 	<when test="filterType == 'newest'">
+			<when test="filterType.equals('')">
 				, C.CLASS_REG_DATE DESC
 		 	</when>
-		 	<when test="filterType == 'title'">
+		 	<when test="filterType.equals('newest')">
+				, C.CLASS_REG_DATE DESC
+		 	</when>
+		 	<when test="filterType.equals('title')">
 				 , C.CLASS_TITLE
 		 	</when>
 		 </choose>
@@ -277,7 +283,7 @@
 		       , CU.DISCOUNT_PERCENT
 		       , CU.DISCOUNT_AMOUNT
 		       , P.PRICE AS RESULT_PRICE
-		       , P.PAY_DATE
+		       , DATE_FORMAT(P.PAY_DATE, '%Y-%m-%d %H:%i:%s') AS PAY_DATE
 		       , P.RECEIPT_URL
 		       , P.PAY_METHOD
 		       , P.PAY_STATUS
@@ -307,7 +313,9 @@
 		  LEFT OUTER JOIN COUPONINFO C
 		    ON M.COUPON_ID = C.COUPON_ID
 		WHERE M.MEM_ID = #{mem_id}
-		ORDER BY M.ISSUE_DATE DESC
+		ORDER BY M.COUPON_ISUSED ASC
+				 ,C.C_EXPIRY_DATE
+				 
 	</select>
 	<select id="selectCouponCount" resultType="int">
 		-- 보유한 쿠폰수 조회
@@ -461,7 +469,7 @@
 		INTO 
 			ATTENDANCE(CHECK_IN_DATE,MEM_ID)
 		VALUES(
-			NOW() - INTERVAL 1 DAY    -- null값이 들어가면 연속출석일 반영이 안돼서 now()-1 했습니다
+			NOW() - INTERVAL 1 DAY    -- null값이 들어가면 연속출석일 반영이 안돼서 now()-1
 			,#{mem_id}
 			)
 	</insert>

@@ -37,6 +37,7 @@ public class PayController {
 	//IamportClient 객체 생성 - 포트원에서 제공
 	private IamportClient iamportClient;
 	public PayController() {
+//		this.iamportClient = new IamportClient("REST API KEY", "REST API SECRET");
 		this.iamportClient = new IamportClient("1582333057803703", "Xeql20bTzSYAkeu3qPVXGoU3GEn0Ve4WKSmXsZViEAIrMFoJKE8n8q78DJlZMXkconSi5Nd3JpfpUX7h");
 	}
 	
@@ -106,7 +107,10 @@ public class PayController {
 	public String orderPayInfo(@RequestBody OrderVO orderVO, Model model) {
 		log.info("컨트롤러에 넘겨받은 주문저장VO : " + orderVO);
 		//OrderVO(order_idx=0, merchant_uid=2024112528321, mem_id=bborara
-		//		, items=[OrderItemVO(class_id=1, class_price=75000), OrderItemVO(class_id=2, class_price=1004)]
+		//		, items=[
+		//				OrderItemVO(class_id=1, class_price=75000)
+		//      		, OrderItemVO(class_id=2, class_price=1004)
+		//				]
 		//		, coupon_id=2, price=0)
 		
 		//주문정보 & 나의클래스 & 커리큘럼 시청기록 저장

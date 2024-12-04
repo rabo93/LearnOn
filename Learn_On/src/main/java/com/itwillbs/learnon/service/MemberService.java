@@ -71,6 +71,9 @@ public class MemberService {
 		
 	}
 
+	public MemberVO getMemberMail(MemberVO member) {
+		return mapper.selectEmailId(member);
+	}
 
 
 	public int modifyMember(Map<String, String> map) {
@@ -94,6 +97,9 @@ public class MemberService {
 	public int setTempPasswd(String heshePasswd, String mem_email) {
 		return mapper.updateTempPasswd(heshePasswd,mem_email);
 	}
+
+
+
 
 
 }

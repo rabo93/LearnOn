@@ -46,8 +46,8 @@
 				<div class="bg-light rounded p-4">
 					<div class="d-flex mb-5">
 						<h5 class="me-auto tableSubject">FAQ 관리</h5>
-						<button type="button" class="btn btn-lg btn-primary ms-3" onclick="location.href='AdminFaqWrite'">게시판 등록</button>
-						<button type="button" class="btn btn-lg btn-primary ms-3" onclick="deleteBoard()">게시판 삭제</button>
+						<button type="button" class="btn btn-lg btn-primary ms-3" onclick="location.href='AdminFaqWrite'">게시글 등록</button>
+						<button type="button" class="btn btn-lg btn-primary ms-3" onclick="deleteBoard()">게시글 삭제</button>
 					</div>
 					<div>
 						<form class="d-flex input-group mb-3" method="get">

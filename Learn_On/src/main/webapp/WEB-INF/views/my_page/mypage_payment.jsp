@@ -55,19 +55,25 @@
 										<article class="ord-box">
 											<div class="infos">
 												<div class="info">
-													<span class="status">
-														<c:if test="${payment.value[0].pay_status == 1}">
+													<c:if test="${payment.value[0].pay_status == 1}">
+														<span class="status status01">
 															결제완료
-														</c:if>
-														<c:if test="${payment.value[0].pay_status == 2}">
+														</span>
+													</c:if>
+													<c:if test="${payment.value[0].pay_status == 2}">
+														<span class="status status02">
 															결제취소
-														</c:if>
-														<c:if test="${payment.value[0].pay_status == 3}">
-															입금대기
-														</c:if>
-													</span>
+														</span>
+													</c:if>
+													<c:if test="${payment.value[0].pay_status == 3}">
+														<span class="status status03">
+														입금대기
+														</span>
+													</c:if>
 													<span>결제번호</span>
 													<span class="num">${payment.key}</span>
+													<span>| 결제일시</span>
+													<span class="num"><fmt:formatDate value="${payment.value[0].pay_date}" pattern="yyyy-MM-dd HH:mm:ss" /></span>
 												</div>
 												<c:forEach var="item" items="${payment.value}">
 													<div class="products">
@@ -84,15 +90,12 @@
 												<dl class="dis">
 													<dt>할인</dt>
 													<dd>
-														<c:forEach var="item" items="${payment.value}">
-															<c:if test="${item.discount_type == 1}">
-																- ${item.discount_percent} %
-															</c:if>
-															<br>
-															<c:if test="${item.discount_type == 2}">
-																- ￦ <fmt:formatNumber pattern="#,###">${item.discount_amount}</fmt:formatNumber>
-															</c:if>
-														</c:forEach>
+														<c:if test="${payment.value[0].discount_type == 1}">
+															- ${payment.value[0].discount_percent} %
+														</c:if>
+														<c:if test="${payment.value[0].discount_type == 2}">
+															- ￦ <fmt:formatNumber pattern="#,###">${payment.value[0].discount_amount}</fmt:formatNumber>
+														</c:if>
 													</dd>
 												</dl>
 												<dl class="total">

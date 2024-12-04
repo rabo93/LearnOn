@@ -112,12 +112,33 @@ function ckNick(){
 			}
 		});
 	}else{
-		$("#checkNic").text("4~12글자만 사용가능");
+		$("#checkNic").text("2~8글자만 사용가능");
 		$("#checkNic").css("color", "red");
 		checkNic = false;
 	}
 }
 
+//function checkMail(){
+//	let mail = $("#mem_email1").val();
+//    //let email2 = $("#mem_email2").val();
+//    //let mail = email1 + "@" + email2;
+//	$.ajax({
+//		type : "get",
+//		url : "MemberCheckMail" ,
+//		data : {
+//			mem_eemail : mail
+//		},
+//		success : function(result){
+//			if(result.trim() == "false"){
+//				$("#checkMail").text("사용가능한 이메일입니다").css("color","green");
+//				checkNic = true;
+//			}else {
+//				$("#checkMail").text("이미 사용중인 이메일입니다").css("color","red");
+//				checkNic = false;
+//			}
+//		}
+//	})
+//};
 
 //function checkIdLength (){
 //	let id = $("#MEM_ID").val();

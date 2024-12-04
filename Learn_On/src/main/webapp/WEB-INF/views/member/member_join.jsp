@@ -88,12 +88,12 @@
 							<input type="text" placeholder="우편번호" id="mem_post_code"
 								name="mem_post_code" size="6" readonly>
 						</div>
-	
 						<input type="text" name="mem_address2" placeholder="상세주소" id="mem_address2" size="25">
+						
 						<label for="mem_email1">이메일</label>
 						<div id="checkMail"></div>
 						<div class="email_form">
-							<input type="text" name="mem_email1" id="mem_email1" placeholder="Email" required>
+							<input type="text" name="mem_email1" id="mem_email1" placeholder="Email" onblur="checkMail()" required>
 							@
 							<input type="text" size="10" id="mem_email2" name="mem_email2">
 							<select id="emaildmain">

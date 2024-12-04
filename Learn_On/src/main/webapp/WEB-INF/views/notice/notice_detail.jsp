@@ -39,7 +39,7 @@
 					<c:forEach var="file" items="${fileList}" varStatus="status">
 						<c:if test="${not empty file}">
 						 	<div>
-						 		<i class="fa-solid fa-paperclip"></i> ${file}
+						 		<i class="fa-solid fa-paperclip"></i> ${originalFileList[status.index]}
 						 		<a href="${pageContext.request.contextPath}/resources/upload/${file}"
 						 		   download="${originalFileList[status.index]}">
 					 			<input type="button" value="다운로드">

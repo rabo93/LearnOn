@@ -233,8 +233,6 @@ public class NoticeBoardController {
 			
 			String prevURL = request.getServletPath();
 			String queryString = request.getQueryString();
-			System.out.println("prevURL : " + prevURL);
-			System.out.println("queryString : " + queryString);
 			
 			if (queryString != null) {
 				prevURL += "?" + queryString;

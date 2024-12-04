@@ -1326,17 +1326,17 @@ public class AdminController {
 		
 		
 		// 첨부파일 정보 저장
-		for(CourseSupportVO cSupport : courseSupportList) {
-			String originalFileName = "";
+//		for(CourseSupportVO cSupport : courseSupportList) {
+//			String originalFileName = "";
+//			
+//			if(cSupport.getC_support_file() != null) {
+//				originalFileName = cSupport.getC_support_file().substring(cSupport.getC_support_file().indexOf("_") + 1);
+//			} else {
+//				originalFileName = null;
+//			}
 			
-			if(cSupport.getC_support_file() != null) {
-				originalFileName = cSupport.getC_support_file().substring(cSupport.getC_support_file().indexOf("_") + 1);
-			} else {
-				originalFileName = null;
-			}
-			
-			cSupport.setC_support_file(originalFileName);
-		}
+//			cSupport.setC_support_file(originalFileName);
+//		}
 		
 		System.out.println(courseSupportList);
 		

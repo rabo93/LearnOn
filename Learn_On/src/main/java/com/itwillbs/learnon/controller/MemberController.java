@@ -130,6 +130,8 @@ public class MemberController {
 	        
 	        //*****MemberJoin시 Attendance table에 mem_id insert 해야함******
 	        int addAttendance = mypageService.addMemId(member.getMem_id());
+	       
+	        session.invalidate();
 	        
 	        return "redirect:/MemberJoinSuccess";
 	    } else {

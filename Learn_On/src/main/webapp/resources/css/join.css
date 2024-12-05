@@ -40,7 +40,7 @@
 	width: 50%;
 }
 
-.join-wrap  form input[type="text"] , .join-wrap  form input[type="password"], .join-wrap  form input[type="file"],  .join-wrap  form input[type="button"],  .join-wrap  form input[type="submit"],  .join-wrap  form input[type="date"]  {
+.join-wrap  form input[type="text"] , .join-wrap  form input[type="password"], .join-wrap  form input[type="file"],  .join-wrap  form input[type="button"],  .join-wrap  form input[type="submit"],  .join-wrap  form input[type="date"] {
 	display: block;
 	margin-bottom: 11px;
 	border: 0;
@@ -77,7 +77,7 @@
 	border-radius: 30px;
 }
 
-.join-wrap button[type="submit"] {
+.join-wrap button[type="button"] {
 	padding: 1rem;
 	background-color: var(--primary);
 	border-radius: 10px;
@@ -89,7 +89,7 @@
 	margin-top: 20px;
 }
 
-.join-wrap button[type="submit"]:hover {
+.join-wrap button[type="button"]:hover {
 	background-color: #3364e9;
 }
 

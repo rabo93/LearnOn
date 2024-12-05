@@ -203,10 +203,10 @@
 								</ul>
 							</div>
 						</section>
-						<div id="form-controls">
+<!-- 						<div class="form-controls"> -->
 <!-- 							<input type="submit" id="submitBtn" value="회원가입"> -->
 							<button type="button" id="submitBtn" onclick="checkSubmit()">회원가입</button>
-						</div>
+<!-- 						</div> -->
 					</form>
 				</div>
 			</div>

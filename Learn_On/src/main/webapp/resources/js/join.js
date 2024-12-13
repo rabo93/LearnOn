@@ -41,23 +41,36 @@ let isIdValid=false;
 let phoneCheckResult = false;
 
 // ************* 이름 null 검사**************
-function checkNameLength(){
+//function checkNameLength(){
+//	let name = $("#mem_name").val();
+//	if(name == "" ){
+//		$("#checkName").text("이름을 입력해주세요.");	
+//		$("#checkName").css("color","red");	
+//		checkName=false;	
+//	}else {
+//		$("#checkName").text("");
+//		checkName=true;	
+//	}
+//}
+
+function checkNameResult(){
 	let name = $("#mem_name").val();
-	if(name == "" ){
-		$("#checkName").text("이름을 입력해주세요.");	
-		$("#checkName").css("color","red");	
-		checkName=false;	
-	}else {
+	let regex = /^[가-힣]{2,4}$/;
+	
+	if(regex.test(name)){
 		$("#checkName").text("");
-		checkName=true;	
+		checkName=true;
+	}else {
+		$("#checkName").text("올바른 이름을 입력해주세요.");	
+		$("#checkName").css("color","red");	
+		checkName=false;
 	}
 }
-
+	
 // ************* 아이디 중복체크/길이검사**************
 function checkId(){
 	let id = $("#mem_id").val();
 	let regex = /^[\d\w][\d\w_]{3,12}$/;
-//	let regex = /^(?=.*[!@#$%^&*].*[!@#$%^&*])[\d\w!@#$%^&*]{4,12}$/;
 	if(regex.exec(id)){
 		$.ajax({
 			type : "get" ,
@@ -66,21 +79,20 @@ function checkId(){
 			mem_id:id
 		} ,
 			success : function(result){
-//				debugger;
 				if(result.trim() == "false"){
 					$("#checkIdResult").text("사용가능한 아이디 입니다.").css("color","GREEN");
-					isIdValid = true;
+					checkIdResult = true;
 				}else{
 					$("#checkIdResult").text("이미 존재하는 아이디 입니다.").css("color","RED");
-					alert("아이디를 다시 확인해주세요");
-					isIdValid = false;
+//					alert("아이디를 다시 확인해주세요");
+					checkIdResult = false;
 				}
 			} 
 		});
 	}else{
 		$("#checkIdResult").text("4~12글자만 사용가능");
 		$("#checkIdResult").css("color", "red");
-		isIdValid = false;
+		checkIdResult = false;
 	}
 }
  		
@@ -112,29 +124,34 @@ function ckNick(){
 			}
 		});
 	}else{
-		$("#checkNic").text("4~12글자만 사용가능");
+		$("#checkNic").text("2~8글자만 사용가능");
 		$("#checkNic").css("color", "red");
 		checkNic = false;
 	}
 }
 
+//function checkMail(){
+//	let mail = $("#mem_email1").val();
+//    //let email2 = $("#mem_email2").val();
+//    //let mail = email1 + "@" + email2;
+//	$.ajax({
+//		type : "get",
+//		url : "MemberCheckMail" ,
+//		data : {
+//			mem_eemail : mail
+//		},
+//		success : function(result){
+//			if(result.trim() == "false"){
+//				$("#checkMail").text("사용가능한 이메일입니다").css("color","green");
+//				checkNic = true;
+//			}else {
+//				$("#checkMail").text("이미 사용중인 이메일입니다").css("color","red");
+//				checkNic = false;
+//			}
+//		}
+//	})
+//};
 
-//function checkIdLength (){
-//	let id = $("#MEM_ID").val();
-//	if(id.length >= 4 && id.length <= 8){
-//		$("#checkId").text("사용가능한 아이디입니다.");
-//		$("#checkId").css("color","green");
-//		checkId = true;
-//	}else if(id == ""){
-//		$("#checkId").text("아이디를 입력해주세요");
-//		$("#checkId").css("color","red");
-//		checkId = false;
-//	}else {
-//		$("#checkId").text("4~8 글자만 사용 가능합니다");
-//		$("#checkId").css("color","red");
-//		checkId = false;
-//	}
-//}
 
 // ************* 비밀번호 길이검사**************
 function checkPasswdLength1() {
@@ -220,18 +237,13 @@ $("#profile_img").change(function (event) {
 
 
 /******************* */
-function submit() {
-	if (!isIdValid) {
-		$("#mem_id").focus();
-		return false;
-	} else if(!checkNic){
-		$("#mem_nick").focus();
-		return false;
-	} else if(!checkPasswd1) {
-		$("#mem_passwd").focus();
-		return false;
-	}else {
-		return true;
-	}
-
-}
+//$("#joinForm").on("submit", function () {
+function checkSubmit(){
+    if (!checkIdResult || !checkNic || !checkPasswd1) {
+        alert("회원정보를 다시 확인해주세요");
+        console.log("유효성 검사 실패");
+        return false;
+    } else {
+        $("#joinForm").submit();
+    }
+};

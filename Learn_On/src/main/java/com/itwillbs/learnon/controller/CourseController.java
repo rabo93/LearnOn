@@ -107,6 +107,8 @@ public class CourseController {
 	
 	
 	
+	
+	
 	@GetMapping("BestCourse")
 	public String bestCourse(
 			@RequestParam(defaultValue = "1") int pageNum	
@@ -517,7 +519,7 @@ public class CourseController {
 	@ResponseBody 
 	@PostMapping("CourseSupportDeleteFile")
 	public String courseSupportDeleteFile(@RequestParam Map<String, String> map, HttpSession session) {
-		
+		System.out.println("CourseSupportDeleteFile 잘되나????" + map);
 		// courseService - removeBoardFile() 메서드 호출하여 지정된 파일명 삭제 요청
 		// => 파라미터 : Map 객체   리턴타입 : int(deleteCount)
 		int deleteCount = courseService.removeBoardFile(map); 

@@ -88,10 +88,10 @@
 											<td>${payment.value[0].mem_id}</td>
 											<td>
 												<c:choose>
-													<c:when test="${payment.value[0].pay_method.equals('vbank')}">
-														${payment.value[0].bank_name} (무통장)
+													<c:when test="${not empty payment.value[0].bank_name}">
+														${payment.value[0].bank_name}
 													</c:when>
-													<c:when test="${payment.value[0].pay_method.equals('card')}">
+													<c:when test="${not empty payment.value[0].card_name}">
 														${payment.value[0].card_name}
 													</c:when>
 												</c:choose>
@@ -201,25 +201,27 @@
     <script type="text/javascript">
 	 	// 결제 취소 
 		function cancelPay(imp_uid, paid_amount) {
-			$.ajax({
-				type: "Post",
-				url: "/payments/cancel",
-				dataType: "json",
-				contentType: "application/json; charset=utf-8",
-				data: JSON.stringify({
-					"imp_uid": imp_uid,		//포트원 거래 고유 번호
-// 					"amount" : paid_amount	//누락시 전체환불(일단 전체환불만 가능하도록 했으므로 주석처리)
-// 					"reason": "테스트 결제 환불",
-				})
-			}).done(function(response) {
-				console.log("취소 응답: "+ JSON.stringify(response));
-				alert("결제를 취소하였습니다.");
-				location.reload();
-			}).fail(function(error) {
-				console.log(JSON.stringify(error));
-				alert("결제 취소 실패");
-				location.reload();
-			});
+	 		if(confirm("해당 결제를 취소하시겠습니까?")) {
+	 			$.ajax({
+					type: "Post",
+					url: "/payments/cancel",
+					dataType: "json",
+					contentType: "application/json; charset=utf-8",
+					data: JSON.stringify({
+						"imp_uid": imp_uid,		//포트원 거래 고유 번호
+//	 					"amount" : paid_amount	//누락시 전체환불(일단 전체환불만 가능하도록 했으므로 주석처리)
+//	 					"reason": "테스트 결제 환불",
+					})
+				}).done(function(response) {
+					console.log("취소 응답: "+ JSON.stringify(response));
+					alert("결제를 취소하였습니다.");
+					location.reload();
+				}).fail(function(error) {
+					console.log(JSON.stringify(error));
+					alert("결제 취소 실패");
+					location.reload();
+				});
+	 		}
 		}
 		
 		function showDetail(idx){

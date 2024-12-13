@@ -49,25 +49,17 @@ public class NoticeBoardController {
 		if (id == null) {
 			model.addAttribute("msg", "로그인이 필요합니다\\n로그인 페이지로 이동합니다.");
 			model.addAttribute("targetURL", "MemberLogin");
-			
 			String prevURL = request.getServletPath();
 			String queryString = request.getQueryString();
-			System.out.println("prevURL : " + prevURL);
-			System.out.println("queryString : " + queryString);
-			
 			if (queryString != null) {
 				prevURL += "?" + queryString;
 			}
-			
 			session.setAttribute("prevURL", prevURL);
-			
 			return "result/fail";
 		}
-		
 		if(!grade.equals("MEM03")) {
 			model.addAttribute("msg", "접근권한이 없습니다");
 			model.addAttribute("targetURL", "NoticeList");
-			
 			return "result/fail";
 		}
 		
@@ -147,11 +139,10 @@ public class NoticeBoardController {
 	public String noticeDetail(int notice_idx, Model model) {
 		
 		NoticeBoardVO board = noticeService.getNoticeBoard(notice_idx, true);
-		model.addAttribute("notice", board);
 		
 		String[] fileSplit = board.getNotice_file().split(",");
-		List<String> fileList = new ArrayList<String>();
 		
+		List<String> fileList = new ArrayList<String>();
 		for (String file : fileSplit) {
 			fileList.add(file);
 		}
@@ -161,6 +152,7 @@ public class NoticeBoardController {
 			originalFileList.add(file.substring(file.indexOf("_") + 1));
 		}
 		
+		model.addAttribute("notice", board);
 		model.addAttribute("fileList", fileList);
 		model.addAttribute("originalFileList", originalFileList);
 		
@@ -241,8 +233,6 @@ public class NoticeBoardController {
 			
 			String prevURL = request.getServletPath();
 			String queryString = request.getQueryString();
-			System.out.println("prevURL : " + prevURL);
-			System.out.println("queryString : " + queryString);
 			
 			if (queryString != null) {
 				prevURL += "?" + queryString;
@@ -434,56 +424,6 @@ public class NoticeBoardController {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-//	@ResponseBody
-//	@PostMapping("AdminNoticeDelete")
-//	public String AdminNoticeDelete(@RequestBody Map<String, Object> param, Model model, HttpSession session) {
-//		
-//		System.out.println(param.get("notice_idxs"));
-//		List<Integer> notice_idxs = (List<Integer>)param.get("notice_idxs");
-//		System.out.println(notice_idxs);
-//		
-//		for (int notice_idx : notice_idxs) {
-//			NoticeBoardVO board = noticeService.getNoticeBoard(notice_idx , false);
-//			//	게시물이 존재하지 않을 때
-//			if(board == null) {
-//				model.addAttribute("msg", "잘못된 접근입니다!");
-//				return "result/fail";
-//			}
-//			int deleteCount = noticeService.removeNotice(notice_idx);
-//			
-//			if (deleteCount > 0) {
-//				String realPath = getRealPath(session);
-//				String file = board.getNotice_file();
-//				Path path = Paths.get(realPath, file);
-//				
-//				try {
-//					Files.delete(path);
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//			} else {
-//				model.addAttribute("msg", "삭제 실패!");
-//				return "result/fail";
-//			}
-//		}
-//		
-//		return "redirect:/AdmNotice";
-//		
-//	}
 		
 		
 		
@@ -506,12 +446,12 @@ public class NoticeBoardController {
 	
 	
 	
-	@PostMapping("/notice/deleteFile")
-	@ResponseBody
-	public String noticeDeleteFile (int notice_idx, String file, int index, HttpSession session) {
 //		System.out.println("notice_idx : " + notice_idx);
 //		System.out.println("file : " + file);
 //		System.out.println("index : " + index);
+	@PostMapping("/notice/deleteFile")
+	@ResponseBody
+	public String noticeDeleteFile (int notice_idx, String file, int index, HttpSession session) {
 		
 		NoticeBoardVO board = noticeService.getNoticeBoard(notice_idx, false);
 		String[] fileSplit = board.getNotice_file().split(",");
@@ -532,10 +472,9 @@ public class NoticeBoardController {
 		}
 		list.remove(index);
 		
-		String updatedFileList = String.join("," , list);
+		String updatedFileList = list.isEmpty() ? "" :  String.join("," , list);
 		
-		int updateCount = noticeService.getFileUpdate(notice_idx ,updatedFileList);
-//		System.out.println("updateCount : " + updateCount);
+		noticeService.getFileUpdate(notice_idx, updatedFileList);
 		return "updatedFileList";
 	}
 	

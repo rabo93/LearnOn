@@ -17,17 +17,25 @@
 		 WHERE mem_nick = #{mem_nick}
 	</select>
 	
+	
+<!-- 	이메일 중복체크 -->
+<!-- 	<select id="selectEmailId" resultType="member"> -->
+<!-- 		SELECT SUBSTRING_INDEX(#{MEM_EMAIL}, '@', 1) -->
+<!-- 		FROM MEMBER -->
+<!-- 		WHERE MEM_EMAIL = #{mem_email} -->
+	
+<!-- 	</select>	 -->
 	<select id="selectMemberPasswd" resultType="String">
 		SELECT mem_passwd
 		  FROM MEMBER
 		 WHERE mem_id = #{mem_id} 
 	</select>
-<!--  회원정보 수정 - 비밀번호 변경	 --> 
-	<update id="updateNewPasswd">
-		UPDATE MEMBER
-		   SET mem_passwd = #{mem_passwd}
-		 WHERE mem_email = #{mem_email}
-	</update>
+<!--   회원정보 수정 - 비밀번호 변경	 --> 
+<!-- 	<update id="updateNewPasswd"> -->
+<!-- 		UPDATE MEMBER -->
+<!-- 		   SET mem_passwd = #{mem_passwd} -->
+<!-- 		 WHERE mem_id = #{mem_id} -->
+<!-- 	</update> -->
 	
 <!-- 	이메일로 비밀번호 변경 - 이메일 존재 확인  -->
 	<select id="selectEmail" resultType="member">
@@ -38,52 +46,53 @@
 
 	
 	<insert id="insertMember">
-INSERT INTO MEMBER (
-    mem_idx
-   , mem_id
-   , mem_passwd
-   , mem_name
-   , mem_nick
-   , mem_birthday
-   , mem_email
-   , mem_gender
-   , mem_phone
-   , mem_post_code
-   , mem_address1
-   , mem_address2
-   , mem_grade
-   , mem_status
-   , mem_reg_date
-   , mem_withdraw_date
-   , mem_like1_class
-   , mem_like2_class
-   , file_pp
-   , mail_auth_status
-   , hashtag
-) VALUES (
-    null
-   , #{mem_id}
-   , #{mem_passwd}
-   , #{mem_name}
-   , #{mem_nick}
-   , #{mem_birthday}
-   , CONCAT(#{mem_email1}, '@', #{mem_email2})
-   , #{mem_gender}
-   , #{mem_phone}
-   , #{mem_post_code}
-   , #{mem_address1}
-   , #{mem_address2}
-   , 'MEM01'
-   , 1
-   , now()
-   , null
-   , #{mem_like1_class}
-   , #{mem_like2_class}
-   , SUBSTR(#{file_pp}, INSTR(#{file_pp}, '_') + 1)
-   , 'N'
-   , #{hashtag}
-)
+	INSERT INTO MEMBER (
+	    mem_idx
+	   , mem_id
+	   , mem_passwd
+	   , mem_name
+	   , mem_nick
+	   , mem_birthday
+	   , mem_email
+	   , mem_gender
+	   , mem_phone
+	   , mem_post_code
+	   , mem_address1
+	   , mem_address2
+	   , mem_grade
+	   , mem_status
+	   , mem_reg_date
+	   , mem_withdraw_date
+	   , mem_like1_class
+	   , mem_like2_class
+	   , file_pp
+	   , mail_auth_status
+	   , hashtag
+	) VALUES (
+	    null
+	   , #{mem_id}
+	   , #{mem_passwd}
+	   , #{mem_name}
+	   , #{mem_nick}
+	   , #{mem_birthday}
+	   , CONCAT(#{mem_email1}, '@', #{mem_email2})
+	   , #{mem_gender}
+	   , #{mem_phone}
+	   , #{mem_post_code}
+	   , #{mem_address1}
+	   , #{mem_address2}
+	   , 'MEM01'
+	   , 1
+	   , now()
+	   , null
+	   , #{mem_like1_class}
+	   , #{mem_like2_class}
+	   , #{file_pp}
+	   , 'N'
+	   , #{hashtag}
+	)
 </insert>
+<!-- 	   , SUBSTR(#{file_pp}, INSTR(#{file_pp}, '_') + 1) -->
 	
 	<update id="updateMember" >
 	UPDATE MEMBER
@@ -97,6 +106,7 @@ INSERT INTO MEMBER (
 		, mem_address1 = #{mem_address1}
 		, mem_address2 = #{mem_address2}
 		, mem_phone = #{mem_phone}
+		, hashtag = #{hashtag}
 <!-- 		, mem_email = CONCAT(#{mem_email1}, '@', #{mem_email2}) -->
 	WHERE
 		mem_id = #{mem_id}

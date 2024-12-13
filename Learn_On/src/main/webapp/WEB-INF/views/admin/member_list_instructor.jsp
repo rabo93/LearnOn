@@ -20,7 +20,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
@@ -109,8 +109,11 @@
 										</td>
 	                             	</tr>
 	                             	<tr class="AdmMemberDetail">
-										<td colspan="9">
-											<input id="memFile_${mem.index}" class="form-control member w-75" type="text" placeholder="파일" aria-label="default input example" value="${ml.file_pp}" readonly>
+										<td colspan="8">
+											<input id="memFile_${mem.index}" class="form-control member" type="text" placeholder="파일" aria-label="default input example" value="${originalFileList[mem.index]}" readonly>
+										</td>
+										<td>
+											<a href="${pageContext.request.contextPath}/resources/upload/${ml.file_pp}" download="${originalFileList[mem.index]}"><i class="fa-solid fa-download fs-5"></i></a>
 										</td>
 										<td>
 											<button type="button" class="btn btn-lg btn-primary ms-3" onclick="changeMemGrade('${ml.mem_id}')"

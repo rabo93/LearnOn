@@ -20,15 +20,24 @@ public interface CouponMapper {
 	int insertCoupon(Map<String, String> params);
 	
 	//	========= 관리자용 쿠폰 ===========================
-	//	쿠폰 총 개수 조회
+	//	총 쿠폰 리스트 조회
 	List<CouponVO> selectAdmCoupon(@Param("startRow") int startRow,
 								   @Param("listLimit") int listLimit,
 								   @Param("searchKeyword") String searchKeyword,
 								   @Param("searchType") String searchType);
-
+	//	쿠폰 총 개수 조회
 	int selectAdmCouponCount(@Param("searchKeyword") String searchKeyword,
 							 @Param("searchType") String searchType);
-
+	//	사용 가능한 쿠폰 리스트 조회
+	List<CouponVO> selectAdmIssueCoupon(@Param("startRow") int startRow,
+										@Param("listLimit") int listLimit,
+										@Param("searchKeyword") String searchKeyword,
+										@Param("searchType") String searchType);
+	
+	//	사용 가능한 쿠폰 개수 조회
+	int selectAdmIssueCouponCount(@Param("searchKeyword") String searchKeyword,
+							 	  @Param("searchType") String searchType);
+	
 	CouponVO selectAdmIdxCoupon(int coupon_id);
 
 	int insertAdmCoupon(CouponVO coupon);
@@ -40,6 +49,8 @@ public interface CouponMapper {
 	int deleteAdmMyCoupon(int coupon_id);
 
 	int updateCouponStatus(CouponVO coupon);
+
+
 
 	
 }

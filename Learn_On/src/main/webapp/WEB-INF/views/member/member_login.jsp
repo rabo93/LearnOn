@@ -40,7 +40,7 @@
                <label for="mem_id" >아이디</label>
                <input type="text" name="mem_id" id="mem_id" placeholder="아이디" value="${cookie.userId.value }">
                <label for="mem_passwd">비밀번호</label>
-               <input type="password" name="mem_passwd" id="mem_passwd" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;">
+               <input type="password" name="mem_passwd" id="mem_passwd" placeholder="비밀번호">
                <div class="checkbox-container">
               	 <label for="rememberId"><input type="checkbox" name="rememberId" id="rememberId"<c:if test="${not empty cookie.userId}">checked</c:if>>아이디 기억하기</label>
                </div>

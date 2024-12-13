@@ -79,7 +79,8 @@ public class MailService {
 		
 		String subject = "[런온]가입 인증코드 입니다.";
 		String content =
-				"<a href=\"http://localhost:8081/MemberEmailAuth?mem_email="+ email + "&auth_code=" + auth_code +"\">[클릭]이메일 인증하기</a>";
+//				"<a href=\"http://localhost:8081/MemberEmailAuth?mem_email="+ email + "&auth_code=" + auth_code +"\">[클릭]이메일 인증하기</a>";
+		"<a href=\"http://c3d2407t1p1.itwillbs.com/MemberEmailAuth?mem_email="+ email + "&auth_code=" + auth_code +"\">[클릭]이메일 인증하기</a>";
 				//주소 수정해야함
 	
 		new Thread(new Runnable() {
@@ -134,7 +135,8 @@ public class MailService {
 			
 			String subject = "[런온]가입 인증코드 입니다.";
 			String content =
-					"<a href=\"http://localhost:8081/MemberEmailAuth?mem_email="+ mail + "&auth_code=" + auth_code +"\">[클릭]이메일 인증하기</a>";
+//					"<a href=\"http://localhost:8081/MemberEmailAuth?mem_email="+ mail + "&auth_code=" + auth_code +"\">[클릭]이메일 인증하기</a>";
+			"<a href=\"http://c3d2407t1p1.itwillbs.com/MemberEmailAuth?mem_email="+ mail + "&auth_code=" + auth_code +"\">[클릭]이메일 인증하기</a>";
 					//주소 수정해야함
 		
 			new Thread(new Runnable() {

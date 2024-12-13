@@ -120,7 +120,7 @@
             <!-- Widgets Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-4">
-                    <div class="col-sm-12 col-md-6 col-xl-6 col-auto">
+                    <div class="">
                         <div class="h-100 bg-light rounded p-4">
                             <div class="d-flex align-items-center justify-content-between mb-4">
                                 <h6 class="mb-0">달력</h6>
@@ -133,7 +133,7 @@
 <!--                         <div class="h-100 bg-light rounded p-4"> -->
 <!--                             <div class="d-flex align-items-center justify-content-between mb-4"> -->
 <!--                                 <h6 class="mb-0">해야할 일 메모</h6> -->
-<!-- <!--                                 <a href="">자세히 보기</a> --> -->
+<!-- <!--                                 <a href="">자세히 보기</a> -->
 <!--                             </div> -->
 <!--                             <div class="d-flex mb-2" id="memo"> -->
 <!--                                 <input class="form-control bg-transparent" type="text" placeholder="메모를 입력해주세요"> -->
@@ -242,7 +242,7 @@
 	   	    data: {
 	   	      labels: todayLabels,
 	   	      datasets: [{
-	   	        label: 'TodaySales',
+	   	        label: '오늘의 매출',
 	   	        data: dataToday,
 	   	        borderWidth: 1
 	   	      }]
@@ -267,7 +267,7 @@
 	   	    data: {
 	   	        labels: weekLabels,  // 주간 시작일을 X축에 표시
 	   	        datasets: [{
-	   	            label: 'WeeklySales',  // 데이터셋 레이블
+	   	            label: '이번주의 매출',  // 데이터셋 레이블
 	   	            data: dataWeekly,  // 4주간의 매출 데이터를 Y축에 표시
 	   	            borderWidth: 1,
 	   	        }]

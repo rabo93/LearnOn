@@ -29,11 +29,11 @@
 			<div id="form-inner-container">
 				<!-- Sign up form -->
 				<div id="sign-up-container">
-					<form action="MemberJoin" name="joinForm" method="post" enctype="multipart/form-data">
+					<form action="MemberJoin" id="joinForm" name="joinForm" method="post" enctype="multipart/form-data">
 						<label for="mem_name">이름</label>
 						<div id="checkName"></div>
 						<input type="text" name="mem_name" id="mem_name" placeholder="이름"
-							onblur="checkNameLength()"> 
+							onblur="checkNameResult()"> 
 						<label for="mem_id">아이디</label>
 						<div id="checkIdResult"></div>
 						<input type="text" name="mem_id" id="mem_id" placeholder="아이디" 
@@ -88,8 +88,8 @@
 							<input type="text" placeholder="우편번호" id="mem_post_code"
 								name="mem_post_code" size="6" readonly>
 						</div>
-	
 						<input type="text" name="mem_address2" placeholder="상세주소" id="mem_address2" size="25">
+						
 						<label for="mem_email1">이메일</label>
 						<div id="checkMail"></div>
 						<div class="email_form">
@@ -203,9 +203,10 @@
 								</ul>
 							</div>
 						</section>
-						<div id="form-controls">
-							<input type="submit" id="submit" value="회원가입" onclick="submit()" />
-						</div>
+<!-- 						<div class="form-controls"> -->
+<!-- 							<input type="submit" id="submitBtn" value="회원가입"> -->
+							<button type="button" id="submitBtn" onclick="checkSubmit()">회원가입</button>
+<!-- 						</div> -->
 					</form>
 				</div>
 			</div>

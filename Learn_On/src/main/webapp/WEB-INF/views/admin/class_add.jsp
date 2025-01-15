@@ -91,6 +91,7 @@
 									</div>
 								</div>
 							</div>
+							
 							<figure class="figure">
 								<img src="resources/admin/img/thumb_origin.jpg" id="preview" class="figure-img img-fluid rounded" alt="thumpnail" style="height: 280px;">
 								<figcaption class="figure-caption text-center mb-3">썸네일 이미지 미리보기</figcaption>
@@ -98,6 +99,7 @@
 									<input type="file" class="file form-control" id="inputGroupFile02"
 									accept="image/*" onchange="readURL(this);" name="class_pic1_get">
 							</figure>
+							
 						</div>
 						<div class="p-2 bd-highlight d-flex">
                             <h6 class="me-auto p-2">커리큘럼</h6>

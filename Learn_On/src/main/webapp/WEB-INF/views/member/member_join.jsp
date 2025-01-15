@@ -213,6 +213,11 @@
 		</div>
 	</div>
 	</main>
+	
+	
+	
+	
+	
 	<footer id="ft">
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
 	</footer>

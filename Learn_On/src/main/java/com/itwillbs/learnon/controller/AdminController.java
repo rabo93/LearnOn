@@ -285,7 +285,6 @@ public class AdminController {
 	}
 	
 	// ======================================================================================================
-	
 	// 어드민 클래스 등록 페이지 매핑
 	@GetMapping("AdmClassAdd")
 	public String admin_class_add(Model model, HttpSession session) {

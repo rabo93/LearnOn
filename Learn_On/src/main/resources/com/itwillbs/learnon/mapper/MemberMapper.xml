@@ -95,22 +95,21 @@
 <!-- 	   , SUBSTR(#{file_pp}, INSTR(#{file_pp}, '_') + 1) -->
 	
 	<update id="updateMember" >
-	UPDATE MEMBER
-	SET
-		mem_nick = #{mem_nick}
-		, mem_post_code = #{mem_post_code}
-		<if test="!mem_passwd.equals('')"> 
-<!-- 		<if test="mem_passwd != null and mem_passwd != ''"> -->
-			,mem_passwd = #{mem_passwd}
-		</if>
-		, mem_address1 = #{mem_address1}
-		, mem_address2 = #{mem_address2}
-		, mem_phone = #{mem_phone}
-		, hashtag = #{hashtag}
-<!-- 		, mem_email = CONCAT(#{mem_email1}, '@', #{mem_email2}) -->
-	WHERE
-		mem_id = #{mem_id}
-</update>
+		UPDATE MEMBER
+		SET
+			MEM_NICK = #{mem_nick}
+			<if test="!mem_passwd.equals('')"> 
+	<!-- 		<if test="mem_passwd != null and mem_passwd != ''"> -->
+				, MEM_PASSWD = #{mem_passwd}
+			</if>
+			, MEM_POST_CODE = #{mem_post_code}
+			, MEM_ADDRESS1 = #{mem_address1}
+			, MEM_ADDRESS2 = #{mem_address2}
+			, MEM_PROFILE = #{mem_profile}
+	<!-- 		, mem_email = CONCAT(#{mem_email1}, '@', #{mem_email2}) -->
+		WHERE
+			MEM_ID = #{mem_id}
+	</update>
 <!-- 	메일 인증 후, 인증상태 변경  -->
 	<update id="updateMailAuthStatus">
 		UPDATE MEMBER
